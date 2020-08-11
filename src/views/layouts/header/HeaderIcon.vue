@@ -1,0 +1,43 @@
+<template>
+  <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo']">
+    <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    collapsed: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+.logo {
+  background: #5B8FF9;
+  color: #ffffff;
+  padding: 4px 28px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expansion-logo {
+  width: 200px;
+  padding: 0 25px;
+  div {
+    width: 140px;
+  }
+}
+.collapse-logo {
+  width: 80px;
+  padding: 0 15px;
+  div {
+    width: 40px;
+  }
+}
+</style>
