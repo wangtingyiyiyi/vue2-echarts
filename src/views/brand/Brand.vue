@@ -5,7 +5,7 @@
     <div class="brand-tab-wapper">
         <el-tabs v-model="activeName" style='width:100%'>
             <el-tab-pane label="品牌概览" name="first" lazy>
-              <Tab-Brand />
+              <Tab-Brand title="品牌概览title" hello="hello" @handleBtnClick="handleBtnClick"/>
             </el-tab-pane>
             <el-tab-pane label="店铺数据" name="second" lazy>
               <Tab-Shop />
@@ -25,13 +25,13 @@
 
 <script>
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
-import EmptyLine from '@/components/EmptyLine.vue'
-import RangeButtons from '@/components/RangeButtons.vue'
-import GraininessButtons from '@/components/GraininessButtons.vue'
 import TabBrand from '@/views/brand/components/TabBrand.vue'
 import TabShop from '@/views/brand/components/TabShop.vue'
 export default {
-  components: { BrandSetting, EmptyLine, RangeButtons, GraininessButtons, TabBrand, TabShop },
+  components: { BrandSetting, TabBrand, TabShop },
+  provide: {
+    name: 'Garrett'
+  },
   data () {
     return {
       activeName: 'first',
@@ -40,6 +40,9 @@ export default {
     }
   },
   methods: {
+    handleBtnClick (text) {
+      console.info('text form a')
+    },
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
     },

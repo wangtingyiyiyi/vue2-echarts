@@ -16,6 +16,7 @@
 <script>
 import { RANGE_BUTTONS } from '@/utils/const.js'
 export default {
+  name: 'RangeButtons',
   props: {
     activeVal: {
       type: String,

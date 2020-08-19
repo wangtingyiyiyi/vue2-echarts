@@ -7,7 +7,7 @@
       :collapse="collapsed"
       @select="menuSelect">
       <el-menu-item v-for="item in menuData" :key="item.path" :index="item.path">
-        <i class="el-icon-setting"></i>
+        <Svg-Icon :icon-class="item.meta.svgIcon" class="m-r-7"/>
         <span slot="title">{{item.name}}</span>
       </el-menu-item>
     </el-menu>

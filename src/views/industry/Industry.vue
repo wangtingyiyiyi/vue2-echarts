@@ -34,11 +34,8 @@
 
 <script>
 import IndustrySetting from '@/views/industry/components/IndustrySetting.vue'
-import EmptyLine from '@/components/EmptyLine.vue'
 import TabIndustry from '@/views/industry/components/TabIndustry.vue'
 import TabBrand from '@/views/industry/components/TabBrand.vue'
-import RangeButtons from '@/components/RangeButtons.vue'
-import GraininessButtons from '@/components/GraininessButtons.vue'
 import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
@@ -46,11 +43,8 @@ import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlo
 export default {
   components: {
     IndustrySetting,
-    EmptyLine,
     TabIndustry,
     TabBrand,
-    RangeButtons,
-    GraininessButtons,
     Drawer,
     IndustryDrawerSlot,
     IndustryDrawerSlotBtn

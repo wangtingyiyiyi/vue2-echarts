@@ -17,6 +17,7 @@
 <script>
 import { GRAININESS_BUTTONS } from '@/utils/const.js'
 export default {
+  name: 'GraininessButtons',
   props: {
     activeVal: {
       type: String,
