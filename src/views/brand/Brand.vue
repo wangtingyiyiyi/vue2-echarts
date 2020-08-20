@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     handleBtnClick (text) {
-      console.info('text form a')
+      // console.info('text form a')
     },
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
