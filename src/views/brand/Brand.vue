@@ -27,6 +27,8 @@
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
 import TabBrand from '@/views/brand/components/TabBrand.vue'
 import TabShop from '@/views/brand/components/TabShop.vue'
+
+import { postBrandTestAPI, getBrandTestAPI } from '@/api/brand'
 export default {
   components: { BrandSetting, TabBrand, TabShop },
   provide: {
@@ -36,12 +38,24 @@ export default {
     return {
       activeName: 'first',
       rangeItemVal: 'year',
-      graininessItemVal: 'month'
+      graininessItemVal: 'month',
+      param: {
+        createUser: '王婷依',
+        role: 'qywx',
+        token: '9oczDxyoM8uVXZG0HmUVfIVJeSxpGAMQ',
+        userId: 'WangTingYi'
+      }
     }
   },
   methods: {
-    handleBtnClick (text) {
-      // console.info('text form a')
+    async handleBtnClick (text) {
+      console.info('text form a')
+      const res = await postBrandTestAPI(this.param)
+      if (res.code === 200) {
+        console.info(res.result)
+      }
+      const g = await getBrandTestAPI(this.param)
+      console.info(g)
     },
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
