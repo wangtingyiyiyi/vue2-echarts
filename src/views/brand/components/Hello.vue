@@ -9,9 +9,6 @@ export default {
     btnClick () {
       this.$emit('handleBtnClick', name)
     }
-  },
-  mounted () {
-    console.info(this)
   }
 }
 </script>

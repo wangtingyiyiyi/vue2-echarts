@@ -23,7 +23,7 @@ export const routes = [
         name: '行业',
         meta: {
           icon: 'table',
-          svgIcon: 'iconmenu',
+          svgIcon: 'icon-menu',
           activeMenu: 'industry'
         },
         component: Industry
@@ -33,7 +33,7 @@ export const routes = [
         name: '品牌',
         meta: {
           icon: 'dashboard',
-          svgIcon: 'icontag',
+          svgIcon: 'icon-tag',
           activeMenu: 'brand'
         },
         component: Brand

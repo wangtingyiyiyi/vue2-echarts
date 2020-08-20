@@ -16,9 +16,6 @@ export default {
   },
   components: {
     Hello: () => import('./Hello')
-  },
-  mounted () {
-    console.info(this, 'jijijij')
   }
 }
 </script>
