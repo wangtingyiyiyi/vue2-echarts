@@ -7,15 +7,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-  scrollBehavior (to, from, savedPosition) {
-    // 模拟浏览器行为，待实现
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  }
+  routes
 })
 
 // 全局守卫用来判断权限路由, 没有权限，导航至404页面
