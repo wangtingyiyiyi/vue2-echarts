@@ -18,7 +18,9 @@ import {
   Input,
   Form,
   FormItem,
-  Message
+  Message,
+  Select,
+  Option
 } from 'element-ui'
 
 const components = [
@@ -39,7 +41,9 @@ const components = [
   ButtonGroup,
   Input,
   Form,
-  FormItem
+  FormItem,
+  Select,
+  Option
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

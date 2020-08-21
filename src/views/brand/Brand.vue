@@ -1,68 +1,51 @@
 <template>
   <div>
-    <Brand-Setting />
+    <Brand-Setting @brandOnSubmit="brandFormParam = $event"/>
     <Empty-Line />
     <div class="brand-tab-wapper">
-        <el-tabs v-model="activeName" style='width:100%'>
-            <el-tab-pane label="品牌概览" name="first" lazy>
-              <Tab-Brand title="品牌概览title" hello="hello" @handleBtnClick="handleBtnClick"/>
-            </el-tab-pane>
-            <el-tab-pane label="店铺数据" name="second" lazy>
-              <Tab-Shop />
-            </el-tab-pane>
-        </el-tabs>
-        <Range-Buttons
-          :activeVal="rangeItemVal"
-          @handleRangeClick="handleRangeClick"
-          style='position: absolute; right:350px; top:5px;'/>
-        <GraininessButtons
-          :activeVal="graininessItemVal"
-          @handleGraininessClick="handleGraininessClick"
-          style='position: absolute; right:10px; top:5px;'/>
+      <el-tabs v-model="activeName" style='width:100%'>
+          <el-tab-pane label="品牌概览" name="first" lazy>
+            <Brand-Tab-Brand/>
+          </el-tab-pane>
+          <el-tab-pane label="店铺数据" name="second" lazy>
+            <Brand-Tab-Shop />
+          </el-tab-pane>
+      </el-tabs>
+      <Range-Buttons
+        :activeVal="rangeItemVal"
+        @handleRangeClick="rangeItemVal = $event.value"
+        style='position: absolute; right:350px; top:15px;'/>
+      <GraininessButtons
+        :activeVal="graininessItemVal"
+        @handleGraininessClick="graininessItemVal = $event.value"
+        style='position: absolute; right:10px; top:15px;'/>
     </div>
   </div>
 </template>
 
 <script>
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
-import TabBrand from '@/views/brand/components/TabBrand.vue'
-import TabShop from '@/views/brand/components/TabShop.vue'
+import BrandTabBrand from '@/views/brand/components/TabBrand.vue'
+import BrandTabShop from '@/views/brand/components/TabShop.vue'
 
-import { postBrandTestAPI, getBrandTestAPI } from '@/api/brand'
+const brandFormParam = {}
+
 export default {
-  components: { BrandSetting, TabBrand, TabShop },
-  provide: {
-    name: 'Garrett'
-  },
+  components: { BrandSetting, BrandTabBrand, BrandTabShop },
   data () {
     return {
       activeName: 'first',
       rangeItemVal: 'year',
       graininessItemVal: 'month',
-      param: {
-        createUser: '王婷依',
-        role: 'qywx',
-        token: '9oczDxyoM8uVXZG0HmUVfIVJeSxpGAMQ',
-        userId: 'WangTingYi'
-      }
+      brandFormParam: brandFormParam
+    }
+  },
+  computed: {
+    hasBrandFormparam () {
+      return Object.keys(this.brandFormParam).length !== 0
     }
   },
   methods: {
-    async handleBtnClick (text) {
-      console.info('text form a')
-      const res = await postBrandTestAPI(this.param)
-      if (res.code === 200) {
-        console.info(res.result)
-      }
-      const g = await getBrandTestAPI(this.param)
-      console.info(g)
-    },
-    handleRangeClick (rangeItem) {
-      this.rangeItemVal = rangeItem.value
-    },
-    handleGraininessClick (graininessItem) {
-      this.graininessItemVal = graininessItem.value
-    }
   }
 }
 </script>
@@ -72,7 +55,10 @@ export default {
   background-color #ffffff
   position relative
 
-.right-tab
-  position absolute
-  right 0
+.brand-tab-wapper >>> .el-tabs__item
+  padding-left 25px !important
+  font-size 16px
+  line-height 56px
+  height 56px
+
 </style>
