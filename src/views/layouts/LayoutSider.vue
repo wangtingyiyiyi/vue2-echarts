@@ -34,7 +34,9 @@ export default {
   },
   methods: {
     menuSelect (index, path) {
-      this.$router.push({ name: index })
+      if (this.$route.name !== index) {
+        this.$router.push({ name: index })
+      }
     }
   },
   beforeCreate () {

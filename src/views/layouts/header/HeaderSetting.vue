@@ -25,7 +25,9 @@ export default {
       if (command === 'Login') {
         sessionStorage.clear()
       }
-      this.$router.push({ name: command })
+      if (this.$route.name !== command) {
+        this.$router.push({ name: command })
+      }
     }
   },
   beforeCreate () {
