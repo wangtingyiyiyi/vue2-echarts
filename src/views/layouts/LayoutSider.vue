@@ -29,9 +29,6 @@ export default {
   },
   computed: {
     activeMenu () {
-      // const { meta } = this.$route
-      // console.info(meta)
-      // return meta.activeMenu
       return this.$route.name
     }
   },
