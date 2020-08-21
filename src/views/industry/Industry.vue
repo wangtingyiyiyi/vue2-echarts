@@ -20,15 +20,15 @@
           @handleGraininessClick="handleGraininessClick"
           style='position: absolute; right:10px; top:5px;'/>
     </div>
-    <Drawer :drawerShow="drawerShow">
+    <Drawer :visible="drawerShow" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
+        <!-- 抽屉按钮slot -->
         <IndustryDrawerSlotBtn
           slot="button"
           :drawerShow="drawerShow"
           @handleDrawerBtn="handleDrawerBtn"/>
-
-        <Industry-Drawer-Slot />
+        <!-- 抽屉内容slot -->
+        <Industry-Drawer-Slot/>
     </Drawer>
-    {{drawerShow}}
   </div>
 </template>
 
@@ -66,6 +66,9 @@ export default {
     },
     handleDrawerBtn () {
       this.drawerShow = !this.drawerShow
+    },
+    handleDrawerClose (value) {
+      this.drawerShow = value
     }
   }
 }
@@ -79,4 +82,12 @@ export default {
 .right-tab
   position absolute
   right 0
+
+.industry-drawer
+  width 300px
+  height 100vh
+  position fixed
+  right 0
+  top 0
+  z-index 9999
 </style>

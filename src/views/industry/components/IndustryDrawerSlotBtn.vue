@@ -31,7 +31,13 @@ export default {
 .drawer-btn
   background-color $base-green
   color #fff
-  border 1px solid #F8F8F8
+  border 0
+  border-radius: 4px 0 0 4px
+  position: absolute
+  top: 240px
+  left: -42px
+  z-index: 0
+  pointer-events: auto
 
   .flex-column
     display flex
