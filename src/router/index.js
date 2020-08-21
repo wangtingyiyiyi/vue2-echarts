@@ -12,9 +12,13 @@ const router = new VueRouter({
 
 // 全局守卫用来判断权限路由, 没有权限，导航至404页面
 // 用户通过url进入项目, 判断是否存在token等信息，如果没有，导航至login
-// router.beforeEach((to, form, next) => {
-//   console.info(to, form, '全局守卫')
-//   next()
-// })
+router.beforeEach((to, form, next) => {
+  const token = sessionStorage.getItem('token')
+  if (to.name !== 'Login' && !token) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
+})
 
 export default router

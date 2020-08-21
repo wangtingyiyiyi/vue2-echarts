@@ -1,12 +1,11 @@
 <template>
   <el-aside class="menu-asider" style="width: 200px">
     <el-menu
-      router
       :default-active="activeMenu"
       :collapse-transition="false"
       :collapse="collapsed"
       @select="menuSelect">
-      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.path">
+      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name">
         <Svg-Icon :icon-class="item.meta.svgIcon" class="m-r-7"/>
         <span slot="title">{{item.name}}</span>
       </el-menu-item>
@@ -16,7 +15,6 @@
 
 <script>
 let menuData = []
-const defaultActiveIndex = ''
 export default {
   props: {
     collapsed: {
@@ -26,18 +24,21 @@ export default {
   },
   data () {
     return {
-      menuData: menuData,
-      defaultActiveIndex: defaultActiveIndex
+      menuData: menuData
     }
   },
   computed: {
     activeMenu () {
-      const { meta } = this.$route
-      return meta.activeMenu
+      // const { meta } = this.$route
+      // console.info(meta)
+      // return meta.activeMenu
+      return this.$route.name
     }
   },
   methods: {
-    menuSelect () {}
+    menuSelect (index, path) {
+      this.$router.push({ name: index })
+    }
   },
   beforeCreate () {
     menuData = this.$router.options.routes.find((item) => item.path === '/').children

@@ -31,7 +31,8 @@ export const routes = [
         meta: {
           icon: 'table',
           svgIcon: 'icon-menu',
-          activeMenu: 'industry'
+          activeMenu: 'industry',
+          label: ''
         },
         component: Industry
       },
@@ -52,10 +53,10 @@ export const routes = [
     component: CommonLayoutView,
     children: [
       {
-        path: 'dashboard',
+        path: 'personal',
         name: '个人中心',
         meta: {
-          icon: 'user'
+          icon: 'el-icon-user'
         },
         component: User
       },
@@ -63,7 +64,7 @@ export const routes = [
         path: 'setting',
         name: '设置',
         meta: {
-          icon: 'setting'
+          icon: 'el-icon-setting'
         },
         component: Setting
       }

@@ -58,8 +58,12 @@ export default {
     }
   },
   methods: {
-    handleRangeClick () {},
-    handleGraininessClick () {},
+    handleRangeClick (rangeItem) {
+      this.rangeItemVal = rangeItem.value
+    },
+    handleGraininessClick (graininessItem) {
+      this.graininessItemVal = graininessItem.value
+    },
     handleDrawerBtn () {
       this.drawerShow = !this.drawerShow
     }

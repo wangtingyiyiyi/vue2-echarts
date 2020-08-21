@@ -1,10 +1,35 @@
 <template>
-  <el-dropdown>
+  <el-dropdown @command="handleCommand">
     <span><i class="el-icon-caret-bottom"></i></span>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
-      <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
-      <el-dropdown-item divided icon="el-icon-star-off">退出登陆</el-dropdown-item>
+      <el-dropdown-item
+        v-for="item in menuData"
+        :key="item.path"
+        :icon="item.meta.icon"
+        :command="item.name">{{item.name}}</el-dropdown-item>
+      <el-dropdown-item divided icon="el-icon-star-off" command="Login">退出登陆</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
+
+<script>
+let menuData = []
+export default {
+  data () {
+    return {
+      menuData: menuData
+    }
+  },
+  methods: {
+    handleCommand (command) {
+      if (command === 'Login') {
+        sessionStorage.clear()
+      }
+      this.$router.push({ name: command })
+    }
+  },
+  beforeCreate () {
+    menuData = this.$router.options.routes.find((item) => item.path === '/user').children
+  }
+}
+</script>

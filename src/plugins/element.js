@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   Button,
   Container,
@@ -13,7 +14,11 @@ import {
   Main,
   Tabs,
   TabPane,
-  ButtonGroup
+  ButtonGroup,
+  Input,
+  Form,
+  FormItem,
+  Message
 } from 'element-ui'
 
 const components = [
@@ -31,9 +36,14 @@ const components = [
   Main,
   Tabs,
   TabPane,
-  ButtonGroup
+  ButtonGroup,
+  Input,
+  Form,
+  FormItem
 ]
 
+Vue.prototype.$ELEMENT = { size: 'small' }
+Vue.prototype.$message = Message
 const install = function (Vue) {
   components.map(component => {
     Vue.use(component)
