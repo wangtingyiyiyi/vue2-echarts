@@ -20,7 +20,10 @@ import {
   FormItem,
   Message,
   Select,
-  Option
+  Option,
+  Table,
+  TableColumn,
+  Loading
 } from 'element-ui'
 
 const components = [
@@ -43,7 +46,10 @@ const components = [
   Form,
   FormItem,
   Select,
-  Option
+  Option,
+  Table,
+  TableColumn,
+  Loading
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

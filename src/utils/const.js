@@ -32,14 +32,14 @@ export const GRAININESS_BUTTONS = [
   }
 ]
 // 图标按钮
-export const SALES_BUTTONS = [
+export const ECHARTS_BUTTONS = [
   {
     icon: 'user',
     label: '按销量',
-    value: 'industry'
+    value: 'sumSalescount'
   }, {
     icon: 'upload',
     label: '按销售额',
-    value: 'brand'
+    value: 'sumGmv'
   }
 ]
