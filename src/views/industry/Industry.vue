@@ -5,10 +5,10 @@
     <div class="industry-tab-wapper">
         <el-tabs v-model="activeName" style='width:100%'>
             <el-tab-pane label="品牌概览" name="first" lazy>
-              <Tab-Industry />
+              <Tab-Industry-For-Industry />
             </el-tab-pane>
             <el-tab-pane label="店铺数据" name="second" lazy>
-              <Tab-Brand />
+              <Tab-Brand-For-Industry />
             </el-tab-pane>
         </el-tabs>
         <Range-Buttons
@@ -34,8 +34,8 @@
 
 <script>
 import IndustrySetting from '@/views/industry/components/IndustrySetting.vue'
-import TabIndustry from '@/views/industry/components/TabIndustry.vue'
-import TabBrand from '@/views/industry/components/TabBrand.vue'
+import TabIndustryForIndustry from '@/views/industry/components/TabIndustry.vue'
+import TabBrandForIndustry from '@/views/industry/components/TabBrand.vue'
 import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
@@ -43,8 +43,8 @@ import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlo
 export default {
   components: {
     IndustrySetting,
-    TabIndustry,
-    TabBrand,
+    TabIndustryForIndustry,
+    TabBrandForIndustry,
     Drawer,
     IndustryDrawerSlot,
     IndustryDrawerSlotBtn

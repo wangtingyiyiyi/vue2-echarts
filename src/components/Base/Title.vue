@@ -18,5 +18,6 @@ export default {
 .title
   padding-left 10px
   border-left 4px solid $base-blue
+  margin-bottom 10px
 
 </style>

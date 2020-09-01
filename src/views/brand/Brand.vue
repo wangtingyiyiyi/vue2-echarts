@@ -1,16 +1,18 @@
 <template>
   <div>
-    <Brand-Setting @brandOnSubmit="brandFormParam = $event"/>
+    <Brand-Setting @brandOnSubmit="brandFormParam = { ...$event }"/>
     <Empty-Line />
+
     <div class="brand-tab-wapper">
       <el-tabs v-model="activeName" style='width:100%'>
           <el-tab-pane label="品牌概览" name="first" lazy>
-            <Brand-Tab-Brand/>
+            <Brand-Tab-Brand :settingParam="brandFormParam"/>
           </el-tab-pane>
           <el-tab-pane label="店铺数据" name="second" lazy>
             <Brand-Tab-Shop />
           </el-tab-pane>
       </el-tabs>
+
       <Range-Buttons
         :activeVal="rangeItemVal"
         @handleRangeClick="rangeItemVal = $event.value"
@@ -20,6 +22,7 @@
         @handleGraininessClick="graininessItemVal = $event.value"
         style='position: absolute; right:10px; top:15px;'/>
     </div>
+
   </div>
 </template>
 
@@ -45,8 +48,7 @@ export default {
       return Object.keys(this.brandFormParam).length !== 0
     }
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 

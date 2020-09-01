@@ -1,5 +1,5 @@
 <template>
-  <div class="p-30">
+  <div>
     <Title title="总销售趋势"/>
     <div>echarts</div>
     <Title title="按子品牌展开"/>

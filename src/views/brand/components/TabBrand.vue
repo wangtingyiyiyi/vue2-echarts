@@ -1,5 +1,5 @@
 <template>
-  <div class="p-30">
+  <div>
     <Title title="总销售趋势"/>
 
     <Echarts-Buttons
@@ -10,7 +10,6 @@
     <Title title="按子品牌展开"/>
 
     <Brand-Table-Brands
-      class="brand-padding"
       :brands="mockBrands" @changeActiveBrand="changeActiveBrand"/>
 
     <Tab-Brand-Table
@@ -30,6 +29,12 @@ import { Loading } from 'element-ui'
 export default {
   name: 'BrandTabBrand',
   components: { EchartsButtons, BrandTableBrands, TabBrandTable, TabBrandEcharts },
+  props: {
+    settingParam: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data () {
     return {
       mockBrands: mockBrands,
@@ -46,7 +51,6 @@ export default {
       console.info(item)
     },
     changeActiveBrand (item) {
-      console.info(item)
       const loadingInstance = Loading.service({
         target: this.tableBody,
         text: '正在加载数据...',

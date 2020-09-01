@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'TabIndustry'
+  name: 'TabIndustryForIndustry'
 }
 </script>
