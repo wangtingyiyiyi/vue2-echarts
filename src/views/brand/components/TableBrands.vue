@@ -4,7 +4,7 @@
       v-for="item in brands"
       :key="item.brandId"
       :class="['brand-item', activeBrand === item.brandId ? 'actived' : '']"
-      @click="click(item)">{{item.brandName}}</div>
+      @click="click(item)">{{item.brand}}</div>
   </div>
 </template>
 
@@ -15,21 +15,16 @@ export default {
     brands: {
       type: Array,
       default: () => []
-    }
-  },
-  data () {
-    return {
-      activeBrand: ''
+    },
+    activeBrand: {
+      type: String,
+      default: ''
     }
   },
   methods: {
     click (item) {
-      this.activeBrand = item.brandId
       this.$emit('changeActiveBrand', item)
     }
-  },
-  mounted () {
-    this.activeBrand = this.brands[0].brandId
   }
 }
 </script>

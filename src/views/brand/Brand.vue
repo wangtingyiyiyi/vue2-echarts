@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Brand-Setting @brandOnSubmit="brandFormParam = { ...$event }"/>
+    <Brand-Setting @brandOnSubmit="handleSettingParam"/>
     <Empty-Line />
 
     <div class="brand-tab-wapper">
@@ -14,12 +14,12 @@
       </el-tabs>
 
       <Range-Buttons
-        :activeVal="rangeItemVal"
-        @handleRangeClick="rangeItemVal = $event.value"
+        :activeVal="brandFormParam.range"
+        @handleRangeClick="brandFormParam.range = $event.value"
         style='position: absolute; right:350px; top:15px;'/>
       <GraininessButtons
-        :activeVal="graininessItemVal"
-        @handleGraininessClick="graininessItemVal = $event.value"
+        :activeVal="brandFormParam.graininess"
+        @handleGraininessClick="brandFormParam.graininess = $event.value"
         style='position: absolute; right:10px; top:15px;'/>
     </div>
 
@@ -31,15 +31,13 @@ import BrandSetting from '@/views/brand/components/BrandSetting.vue'
 import BrandTabBrand from '@/views/brand/components/TabBrand.vue'
 import BrandTabShop from '@/views/brand/components/TabShop.vue'
 
-const brandFormParam = {}
+const brandFormParam = { brandId: [], cid: [], range: 'year', graininess: 'month' }
 
 export default {
   components: { BrandSetting, BrandTabBrand, BrandTabShop },
   data () {
     return {
       activeName: 'first',
-      rangeItemVal: 'year',
-      graininessItemVal: 'month',
       brandFormParam: brandFormParam
     }
   },
@@ -48,7 +46,11 @@ export default {
       return Object.keys(this.brandFormParam).length !== 0
     }
   },
-  methods: {}
+  methods: {
+    handleSettingParam (param) {
+      this.brandFormParam = Object.assign(this.brandFormParam, param)
+    }
+  }
 }
 </script>
 

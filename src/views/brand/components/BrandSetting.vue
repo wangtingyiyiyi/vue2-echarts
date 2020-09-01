@@ -3,22 +3,24 @@
     配置筛选
     <el-form :model="brandForm" class="m-t-20" label-position="left" label-width="70px" ref="brandForm">
       <el-form-item label="品牌" prop="brandId">
-        <el-select v-model="brandForm.brandId" multiple style="width: 400px">
+        <el-select v-model="brandForm.brand" value-key="brandId" multiple style="width: 400px">
           <el-option
             v-for="item in brandOption"
-            :key="item"
+            :key="item.brandId"
             :value="item"
+            :label="item.brand"
           ></el-option>
         </el-select>
         <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
         <el-button @click="onClean">清除</el-button>
       </el-form-item>
       <el-form-item label="行业" prop="cid">
-        <el-select v-model="brandForm.cid" multiple placeholder="行业筛选">
+        <el-select v-model="brandForm.cate" value-key="cid" multiple placeholder="行业筛选">
           <el-option
             v-for="item in cidOptioin"
-            :key="item"
+            :key="item.cid"
             :value="item"
+            :label="item.cat"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -27,24 +29,32 @@
 </template>
 
 <script>
-const initBrandOption = ['伊利', '蒙牛', '农夫山泉']
-const initCidOptioin = ['快销品', '果汁']
+import { mapActions } from 'vuex'
+import { mockBrandsOptions, mockCidOptions } from './mock'
 const initBrandForm = { brandId: [], cid: [] }
 export default {
   data () {
     return {
-      brandForm: initBrandForm,
-      brandOption: initBrandOption,
-      cidOptioin: initCidOptioin
+      brandForm: { brandId: [], cid: [] },
+      initBrandForm: initBrandForm,
+      brandOption: mockBrandsOptions,
+      cidOptioin: mockCidOptions
     }
   },
   methods: {
+    ...mapActions('brand', ['changeSettingBrand', 'changeSettingCate']),
     onSubmit () {
-      this.$emit('brandOnSubmit', this.brandForm)
+      const param = {
+        brandId: this.brandForm.brand.map(item => item.brandId),
+        cid: this.brandForm.cate.map(item => item.cid)
+      }
+      this.changeSettingBrand(this.brandForm.brand)
+      this.changeSettingCate(this.brandForm.cate)
+      this.$emit('brandOnSubmit', param)
     },
     onClean () {
       this.$refs.brandForm.resetFields()
-      this.$emit('brandOnSubmit', this.brandForm)
+      this.$emit('brandOnSubmit', this.initBrandForm)
     }
   }
 }

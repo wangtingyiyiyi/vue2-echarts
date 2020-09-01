@@ -1,5 +1,5 @@
-// 图标按钮
-export const tableData = [
+// table数据
+export const mockTableData = [
   {
     id: '001',
     category: '海外店铺',
@@ -72,10 +72,40 @@ export const tableData = [
   }
 ]
 
-export const mockBrands = [
-  { brandId: '1', brandName: '伊利' },
-  { brandId: '2', brandName: '蒙牛' },
-  { brandId: '3', brandName: '农夫山泉' },
-  { brandId: '4', brandName: '元气森林' },
-  { brandId: '5', brandName: '百事可乐' }
+// setting 品牌option
+export const mockBrandsOptions = [
+  { brandId: 'yili', brand: '伊利' },
+  { brandId: 'mengniu', brand: '蒙牛' },
+  { brandId: 'nongfushanquan', brand: '农夫山泉' },
+  { brandId: 'yuanqisenlin', brand: '元气森林' },
+  { brandId: 'baishikele', brand: '百事可乐' }
+]
+
+// setting 行业option
+export const mockCidOptions = [
+  { cat: '快销品', cid: 'kuaixiaopin' },
+  { cat: '果汁', cid: 'guozhi' }
+]
+
+// echarts xAxis
+export const mockEchartXAxis = {
+  type: 'category',
+  boundaryGap: false,
+  data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+}
+
+// echarts Data
+export const mockEchartData = [
+  {
+    name: '销售额',
+    type: 'line',
+    stack: '总量',
+    data: [120, 132, 101, 134, 90, 230, 210]
+  },
+  {
+    name: '销量',
+    type: 'line',
+    stack: '总量',
+    data: [220, 182, 191, 234, 290, 330, 310]
+  }
 ]
