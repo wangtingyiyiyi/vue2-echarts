@@ -43,3 +43,6 @@ export const ECHARTS_BUTTONS = [
     value: 'sumGmv'
   }
 ]
+
+// echart 主题颜色
+export const ECHARTS_COLORS = ['#5B8FF9', '#5AD8A6', '#909CB4', '#E0E8F9', '#B9ECD8']

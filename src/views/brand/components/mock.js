@@ -90,7 +90,25 @@ export const mockCidOptions = [
 // echarts xAxis
 export const mockEchartXAxis = {
   type: 'category',
-  boundaryGap: false,
+  // x轴线
+  axisLine: {
+    lineStyle: {
+      color: '#D9D9D9',
+      width: 2
+    }
+  },
+  // 刻度
+  axisTick: {
+    show: false
+  },
+  // x轴文字
+  axisLabel: {
+    show: true,
+    textStyle: {
+      fontSize: '14',
+      color: '#727484'
+    }
+  },
   data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 }
 
@@ -100,12 +118,16 @@ export const mockEchartData = [
     name: '销售额',
     type: 'line',
     stack: '总量',
+    symbol: 'circle',
+    symbolSize: 5,
     data: [120, 132, 101, 134, 90, 230, 210]
   },
   {
     name: '销量',
     type: 'line',
     stack: '总量',
+    symbol: 'circle',
+    symbolSize: 5,
     data: [220, 182, 191, 234, 290, 330, 310]
   }
 ]

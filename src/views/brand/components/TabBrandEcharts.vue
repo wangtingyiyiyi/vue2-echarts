@@ -1,9 +1,10 @@
 <template>
-  <div ref="chart" style="width: 100%;height:300px;"></div>
+  <div ref="chart" style="width: 100%;height:320px;"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
+import { ECHARTS_COLORS } from '@/utils/const.js'
 import { mockEchartData, mockEchartXAxis } from './mock'
 
 export default {
@@ -27,19 +28,38 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          right: '90px',
+          right: '20px',
+          itemGap: 20,
+          itemHeight: 3,
+          icon: 'roundRect',
           data: ['销售额', '销量']
         },
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
+          left: '20px',
+          right: '20px',
+          bottom: '30px',
           containLabel: true
         },
         xAxis: mockEchartXAxis,
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dotted'
+            }
+          }
         },
+        color: ECHARTS_COLORS,
+        // series: [{
+        //   type: 'line',
+        //   data: mockEchartData
+        // }],
         series: mockEchartData
       }
     }
