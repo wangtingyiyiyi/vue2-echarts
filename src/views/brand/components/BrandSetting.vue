@@ -54,6 +54,9 @@ export default {
     },
     onClean () {
       this.$refs.brandForm.resetFields()
+      this.brandForm = { brandId: [], cid: [] }
+      this.changeSettingBrand([])
+      this.changeSettingCate([])
       this.$emit('brandOnSubmit', this.initBrandForm)
     }
   }
