@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { mockEchartData, mockEchartXAxis } from './mock'
+import { mockEchartData, mockEchartXAxis } from '@/views/brand/components/mock.js'
 
 export default {
   name: 'TabBrandEcharts',
@@ -56,10 +56,6 @@ export default {
           }
         },
         color: ECHARTS_COLORS,
-        // series: [{
-        //   type: 'line',
-        //   data: mockEchartData
-        // }],
         series: mockEchartData
       }
     }
