@@ -12,20 +12,27 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
-        <el-button type="text">高级筛选</el-button>
+        <Text-Button text="高级筛选" @handleClick="handleFilter"/>
       </el-form-item>
     </el-form>
+    <Dialog-For-Industry-Select
+      :dialogVisible="dialogVisible"
+      v-if="dialogVisible"
+      @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
 <script>
 import Treeselect from '@riophae/vue-treeselect'
+import TextButton from '@/components/TextButton.vue'
+import DialogForIndustrySelect from '@/views/industry/components/DialogForIndustrySelect.vue'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'IndustrySetting',
-  components: { Treeselect },
+  components: { Treeselect, TextButton, DialogForIndustrySelect },
   data () {
     return {
+      dialogVisible: true,
       industryForm: {
         cate: null
       },
@@ -45,6 +52,9 @@ export default {
     }
   },
   methods: {
+    handleFilter () {
+      this.dialogVisible = true
+    },
     onSubmit () {
       this.$emit('brandOnSubmit', this.industryForm)
     },

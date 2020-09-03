@@ -24,8 +24,8 @@ export default {
     }
   },
   methods: {
-    handleEchartsClick () {
-
+    handleEchartsClick (item) {
+      this.activeButton = item.value
     }
   }
 }

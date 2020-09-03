@@ -1,5 +1,5 @@
 <template>
-  <el-button class="drawer-btn" @click="btnClick">
+  <div class="drawer-btn" @click="btnClick">
     <div class="flex-column">
       <i  :class="drawerShow ? 'el-icon-arrow-right' : 'el-icon-arrow-left'"></i>
       <span>高</span>
@@ -7,7 +7,7 @@
       <span>筛</span>
       <span>选</span>
      </div>
-  </el-button>
+  </div>
 </template>
 
 <script>
@@ -34,10 +34,12 @@ export default {
   border 0
   border-radius: 4px 0 0 4px
   position: absolute
-  top: 240px
-  left: -42px
-  z-index: 0
+  top 240px
+  left -42px
+  z-index 0
   pointer-events: auto
+  padding 9px 15px
+  cursor pointer
 
   .flex-column
     display flex

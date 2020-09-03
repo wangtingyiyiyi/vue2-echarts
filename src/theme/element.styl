@@ -1,5 +1,5 @@
 // 全局修改elementUI样式
-
+@import './default.styl'
 // button 圆角
 .el-button
   border-radius 0px
@@ -14,10 +14,38 @@
 .el-tabs
   .el-tabs__header
     .el-tabs__nav
+      .el-tabs__active-bar
+        background-color $base-blue
+      .is-active
+        color $base-blue
       .el-tabs__item
         padding-left 25px !important
         font-size 16px
         line-height 56px
         height 56px
+        &:hover
+          color $base-blue
   .el-tabs__content
     padding 20px
+
+
+// // button 
+.el-button:focus, .el-button:hover 
+    border-color $base-blue
+    color $base-blue
+    background-color #ffffff
+
+// 修改 button 的蓝色
+.el-button--primary
+  border-color $base-blue
+  background-color $base-blue
+  color #ffffff
+  &:focus, &:hover
+    border-color $base-blue
+    background-color $base-blue
+    color #ffffff
+
+// 修改菜单激活的蓝色
+.el-menu
+  .is-active
+    color $base-blue

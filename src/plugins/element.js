@@ -23,7 +23,8 @@ import {
   Option,
   Table,
   TableColumn,
-  Loading
+  Loading,
+  Dialog
 } from 'element-ui'
 
 const components = [
@@ -49,7 +50,8 @@ const components = [
   Option,
   Table,
   TableColumn,
-  Loading
+  Loading,
+  Dialog
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }
