@@ -4,10 +4,10 @@
     <Empty-Line />
     <div class="industry-tab-wapper">
         <el-tabs v-model="activeName" style='width:100%'>
-            <el-tab-pane label="品牌概览" name="first" lazy>
+            <el-tab-pane label="行业概览" name="first" lazy>
               <Tab-Industry-For-Industry />
             </el-tab-pane>
-            <el-tab-pane label="店铺数据" name="second" lazy>
+            <el-tab-pane label="品牌排行" name="second" lazy>
               <Tab-Brand-For-Industry />
             </el-tab-pane>
         </el-tabs>
@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      activeName: 'first',
+      activeName: 'second',
       rangeItemVal: 'year',
       graininessItemVal: 'month',
       drawerShow: false
