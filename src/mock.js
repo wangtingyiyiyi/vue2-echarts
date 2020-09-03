@@ -3,17 +3,17 @@ export const mockTableData = [
   {
     id: '001',
     category: '海外店铺',
-    salesCount: '109729319',
+    salesCount: '111',
     salesAmount: 123132,
-    salesCountAcc: 0.021872,
-    gmvAcc: 0.21737,
+    salesCountAcc: '912',
+    gmvAcc: '912',
     spu: 182,
     price: 12832
   },
   {
     id: '002',
     category: '天猫旗舰店',
-    salesCount: '109729319',
+    salesCount: '2',
     salesAmount: 123132,
     salesCountAcc: 0.021872,
     gmvAcc: 0.21737,
@@ -23,7 +23,7 @@ export const mockTableData = [
   {
     id: '003',
     category: '淘宝店铺',
-    salesCount: '109729319',
+    salesCount: '3',
     salesAmount: 123132,
     salesCountAcc: 0.021872,
     gmvAcc: 0.21737,
@@ -131,3 +131,6 @@ export const mockEchartData = [
     data: [220, 182, 191, 234, 290, 330, 310]
   }
 ]
+
+// month options
+export const mockMonthOption = ['202001', '202002', '202003', '202004']

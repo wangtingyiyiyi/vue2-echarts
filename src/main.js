@@ -9,8 +9,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './theme/index.styl'
 
 import './icons' // svg icon
+import Moment from 'moment'
+
+// 全局注册filter
+import filters from '@/utils/filter'
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 Vue.use(ElementUI)
+Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
 
 new Vue({

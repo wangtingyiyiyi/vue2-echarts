@@ -26,14 +26,13 @@
 import EchartsButtons from '@/views/brand/components/EchartsButtons.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
 import TabBrandTable from '@/views/brand/components/TabBrandTable.vue'
-import { mockTableData, mockEchartData, mockEchartXAxis } from './mock'
-import LineChart from '@/components/Charts/Line.vue'
+import { mockTableData, mockEchartData, mockEchartXAxis } from '@/mock'
 import { Loading } from 'element-ui'
 import { mapState } from 'vuex'
 
 export default {
   name: 'BrandTabBrand',
-  components: { EchartsButtons, BrandTableBrands, TabBrandTable, LineChart },
+  components: { EchartsButtons, BrandTableBrands, TabBrandTable },
   props: {
     settingParam: {
       type: Object,

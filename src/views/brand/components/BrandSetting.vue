@@ -30,7 +30,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { mockBrandsOptions, mockCidOptions } from './mock'
+import { mockBrandsOptions, mockCidOptions } from '@/mock'
 const initBrandForm = { brandId: [], cid: [] }
 export default {
   data () {
