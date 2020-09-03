@@ -84,7 +84,6 @@ export default {
   right 0
 
 .industry-drawer
-  width 300px
   height 100vh
   position fixed
   right 0
