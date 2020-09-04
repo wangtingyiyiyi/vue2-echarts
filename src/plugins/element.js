@@ -24,7 +24,9 @@ import {
   Table,
   TableColumn,
   Loading,
-  Dialog
+  Dialog,
+  Checkbox,
+  Tree
 } from 'element-ui'
 
 const components = [
@@ -51,7 +53,9 @@ const components = [
   Table,
   TableColumn,
   Loading,
-  Dialog
+  Dialog,
+  Checkbox,
+  Tree
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

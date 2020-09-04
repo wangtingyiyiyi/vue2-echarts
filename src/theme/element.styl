@@ -4,15 +4,12 @@
 .el-button
   border-radius 0px
 
-// select 圆角
-.el-select
-  .el-input
-    .el-input__inner
-      border-radius 1px
+// input 圆角 (select同样生效)
+.el-input > .el-input__inner
+  border-radius 1px
 
 // tab nav 自定义
-.el-tabs
-  .el-tabs__header
+.el-tabs > .el-tabs__header
     .el-tabs__nav
       .el-tabs__active-bar
         background-color $base-blue
@@ -25,17 +22,15 @@
         height 56px
         &:hover
           color $base-blue
-  .el-tabs__content
+.el-tabs > .el-tabs__content
     padding 20px
 
 
-// // button 
+// 修改 button 的蓝色
 .el-button:focus, .el-button:hover 
     border-color $base-blue
     color $base-blue
     background-color #ffffff
-
-// 修改 button 的蓝色
 .el-button--primary
   border-color $base-blue
   background-color $base-blue
@@ -49,3 +44,12 @@
 .el-menu
   .is-active
     color $base-blue
+
+// 多选框 选中颜色
+.el-checkbox .is-checked > .el-checkbox__inner
+  border-color $base-blue
+  background-color $base-blue
+
+.el-checkbox > .is-indeterminate > .el-checkbox__inner
+  border-color $base-blue
+  background-color $base-blue

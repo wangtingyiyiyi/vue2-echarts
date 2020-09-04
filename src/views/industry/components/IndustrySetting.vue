@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
-        <Text-Button text="高级筛选" @handleClick="handleFilter"/>
+        <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
       </el-form-item>
     </el-form>
     <Dialog-For-Industry-Select
@@ -32,7 +32,7 @@ export default {
   components: { Treeselect, TextButton, DialogForIndustrySelect },
   data () {
     return {
-      dialogVisible: true,
+      dialogVisible: false,
       industryForm: {
         cate: null
       },

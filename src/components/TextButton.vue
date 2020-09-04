@@ -30,7 +30,5 @@ export default {
 .text-button
   color $base-blue
   display inline-block
-  padding 0 15px
-  font-size 13px
   cursor pointer
 </style>

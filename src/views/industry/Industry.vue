@@ -54,7 +54,7 @@ export default {
       activeName: 'second',
       rangeItemVal: 'year',
       graininessItemVal: 'month',
-      drawerShow: false
+      drawerShow: true
     }
   },
   methods: {

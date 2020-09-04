@@ -17,7 +17,7 @@ export default {
 
 <style lang="stylus" scoped>
 .logo {
-  background: #5B8FF9;
+  background: $base-blue;
   color: #ffffff;
   padding: 4px 28px;
   height: 32px;

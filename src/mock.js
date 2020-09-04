@@ -160,3 +160,40 @@ export const mockTreeTableData = [
     address: '上海市普陀区金沙江路 1516 弄'
   }
 ]
+
+// 历史自定义标签列表
+export const mockTagBySelf = [
+  {
+    id: '01',
+    name: '自定义3C数码配件',
+    time: new Date(),
+    children: [
+      {
+        id: '011',
+        cat1: '3C数码配件',
+        cat2: 'MP3/MP4配件',
+        cat3: '耳机贴膜'
+      }, {
+        id: '012',
+        cat1: '3C数码配件',
+        cat2: '单反/单电相机配件',
+        cat3: '脚架/云台'
+      }
+    ]
+  }, {
+    id: '02',
+    name: '自定义兑换卡',
+    time: new Date(),
+    children: [
+      {
+        id: '021',
+        cat1: '兑换卡'
+      }
+    ]
+  }, {
+    id: '03',
+    name: '自定义金属材料及制品',
+    time: new Date(),
+    children: []
+  }
+]
