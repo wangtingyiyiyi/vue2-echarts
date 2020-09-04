@@ -34,7 +34,7 @@ export default {
   border 0
   border-radius: 4px 0 0 4px
   position: absolute
-  top 240px
+  top 10vh
   left -42px
   z-index 0
   pointer-events: auto

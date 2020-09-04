@@ -3,6 +3,9 @@
     :visible.sync="dialogVisible"
     :show-close="false"
     class="indusrty-select-dialog"
+    :modal="false"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     width="30%">
     <div slot="title">品类搜索</div>
 

@@ -11,4 +11,5 @@
   -moz-osx-font-smoothing grayscale
   height 100%
   overflow-y hidden
+  font-size 14px
 </style>

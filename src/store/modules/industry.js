@@ -1,8 +1,10 @@
 
 const state = {
+  industryDefineList: []
 }
 
 const mutations = {
+
 }
 
 const actions = {

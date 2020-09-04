@@ -1,7 +1,8 @@
 <template>
   <div class="text-button" @click="click">
-    <i v-if="iconClass" :class="iconClass"></i>
+    <slot name="prepend"/>
     {{text}}
+    <slot name="append"/>
   </div>
 </template>
 
@@ -12,10 +13,6 @@ export default {
     text: {
       type: String,
       default: '确定'
-    },
-    iconClass: {
-      type: String,
-      default: ''
     }
   },
   methods: {
@@ -31,4 +28,6 @@ export default {
   color $base-blue
   display inline-block
   cursor pointer
+  display flex
+  align-items center
 </style>

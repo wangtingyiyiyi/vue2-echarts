@@ -28,6 +28,9 @@ export default {
   methods: {
     onSubmit () {
       sessionStorage.setItem('token', 'ceshitoken')
+      sessionStorage.setItem('userId', 'test')
+      sessionStorage.setItem('role', 'qywx')
+      sessionStorage.setItem('createUser', '林融卿')
       this.$message.success('hhh')
       this.$router.push({ name: this.target.name })
     }

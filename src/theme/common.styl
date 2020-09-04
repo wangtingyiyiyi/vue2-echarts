@@ -9,6 +9,8 @@
   margin-left: 24px
 .m-t-20
   margin-top: 20px
+.m-b-5
+  margin-bottom: 5px
 
 // padding
 .p-30
@@ -24,3 +26,29 @@
 .font-size-14
   font-size 14px
 
+// 滚动条样式
+.beauty-scroll
+  overflow-y auto
+  &::-webkit-scrollbar{
+    width: 6px;
+  }
+  &::-webkit-scrollbar:horizontal{
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 6px;
+    background-color: #ccc;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-corner{
+    display: none;
+  }
+
+// 省略号样式
+.text-overflow
+  white-space nowrap
+  text-overflow: ellipsis
+  overflow hidden
+  word-break break-all

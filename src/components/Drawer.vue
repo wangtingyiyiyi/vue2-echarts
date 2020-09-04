@@ -36,7 +36,7 @@ export default {
     transition all 0.5s
     z-index 100
     &.open
-      displa inline-block
+      display inline-block
     &.close
       display none
 
@@ -44,7 +44,7 @@ export default {
     position fixed
     transition all 0.5s
     height 100vh
-    width 300px
+    width 400px
     z-index 100
     right 0px
     &.close

@@ -15,16 +15,20 @@ export function objToStr (obj) {
   return arr.join('&')
 }
 
-// Add a request interceptor
+// 请求拦截
 axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
+  // 封装每一个API传给后段的参数
+  config.data.token = sessionStorage.getItem('token')
+  config.data.userId = sessionStorage.getItem('userId')
+  config.data.role = sessionStorage.getItem('role')
+  config.data.createUser = sessionStorage.getItem('createUser')
   return config
 }, function (error) {
   // Do something with request error
   return Promise.reject(error)
 })
 
-// Add a response interceptor
+// 相应拦截
 axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data

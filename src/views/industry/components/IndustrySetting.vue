@@ -15,21 +15,16 @@
         <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
       </el-form-item>
     </el-form>
-    <Dialog-For-Industry-Select
-      :dialogVisible="dialogVisible"
-      v-if="dialogVisible"
-      @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import TextButton from '@/components/TextButton.vue'
-import DialogForIndustrySelect from '@/views/industry/components/DialogForIndustrySelect.vue'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'IndustrySetting',
-  components: { Treeselect, TextButton, DialogForIndustrySelect },
+  components: { Treeselect, TextButton },
   data () {
     return {
       dialogVisible: false,
@@ -53,7 +48,7 @@ export default {
   },
   methods: {
     handleFilter () {
-      this.dialogVisible = true
+      this.$emit('handleFilter', true)
     },
     onSubmit () {
       this.$emit('brandOnSubmit', this.industryForm)

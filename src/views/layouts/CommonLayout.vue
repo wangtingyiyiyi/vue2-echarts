@@ -13,7 +13,7 @@
     </el-header>
     <el-container class="layout-container">
       <Layout-Sider :collapsed="collapsed"/>
-      <Layout-Content class="layout-content"/>
+      <Layout-Content class="layout-content beauty-scroll"/>
     </el-container>
   </el-container>
 </template>
@@ -70,23 +70,5 @@ export default {
   margin-left 200px
   background-color #F8F8F8
   height 100%
-  overflow-y auto
   padding 21px 40px 0
-  &::-webkit-scrollbar{
-    width: 6px;
-  }
-  &::-webkit-scrollbar:horizontal{
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb{
-    border-radius: 6px;
-    background-color: #ccc;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-corner{
-    display: none;
-  }
-
 </style>
