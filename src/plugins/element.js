@@ -26,7 +26,8 @@ import {
   Loading,
   Dialog,
   Checkbox,
-  Tree
+  Tree,
+  OptionGroup
 } from 'element-ui'
 
 const components = [
@@ -55,7 +56,8 @@ const components = [
   Loading,
   Dialog,
   Checkbox,
-  Tree
+  Tree,
+  OptionGroup
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

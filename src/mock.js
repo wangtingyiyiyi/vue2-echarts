@@ -197,3 +197,23 @@ export const mockTagBySelf = [
     children: []
   }
 ]
+
+// 行业自定义品类 treeData
+export const mockTreeData = [
+  {
+    label: '设备1',
+    remark: '自'
+  }, {
+    label: '家装建材 > 楼宇智能 > 楼宇对讲设备',
+    remark: '3'
+  }, {
+    label: '影音数码/智能设备',
+    remark: '1',
+    children: [{
+      label: '影音数码/智能设备 > 影音设备',
+      remark: '2',
+      children: [
+        { label: '影音数码/智能设备 > 影音设备 > 舞台设备', remark: '3' }
+      ]
+    }]
+  }]
