@@ -1,6 +1,7 @@
 <template>
   <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo']">
-    <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div>
+    <!-- <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div> -->
+    <Svg-Icon icon-class="icon-logo" class="svg-class"/>
   </div>
 </template>
 
@@ -27,7 +28,7 @@ export default {
 }
 
 .expansion-logo {
-  width: 200px;
+  // width: 200px;
   padding: 0 25px;
   div {
     width: 140px;
@@ -40,4 +41,8 @@ export default {
     width: 40px;
   }
 }
+
+.svg-class
+  width 120px
+  height 32px
 </style>

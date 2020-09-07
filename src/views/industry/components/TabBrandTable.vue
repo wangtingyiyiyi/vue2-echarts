@@ -21,7 +21,7 @@
       width="180">
       <template #header>
         <div class="sort-button" @click="handleSort('salesCount')">销量
-          <i :class="[activedSortKey == 'salesCount' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesCount' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.salesCount | format}}</template>
@@ -32,7 +32,7 @@
       label="销售额">
       <template #header>
         <div class="sort-button"  @click="handleSort('salesAmount')">销售额
-          <i :class="[activedSortKey == 'salesAmount' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesAmount' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.salesAmount | format}}</template>
@@ -53,7 +53,7 @@
       label="销售额">
       <template #header>
         <div class="sort-button"  @click="handleSort('salesCountAcc')">销售额
-          <i :class="[activedSortKey == 'salesCountAcc' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesCountAcc' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.salesCountAcc | percentage}}</template>
@@ -64,7 +64,7 @@
       label="销售环比">
       <template #header>
         <div class="sort-button"  @click="handleSort('gmvAcc')">销售环比
-          <i :class="[activedSortKey == 'gmvAcc' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'gmvAcc' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.gmvAcc | percentage}}</template>
@@ -75,7 +75,7 @@
       label="均价">
       <template #header>
         <div class="sort-button"  @click="handleSort('price')">均价
-          <i :class="[activedSortKey == 'price' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'price' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.price | format}}</template>
