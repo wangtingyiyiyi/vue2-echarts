@@ -1,7 +1,7 @@
 <template>
   <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo']">
     <!-- <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div> -->
-    <Svg-Icon icon-class="icon-logo" class="svg-class"/>
+    <Svg-Icon icon-class="logo" class="svg-class"/>
   </div>
 </template>
 

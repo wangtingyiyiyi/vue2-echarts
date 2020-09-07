@@ -9,100 +9,91 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="category"
+      prop="outCat1"
       label="子品类"
       align="center"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="salesCount"
+      prop="sumSales"
       label="销量"
       align="center"
       width="180">
       <template #header>
-        <div class="sort-button" @click="handleSort('salesCount')">销量
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesCount' ? 'active-sort' : '']"/>
+        <div class="sort-button" @click="handleSort('sumSales')">销量
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'sumSales' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesCount | format}}</template>
+      <template slot-scope="{row}">{{row.sumSales | format}}</template>
     </el-table-column>
     <el-table-column
-      prop="salesAmount"
+      prop="sumGmv"
       align="center"
       label="销售额">
       <template #header>
-        <div class="sort-button"  @click="handleSort('salesAmount')">销售额
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesAmount' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('sumGmv')">销售额
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'sumGmv' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesAmount | format}}</template>
+      <template slot-scope="{row}">{{row.sumGmv | format}}</template>
     </el-table-column>
     <!-- class-name="line-in-table-class" -->
     <!-- <el-table-column width="150px"></el-table-column> -->
     <el-table-column
       align="center"
-      label="销售趋势">
+      label="销售额趋势">
       <template>
         <Line-In-Table />
-        <!-- <div>的回复啊回复啊十分大</div> -->
       </template>
     </el-table-column>
     <el-table-column
-      prop="salesCountAcc"
-      align="center"
-      label="销售额">
-      <template #header>
-        <div class="sort-button"  @click="handleSort('salesCountAcc')">销售额
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'salesCountAcc' ? 'active-sort' : '']"/>
-        </div>
-      </template>
-      <template slot-scope="{row}">{{row.salesCountAcc | percentage}}</template>
-    </el-table-column>
-    <el-table-column
-      prop="gmvAcc"
+      prop="salesSequential"
       align="center"
       label="销售环比">
       <template #header>
-        <div class="sort-button"  @click="handleSort('gmvAcc')">销售环比
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'gmvAcc' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('salesSequential')">销售环比
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'salesSequential' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.gmvAcc | percentage}}</template>
+      <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
     </el-table-column>
     <el-table-column
-      prop="price"
+      prop="gmvSequential"
+      align="center"
+      label="销售额环比">
+      <template #header>
+        <div class="sort-button"  @click="handleSort('gmvSequential')">销售额环比
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'gmvSequential' ? 'active-sort' : '']"/>
+        </div>
+      </template>
+      <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
+    </el-table-column>
+    <el-table-column
+      prop="avgPrice"
       align="center"
       label="均价">
       <template #header>
-        <div class="sort-button"  @click="handleSort('price')">均价
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'price' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('avgPrice')">均价
+          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'avgPrice' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.price | format}}</template>
-    </el-table-column>
-    <el-table-column
-      prop="price"
-      align="center"
-      label="时间">
-      <template>{{new Date() | moment}}</template>
+      <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
 </template>
 
 <script>
-import { mockTableData } from '@/mock.js'
 export default {
   name: 'TabBrandTable',
-  // props: {
-  //   tableData: {
-  //     type: Array,
-  //     default: () => []
-  //   }
-  // },
+  props: {
+    tableData: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
-      activedSortKey: '',
-      tableData: mockTableData
+      activedSortKey: ''
     }
   },
   methods: {

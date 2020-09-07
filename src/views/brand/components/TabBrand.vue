@@ -27,7 +27,7 @@ import EchartsButtons from '@/views/brand/components/EchartsButtons.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
 import TabBrandTable from '@/views/brand/components/TabBrandTable.vue'
 import { mockTableData, mockEchartData, mockEchartXAxis } from '@/mock'
-import { Loading } from 'element-ui'
+// import { Loading } from 'element-ui'
 import { mapState } from 'vuex'
 
 export default {
@@ -71,7 +71,7 @@ export default {
     },
     changeActiveBrand (item) {
       this.activeBrand = item.brandId
-      const loadingInstance = Loading.service({
+      const loadingInstance = this.$loading.service({
         target: this.tableBody,
         text: '正在加载数据...',
         spinner: 'el-icon-loading',

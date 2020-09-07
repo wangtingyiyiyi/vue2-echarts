@@ -120,7 +120,7 @@ export const mockEchartData = [
     stack: '总量',
     symbol: 'circle',
     symbolSize: 5,
-    data: [120, 132, 101, 134, 90, 230, 210]
+    data: [120, 132, null, 134, 90, 230, 210]
   },
   {
     name: '销量',
@@ -202,18 +202,22 @@ export const mockTagBySelf = [
 export const mockTreeData = [
   {
     label: '设备1',
-    remark: '自'
+    remark: '自',
+    id: 1
   }, {
     label: '家装建材 > 楼宇智能 > 楼宇对讲设备',
-    remark: '3'
+    remark: '3',
+    id: 2
   }, {
     label: '影音数码/智能设备',
     remark: '1',
+    id: 3,
     children: [{
       label: '影音数码/智能设备 > 影音设备',
       remark: '2',
+      id: 4,
       children: [
-        { label: '影音数码/智能设备 > 影音设备 > 舞台设备', remark: '3' }
+        { label: '影音数码/智能设备 > 影音设备 > 舞台设备', remark: '3', id: 5 }
       ]
     }]
   }]

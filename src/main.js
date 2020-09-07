@@ -5,6 +5,8 @@ import store from './store'
 import '@/utils/components.js' // 注册全局组件
 
 import ElementUI from './plugins/element.js'
+import { Loading } from 'element-ui'
+
 import 'element-ui/lib/theme-chalk/index.css'
 import './theme/index.styl'
 
@@ -19,6 +21,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.use(ElementUI)
 Vue.prototype.$moment = Moment
+Vue.prototype.$loading = Loading
 Vue.config.productionTip = false
 
 new Vue({

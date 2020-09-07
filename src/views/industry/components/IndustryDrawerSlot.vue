@@ -2,7 +2,7 @@
   <div class="drawer-wapper">
     <div class="drawer-header">高级筛选</div>
     <Text-Button text="自定义品类" style="padding: 20px 20px 10px" @handleClick="handleDialog">
-      <Svg-Icon icon-class="icon-upload" class="m-r-7" style="font-size: 28px" slot="prepend"/>
+      <Svg-Icon icon-class="upload" class="m-r-7" style="font-size: 28px" slot="prepend"/>
     </Text-Button>
     <Title title="历史自定义标签" style="margin-left: 20px"/>
     <div class="drawer-body beauty-scroll">
