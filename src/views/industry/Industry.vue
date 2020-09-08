@@ -27,7 +27,7 @@
                 </div>
                 <Tab-Brand-Table :tableData="tableData"/>
               </div>
-              <div v-else>
+              <div v-else class="empty-wapper">
                 <Title title="总销售趋势"/>
                 <Svg-Icon icon-class="empty" class="empty-svg" />
                 <Title title="按品牌展开"/>

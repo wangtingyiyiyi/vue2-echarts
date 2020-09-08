@@ -1,26 +1,22 @@
 <template>
-  <el-container>
-    <el-header class="layout-header">
-      <div class="flex-row">
-        <Header-Icon :collapsed="collapsed"/>
-        <!-- <Header-Trigger @collapsChange="collapsChange"/> -->
-      </div>
+  <div class="scroll-container beauty-scroll">
+    <el-header class="header-wapper">
+      <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
         <Header-Notice class="m-0-12"/>
         <Header-Avatar class="m-0-12"/>
         <Header-Setting class="m-0-12"/>
       </div>
     </el-header>
-    <el-container class="layout-container">
+    <div class="main-wapper">
       <Layout-Sider :collapsed="collapsed"/>
-      <Layout-Content class="layout-content beauty-scroll"/>
-    </el-container>
-  </el-container>
+      <Layout-Content :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
+    </div>
+  </div>
 </template>
 
 <script>
 import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
-// import HeaderTrigger from '@/views/layouts/header/HeaderTrigger.vue'
 import HeaderAvatar from '@/views/layouts/header/HeaderAvatar.vue'
 import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
@@ -38,37 +34,45 @@ export default {
   },
   methods: {
     collapsChange (collapsed) {
-      this.collapsed = collapsed
+      this.collapsed = !collapsed
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.layout-header
+.header-wapper
   width 100vw
   display flex
   align-items center
   justify-content space-between
-  border-bottom 1px solid #E7E8F2
   position fixed
+  background-color #ffffff
   top 0
   z-index 1500
+  padding 0 calc((100vw - 1440px) / 2)
 
 .flex-row
   display flex
   align-items center
 
-.m-0-12
-  margin 0 12px
-
-.layout-container
+.main-wapper
   margin-top 60px
-  height calc(100vh - 60px)
-
-.layout-content
-  margin-left 200px
+  max-width 1440px
+  min-width 1200px
+  margin 60px auto 0
   background-color #F8F8F8
-  height 100%
-  padding 21px 40px 0
+
+.content-wapper
+  padding 20px 0 0 20px
+  background-color #F8F8F8
+
+.m-l-200
+  margin-left 200px
+.m-l-63
+  margin-left 63px
+
+.scroll-container
+  height 100vh
+  overflow-x auto
 </style>

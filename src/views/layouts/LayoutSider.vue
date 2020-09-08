@@ -1,5 +1,5 @@
 <template>
-  <el-aside class="menu-asider" style="width: 200px">
+  <el-aside :class="[collapsed ? 'width-63' : 'width-200', 'menu-asider']">
     <el-menu
       :default-active="activeMenu"
       :collapse-transition="false"
@@ -46,10 +46,15 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+.width-200
+  width 200px !important
+.width-63
+  width 63px !important
 .menu-asider
   position fixed
   height 100%
+  z-index 3
   .el-menu
     height 100%
+    border-right none
 </style>

@@ -37,7 +37,7 @@ export default {
   components: { BrandSetting, BrandTabBrand, BrandTabShop },
   data () {
     return {
-      activeName: 'first',
+      activeName: 'second',
       brandFormParam: brandFormParam
     }
   },

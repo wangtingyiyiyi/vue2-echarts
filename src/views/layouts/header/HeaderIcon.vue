@@ -1,7 +1,9 @@
 <template>
-  <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo']">
+  <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo', 'flex-row']">
     <!-- <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div> -->
     <Svg-Icon icon-class="logo" class="svg-class"/>
+    <i @click="collapsClick"
+    :class="[collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold', 'm-l-10']" />
   </div>
 </template>
 
@@ -11,6 +13,11 @@ export default {
     collapsed: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    collapsClick () {
+      this.$emit('collapsChange', this.collapsed)
     }
   }
 }
@@ -28,7 +35,6 @@ export default {
 }
 
 .expansion-logo {
-  // width: 200px;
   padding: 0 25px;
   div {
     width: 140px;
