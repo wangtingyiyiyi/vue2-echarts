@@ -3,6 +3,7 @@
     <Title title="总销售趋势"/>
 
     <Line-Chart
+      style="width: 100%"
       ref="brandEchart"/>
 
     <div style="display: flex; align-items: baseline; justify-content: space-between;">

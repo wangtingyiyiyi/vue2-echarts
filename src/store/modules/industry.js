@@ -1,9 +1,12 @@
-
+import { SET_INDUSTRY_CATEGORY } from '../mutation'
 const state = {
-  industryDefineList: []
+  categoryObj: {}
 }
 
 const mutations = {
+  [SET_INDUSTRY_CATEGORY] (state, payload) {
+    state.categoryObj = { ...payload }
+  }
 
 }
 
