@@ -4,7 +4,7 @@
     <div style="margin-right: 10px">颗粒度</div>
     <el-button-group>
       <el-button
-        v-for="item in graininessButtons"
+        v-for="item in groupButtons"
         :key="item.value"
         size="mini"
         class="range-btn"
@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { GRAININESS_BUTTONS } from '@/utils/const.js'
+import { GROUP_BUTTONS } from '@/utils/const.js'
 export default {
-  name: 'GraininessButtons',
+  name: 'groupButtons',
   props: {
     activeVal: {
       type: String,
@@ -26,12 +26,12 @@ export default {
   },
   data () {
     return {
-      graininessButtons: GRAININESS_BUTTONS
+      groupButtons: GROUP_BUTTONS
     }
   },
   methods: {
     graininessClick (item) {
-      this.$emit('handleGraininessClick', item)
+      this.$emit('handleGroupClick', item)
     }
   }
 

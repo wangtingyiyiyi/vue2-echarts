@@ -17,9 +17,9 @@
         :activeVal="brandFormParam.range"
         @handleRangeClick="brandFormParam.range = $event.value"
         style='position: absolute; right:350px; top:15px;'/>
-      <GraininessButtons
+      <Group-Buttons
         :activeVal="brandFormParam.graininess"
-        @handleGraininessClick="brandFormParam.graininess = $event.value"
+        @handleGroupClick="brandFormParam.graininess = $event.value"
         style='position: absolute; right:10px; top:15px;'/>
     </div>
 

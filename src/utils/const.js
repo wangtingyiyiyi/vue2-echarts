@@ -4,31 +4,31 @@ export const RANGE_BUTTONS = [
   {
     icon: 'user',
     label: '近一年',
-    value: 'year'
+    value: '1'
   }, {
     icon: 'upload',
     label: '全部',
-    value: 'all'
+    value: '0'
   }
 ]
 // 颗粒度按钮
-export const GRAININESS_BUTTONS = [
+export const GROUP_BUTTONS = [
   {
     icon: 'user',
     label: '按月',
-    value: 'month'
+    value: '0'
   }, {
     icon: 'upload',
     label: '按季度',
-    value: 'season'
+    value: '1'
   }, {
     icon: 'upload',
     label: '按半年',
-    value: 'halfyear'
+    value: '2'
   }, {
     icon: 'upload',
     label: '按年',
-    value: 'year'
+    value: '3'
   }
 ]
 // 图标按钮

@@ -52,7 +52,7 @@ export default {
             },
             // x轴文字
             axisLabel: {
-              show: true,
+              show: false,
               interval: 0,
               rotate: 40,
               textStyle: {
@@ -109,12 +109,15 @@ export default {
           {
             name: '蒸发量',
             type: 'bar',
+            barWidth: '9px',
             data: [2232, 2492, 1410, 2322, 2566, 1617, 1356, 3162, 3126, 1200, 2164, 3300]
           },
           {
             name: '平均温度',
             type: 'line',
             yAxisIndex: 1,
+            symbol: 'none',
+            smooth: true,
             data: [20, 22, 33, 45, 63, 102, 183, 134, 160, 165, 120, 62]
           }
         ],

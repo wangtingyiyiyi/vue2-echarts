@@ -117,19 +117,17 @@ export const mockEchartData = [
   {
     name: '销售额',
     type: 'line',
-    stack: '总量',
     symbol: 'circle',
     symbolSize: 5,
-    data: [120, 132, null, 134, 90, 230, 210]
-  },
-  {
-    name: '销量',
-    type: 'line',
-    stack: '总量',
-    symbol: 'circle',
-    symbolSize: 5,
-    data: [220, 182, 191, 234, 290, 330, 310]
+    data: [12013213, 13312312, 3213122, 4323441, 1231234, 413241, 12341412]
   }
+  // {
+  //   name: '销量',
+  //   type: 'line',
+  //   symbol: 'circle',
+  //   symbolSize: 5,
+  //   data: [133222, 2234423, 9142342, 1312212, 4212212, 4554464, 6325345]
+  // }
 ]
 
 // month options

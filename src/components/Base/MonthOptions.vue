@@ -1,22 +1,30 @@
 <template>
-  <el-select v-model="month" placeholder="请选择" @change="handleChange">
+  <el-select :value="defaultMonth" placeholder="请选择" @change="handleChange" value-key="name">
     <el-option
       v-for="item in monthOption"
-      :key="item"
-      :label="item"
+      :key="item.name"
+      :label="item.name"
       :value="item">
     </el-option>
   </el-select>
 </template>
 
 <script>
-import { mockMonthOption } from '@/mock.js'
 export default {
   name: 'MonthOptions',
+  props: {
+    monthOption: {
+      type: Array,
+      default: () => []
+    },
+    defaultMonth: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data () {
     return {
-      month: '',
-      monthOption: mockMonthOption
+      month: {}
     }
   },
   methods: {

@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { mockEchartData, mockEchartXAxis } from '@/mock.js'
+import { yAxisFormatter } from '@/utils/math.js'
 
 export default {
   name: 'LineChart',
@@ -23,6 +24,8 @@ export default {
   },
   data () {
     return {
+      average: 0,
+      mockEchartData: mockEchartData,
       option: {
         tooltip: {
           trigger: 'axis'
@@ -35,7 +38,7 @@ export default {
           data: ['销售额', '销量']
         },
         grid: {
-          left: '20px',
+          left: '30px',
           right: '20px',
           bottom: '30px',
           containLabel: true
@@ -53,6 +56,11 @@ export default {
             lineStyle: {
               type: 'dotted'
             }
+          },
+          axisLabel: {
+            formatter: function (value) {
+              return yAxisFormatter(value)
+            }
           }
         },
         color: ECHARTS_COLORS,
@@ -62,6 +70,11 @@ export default {
   },
   methods: {
     init () {
+      const sum = this.mockEchartData[0].data.reduce((a, b) => {
+        return a + b
+      })
+      this.average = parseInt(sum / this.mockEchartData[0].data.length)
+      console.info(this.average)
       const myChart = echarts.init(this.$refs.chart)
       myChart.setOption(this.option)
     }

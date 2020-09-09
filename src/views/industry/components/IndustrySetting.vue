@@ -76,8 +76,15 @@ export default {
       if (query) {
         const res = await getIndustryCategory({ likeCondition: query })
         if (res.code === 200) {
-          console.info(res.result)
-          this.options = this.mockTreeData
+          // 移除自定义下children数组, 目的在于不显示自定义的子分类
+          res.result.forEach(element => {
+            if (element.remark === 'define') {
+              delete element.children
+            }
+          })
+          this.options = res.result
+        } else {
+          this.$message.error('行业品类请求失败')
         }
       } else {
         this.options = []
@@ -106,7 +113,7 @@ export default {
       } else {
         return (
           <span class="custom-tree-node">
-            <span class="tree-select-icon" style="color: #5B8FF9;">{node.data.remark}</span>
+            <span class="tree-select-icon" style="color: #5B8FF9;">自</span>
             <span>{node.label}</span>
           </span>)
       }

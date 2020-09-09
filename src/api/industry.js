@@ -14,3 +14,13 @@ export function getIndustryCategory (params) {
 export function getIndustryTable (params) {
   return post('industry/listTotal', params)
 }
+
+// 行业 month options
+export function getMonthOption (params) {
+  return post('industry/months', params)
+}
+
+// 行业 趋势图
+export function getIndustryEchart (params) {
+  return post('industry/listGraph', params)
+}
