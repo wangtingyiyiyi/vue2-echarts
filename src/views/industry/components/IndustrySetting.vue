@@ -1,11 +1,11 @@
 <template>
   <div class="industry-setting-wapper">
     配置筛选
-    <el-form class="m-t-20" inline  label-position="left" label-width="70px" ref="industryForm">
+    <el-form class="m-t-20" inline label-position="left" label-width="70px" ref="industryForm">
       <el-form-item label="目标品类" prop="brandId">
          <el-select
           ref="select"
-          v-model="selectLabel"
+          :value="categoryObj.label"
           filterable
           remote
           placeholder="请输入搜索品类"
@@ -38,13 +38,13 @@
 import TextButton from '@/components/TextButton.vue'
 import { mockTreeData } from '@/mock'
 import { getIndustryCategory } from '@/api/industry'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'IndustrySetting',
   components: { TextButton },
   data () {
     return {
       dialogVisible: false,
-      selectLabel: '',
       selectData: {
         remark: '',
         id: '',
@@ -58,7 +58,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('industry', ['categoryObj'])
+  },
   methods: {
+    ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     handleFilter () {
       this.$emit('handleFilter', true)
     },
@@ -66,10 +70,10 @@ export default {
       this.$emit('brandOnSubmit', this.selectData)
     },
     handleNodeClick (data, node, ref) {
-      this.selectLabel = data.label
       this.selectData.remark = data.remark
       this.selectData.id = data.id
       this.selectData.label = data.label
+      this.SET_INDUSTRY_CATEGORY(this.selectData)
       this.$refs.select.blur()
     },
     async handleSelctRemoteFilter (query) {

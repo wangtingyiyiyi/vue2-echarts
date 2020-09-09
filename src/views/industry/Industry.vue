@@ -14,14 +14,15 @@
                 <div class="table-title-wapper">
                   <Title title="按子品类展开"/>
                   <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="selectdMonth"
-                  @handleSelectdMonth="handleSelectdMonth"/>
+                    :monthOption="monthOption"
+                    :selectdMonth="selectdMonth"
+                    @handleSelectdMonth="handleSelectdMonth"/>
                 </div>
                 <Tab-Industry-Table
                   :tableData="industryTableData"
                   :isLoading="isLoadingIndustryTable"
                   :activedSortKey="industrySort"
+                  @handleCate="brandOnSubmit"
                   @handleIndustrySort="handleIndustrySort"/>
               </div>
 
@@ -95,7 +96,7 @@ import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
 import TabBrandTable from '@/views/industry/components/TabBrandTable.vue'
-import { mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import { getFlatList, getMonthOption, getIndustryEchart } from '@/api/industry'
 import { mockTableData } from '@/mock.js'
 import { refLoading } from '@/utils/element.js'
@@ -129,12 +130,12 @@ export default {
     }
   },
   computed: {
+    ...mapState('industry', ['categoryObj']),
     hasCategory: function () {
       return Object.keys(this.categoryForm).length !== 0
     }
   },
   methods: {
-    ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     // 范围
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
@@ -161,8 +162,7 @@ export default {
     },
     // 搜索
     brandOnSubmit (data) {
-      this.categoryForm = { ...data }
-      // this.getMonthOption()
+      this.categoryForm = { ...this.categoryObj }
       if (this.activeName === 'industry') {
         // 请求行业概览接口
         console.info('请求行业概览接口')
@@ -172,8 +172,6 @@ export default {
         console.info('请求品类排行接口')
         // 请求品类排行接口
       }
-      // this.getTableData()
-      this.SET_INDUSTRY_CATEGORY(data)
     },
     // 修改monthOption
     handleSelectdMonth (val) {
@@ -188,9 +186,11 @@ export default {
     async getFlatList () {
       const param = {
         range: this.rangeItemVal,
-        group: this.groupItem,
+        group: this.groupItemVal,
         tmallMonthList: this.selectdMonth,
         id: this.categoryForm.id,
+        remark: this.categoryForm.remark,
+        label: this.categoryForm.label,
         sort: this.industrySort
       }
       this.isLoadingIndustryTable = true

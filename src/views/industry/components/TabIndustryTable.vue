@@ -9,7 +9,11 @@
     stripe
     style="width: 100%">
     <el-table-column width="20"></el-table-column>
-    <el-table-column prop="outCat2" label="子品类"></el-table-column>
+    <el-table-column prop="outCat2" label="子品类">
+      <template slot-scope="{row}">
+        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" class="font-size-12" />
+      </template>
+    </el-table-column>
     <el-table-column align="right" width="90">
       <template #header>
         <div class="sort-button" @click="handleSort('sumSales')">销量
@@ -56,8 +60,10 @@
 </template>
 
 <script>
+import TextButton from '@/components/TextButton.vue'
 import { refLoading } from '@/utils/element.js'
 import { SORT_TYPES } from '@/utils/const.js'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'TabIndustryTable',
   props: {
@@ -76,12 +82,13 @@ export default {
   },
   data () {
     return {
-      // activedSortKey: '',
       loadingInstance: null,
       sortTypes: SORT_TYPES
     }
   },
+  components: { TextButton },
   computed: {
+    ...mapState('industry', ['categoryObj']),
     tableBody () {
       return this.$refs.table.$refs.bodyWrapper
     }
@@ -101,6 +108,30 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
+    getCat (data) {
+      console.info(this.categoryObj.remark)
+      switch (this.categoryObj.remark) {
+        case 'define':
+          return data.outCat1
+        case '1':
+          return data.outCat2
+        case '2':
+          return data.outCat2
+        default:
+          return ''
+      }
+    },
+    handleCategory (data) {
+      const mockParam = {
+        id: '7869',
+        label: '彩妆/美护工具 > 美妆工具',
+        remark: '2'
+      }
+      console.info(data, mockParam)
+      this.SET_INDUSTRY_CATEGORY(mockParam)
+      this.$emit('handleCate')
+    },
     handleSort (sortKey) {
       this.$emit('handleIndustrySort', this.sortTypes[sortKey])
       this.$refs.table.doLayout()

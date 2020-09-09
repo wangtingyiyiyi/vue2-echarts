@@ -1,6 +1,10 @@
 import { SET_INDUSTRY_CATEGORY } from '../mutation'
 const state = {
-  categoryObj: {}
+  categoryObj: {
+    id: '',
+    label: '',
+    remark: ''
+  }
 }
 
 const mutations = {
