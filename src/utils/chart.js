@@ -1,3 +1,4 @@
+// chart 用到的方法
 // 根据y轴刻度,自动计算单位
 export function yAxisFormatter (value) {
   if (value >= 0 && value < 10000) {

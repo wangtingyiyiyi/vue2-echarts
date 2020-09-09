@@ -6,7 +6,7 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { mockEchartData, mockEchartXAxis } from '@/mock.js'
-import { yAxisFormatter } from '@/utils/math.js'
+import { yAxisFormatter } from '@/utils/chart.js'
 
 export default {
   name: 'LineChart',

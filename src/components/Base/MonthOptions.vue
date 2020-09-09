@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="defaultMonth" placeholder="请选择" @change="handleChange" value-key="name">
+  <el-select :value="selectdMonth" placeholder="请选择" size="mini" style="width: 150px" @change="handleChange" value-key="name">
     <el-option
       v-for="item in monthOption"
       :key="item.name"
@@ -17,7 +17,7 @@ export default {
       type: Array,
       default: () => []
     },
-    defaultMonth: {
+    selectdMonth: {
       type: Object,
       default: () => {}
     }
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleChange (val) {
-      console.info(val)
+      this.$emit('handleSelectdMonth', val)
     }
   }
 }

@@ -1,12 +1,11 @@
 <template>
-  <div ref="chart" style="width: 100%;height:500px;"></div>
+  <div ref="chart" style="width: 100%; height: 100%"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, thousands } from '@/utils/math.js'
-// import { mockEchartData } from '@/mock'
+import { yAxisFormatter, xAxisDateFormatter, thousands } from '@/utils/chart.js'
 export default {
   name: 'LineChart',
   props: {
@@ -25,7 +24,6 @@ export default {
       deep: true,
       handler: function (params) {
         this.init()
-        this.chart.resize()
       }
     }
   },
@@ -142,6 +140,7 @@ export default {
           }
         ]
       })
+      this.chart.resize()
     }
   }
 }

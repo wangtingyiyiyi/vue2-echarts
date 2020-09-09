@@ -24,3 +24,8 @@ export function getMonthOption (params) {
 export function getIndustryEchart (params) {
   return post('industry/listGraph', params)
 }
+
+// 行业 子品类table
+export function getFlatList (params) {
+  return post('industry/flatList', params)
+}
