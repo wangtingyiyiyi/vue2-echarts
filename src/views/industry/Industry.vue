@@ -18,7 +18,11 @@
                   :selectdMonth="selectdMonth"
                   @handleSelectdMonth="handleSelectdMonth"/>
                 </div>
-                <Tab-Industry-Table :tableData="industryTableData" :isLoading="isLoadingIndustryTable"/>
+                <Tab-Industry-Table
+                  :tableData="industryTableData"
+                  :isLoading="isLoadingIndustryTable"
+                  :activedSortKey="industrySort"
+                  @handleIndustrySort="handleIndustrySort"/>
               </div>
 
               <div v-show="!hasCategory">
@@ -120,7 +124,8 @@ export default {
       selectdMonth: {},
       industryEchart: {},
       industryTableData: [],
-      isLoadingIndustryTable: false
+      isLoadingIndustryTable: false,
+      industrySort: '1'
     }
   },
   computed: {
@@ -175,13 +180,18 @@ export default {
       this.selectdMonth = val
       this.getFlatList()
     },
+    handleIndustrySort (val) {
+      this.industrySort = val
+      this.getFlatList()
+    },
     // tab 行业 table
     async getFlatList () {
       const param = {
         range: this.rangeItemVal,
         group: this.groupItem,
         tmallMonthList: this.selectdMonth,
-        id: this.categoryForm.id
+        id: this.categoryForm.id,
+        sort: this.industrySort
       }
       this.isLoadingIndustryTable = true
       const res = await getFlatList(param)

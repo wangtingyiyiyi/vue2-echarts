@@ -46,3 +46,11 @@ export const ECHARTS_BUTTONS = [
 
 // echart 主题颜色
 export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#E0E8F9', '#B9ECD8']
+
+// table 排序时传给后端的常量值
+export const SORT_TYPES = {
+  sumSales: '0', // 销量
+  sumGmv: '1', // 销售额
+  salesSequential: '2', // 销量环比
+  gmvSequential: '3' // 销售额环比
+}
