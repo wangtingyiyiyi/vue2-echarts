@@ -17,6 +17,7 @@
               :data="options"
               node-key="key"
               class="select-tree"
+              :empty-text="getEmptyText()"
               @node-click="handleNodeClick"
               :default-expand-all="true"
               :render-content="renderContent"
@@ -63,6 +64,10 @@ export default {
   },
   methods: {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
+    getEmptyText () {
+      const query = this.$refs?.select?.query || ''
+      return (query === '' && this.options.length === 0) ? '请输入关键字' : '暂无匹配数据'
+    },
     handleFilter () {
       this.$emit('handleFilter', true)
     },
