@@ -3,9 +3,9 @@
     <Industry-Setting @handleFilter="drawerShow = $event" @brandOnSubmit="brandOnSubmit"/>
     <Empty-Line />
     <div class="industry-tab-wapper">
-        <el-tabs v-model="activeName" style='width:100%'>
-            <el-tab-pane label="行业概览" name="industry" lazy>
+        <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
 
+            <el-tab-pane label="行业概览" name="industry" lazy>
               <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <div ref="refIndustryEchart">
@@ -29,40 +29,39 @@
               <div v-show="!hasCategory">
                 <Title title="总销售趋势"/>
                 <Svg-Icon icon-class="empty" class="empty-svg"/>
-                <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                  <Title title="按子品类展开"/>
-                  <!-- <Month-Options
-                    :monthOption="monthOption"
-                    :selectdMonth="selectdMonth"
-                    @handleSelectdMonth="handleSelectdMonth"/> -->
-                </div>
+                <Title title="按子品类展开"/>
                 <Svg-Icon icon-class="empty" class="empty-svg"/>
               </div>
             </el-tab-pane>
 
             <el-tab-pane label="品牌排行" name="brand" lazy>
-
-              <div v-if="hasCategory">
+              <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <Echarts-Buttons
                   :activeVal="activeButton"
                   style="width: 100%"
                   @handleEchartsClick="handleEchartsClick"/>
                 <Line-And-Bar-Chart />
-                <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                <div class="table-title-wapper">
                   <Title title="按品牌展开"/>
-                  <Month-Options :monthOption="monthOption"/>
+                  <Month-Options
+                    :monthOption="monthOption"
+                    :selectdMonth="selectdMonth"
+                    @handleSelectdMonth="handleSelectdMonth"/>
                 </div>
-                <Tab-Brand-Table :tableData="mockTableData"/>
+                <Tab-Brand-Table
+                  :tableData="brandTableData"
+                  :isLoading="isLoadingBrandTable"
+                  :activedSortKey="brandSort"
+                  @handleBrandSort="handleBrandSort"/>
               </div>
 
-              <div v-else class="empty-wapper">
+              <div v-show="!hasCategory" class="empty-wapper">
                 <Title title="总销售趋势"/>
                 <Svg-Icon icon-class="empty" class="empty-svg" />
                 <Title title="按品牌展开"/>
                 <Svg-Icon icon-class="empty" class="empty-svg" />
               </div>
-
             </el-tab-pane>
         </el-tabs>
         <!-- tab buttons -->
@@ -97,7 +96,7 @@ import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.v
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
 import TabBrandTable from '@/views/industry/components/TabBrandTable.vue'
 import { mapMutations, mapState } from 'vuex'
-import { getFlatList, getMonthOption, getIndustryEchart } from '@/api/industry'
+import { getIndustryFlatList, getMonthOption, getIndustryEchart, getIndustryBrandTable } from '@/api/industry'
 import { mockTableData } from '@/mock.js'
 import { refLoading } from '@/utils/element.js'
 
@@ -114,19 +113,24 @@ export default {
   data () {
     return {
       activeButton: 'sumSalescount',
-      activeName: 'industry',
+      activeName: 'brand',
       rangeItemVal: '1',
       groupItemVal: '0',
       drawerShow: false,
       categoryForm: {},
-      tableData: [],
       mockTableData: mockTableData,
       monthOption: [],
       selectdMonth: {},
       industryEchart: {},
       industryTableData: [],
       isLoadingIndustryTable: false,
-      industrySort: '1'
+      industrySort: '1',
+      brandEchart: {},
+      brandTableData: [],
+      isLoadingBrandTable: false,
+      brandSort: '1',
+      page: 1,
+      pageSize: 10
     }
   },
   computed: {
@@ -137,15 +141,22 @@ export default {
   },
   methods: {
     ...mapMutations('industry', ['SET_INDUSTRY_CATRGOTY_TABLE_PARAM']),
-    // 范围
+    // 切换tab
+    handleTabClick (tab) {
+      this.getIndustryFlatList()
+      this.getIndustryEchart()
+      this.getBrandList()
+    },
+    // 切换范围
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
       this.getIndustryEchart()
       this.getMonthOption().then(() => {
-        this.getFlatList()
+        this.getIndustryFlatList()
+        this.getBrandList()
       })
     },
-    // 颗粒度
+    // 切换颗粒度
     handleGroupClick (groupItem) {
       this.groupItemVal = groupItem.value
       this.getIndustryEchart()
@@ -153,7 +164,8 @@ export default {
         .then(() => {
           this.selectdMonth = this.monthOption[0]
         }).then(() => {
-          this.getFlatList()
+          this.getIndustryFlatList()
+          this.getBrandList()
         })
     },
     // 销量 和 销售额切换
@@ -171,49 +183,19 @@ export default {
     // 搜索
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
-      if (this.activeName === 'industry') {
-        // 请求行业概览接口
-        console.info('请求行业概览接口')
-        this.getIndustryEchart()
-        this.getFlatList()
-      } else {
-        console.info('请求品类排行接口')
-        // 请求品类排行接口
-      }
+      this.getIndustryEchart()
+      this.getIndustryFlatList()
+      this.getBrandList()
     },
     // 修改monthOption
     handleSelectdMonth (val) {
       this.selectdMonth = val
-      this.getFlatList()
+      this.getIndustryFlatList()
+      this.getBrandList()
     },
-    // tab 行业 table 排序
-    handleIndustrySort (val) {
-      this.industrySort = val
-      this.getFlatList()
-    },
-    // tab 行业 table
-    async getFlatList () {
-      const param = {
-        range: this.rangeItemVal,
-        group: this.groupItemVal,
-        tmallMonthList: this.selectdMonth,
-        id: this.categoryForm.id,
-        remark: this.categoryForm.remark,
-        // label: this.categoryForm.label,
-        sort: this.industrySort
-      }
-      this.SET_INDUSTRY_CATRGOTY_TABLE_PARAM(param)
-      this.isLoadingIndustryTable = true
-      const res = await getFlatList(param)
-      this.isLoadingIndustryTable = false
-      if (res.code === 200) {
-        this.industryTableData = res.result
-      } else {
-        this.$message.error('行业品类table数据请求失败')
-      }
-    },
-    // tab 行业 趋势图
+    // 行业tab 图表
     async getIndustryEchart () {
+      if (!this.categoryObj.id || this.activeName !== 'industry') return ''
       const param = Object.assign({ ...this.categoryForm }, { range: this.rangeItemVal, group: this.groupItemVal })
       const loadingInstance = refLoading(this.$refs.refIndustryEchart)
       const res = await getIndustryEchart(param)
@@ -223,6 +205,74 @@ export default {
       } else {
         this.$message.error('行业概览总销售趋势图请求失败')
       }
+    },
+    // 行业tab table
+    async getIndustryFlatList () {
+      if (!this.categoryObj.id || this.activeName !== 'industry') return ''
+      const param = {
+        range: this.rangeItemVal,
+        group: this.groupItemVal,
+        tmallMonthList: this.selectdMonth,
+        id: this.categoryForm.id,
+        remark: this.categoryForm.remark,
+        sort: this.industrySort
+      }
+      this.SET_INDUSTRY_CATRGOTY_TABLE_PARAM(param)
+      this.isLoadingIndustryTable = true
+      const res = await getIndustryFlatList(param)
+      this.isLoadingIndustryTable = false
+      if (res.code === 200) {
+        this.industryTableData = res.result
+      } else {
+        this.$message.error('行业子品类table数据请求失败')
+      }
+    },
+    // 行业tab table 排序
+    handleIndustrySort (val) {
+      this.industrySort = val
+      this.getIndustryFlatList()
+    },
+    // 品牌tab 图表
+    getBrandEchart () {},
+    // 品牌tab table
+    async getBrandList () {
+      // if (!this.categoryObj.id || this.activeName !== 'brand') return ''
+      // const param = {
+      //   range: this.rangeItemVal,
+      //   group: this.groupItemVal,
+      //   tmallMonthList: this.selectdMonth,
+      //   id: this.categoryForm.id,
+      //   remark: this.categoryForm.remark,
+      //   page: this.page,
+      //   pageSize: this.pageSize
+      // }
+      const param = {
+        range: 1,
+        group: 1,
+        tmallMonthList: {
+          name: '2019/Q3',
+          monthList: [202001, 202002, 202003]
+        },
+        id: 'test1',
+        remark: 'define',
+        sort: this.brandSort,
+        page: this.page,
+        pageSize: this.pageSize
+      }
+      this.isLoadingBrandTable = true
+      const res = await getIndustryBrandTable(param)
+      this.isLoadingBrandTable = false
+      if (res.code === 200) {
+        console.info(res.result)
+        this.brandTableData = res.result
+      } else {
+        this.$message.error('行业品牌列表请求失败')
+      }
+    },
+    // tab 品牌排序
+    handleBrandSort (val) {
+      this.brandSort = val
+      this.getBrandList()
     },
     // 行业初始化时 monthOption
     async getMonthOption () {

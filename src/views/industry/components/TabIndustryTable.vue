@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { getFlatList } from '@/api/industry'
+import { getIndustryFlatList } from '@/api/industry'
 import TextButton from '@/components/TextButton.vue'
 import { refLoading } from '@/utils/element.js'
 import { SORT_TYPES } from '@/utils/const.js'
@@ -142,7 +142,7 @@ export default {
     async load (tree, treeNode, resolve) {
       const cateTableParam = { ...this.cateTableParam }
       const param = Object.assign(cateTableParam, { id: tree.categoryId, remark: tree.remark })
-      const res = await getFlatList(param)
+      const res = await getIndustryFlatList(param)
       if (res.code === 200) {
         resolve(res.result)
       } else {

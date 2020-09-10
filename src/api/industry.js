@@ -10,11 +10,6 @@ export function getIndustryCategory (params) {
   return post('industry/category', params)
 }
 
-// 品牌排行 table
-export function getIndustryTable (params) {
-  return post('industry/listTotal', params)
-}
-
 // 行业 month options
 export function getMonthOption (params) {
   return post('industry/months', params)
@@ -26,11 +21,16 @@ export function getIndustryEchart (params) {
 }
 
 // 行业 子品类table
-export function getFlatList (params) {
+export function getIndustryFlatList (params) {
   return post('industry/flatList', params)
 }
 
-// 久谦品类树
+// 抽屉 久谦品类树
 export function getCategoryTree () {
   return get('industry/listCategory')
+}
+
+// 品牌 table
+export function getIndustryBrandTable (params) {
+  return post('industry/listTotal', params)
 }

@@ -20,8 +20,8 @@
       align="center"
       width="180">
       <template #header>
-        <div class="sort-button" @click="handleSort('sumSales')">销量
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'sumSales' ? 'active-sort' : '']"/>
+        <div class="sort-button" @click="handleSort('0')">销量
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.sumSales | format}}</template>
@@ -31,8 +31,8 @@
       align="center"
       label="销售额">
       <template #header>
-        <div class="sort-button"  @click="handleSort('sumGmv')">销售额
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'sumGmv' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('1')">销售额
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.sumGmv | format}}</template>
@@ -42,8 +42,8 @@
     <el-table-column
       align="center"
       label="销售额趋势">
-      <template>
-        <Line-In-Table />
+      <template slot-scope="{row}">
+        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
     </el-table-column>
     <el-table-column
@@ -51,8 +51,8 @@
       align="center"
       label="销售环比">
       <template #header>
-        <div class="sort-button"  @click="handleSort('salesSequential')">销售环比
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'salesSequential' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('2')">销售环比
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
@@ -62,8 +62,8 @@
       align="center"
       label="销售额环比">
       <template #header>
-        <div class="sort-button"  @click="handleSort('gmvSequential')">销售额环比
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == 'gmvSequential' ? 'active-sort' : '']"/>
+        <div class="sort-button"  @click="handleSort('3')">销售额环比
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
@@ -83,23 +83,50 @@
 </template>
 
 <script>
+import { refLoading } from '@/utils/element.js'
 export default {
   name: 'TabBrandTable',
   props: {
     tableData: {
       type: Array,
       default: () => []
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    activedSortKey: {
+      type: String,
+      default: '1'
     }
   },
   data () {
     return {
-      activedSortKey: ''
+      loadingInstance: null
+    }
+  },
+  computed: {
+    tableBody () {
+      return this.$refs.table.$refs.bodyWrapper
+    }
+  },
+  watch: {
+    isLoading: {
+      immediate: true,
+      handler: function (isLoading) {
+        if (isLoading) {
+          this.loadingInstance = refLoading(this.tableBody)
+        } else {
+          if (this.loadingInstance) {
+            this.loadingInstance.close()
+          }
+        }
+      }
     }
   },
   methods: {
     handleSort (sortKey) {
-      console.info(sortKey)
-      this.activedSortKey = sortKey
+      this.$emit('handleBrandSort', sortKey)
       this.$refs.table.doLayout()
     }
   }
