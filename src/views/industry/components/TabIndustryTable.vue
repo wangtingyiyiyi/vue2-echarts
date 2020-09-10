@@ -7,11 +7,14 @@
     header-row-class-name="tableHeaderClass"
     ref="table"
     stripe
+    lazy
+    row-key="categoryId"
+    :load="load"
     style="width: 100%">
-    <el-table-column width="20"></el-table-column>
+    <!-- <el-table-column width="10"></el-table-column> -->
     <el-table-column prop="outCat2" label="子品类">
       <template slot-scope="{row}">
-        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" class="font-size-12" />
+        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" class="font-size-12" />
       </template>
     </el-table-column>
     <el-table-column align="right" width="90">
@@ -55,11 +58,12 @@
     <el-table-column align="right" label="均价">
       <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
-    <el-table-column width="50"></el-table-column>
+    <!-- <el-table-column width="10"></el-table-column> -->
   </el-table>
 </template>
 
 <script>
+import { getFlatList } from '@/api/industry'
 import TextButton from '@/components/TextButton.vue'
 import { refLoading } from '@/utils/element.js'
 import { SORT_TYPES } from '@/utils/const.js'
@@ -88,7 +92,7 @@ export default {
   },
   components: { TextButton },
   computed: {
-    ...mapState('industry', ['categoryObj']),
+    ...mapState('industry', ['categoryObj', 'cateTableParam']),
     tableBody () {
       return this.$refs.table.$refs.bodyWrapper
     }
@@ -109,29 +113,43 @@ export default {
   },
   methods: {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
+    // 显示品类
     getCat (data) {
-      console.info(this.categoryObj.remark)
-      switch (this.categoryObj.remark) {
+      switch (data.remark) {
         case 'define':
           return data.outCat1
         case '1':
-          return data.outCat2
+          return data.outCat1
         case '2':
           return data.outCat2
+        case '3':
+          return data.outCat3
         default:
           return ''
       }
     },
+    // 查询点击节点
     handleCategory (data) {
-      const mockParam = {
-        id: '7869',
-        label: '彩妆/美护工具 > 美妆工具',
-        remark: '2'
+      const param = {
+        id: data.categoryId,
+        label: this.getCat(data),
+        remark: data.remark
       }
-      console.info(data, mockParam)
-      this.SET_INDUSTRY_CATEGORY(mockParam)
+      this.SET_INDUSTRY_CATEGORY(param)
       this.$emit('handleCate')
     },
+    // 查询子节点
+    async load (tree, treeNode, resolve) {
+      const cateTableParam = { ...this.cateTableParam }
+      const param = Object.assign(cateTableParam, { id: tree.categoryId, remark: tree.remark })
+      const res = await getFlatList(param)
+      if (res.code === 200) {
+        resolve(res.result)
+      } else {
+        this.$message.error('加载子分类失败')
+      }
+    },
+    // 排序
     handleSort (sortKey) {
       this.$emit('handleIndustrySort', this.sortTypes[sortKey])
       this.$refs.table.doLayout()

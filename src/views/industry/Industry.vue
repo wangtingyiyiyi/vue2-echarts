@@ -96,7 +96,7 @@ import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
 import TabBrandTable from '@/views/industry/components/TabBrandTable.vue'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { getFlatList, getMonthOption, getIndustryEchart } from '@/api/industry'
 import { mockTableData } from '@/mock.js'
 import { refLoading } from '@/utils/element.js'
@@ -136,6 +136,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('industry', ['SET_INDUSTRY_CATRGOTY_TABLE_PARAM']),
     // 范围
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
@@ -190,9 +191,10 @@ export default {
         tmallMonthList: this.selectdMonth,
         id: this.categoryForm.id,
         remark: this.categoryForm.remark,
-        label: this.categoryForm.label,
+        // label: this.categoryForm.label,
         sort: this.industrySort
       }
+      this.SET_INDUSTRY_CATRGOTY_TABLE_PARAM(param)
       this.isLoadingIndustryTable = true
       const res = await getFlatList(param)
       this.isLoadingIndustryTable = false
