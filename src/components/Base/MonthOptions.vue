@@ -3,7 +3,7 @@
     <el-option
       v-for="item in monthOption"
       :key="item.name"
-      :label="item.name"
+      :label="setLable(item.name)"
       :value="item">
     </el-option>
   </el-select>
@@ -28,6 +28,10 @@ export default {
     }
   },
   methods: {
+    // 正则去掉label中的 /
+    setLable (label) {
+      return label.replace(/\//, '')
+    },
     handleChange (val) {
       this.$emit('handleSelectdMonth', val)
     }
