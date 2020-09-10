@@ -34,7 +34,8 @@ export default {
     top 0
     background-color $shadow-color
     transition all 0.5s
-    z-index 100
+    // z-index 100
+    z-inde 2
     &.open
       display inline-block
     &.close
@@ -45,7 +46,8 @@ export default {
     transition all 0.5s
     height 100vh
     width 400px
-    z-index 100
+    // z-index 100
+    z-index 2
     right 0px
     &.close
       transform: translateX(100%)

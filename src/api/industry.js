@@ -1,4 +1,4 @@
-import { post } from '@/plugins/axios'
+import { post, get } from '@/plugins/axios'
 
 // 抽屉中自定义行业列表
 export function getIndustryDefineList (params) {
@@ -28,4 +28,9 @@ export function getIndustryEchart (params) {
 // 行业 子品类table
 export function getFlatList (params) {
   return post('industry/flatList', params)
+}
+
+// 久谦品类树
+export function getCategoryTree () {
+  return get('industry/listCategory')
 }

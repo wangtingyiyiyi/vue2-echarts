@@ -6,34 +6,31 @@
     </Text-Button>
     <Title title="历史自定义标签" style="margin-left: 20px"/>
     <div class="drawer-body beauty-scroll">
-      <div v-for="(item, index) in tagList" :key="index">
-        <div class="item-title">
+      <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
+        <!-- <div :class="['item-title', setIcon(index) === 'el-icon-arrow-up' ？'minH-20' :'minH-50']"> -->
+        <div :class="['item-title']">
           <div class="left">
             <Text-Button
               :text="item.category"
-              :iconClass="setIcon(index)"
-              iconPosition="after"
               @handleClick="handleClick(index)"
-              class="font-size-14"/>
+              class="font-size-14">
+            </Text-Button>
+            <i :class="[setIcon(index), 'gary-text']"  slot="append"></i>
           </div>
-          <div class="right">
-            <div>{{item.updateTime | moment('YYYY-MM-DD HH:mm')}}</div>
-            <i class="el-icon-close m-l-3"></i>
+          <div class="right gary-text">
+            <div class="m-r-7">{{item.updateTime | moment('YYYY-MM-DD HH:mm')}}</div>
+            <i class="el-icon-close m-l-3" style="cursor: pointer" @click="handleRemove(item, index)"></i>
           </div>
         </div>
-          <transition-group name="slide-fade">
-            <template v-if="setIcon(index) === 'el-icon-arrow-up'">
-              <div class="item-info m-b-5" v-for="(i, idx) in item.categoryList" :key="idx">
-                <div class="point"></div>
-                <div class="text-overflow">{{i}}</div>
-              </div>
-            </template>
-          </transition-group>
+        <transition-group name="slide-fade">
+          <template v-if="setIcon(index) === 'el-icon-arrow-up'">
+            <div class="item-info m-b-5" v-for="(i, idx) in item.categoryList" :key="idx">
+              <div class="point"></div>
+              <div class="text-overflow">{{i}}</div>
+            </div>
+          </template>
+        </transition-group>
       </div>
-    </div>
-    <div class="drawer-footer">
-      <el-button>确定</el-button>
-      <el-button type="primary">取消</el-button>
     </div>
     <Dialog-For-Industry-Select
       :dialogVisible="dialogVisible"
@@ -87,6 +84,25 @@ export default {
       this.isCollapseGroup.includes(index) ? icon = 'el-icon-arrow-up' : icon = 'el-icon-arrow-down'
       return icon
     },
+    // 设置高度
+    setClass (index) {
+      // this.setIcon(index)
+      if (this.setIcon(index) === 'el-icon-arrow-up') {
+        return ''
+      } else {
+        return 'm-b-5'
+      }
+    },
+    handleRemove (data, index) {
+      this.$confirm('删除？？？', '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.tagList.splice(1, index)
+        this.$message.success('删除成功')
+      })
+    },
     // 请求列表API
     async getDefineList () {
       const res = await getIndustryDefineList()
@@ -117,20 +133,19 @@ export default {
   .drawer-body
     height calc(100% - 197px)
     padding 0 20px
+    .border-dotted-bottom
+      border-bottom 1px dotted $color-border
     .item-title
-      border-bottom 1px solid $color-border
       display flex
       justify-content space-between
       align-items center
-      padding-bottom 5px
-      margin-bottom 5px
+      min-height 50px
       .left
         display flex
         align-items center
         font-size 14px
+        width 200px
       .right
-        color $color-light-gary
-        font-size 12px
         display flex
         align-items center
     .item-info
@@ -152,6 +167,10 @@ export default {
     width 100%
     text-align center
     height 42px
+
+  .gary-text
+    color $color-light-gary
+    font-size 12px
 
   .slide-fade-enter-active, .slide-fade-leave-active
     transition: opacity .3s ease

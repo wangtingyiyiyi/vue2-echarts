@@ -27,7 +27,8 @@ import {
   Dialog,
   Checkbox,
   Tree,
-  OptionGroup
+  OptionGroup,
+  MessageBox
 } from 'element-ui'
 
 const components = [
@@ -62,6 +63,7 @@ const components = [
 
 Vue.prototype.$ELEMENT = { size: 'small' }
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
 const install = function (Vue) {
   components.map(component => {
     Vue.use(component)
