@@ -141,13 +141,20 @@ export default {
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
       this.getIndustryEchart()
-      this.getMonthOption()
+      this.getMonthOption().then(() => {
+        this.getFlatList()
+      })
     },
     // 颗粒度
     handleGroupClick (groupItem) {
       this.groupItemVal = groupItem.value
       this.getIndustryEchart()
       this.getMonthOption()
+        .then(() => {
+          this.selectdMonth = this.monthOption[0]
+        }).then(() => {
+          this.getFlatList()
+        })
     },
     // 销量 和 销售额切换
     handleEchartsClick (item) {
@@ -179,6 +186,7 @@ export default {
       this.selectdMonth = val
       this.getFlatList()
     },
+    // tab 行业 table 排序
     handleIndustrySort (val) {
       this.industrySort = val
       this.getFlatList()
@@ -206,7 +214,6 @@ export default {
     },
     // tab 行业 趋势图
     async getIndustryEchart () {
-      // const param = { id: 'test1', range: '1', group: '0', remark: 'define' }
       const param = Object.assign({ ...this.categoryForm }, { range: this.rangeItemVal, group: this.groupItemVal })
       const loadingInstance = refLoading(this.$refs.refIndustryEchart)
       const res = await getIndustryEchart(param)

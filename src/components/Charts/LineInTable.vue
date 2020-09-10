@@ -5,6 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
+import { xAxisDateFormatter, thousands } from '@/utils/chart.js'
 
 export default {
   name: 'LineInTable',
@@ -15,6 +16,10 @@ export default {
   },
   props: {
     seriesData: {
+      type: Array,
+      default: () => []
+    },
+    xAxisData: {
       type: Array,
       default: () => []
     }
@@ -35,17 +40,19 @@ export default {
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              crossStyle: {
-                color: '#999'
-              }
+            confine: true,
+            extraCssText: 'text-align: left',
+            formatter: function (params, ticket) {
+              const xAxis = params[0].name
+              const gmv = params[0].marker + 'GMV: ' + thousands(params[0].value)
+              return xAxisDateFormatter(xAxis) + '<br />' + gmv
             }
           },
           xAxis: {
             type: 'category',
             show: false,
-            boundaryGap: false
+            boundaryGap: false,
+            data: this.xAxisData
           },
           yAxis: {
             type: 'value',

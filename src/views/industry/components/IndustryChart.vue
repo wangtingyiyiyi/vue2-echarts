@@ -35,8 +35,8 @@ export default {
           trigger: 'axis',
           formatter: function (params, ticket) {
             const xAxis = params[0].name
-            const gmv = params[0].marker + params[0].seriesName + ':' + thousands(params[0].value)
-            const sales = params[1].marker + params[1].seriesName + ':' + thousands(params[1].value)
+            const gmv = params[0].marker + params[0].seriesName + ': ' + thousands(params[0].value)
+            const sales = params[1].marker + params[1].seriesName + ': ' + thousands(params[1].value)
             return xAxisDateFormatter(xAxis) + '<br />' + gmv + '<br />' + sales
           }
         },

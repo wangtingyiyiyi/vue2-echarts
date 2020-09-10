@@ -36,7 +36,7 @@
     <el-table-column width="40"></el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
       <template slot-scope="{row}">
-        <Line-In-Table :seriesData="row.gmvBeanList"/>
+        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
     </el-table-column>
     <el-table-column align="right" width="110">
