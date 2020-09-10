@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, thousands } from '@/utils/chart.js'
+import { yAxisFormatter, xAxisDateFormatter, thousands, callMax } from '@/utils/chart.js'
 export default {
   name: 'LineChart',
   props: {
@@ -84,6 +84,10 @@ export default {
         yAxis: [
           {
             type: 'value',
+            position: 'left',
+            min: 0,
+            max: callMax(this.industryEchart.gmvList),
+            interval: Math.ceil(callMax(this.industryEchart.gmvList) / 5),
             axisLine: {
               show: false
             },
@@ -103,6 +107,10 @@ export default {
             }
           }, {
             type: 'value',
+            position: 'right',
+            min: 0,
+            max: callMax(this.industryEchart.salesList),
+            interval: Math.ceil(callMax(this.industryEchart.salesList) / 5),
             axisLine: {
               show: false
             },

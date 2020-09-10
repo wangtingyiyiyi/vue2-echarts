@@ -4,9 +4,9 @@ export function yAxisFormatter (value) {
   if (value >= 0 && value < 10000) {
     return value
   } else if (value >= 10000 && value < 9999999) {
-    return thousands((value / 10000)) + '万'
+    return thousands(parseInt((value / 10000))) + '万'
   } else {
-    return thousands((value / 10000000)) + '千万'
+    return thousands(parseInt((value / 10000000))) + '千万'
   }
 }
 
@@ -34,11 +34,16 @@ export function xAxisDateFormatter (value) {
     return year + 'Q' + num
   } else if (group === '6') {
     if (num === '1') {
-      return year + '上半年'
+      return year + 'H1'
     } else {
-      return year + '下半年'
+      return year + 'H2'
     }
   } else if (group === '12') {
-    return year + '全年'
+    return year
   }
+}
+
+// 计算最大值
+export function callMax (arr) {
+  return Math.ceil(Math.max(...arr) / 9.5) * 10
 }
