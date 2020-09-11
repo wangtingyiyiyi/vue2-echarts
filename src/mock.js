@@ -121,13 +121,6 @@ export const mockEchartData = [
     symbolSize: 5,
     data: [12013213, 13312312, 3213122, 4323441, 1231234, 413241, 12341412]
   }
-  // {
-  //   name: '销量',
-  //   type: 'line',
-  //   symbol: 'circle',
-  //   symbolSize: 5,
-  //   data: [133222, 2234423, 9142342, 1312212, 4212212, 4554464, 6325345]
-  // }
 ]
 
 // month options
@@ -219,3 +212,29 @@ export const mockTreeData = [
       ]
     }]
   }]
+
+// 久谦品类树
+export const mockCategoryTree = [
+  {
+    outCat1: '服装/配饰1222',
+    outCat2: '',
+    outCat3: '',
+    category: null,
+    id: '7674',
+    count: 1,
+    remark: 1,
+    childList: [
+      {
+        outCat1: '服装/配饰',
+        outCat2: '女装',
+        outCat3: '校服',
+        category: null,
+        id: '5806',
+        count: 0,
+        remark: 3,
+        childList: null,
+        hasChild: false
+      }
+    ]
+  }
+]

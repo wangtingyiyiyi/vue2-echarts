@@ -116,7 +116,7 @@ export default {
       activeName: 'brand',
       rangeItemVal: '1',
       groupItemVal: '0',
-      drawerShow: false,
+      drawerShow: true,
       categoryForm: {},
       mockTableData: mockTableData,
       monthOption: [],

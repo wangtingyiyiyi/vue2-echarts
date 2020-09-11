@@ -7,7 +7,6 @@
     <Title title="历史自定义标签" style="margin-left: 20px"/>
     <div class="drawer-body beauty-scroll">
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
-        <!-- <div :class="['item-title', setIcon(index) === 'el-icon-arrow-up' ？'minH-20' :'minH-50']"> -->
         <div :class="['item-title']">
           <div class="left">
             <Text-Button
@@ -32,7 +31,11 @@
         </transition-group>
       </div>
     </div>
-    <Dialog-For-Industry-Select
+    <!-- <Dialog-For-Industry-Select
+      :dialogVisible="dialogVisible"
+      v-if="dialogVisible"
+      @closeDialog="dialogVisible = $event"/> -->
+    <Dialog-For-Industry-Define
       :dialogVisible="dialogVisible"
       v-if="dialogVisible"
       @closeDialog="dialogVisible = $event"/>
@@ -42,10 +45,11 @@
 <script>
 import { getIndustryDefineList } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
-import DialogForIndustrySelect from '@/views/industry/components/DialogForIndustrySelect.vue'
+import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
+// import DialogForIndustrySelect from '@/views/industry/components/DialogForIndustrySelect.vue'
 export default {
   name: 'IndustryDrawerSlot',
-  components: { TextButton, DialogForIndustrySelect },
+  components: { TextButton, DialogForIndustryDefine },
   props: {
     drawerShow: {
       type: Boolean,
@@ -56,7 +60,7 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: false
+      dialogVisible: true
     }
   },
   watch: {
