@@ -5,21 +5,54 @@
 
     <div class="brand-tab-wapper">
       <el-tabs v-model="activeName" style='width:100%'>
-          <el-tab-pane label="品牌概览" name="first" lazy>
-            <Brand-Tab-Brand :settingParam="brandFormParam"/>
+          <el-tab-pane label="品牌概览" name="brand" lazy>
+            <div>
+              <Title title="总销售趋势"/>
+
+              <Echarts-Buttons
+                :activeVal="viewItemVal"
+                @handleEchartsClick="handleEchartsClick"/>
+
+              <div ref="brandEchart">
+                 <Brand-Chart
+                  style="width: 100%; height: 500px"
+                  :brandData="brandChart"
+                  ref="brandEchart"/>
+              </div>
+
+              <Title title="按子品牌展开"/>
+
+              <Brand-Table-Brands
+                :brands="brands"
+                :activeBrand="activeBrand"
+                @changeActiveBrand="changeActiveBrand"/>
+
+              <Tab-Brand-Table
+                ref="table"
+                :tableData="tableData"/>
+            </div>
+            <!-- <div v-show="!hasBrandFormParam">
+              <Title title="总销售趋势"/>
+              <Svg-Icon icon-class="empty" class="empty-svg"/>
+              <Title title="按子品牌展开"/>
+              <Svg-Icon icon-class="empty" class="empty-svg"/>
+            </div> -->
           </el-tab-pane>
-          <el-tab-pane label="店铺数据" name="second" lazy>
-            <Brand-Tab-Shop />
+          <el-tab-pane label="店铺数据" name="shop" lazy>
+              <Title title="总销售趋势"/>
+              <div>echarts</div>
+              <Title title="按子品牌展开"/>
+              <div>table</div>
           </el-tab-pane>
       </el-tabs>
 
       <Range-Buttons
-        :activeVal="brandFormParam.range"
-        @handleRangeClick="brandFormParam.range = $event.value"
+        :activeVal="rangeItemVal"
+        @handleRangeClick="handleRangeClick"
         style='position: absolute; right:350px; top:15px;'/>
       <Group-Buttons
-        :activeVal="brandFormParam.graininess"
-        @handleGroupClick="brandFormParam.graininess = $event.value"
+        :activeVal="groupItemVal"
+        @handleGroupClick="handleGroupClick"
         style='position: absolute; right:10px; top:15px;'/>
     </div>
 
@@ -28,27 +61,55 @@
 
 <script>
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
-import BrandTabBrand from '@/views/brand/components/TabBrand.vue'
-import BrandTabShop from '@/views/brand/components/TabShop.vue'
+import EchartsButtons from '@/views/brand/components/EchartsButtons.vue'
+import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
+import TabBrandTable from '@/views/brand/components/TabBrandTable.vue'
+import BrandChart from '@/views/brand/components/BrandChart.vue'
+import { mockTableData, mockEchartData, mockEchartXAxis, mockBrandChartData } from '@/mock'
 
-const brandFormParam = { brandId: [], cid: [], range: 'year', graininess: 'month' }
+// const brandFormParam = { brandId: [], cid: [], range: 'year', graininess: 'month' }
 
 export default {
-  components: { BrandSetting, BrandTabBrand, BrandTabShop },
+  components: { BrandSetting, EchartsButtons, BrandTableBrands, TabBrandTable, BrandChart },
   data () {
     return {
-      activeName: 'second',
-      brandFormParam: brandFormParam
+      activeName: 'brand',
+      viewItemVal: '0',
+      rangeItemVal: '1',
+      groupItemVal: '0',
+      brandFormParam: {},
+      mockTableData: mockTableData,
+      mockEchartData: mockEchartData,
+      mockEchartXAxis: mockEchartXAxis,
+      tableData: [],
+      activeBrand: '',
+      brands: [],
+      brandChart: mockBrandChartData
     }
   },
   computed: {
-    hasBrandFormparam () {
+    hasBrandFormParam () {
       return Object.keys(this.brandFormParam).length !== 0
     }
   },
   methods: {
     handleSettingParam (param) {
-      this.brandFormParam = Object.assign(this.brandFormParam, param)
+      this.brandFormParam = param
+      setTimeout(() => {
+        this.brandChart = JSON.parse(JSON.stringify(mockBrandChartData))
+      }, 1000)
+    },
+    handleRangeClick (data) {
+      this.rangeItemVal = data.value
+    },
+    handleGroupClick (data) {
+      this.groupItemVal = data.value
+    },
+    handleEchartsClick (data) {
+      this.viewItemVal = data.value
+    },
+    changeActiveBrand () {
+
     }
   }
 }

@@ -5,31 +5,40 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { mockEchartData, mockEchartXAxis } from '@/mock.js'
 import { yAxisFormatter } from '@/utils/chart.js'
+import { mockBrandChartData } from '@/mock'
 
 export default {
-  name: 'LineChart',
+  name: 'BrandChart',
   props: {
-    xAxis: {
+    brandData: {
       type: Object,
       default: () => {}
-    },
-    series: {
-      series: {
-        type: Array,
-        default: () => []
-      }
     }
   },
   data () {
     return {
-      chart: null,
-      mockEchartData: mockEchartData
+      chart: null
     }
   },
   methods: {
+    getSeries (arr) {
+      return arr.map((item) => {
+        return {
+          name: item.name,
+          type: 'line',
+          stack: '总量',
+          data: item.data
+        }
+      })
+    },
+    getLegend (arr) {
+      return arr.map(item => {
+        return item.name
+      })
+    },
     init () {
+      console.info(mockBrandChartData)
       this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
@@ -40,7 +49,7 @@ export default {
           itemGap: 20,
           itemHeight: 3,
           icon: 'roundRect',
-          data: ['销售额', '销量']
+          data: this.getLegend(mockBrandChartData.series)
         },
         grid: {
           left: '30px',
@@ -48,7 +57,9 @@ export default {
           bottom: '30px',
           containLabel: true
         },
-        xAxis: mockEchartXAxis,
+        xAxis: {
+          data: mockBrandChartData.xAxis
+        },
         yAxis: {
           type: 'value',
           axisLine: {
@@ -69,7 +80,7 @@ export default {
           }
         },
         color: ECHARTS_COLORS,
-        series: mockEchartData
+        series: this.getSeries(mockBrandChartData.series)
       })
       this.chart.resize()
     }

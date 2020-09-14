@@ -37,7 +37,6 @@
 
 <script>
 import TextButton from '@/components/TextButton.vue'
-import { mockTreeData } from '@/mock'
 import { getIndustryCategory } from '@/api/industry'
 import { mapMutations, mapState } from 'vuex'
 export default {
@@ -52,7 +51,6 @@ export default {
         label: ''
       },
       options: [],
-      mockTreeData: mockTreeData,
       defaultProps: {
         children: 'children',
         label: 'label'
