@@ -47,6 +47,7 @@ export default {
     height 22px
     .el-input__inner
       height 22px
+      font-size 14px
     .el-input__icon
       height 19px
       line-height 19px
