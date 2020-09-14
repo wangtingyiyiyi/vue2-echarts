@@ -9,7 +9,9 @@
               <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <div ref="refIndustryEchart">
-                  <Industry-Chart style="width: 100%; height: 500px" :industryEchart="industryEchart"/>
+                  <Industry-Chart
+                    style="width: 100%; height: 500px"
+                    :industryEchart="industryEchart"/>
                 </div>
                 <div class="table-title-wapper">
                   <Title title="按子品类展开"/>
@@ -38,10 +40,16 @@
               <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <Echarts-Buttons
-                  :activeVal="activeButton"
+                  :activeVal="salesItemVal"
                   style="width: 100%"
+                  class="m-b-5"
                   @handleEchartsClick="handleEchartsClick"/>
-                <Line-And-Bar-Chart />
+                <div ref="refBrandChart">
+                  <Brand-Chart
+                  :salesItemVal="salesItemVal"
+                  style="width: 100%; height: 500px"
+                  :brandEchart="brandEchart"/>
+                </div>
                 <div class="table-title-wapper">
                   <Title title="按品牌展开"/>
                   <Month-Options
@@ -54,6 +62,14 @@
                   :isLoading="isLoadingBrandTable"
                   :activedSortKey="brandSort"
                   @handleBrandSort="handleBrandSort"/>
+                <el-pagination
+                  background
+                  layout="prev, pager, next"
+                  class="pagination-wapper"
+                  @current-change="changeBrandPage"
+                  :page-size="pageSize"
+                  :total="brandCount">
+                </el-pagination>
               </div>
 
               <div v-show="!hasCategory" class="empty-wapper">
@@ -95,8 +111,15 @@ import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
 import TabBrandTable from '@/views/industry/components/TabBrandTable.vue'
+import BrandChart from '@/views/industry/components/BrandChart.vue'
 import { mapMutations, mapState } from 'vuex'
-import { getIndustryFlatList, getMonthOption, getIndustryEchart, getIndustryBrandTable } from '@/api/industry'
+import {
+  getIndustryFlatList,
+  getMonthOption,
+  getIndustryEchart,
+  getIndustryBrandTable,
+  getBrandChart
+} from '@/api/industry'
 import { mockTableData } from '@/mock.js'
 import { refLoading } from '@/utils/element.js'
 
@@ -108,15 +131,16 @@ export default {
     IndustryDrawerSlotBtn,
     TabBrandTable,
     TabIndustryTable,
-    IndustryChart
+    IndustryChart,
+    BrandChart
   },
   data () {
     return {
-      activeButton: 'sumSalescount',
       activeName: 'brand',
       rangeItemVal: '1',
       groupItemVal: '0',
-      drawerShow: true,
+      salesItemVal: '1',
+      drawerShow: false,
       categoryForm: {},
       mockTableData: mockTableData,
       monthOption: [],
@@ -130,7 +154,8 @@ export default {
       isLoadingBrandTable: false,
       brandSort: '1',
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      brandCount: 0
     }
   },
   computed: {
@@ -146,6 +171,7 @@ export default {
       this.getIndustryFlatList()
       this.getIndustryEchart()
       this.getBrandList()
+      this.getBrandEchart()
     },
     // 切换范围
     handleRangeClick (rangeItem) {
@@ -170,7 +196,8 @@ export default {
     },
     // 销量 和 销售额切换
     handleEchartsClick (item) {
-      this.activeButton = item.value
+      this.salesItemVal = item.value
+      this.getBrandEchart()
     },
     // 高级搜索 弹出抽屉
     handleDrawerBtn () {
@@ -186,6 +213,7 @@ export default {
       this.getIndustryEchart()
       this.getIndustryFlatList()
       this.getBrandList()
+      this.getBrandEchart()
     },
     // 修改monthOption
     handleSelectdMonth (val) {
@@ -233,16 +261,29 @@ export default {
       this.getIndustryFlatList()
     },
     // 品牌tab 图表
-    getBrandEchart () {},
+    async getBrandEchart () {
+      if (!this.categoryObj.id || this.activeName !== 'brand') return ''
+      const param = Object.assign({ ...this.categoryForm }, { range: this.rangeItemVal, group: this.groupItemVal, view: this.salesItemVal })
+      const loadingInstance = refLoading(this.$refs.refBrandChart)
+      const res = await getBrandChart(param)
+      loadingInstance.close()
+      if (res.code === 200) {
+        this.brandEchart = res.result
+      } else {
+        this.$message.error('品牌趋势图表请求失败')
+      }
+      console.info(res)
+    },
     // 品牌tab table
     async getBrandList () {
-      // if (!this.categoryObj.id || this.activeName !== 'brand') return ''
+      if (!this.categoryObj.id || this.activeName !== 'brand') return ''
       // const param = {
       //   range: this.rangeItemVal,
       //   group: this.groupItemVal,
       //   tmallMonthList: this.selectdMonth,
       //   id: this.categoryForm.id,
       //   remark: this.categoryForm.remark,
+      //   sort: this.brandSort,
       //   page: this.page,
       //   pageSize: this.pageSize
       // }
@@ -264,10 +305,16 @@ export default {
       this.isLoadingBrandTable = false
       if (res.code === 200) {
         console.info(res.result)
-        this.brandTableData = res.result
+        this.brandCount = res.result.brandCount
+        this.brandTableData = res.result.detailsBeanList
       } else {
         this.$message.error('行业品牌列表请求失败')
       }
+    },
+    // 品牌tab table 翻页
+    changeBrandPage (page) {
+      this.page = page
+      this.getBrandList()
     },
     // tab 品牌排序
     handleBrandSort (val) {

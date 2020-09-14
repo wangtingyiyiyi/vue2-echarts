@@ -47,3 +47,11 @@ export function xAxisDateFormatter (value) {
 export function callMax (arr) {
   return Math.ceil(Math.max(...arr) / 9.5) * 10
 }
+
+// 计算百分比
+export function computePercent (arr) {
+  const res = arr.map(item => {
+    return (item * 100).toFixed(2)
+  })
+  return res
+}

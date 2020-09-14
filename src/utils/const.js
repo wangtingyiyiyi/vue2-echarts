@@ -36,13 +36,19 @@ export const ECHARTS_BUTTONS = [
   {
     icon: 'user',
     label: '按销量',
-    value: 'sumSalescount'
+    value: '0'
   }, {
     icon: 'upload',
     label: '按销售额',
-    value: 'sumGmv'
+    value: '1'
   }
 ]
+
+// 行业-品牌累计占比
+export const ECHARTS_ACTIVED_PARAM = {
+  0: ['销量', '销量累计占比'],
+  1: ['销售额', '销售额累计占比']
+}
 
 // echart 主题颜色
 export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#E0E8F9', '#B9ECD8']

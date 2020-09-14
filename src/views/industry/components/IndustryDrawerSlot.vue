@@ -31,10 +31,6 @@
         </transition-group>
       </div>
     </div>
-    <!-- <Dialog-For-Industry-Select
-      :dialogVisible="dialogVisible"
-      v-if="dialogVisible"
-      @closeDialog="dialogVisible = $event"/> -->
     <Dialog-For-Industry-Define
       :dialogVisible="dialogVisible"
       v-if="dialogVisible"
@@ -46,7 +42,6 @@
 import { getIndustryDefineList } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
-// import DialogForIndustrySelect from '@/views/industry/components/DialogForIndustrySelect.vue'
 export default {
   name: 'IndustryDrawerSlot',
   components: { TextButton, DialogForIndustryDefine },
@@ -60,7 +55,7 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: true
+      dialogVisible: false
     }
   },
   watch: {

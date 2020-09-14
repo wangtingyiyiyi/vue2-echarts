@@ -9,16 +9,11 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="outCat1"
-      label="子品类"
-      align="center"
-      width="180">
+      prop="brand"
+      show-overflow-tooltip
+      label="品牌">
     </el-table-column>
-    <el-table-column
-      prop="sumSales"
-      label="销量"
-      align="center"
-      width="180">
+    <el-table-column align="right" width="90">
       <template #header>
         <div class="sort-button" @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
@@ -26,10 +21,7 @@
       </template>
       <template slot-scope="{row}">{{row.sumSales | format}}</template>
     </el-table-column>
-    <el-table-column
-      prop="sumGmv"
-      align="center"
-      label="销售额">
+    <el-table-column align="right" label="销售额">
       <template #header>
         <div class="sort-button"  @click="handleSort('1')">销售额
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
@@ -37,8 +29,7 @@
       </template>
       <template slot-scope="{row}">{{row.sumGmv | format}}</template>
     </el-table-column>
-    <!-- class-name="line-in-table-class" -->
-    <!-- <el-table-column width="150px"></el-table-column> -->
+    <el-table-column width="40"></el-table-column>
     <el-table-column
       align="center"
       label="销售额趋势">
@@ -46,10 +37,7 @@
         <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
     </el-table-column>
-    <el-table-column
-      prop="salesSequential"
-      align="center"
-      label="销售环比">
+    <el-table-column align="right"  width="110">
       <template #header>
         <div class="sort-button"  @click="handleSort('2')">销售环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>
@@ -57,10 +45,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column
-      prop="gmvSequential"
-      align="center"
-      label="销售额环比">
+    <el-table-column align="right">
       <template #header>
         <div class="sort-button"  @click="handleSort('3')">销售额环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
@@ -68,10 +53,7 @@
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column
-      prop="avgPrice"
-      align="center"
-      label="均价">
+    <el-table-column align="right">
       <template #header>
         <div class="sort-button"  @click="handleSort('avgPrice')">均价
           <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'avgPrice' ? 'active-sort' : '']"/>

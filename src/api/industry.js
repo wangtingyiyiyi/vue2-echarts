@@ -32,5 +32,10 @@ export function getCategoryTree (params) {
 
 // 品牌 table
 export function getIndustryBrandTable (params) {
-  return post('industry/listTotal', params)
+  return post('industryBrand/listTotal', params)
+}
+
+// 品牌 图表
+export function getBrandChart (params) {
+  return post('industryBrand/listGraph', params)
 }

@@ -44,11 +44,19 @@ export function post (url, params = {}) {
   params.userId = sessionStorage.getItem('userId')
   params.role = sessionStorage.getItem('role')
   params.createUser = sessionStorage.getItem('createUser')
-  return new Promise((resolve, reject) => {
+  // return new Promise((resolve, reject) => {
+  //   axios.post(url, params)
+  //     .then(response => {
+  //       resolve(response.data)
+  //     }, err => {
+  //       reject(err)
+  //     })
+  // })
+  return new Promise(function (resolve, reject) {
     axios.post(url, params)
-      .then(response => {
+      .then(function (response) {
         resolve(response.data)
-      }, err => {
+      }, function (err) {
         reject(err)
       })
   })
