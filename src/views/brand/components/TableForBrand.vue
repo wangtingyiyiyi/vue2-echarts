@@ -87,7 +87,7 @@
 
 <script>
 export default {
-  name: 'TabIndustryTable',
+  name: 'TableForBrand',
   props: {
     tableData: {
       type: Array,

@@ -1,3 +1,4 @@
+import { SET_BRAND_BRANDS, SET_BRAND_CATEGORY } from '../mutation'
 
 const state = {
   brands: [],
@@ -5,21 +6,16 @@ const state = {
 }
 
 const mutations = {
-  RESET_SETTING_BRANDS: (state, data) => {
-    state.brands = data
+  [SET_BRAND_BRANDS] (state, payload) {
+    state.brands = [...payload]
   },
-  RESET_SETTING_CATE: (state, data) => {
-    state.cates = data
+  [SET_BRAND_CATEGORY] (state, payload) {
+    state.cates = [...payload]
   }
 }
 
 const actions = {
-  changeSettingBrand ({ commit }, data) {
-    commit('RESET_SETTING_BRANDS', data)
-  },
-  changeSettingCate ({ commit }, data) {
-    commit('RESET_SETTING_CATE', data)
-  }
+
 }
 
 export default {

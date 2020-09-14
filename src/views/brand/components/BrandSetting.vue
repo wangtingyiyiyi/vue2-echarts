@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 import { mockBrandsOptions, mockCidOptions } from '@/mock'
 const initBrandForm = { brandId: [], cid: [] }
 export default {
@@ -42,21 +42,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions('brand', ['changeSettingBrand', 'changeSettingCate']),
+    ...mapMutations('brand', ['SET_BRAND_BRANDS', 'SET_BRAND_CATEGORY']),
     onSubmit () {
       const param = {
         brandId: this.brandForm.brand.map(item => item.brandId),
         cid: this.brandForm.cate.map(item => item.cid)
       }
-      this.changeSettingBrand(this.brandForm.brand)
-      this.changeSettingCate(this.brandForm.cate)
+      this.SET_BRAND_BRANDS(this.brandForm.brand)
+      this.SET_BRAND_CATEGORY(this.brandForm.cate)
       this.$emit('brandOnSubmit', param)
     },
     onClean () {
       this.$refs.brandForm.resetFields()
       this.brandForm = { brandId: [], cid: [] }
-      this.changeSettingBrand([])
-      this.changeSettingCate([])
+      this.SET_BRAND_BRANDS([])
+      this.SET_BRAND_CATEGORY([])
       this.$emit('brandOnSubmit', this.initBrandForm)
     }
   }

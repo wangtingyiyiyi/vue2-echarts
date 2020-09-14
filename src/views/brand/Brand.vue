@@ -16,7 +16,7 @@
                   @handleEchartsClick="handleEchartsClick"/>
 
               <div ref="brandEchart">
-                 <Brand-Chart
+                 <Chart-For-Brand
                   style="width: 100%; height: 500px"
                   :brandData="brandChart"
                   ref="brandEchart"/>
@@ -29,7 +29,7 @@
                 :activeBrand="activeBrand"
                 @changeActiveBrand="changeActiveBrand"/>
 
-              <Tab-Brand-Table
+              <Table-For-Brand
                 ref="table"
                 :tableData="tableData"/>
             </div>
@@ -42,9 +42,32 @@
           </el-tab-pane>
           <el-tab-pane label="店铺数据" name="shop" lazy>
               <Title title="总销售趋势"/>
-              <div>echarts</div>
-              <Title title="按子品牌展开"/>
-              <div>table</div>
+              <div class="flex-between m-b-10">
+                <Echarts-Buttons
+                  :activeVal="viewItemVal"
+                  style="width: 100%"
+                  @handleEchartsClick="handleEchartsClick"/>
+
+                <Month-Options
+                  :monthOption="monthOption"
+                  :selectdMonth="selectdMonth"
+                  @handleSelectdMonth="handleSelectdMonth"/>
+              </div>
+              <Chart-For-Shop  style="width: 100%; height: 500px"/>
+              <Title title="按品牌展开"/>
+              <div class="flex-between m-b-10">
+                <Brand-Table-Brands
+                  :brands="brands"
+                  :activeBrand="activeBrand"
+                  @changeActiveBrand="changeActiveBrand"/>
+                 <Month-Options
+                  :monthOption="monthOption"
+                  :selectdMonth="selectdMonth"
+                  @handleSelectdMonth="handleSelectdMonth"/>
+              </div>
+               <Table-For-Shop
+                ref="tableForShop"
+                :tableData="tableData"/>
           </el-tab-pane>
       </el-tabs>
 
@@ -64,12 +87,23 @@
 <script>
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
-import TabBrandTable from '@/views/brand/components/TabBrandTable.vue'
-import BrandChart from '@/views/brand/components/BrandChart.vue'
+import TableForBrand from '@/views/brand/components/TableForBrand.vue'
+import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
+import ChartForShop from '@/views/brand/components/ChartForShop.vue'
+import TableForShop from '@/views/brand/components/TableForShop.vue'
 import { mockTableData, mockEchartData, mockEchartXAxis, mockBrandChartData } from '@/mock'
+import { mapState } from 'vuex'
+import { getMonthOption } from '@/api/brand'
 
 export default {
-  components: { BrandSetting, BrandTableBrands, TabBrandTable, BrandChart },
+  components: {
+    BrandSetting,
+    BrandTableBrands,
+    TableForBrand,
+    ChartForBrand,
+    ChartForShop,
+    TableForShop
+  },
   data () {
     return {
       activeName: 'brand',
@@ -82,18 +116,22 @@ export default {
       mockEchartXAxis: mockEchartXAxis,
       tableData: [],
       activeBrand: '',
-      brands: [],
-      brandChart: mockBrandChartData
+      brandChart: mockBrandChartData,
+      monthOption: [],
+      selectdMonth: {}
     }
   },
   computed: {
     hasBrandFormParam () {
       return Object.keys(this.brandFormParam).length !== 0
-    }
+    },
+    ...mapState('brand', ['brands'])
   },
   methods: {
     handleSettingParam (param) {
       this.brandFormParam = param
+      this.activeBrand = this.brands[0].brandId
+      console.info(param)
       setTimeout(() => {
         this.brandChart = JSON.parse(JSON.stringify(mockBrandChartData))
       }, 1000)
@@ -107,22 +145,30 @@ export default {
     handleEchartsClick (data) {
       this.viewItemVal = data.value
     },
-    changeActiveBrand () {
+    changeActiveBrand (data) {
+      console.info(data)
+      this.activeBrand = data.brandId
+    },
+    handleSelectdMonth () {
 
+    },
+    async getMonthOption () {
+      const res = await getMonthOption({ range: this.rangeItemVal, group: this.groupItemVal })
+      if (res.code === 200) {
+        this.monthOption = res.result
+      } else {
+        this.$message.error('行业分类月份列表请求失败')
+      }
     }
+  },
+  mounted () {
+    this.getMonthOption().then((res) => {
+      this.selectdMonth = this.monthOption[0]
+    })
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.brand-tab-wapper
-  background-color #ffffff
-  position relative
-
-.brand-tab-wapper >>> .el-tabs__item
-  padding-left 25px !important
-  font-size 16px
-  line-height 56px
-  height 56px
-
+@import './index.styl'
 </style>

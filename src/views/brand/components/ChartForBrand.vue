@@ -9,7 +9,7 @@ import { yAxisFormatter } from '@/utils/chart.js'
 import { mockBrandChartData } from '@/mock'
 
 export default {
-  name: 'BrandChart',
+  name: 'ChartForBrand',
   props: {
     brandData: {
       type: Object,
