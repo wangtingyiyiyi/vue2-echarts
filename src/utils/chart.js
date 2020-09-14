@@ -55,3 +55,12 @@ export function computePercent (arr) {
   })
   return res
 }
+
+// x轴品牌label formater
+export function brandFormatter (value) {
+  let lastIndex = value.lastIndexOf('_')
+  if (lastIndex < 0) {
+    lastIndex = value.length
+  }
+  return value.substring(0, lastIndex)
+}

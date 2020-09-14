@@ -1,11 +1,12 @@
 <template>
   <div ref="chart" style="width: 100%;height:320px;"></div>
+  <!-- <div>{{brandEchart}}</div> -->
 </template>
 
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS, ECHARTS_ACTIVED_PARAM } from '@/utils/const.js'
-import { yAxisFormatter, callMax, computePercent } from '@/utils/chart.js'
+import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter } from '@/utils/chart.js'
 
 export default {
   name: 'BrandChart',
@@ -37,14 +38,15 @@ export default {
   methods: {
     init () {
       this.chart = echarts.init(this.$refs.chart)
+      const tempKey = this.salesItemVal === '1' ? 'gmvList' : 'salesList'
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
+          formatter: function (params, ticket) {
+            const xAxis = params[0].name
+            const gmv = params[0].marker + params[0].seriesName + ': ' + thousands(params[0].value)
+            const sales = params[1].marker + params[1].seriesName + ': ' + thousands(params[1].value)
+            return brandFormatter(xAxis) + '<br />' + gmv + '<br />' + sales
           }
         },
         legend: {
@@ -94,8 +96,8 @@ export default {
           {
             type: 'value',
             min: 0,
-            max: callMax(this.brandEchart.salesList),
-            interval: Math.ceil(callMax(this.brandEchart.salesList) / 5),
+            max: callMax(this.brandEchart[tempKey]),
+            interval: Math.ceil(callMax(this.brandEchart[tempKey]) / 5),
             axisLine: {
               show: false
             },
@@ -141,7 +143,7 @@ export default {
             name: this.legendData[0],
             type: 'bar',
             barWidth: '9px',
-            data: this.brandEchart.salesList
+            data: this.brandEchart[tempKey]
           },
           {
             name: this.legendData[1],

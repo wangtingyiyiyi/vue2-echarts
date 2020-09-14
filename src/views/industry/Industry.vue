@@ -149,7 +149,11 @@ export default {
       industryTableData: [],
       isLoadingIndustryTable: false,
       industrySort: '1',
-      brandEchart: {},
+      brandEchart: {
+        gmvList: [],
+        percentList: [],
+        xlist: []
+      },
       brandTableData: [],
       isLoadingBrandTable: false,
       brandSort: '1',
@@ -180,6 +184,7 @@ export default {
       this.getMonthOption().then(() => {
         this.getIndustryFlatList()
         this.getBrandList()
+        this.getBrandEchart()
       })
     },
     // 切换颗粒度
@@ -192,6 +197,7 @@ export default {
         }).then(() => {
           this.getIndustryFlatList()
           this.getBrandList()
+          this.getBrandEchart()
         })
     },
     // 销量 和 销售额切换
