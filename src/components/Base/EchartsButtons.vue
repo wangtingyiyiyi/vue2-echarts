@@ -1,11 +1,11 @@
 <template>
-  <div class="range-btn-wapper">
+  <div class="filter-group-btn-wapper">
     <el-button-group>
       <el-button
         v-for="item in EchartsButtons"
         :key="item.value"
         size="mini"
-        class="range-btn"
+        class="filter-btn"
         :type="activeVal === item.value ? 'primary' : ''"
         @click="click(item)">{{item.label}}</el-button>
     </el-button-group>
@@ -35,12 +35,3 @@ export default {
 
 }
 </script>
-
-<style lang="stylus" scoped>
-.range-btn-wapper
-  display flex
-  align-items center
-  color $base-gray
-  font-size $font-size-12
-
-</style>

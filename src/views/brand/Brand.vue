@@ -6,12 +6,14 @@
     <div class="brand-tab-wapper">
       <el-tabs v-model="activeName" style='width:100%'>
           <el-tab-pane label="品牌概览" name="brand" lazy>
-            <div>
+            <div v-show="hasBrandFormParam">
               <Title title="总销售趋势"/>
 
               <Echarts-Buttons
-                :activeVal="viewItemVal"
-                @handleEchartsClick="handleEchartsClick"/>
+                  :activeVal="viewItemVal"
+                  style="width: 100%"
+                  class="m-b-5"
+                  @handleEchartsClick="handleEchartsClick"/>
 
               <div ref="brandEchart">
                  <Brand-Chart
@@ -31,12 +33,12 @@
                 ref="table"
                 :tableData="tableData"/>
             </div>
-            <!-- <div v-show="!hasBrandFormParam">
+            <div v-show="!hasBrandFormParam">
               <Title title="总销售趋势"/>
               <Svg-Icon icon-class="empty" class="empty-svg"/>
               <Title title="按子品牌展开"/>
               <Svg-Icon icon-class="empty" class="empty-svg"/>
-            </div> -->
+            </div>
           </el-tab-pane>
           <el-tab-pane label="店铺数据" name="shop" lazy>
               <Title title="总销售趋势"/>
@@ -49,11 +51,11 @@
       <Range-Buttons
         :activeVal="rangeItemVal"
         @handleRangeClick="handleRangeClick"
-        style='position: absolute; right:350px; top:15px;'/>
+        style='position: absolute; right:350px; top:17px;'/>
       <Group-Buttons
         :activeVal="groupItemVal"
         @handleGroupClick="handleGroupClick"
-        style='position: absolute; right:10px; top:15px;'/>
+        style='position: absolute; right:10px; top:17px;'/>
     </div>
 
   </div>
@@ -61,16 +63,13 @@
 
 <script>
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
-import EchartsButtons from '@/views/brand/components/EchartsButtons.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
 import TabBrandTable from '@/views/brand/components/TabBrandTable.vue'
 import BrandChart from '@/views/brand/components/BrandChart.vue'
 import { mockTableData, mockEchartData, mockEchartXAxis, mockBrandChartData } from '@/mock'
 
-// const brandFormParam = { brandId: [], cid: [], range: 'year', graininess: 'month' }
-
 export default {
-  components: { BrandSetting, EchartsButtons, BrandTableBrands, TabBrandTable, BrandChart },
+  components: { BrandSetting, BrandTableBrands, TabBrandTable, BrandChart },
   data () {
     return {
       activeName: 'brand',

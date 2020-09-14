@@ -84,11 +84,11 @@
         <Range-Buttons
           :activeVal="rangeItemVal"
           @handleRangeClick="handleRangeClick"
-          style='position: absolute; right:350px; top:12px;'/>
+          style='position: absolute; right:350px; top:17px;'/>
         <Group-Buttons
           :activeVal="groupItemVal"
           @handleGroupClick="handleGroupClick"
-          style='position: absolute; right:10px; top:12px;'/>
+          style='position: absolute; right:10px; top:17px;'/>
     </div>
     <!-- 抽屉 -->
     <Drawer :visible="drawerShow" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
