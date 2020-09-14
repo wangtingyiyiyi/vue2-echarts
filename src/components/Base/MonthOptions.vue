@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="selectdMonth" placeholder="请选择" size="mini" style="width: 150px" @change="handleChange" value-key="name">
+  <el-select :value="selectdMonth" class="sup-mini-select" placeholder="请选择" size="mini" @change="handleChange" value-key="name">
     <el-option
       v-for="item in monthOption"
       :key="item.name"
@@ -38,3 +38,17 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.sup-mini-select
+  width 110px
+  height 22px
+  >>> .el-input
+    height 22px
+    .el-input__inner
+      height 22px
+    .el-input__icon
+      height 19px
+      line-height 19px
+
+</style>

@@ -36,9 +36,12 @@ export default {
 
 .brand-item
   margin-right 20px
-  padding  0 1px 3px
+  padding  0 1px 10px
   cursor pointer
+  font-size 12px
+  text-align center
 
 .actived
   border-bottom 2px solid $base-blue
+  color $base-blue
 </style>
