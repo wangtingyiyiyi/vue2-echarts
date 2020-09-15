@@ -5,3 +5,13 @@ import { post } from '@/plugins/axios'
 export function getMonthOption (params) {
   return post('industry/months', params)
 }
+
+// 品牌模糊查询
+export function getBrandByLikeCondition (params) {
+  return post('brandShop/brands', params)
+}
+
+// 品牌分类
+export function getCategorytByBrand (params) {
+  return post('brandShop/categorys', params)
+}

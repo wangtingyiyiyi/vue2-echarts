@@ -27,6 +27,7 @@
               <Brand-Table-Brands
                 :brands="brands"
                 :activeBrand="activeBrand"
+                class="m-b-10"
                 @changeActiveBrand="changeActiveBrand"/>
 
               <Table-For-Brand
@@ -138,9 +139,11 @@ export default {
     },
     handleRangeClick (data) {
       this.rangeItemVal = data.value
+      this.getMonthOption()
     },
     handleGroupClick (data) {
       this.groupItemVal = data.value
+      this.getMonthOption()
     },
     handleEchartsClick (data) {
       this.viewItemVal = data.value
