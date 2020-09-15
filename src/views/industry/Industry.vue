@@ -74,7 +74,7 @@
               </div>
 
               <div v-show="!hasCategory" class="empty-wapper">
-                <Title title="总销售趋势"/>
+                <Title ref="brandTitle" title="总销售趋势"/>
                 <Svg-Icon icon-class="empty" class="empty-svg" />
                 <Title title="按品牌展开"/>
                 <Svg-Icon icon-class="empty" class="empty-svg" />
@@ -92,7 +92,7 @@
           style='position: absolute; right:10px; top:17px;'/>
     </div>
     <!-- 抽屉 -->
-    <Drawer :visible="drawerShow" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
+    <Drawer :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
         <Drawer-Button
           slot="button"
           :drawerShow="drawerShow"
@@ -330,6 +330,7 @@ export default {
   },
   mounted () {
     this.getMonthOption()
+    console.info(this.$refs.brandTitle)
   }
 }
 </script>

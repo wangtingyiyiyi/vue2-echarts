@@ -1,47 +1,55 @@
 <template>
-  <div class="industry-setting-wapper">
-    配置筛选
-    <el-form class="m-t-20" inline label-position="left" label-width="70px" ref="industryForm">
-      <el-form-item label="目标品类" prop="brandId">
-         <el-select
-          ref="select"
-          :value="categoryObj.label"
-          filterable
-          remote
-          placeholder="请输入搜索品类"
-          style="width: 600px"
-          :remote-method="handleSelctRemoteFilter">
-          <el-option value="0" class="hidden"></el-option>
-            <el-tree
-              ref="tree"
-              :data="options"
-              node-key="key"
-              class="select-tree"
-              :empty-text="getEmptyText()"
-              @node-click="handleNodeClick"
-              :default-expand-all="true"
-              :render-content="renderContent"
-              :props="defaultProps">
-            </el-tree>
-          </el-select>
-      </el-form-item>
-      <el-form-item>
-        <div style="display: flex">
-          <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
-          <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
-        </div>
-      </el-form-item>
-    </el-form>
+  <div>
+    <div class="industry-setting-wapper">
+      配置筛选
+      <el-form class="m-t-20" inline label-position="left" label-width="70px" ref="industryForm">
+        <el-form-item label="目标品类" prop="brandId">
+          <el-select
+            ref="select"
+            :value="categoryObj.label"
+            filterable
+            remote
+            placeholder="请输入搜索品类"
+            style="width: 600px"
+            :remote-method="handleSelctRemoteFilter">
+            <el-option value="0" class="hidden"></el-option>
+              <el-tree
+                ref="tree"
+                :data="options"
+                node-key="key"
+                class="select-tree"
+                :empty-text="getEmptyText()"
+                @node-click="handleNodeClick"
+                :default-expand-all="true"
+                :render-content="renderContent"
+                :props="defaultProps">
+              </el-tree>
+            </el-select>
+        </el-form-item>
+        <el-form-item>
+          <div style="display: flex">
+            <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
+            <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
+            <Text-Button text="行业提数" @handleClick="handleExport" class="p-0-15 font-size-13" />
+          </div>
+        </el-form-item>
+      </el-form>
+    </div>
+    <Dialog-For-Industry-Export
+      :dialogVisible="dialogVisible"
+      v-if="dialogVisible"
+      @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
 <script>
 import TextButton from '@/components/TextButton.vue'
+import DialogForIndustryExport from '@/views/industry/components/DialogForIndustryExport.vue'
 import { getIndustryCategory } from '@/api/industry'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'IndustrySetting',
-  components: { TextButton },
+  components: { TextButton, DialogForIndustryExport },
   data () {
     return {
       dialogVisible: false,
@@ -68,6 +76,9 @@ export default {
     },
     handleFilter () {
       this.$emit('handleFilter', true)
+    },
+    handleExport () {
+      this.dialogVisible = true
     },
     onSubmit () {
       this.$emit('brandOnSubmit', this.selectData)

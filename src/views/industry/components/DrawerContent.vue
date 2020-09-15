@@ -55,7 +55,8 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: false
+      dialogVisible: false,
+      dialogRemove: false
     }
   },
   watch: {
@@ -93,6 +94,7 @@ export default {
       }
     },
     handleRemove (data, index) {
+      this.$parent.$refs.mask.style.background = 'transparent'
       this.$confirm('删除？？？', '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确认',
@@ -100,6 +102,9 @@ export default {
       }).then(() => {
         this.tagList.splice(1, index)
         this.$message.success('删除成功')
+        this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
+      }).catch(() => {
+        this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
       })
     },
     // 请求列表API

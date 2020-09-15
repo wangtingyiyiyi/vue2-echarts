@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="['mask', visible ? 'open' : 'close']"  @click="close"/>
+    <div ref="mask" :class="['mask', visible ? 'open' : 'close']"  @click="close"/>
     <div :class="['drawer', visible ? 'open' : 'close']">
       <slot/>
       <slot name="button"/>
@@ -34,7 +34,6 @@ export default {
     top 0
     background-color $shadow-color
     transition all 0.5s
-    // z-index 100
     z-inde 2
     &.open
       display inline-block
@@ -46,7 +45,6 @@ export default {
     transition all 0.5s
     height 100vh
     width 400px
-    // z-index 100
     z-index 2
     right 0px
     &.close
