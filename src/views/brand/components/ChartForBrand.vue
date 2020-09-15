@@ -38,7 +38,6 @@ export default {
       })
     },
     init () {
-      console.info(mockBrandChartData)
       this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {

@@ -3,7 +3,7 @@
     <div
       v-for="item in brands"
       :key="item.brandId"
-      :class="['brand-item', activeBrand === item.brandId ? 'actived' : '']"
+      :class="['brand-item', activeBrand.brandId === item.brandId ? 'actived' : '']"
       @click="click(item)">{{item.brand}}</div>
   </div>
 </template>
@@ -17,8 +17,8 @@ export default {
       default: () => []
     },
     activeBrand: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => {}
     }
   },
   methods: {

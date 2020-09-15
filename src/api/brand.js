@@ -15,3 +15,8 @@ export function getBrandByLikeCondition (params) {
 export function getCategorytByBrand (params) {
   return post('brandShop/categorys', params)
 }
+
+// 品牌店铺 table
+export function getTableForBrandShop (params) {
+  return post('brandShop/listTotal', params)
+}

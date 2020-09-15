@@ -6,7 +6,6 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { yAxisFormatter } from '@/utils/chart.js'
-import { mockBrandChartData } from '@/mock'
 
 export default {
   name: 'ChartForShop',
@@ -23,7 +22,6 @@ export default {
   },
   methods: {
     init () {
-      console.info(mockBrandChartData)
       this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
