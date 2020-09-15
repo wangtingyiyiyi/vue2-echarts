@@ -67,7 +67,7 @@
 <script>
 import { refLoading } from '@/utils/element.js'
 export default {
-  name: 'TabBrandTable',
+  name: 'TableForBrand',
   props: {
     tableData: {
       type: Array,

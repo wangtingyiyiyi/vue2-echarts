@@ -11,7 +11,6 @@
     row-key="categoryId"
     :load="load"
     style="width: 100%">
-    <!-- <el-table-column width="10"></el-table-column> -->
     <el-table-column prop="outCat2" label="子品类">
       <template slot-scope="{row}">
         <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" class="font-size-12" />
@@ -58,7 +57,6 @@
     <el-table-column align="right" label="均价">
       <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
-    <!-- <el-table-column width="10"></el-table-column> -->
   </el-table>
 </template>
 
@@ -69,7 +67,7 @@ import { refLoading } from '@/utils/element.js'
 import { SORT_TYPES } from '@/utils/const.js'
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'TabIndustryTable',
+  name: 'TableForIndustry',
   props: {
     tableData: {
       type: Array,

@@ -1,36 +1,28 @@
 <template>
-  <div ref="chart" style="width: 100%;height:320px;"></div>
-  <!-- <div>{{brandEchart}}</div> -->
+  <div ref="chart" style="width: 100%; height: 100%"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
-import { ECHARTS_COLORS, ECHARTS_ACTIVED_PARAM } from '@/utils/const.js'
-import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter } from '@/utils/chart.js'
-
+import { ECHARTS_COLORS } from '@/utils/const.js'
+import { yAxisFormatter, xAxisDateFormatter, thousands, callMax } from '@/utils/chart.js'
 export default {
-  name: 'BrandChart',
+  name: 'ChartForIndustry',
   props: {
-    brandEchart: {
+    industryEchart: {
       type: Object,
       default: () => {}
-    },
-    salesItemVal: {
-      type: String,
-      default: '1'
     }
   },
   data () {
     return {
-      chart: null,
-      legendData: []
+      chart: null
     }
   },
   watch: {
-    brandEchart: {
+    industryEchart: {
       deep: true,
       handler: function (params) {
-        this.legendData = ECHARTS_ACTIVED_PARAM[this.salesItemVal]
         this.init()
       }
     }
@@ -38,7 +30,6 @@ export default {
   methods: {
     init () {
       this.chart = echarts.init(this.$refs.chart)
-      const tempKey = this.salesItemVal === '1' ? 'gmvList' : 'salesList'
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -46,7 +37,7 @@ export default {
             const xAxis = params[0].name
             const gmv = params[0].marker + params[0].seriesName + ': ' + thousands(params[0].value)
             const sales = params[1].marker + params[1].seriesName + ': ' + thousands(params[1].value)
-            return brandFormatter(xAxis) + '<br />' + gmv + '<br />' + sales
+            return xAxisDateFormatter(xAxis) + '<br />' + gmv + '<br />' + sales
           }
         },
         legend: {
@@ -54,7 +45,7 @@ export default {
           itemGap: 20,
           itemHeight: 3,
           icon: 'roundRect',
-          data: this.legendData
+          data: ['销售额', '销量']
         },
         grid: {
           left: '20px',
@@ -62,42 +53,41 @@ export default {
           bottom: '30px',
           containLabel: true
         },
-        xAxis: [
-          {
-            type: 'category',
-            data: this.brandEchart.xlist,
-            axisPointer: {
-              type: 'shadow'
-            },
-            // x轴线
-            axisLine: {
-              lineStyle: {
-                color: '#D9D9D9',
-                width: 2
-              }
-            },
-            // 刻度
-            axisTick: {
-              show: false
-            },
-            // x轴文字
-            axisLabel: {
-              show: false,
-              interval: 0,
-              rotate: 40,
-              textStyle: {
-                fontSize: '10',
-                color: '#727484'
-              }
+        xAxis: {
+          type: 'category',
+          // x轴线
+          axisLine: {
+            lineStyle: {
+              color: '#D9D9D9',
+              width: 2
             }
-          }
-        ],
+          },
+          // 刻度
+          axisTick: {
+            show: false
+          },
+          // x轴文字
+          axisLabel: {
+            show: false,
+            interval: 0,
+            rotate: 0,
+            textStyle: {
+              fontSize: '14',
+              color: '#727484'
+            },
+            formatter: function (value) {
+              return xAxisDateFormatter(value)
+            }
+          },
+          data: this.industryEchart.xlist
+        },
         yAxis: [
           {
             type: 'value',
+            position: 'left',
             min: 0,
-            max: callMax(this.brandEchart[tempKey]),
-            interval: Math.ceil(callMax(this.brandEchart[tempKey]) / 5),
+            max: callMax(this.industryEchart.gmvList),
+            interval: Math.ceil(callMax(this.industryEchart.gmvList) / 5),
             axisLine: {
               show: false
             },
@@ -115,13 +105,12 @@ export default {
                 return yAxisFormatter(value)
               }
             }
-
-          },
-          {
+          }, {
             type: 'value',
+            position: 'right',
             min: 0,
-            max: 100,
-            interval: 20,
+            max: callMax(this.industryEchart.salesList),
+            interval: Math.ceil(callMax(this.industryEchart.salesList) / 5),
             axisLine: {
               show: false
             },
@@ -134,27 +123,30 @@ export default {
               }
             },
             axisLabel: {
-              formatter: '{value} %'
+              showMinLabel: false,
+              formatter: function (value) {
+                return yAxisFormatter(value)
+              }
             }
           }
         ],
+        color: ECHARTS_COLORS,
         series: [
           {
-            name: this.legendData[0],
-            type: 'bar',
-            barWidth: '9px',
-            data: this.brandEchart[tempKey]
-          },
-          {
-            name: this.legendData[1],
+            name: '销售额',
             type: 'line',
+            symbol: 'circle',
+            symbolSize: 5,
+            data: this.industryEchart.gmvList
+          }, {
+            name: '销量',
+            type: 'line',
+            symbol: 'circle',
+            symbolSize: 5,
             yAxisIndex: 1,
-            symbol: 'none',
-            smooth: true,
-            data: computePercent(this.brandEchart.percentList)
+            data: this.industryEchart.salesList
           }
-        ],
-        color: ECHARTS_COLORS
+        ]
       })
       this.chart.resize()
     }

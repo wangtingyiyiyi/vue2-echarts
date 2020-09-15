@@ -5,11 +5,11 @@
     <div class="industry-tab-wapper">
         <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
 
-            <el-tab-pane label="行业概览" name="industry" lazy>
+            <el-tab-pane label="行业概览" name="industry">
               <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <div ref="refIndustryEchart">
-                  <Industry-Chart
+                  <Chart-For-Industry
                     style="width: 100%; height: 500px"
                     :industryEchart="industryEchart"/>
                 </div>
@@ -20,7 +20,7 @@
                     :selectdMonth="selectdMonth"
                     @handleSelectdMonth="handleSelectdMonth"/>
                 </div>
-                <Tab-Industry-Table
+                <Table-For-Industry
                   :tableData="industryTableData"
                   :isLoading="isLoadingIndustryTable"
                   :activedSortKey="industrySort"
@@ -36,7 +36,7 @@
               </div>
             </el-tab-pane>
 
-            <el-tab-pane label="品牌排行" name="brand" lazy>
+            <el-tab-pane label="品牌排行" name="brand">
               <div v-show="hasCategory">
                 <Title title="总销售趋势"/>
                 <Echarts-Buttons
@@ -45,7 +45,7 @@
                   class="m-b-5"
                   @handleEchartsClick="handleEchartsClick"/>
                 <div ref="refBrandChart">
-                  <Brand-Chart
+                  <Chart-For-Brand
                   :salesItemVal="salesItemVal"
                   style="width: 100%; height: 500px"
                   :brandEchart="brandEchart"/>
@@ -57,7 +57,7 @@
                     :selectdMonth="selectdMonth"
                     @handleSelectdMonth="handleSelectdMonth"/>
                 </div>
-                <Tab-Brand-Table
+                <Table-For-Brand
                   :tableData="brandTableData"
                   :isLoading="isLoadingBrandTable"
                   :activedSortKey="brandSort"
@@ -92,26 +92,24 @@
     </div>
     <!-- 抽屉 -->
     <Drawer :visible="drawerShow" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
-        <!-- 抽屉按钮slot -->
         <IndustryDrawerSlotBtn
           slot="button"
           :drawerShow="drawerShow"
           @handleDrawerBtn="handleDrawerBtn"/>
-        <!-- 抽屉内容slot -->
         <Industry-Drawer-Slot :drawerShow="drawerShow"/>
     </Drawer>
   </div>
 </template>
 
 <script>
-import TabIndustryTable from '@/views/industry/components/TabIndustryTable.vue'
-import IndustrySetting from '@/views/industry/components/IndustrySetting.vue'
-import IndustryChart from '@/views/industry/components/IndustryChart.vue'
+import ChartForIndustry from '@/views/industry/components/ChartForIndustry.vue'
+import ChartForBrand from '@/views/industry/components/ChartForBrand.vue'
+import TableForIndustry from '@/views/industry/components/TableForIndustry.vue'
+import TableForBrand from '@/views/industry/components/TableForBrand.vue'
+import IndustrySetting from '@/views/industry/components/Setting.vue'
 import Drawer from '@/components/Drawer.vue'
 import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
 import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
-import TabBrandTable from '@/views/industry/components/TabBrandTable.vue'
-import BrandChart from '@/views/industry/components/BrandChart.vue'
 import { mapMutations, mapState } from 'vuex'
 import {
   getIndustryFlatList,
@@ -120,7 +118,6 @@ import {
   getIndustryBrandTable,
   getBrandChart
 } from '@/api/industry'
-import { mockTableData } from '@/mock.js'
 import { refLoading } from '@/utils/element.js'
 
 export default {
@@ -129,10 +126,10 @@ export default {
     Drawer,
     IndustryDrawerSlot,
     IndustryDrawerSlotBtn,
-    TabBrandTable,
-    TabIndustryTable,
-    IndustryChart,
-    BrandChart
+    TableForBrand,
+    TableForIndustry,
+    ChartForIndustry,
+    ChartForBrand
   },
   data () {
     return {
@@ -142,7 +139,6 @@ export default {
       salesItemVal: '1',
       drawerShow: false,
       categoryForm: {},
-      mockTableData: mockTableData,
       monthOption: [],
       selectdMonth: {},
       industryEchart: {},
@@ -176,10 +172,12 @@ export default {
       this.getIndustryEchart()
       this.getBrandList()
       this.getBrandEchart()
+      this.page = 1
     },
     // 切换范围
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
+      this.page = 1
       this.getIndustryEchart()
       this.getMonthOption().then(() => {
         this.getIndustryFlatList()
@@ -190,6 +188,7 @@ export default {
     // 切换颗粒度
     handleGroupClick (groupItem) {
       this.groupItemVal = groupItem.value
+      this.page = 1
       this.getIndustryEchart()
       this.getMonthOption()
         .then(() => {
@@ -216,6 +215,7 @@ export default {
     // 搜索
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
+      this.page = 1
       this.getIndustryEchart()
       this.getIndustryFlatList()
       this.getBrandList()
@@ -224,6 +224,7 @@ export default {
     // 修改monthOption
     handleSelectdMonth (val) {
       this.selectdMonth = val
+      this.page = 1
       this.getIndustryFlatList()
       this.getBrandList()
     },
@@ -264,6 +265,7 @@ export default {
     // 行业tab table 排序
     handleIndustrySort (val) {
       this.industrySort = val
+      this.page = 1
       this.getIndustryFlatList()
     },
     // 品牌tab 图表
@@ -278,30 +280,16 @@ export default {
       } else {
         this.$message.error('品牌趋势图表请求失败')
       }
-      console.info(res)
     },
     // 品牌tab table
     async getBrandList () {
       if (!this.categoryObj.id || this.activeName !== 'brand') return ''
-      // const param = {
-      //   range: this.rangeItemVal,
-      //   group: this.groupItemVal,
-      //   tmallMonthList: this.selectdMonth,
-      //   id: this.categoryForm.id,
-      //   remark: this.categoryForm.remark,
-      //   sort: this.brandSort,
-      //   page: this.page,
-      //   pageSize: this.pageSize
-      // }
       const param = {
-        range: 1,
-        group: 1,
-        tmallMonthList: {
-          name: '2019/Q3',
-          monthList: [202001, 202002, 202003]
-        },
-        id: 'test1',
-        remark: 'define',
+        range: this.rangeItemVal,
+        group: this.groupItemVal,
+        tmallMonthList: this.selectdMonth,
+        id: this.categoryForm.id,
+        remark: this.categoryForm.remark,
         sort: this.brandSort,
         page: this.page,
         pageSize: this.pageSize
@@ -325,6 +313,7 @@ export default {
     // tab 品牌排序
     handleBrandSort (val) {
       this.brandSort = val
+      this.page = 1
       this.getBrandList()
     },
     // 行业初始化时 monthOption

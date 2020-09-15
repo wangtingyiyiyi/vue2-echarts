@@ -95,18 +95,18 @@ export default {
   width 40px
   height 40px
   background-color #dfdfdf
-  padding 10px
+  padding 5px 5px 10px 10px
   float right
   position relative
   cursor pointer
   &::before
     content: "";
     position: absolute;
-    left: -29.5px;
-    top: 23px;
+    left: -26px;
+    top: 21.7px;
     display: block;
-    width: 85px;
-    height: 48px;
+    width: 78px;
+    height: 40px;
     background: #fff;
     transform: rotate(45deg);
 .qr-code
