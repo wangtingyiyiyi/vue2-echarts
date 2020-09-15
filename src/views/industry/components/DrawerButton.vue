@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'IndustryDrawerSlotBtn',
+  name: 'DrawerButton',
   props: {
     drawerShow: {
       type: Boolean,

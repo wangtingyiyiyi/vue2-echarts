@@ -18,7 +18,7 @@
     </el-table-column>
     <el-table-column align="right" width="90">
       <template #header>
-        <div class="sort-button" @click="handleSort('sumSales')">销量
+        <div class="sort-button" @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
         </div>
       </template>
@@ -26,7 +26,7 @@
     </el-table-column>
     <el-table-column align="right">
       <template #header>
-        <div class="sort-button"  @click="handleSort('sumGmv')">销售额
+        <div class="sort-button"  @click="handleSort('1')">销售额
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
@@ -40,7 +40,7 @@
     </el-table-column>
     <el-table-column align="right" width="110">
       <template #header>
-        <div class="sort-button"  @click="handleSort('salesSequential')">销量环比
+        <div class="sort-button"  @click="handleSort('2')">销量环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>
         </div>
       </template>
@@ -48,13 +48,13 @@
     </el-table-column>
     <el-table-column align="right">
       <template #header>
-        <div class="sort-button"  @click="handleSort('gmvSequential')">销售额环比
+        <div class="sort-button"  @click="handleSort('3')">销售额环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
         </div>
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" label="均价">
+    <el-table-column align="right" label="均价/元">
       <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
@@ -64,7 +64,6 @@
 import { getIndustryFlatList } from '@/api/industry'
 import TextButton from '@/components/TextButton.vue'
 import { refLoading } from '@/utils/element.js'
-import { SORT_TYPES } from '@/utils/const.js'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'TableForIndustry',
@@ -84,8 +83,7 @@ export default {
   },
   data () {
     return {
-      loadingInstance: null,
-      sortTypes: SORT_TYPES
+      loadingInstance: null
     }
   },
   components: { TextButton },
@@ -148,9 +146,8 @@ export default {
       }
     },
     // 排序
-    handleSort (sortKey) {
-      this.$emit('handleIndustrySort', this.sortTypes[sortKey])
-      this.$refs.table.doLayout()
+    handleSort (sortVal) {
+      this.$emit('handleIndustrySort', sortVal)
     }
   }
 }

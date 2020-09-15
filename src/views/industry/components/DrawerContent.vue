@@ -43,7 +43,7 @@ import { getIndustryDefineList } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 export default {
-  name: 'IndustryDrawerSlot',
+  name: 'DrawerContent',
   components: { TextButton, DialogForIndustryDefine },
   props: {
     drawerShow: {

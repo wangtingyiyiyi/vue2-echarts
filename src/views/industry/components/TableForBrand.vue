@@ -53,12 +53,7 @@
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
-      <template #header>
-        <div class="sort-button"  @click="handleSort('avgPrice')">均价
-          <Svg-Icon icon-class="icon-descending" :class="[activedSortKey == 'avgPrice' ? 'active-sort' : '']"/>
-        </div>
-      </template>
+    <el-table-column align="right" label="均价/元">
       <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>

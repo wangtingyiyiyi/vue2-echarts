@@ -23,7 +23,7 @@
                 <Table-For-Industry
                   :tableData="industryTableData"
                   :isLoading="isLoadingIndustryTable"
-                  :activedSortKey="industrySort"
+                  :activedSortKey="sortItemVal"
                   @handleCate="brandOnSubmit"
                   @handleIndustrySort="handleIndustrySort"/>
               </div>
@@ -60,13 +60,14 @@
                 <Table-For-Brand
                   :tableData="brandTableData"
                   :isLoading="isLoadingBrandTable"
-                  :activedSortKey="brandSort"
+                  :activedSortKey="sortItemVal"
                   @handleBrandSort="handleBrandSort"/>
                 <el-pagination
                   background
                   layout="prev, pager, next"
                   class="pagination-wapper"
                   @current-change="changeBrandPage"
+                  :current-page="page"
                   :page-size="pageSize"
                   :total="brandCount">
                 </el-pagination>
@@ -92,11 +93,12 @@
     </div>
     <!-- 抽屉 -->
     <Drawer :visible="drawerShow" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
-        <IndustryDrawerSlotBtn
+        <Drawer-Button
           slot="button"
           :drawerShow="drawerShow"
           @handleDrawerBtn="handleDrawerBtn"/>
-        <Industry-Drawer-Slot :drawerShow="drawerShow"/>
+        <Drawer-Content
+          :drawerShow="drawerShow"/>
     </Drawer>
   </div>
 </template>
@@ -108,8 +110,8 @@ import TableForIndustry from '@/views/industry/components/TableForIndustry.vue'
 import TableForBrand from '@/views/industry/components/TableForBrand.vue'
 import IndustrySetting from '@/views/industry/components/Setting.vue'
 import Drawer from '@/components/Drawer.vue'
-import IndustryDrawerSlot from '@/views/industry/components/IndustryDrawerSlot.vue'
-import IndustryDrawerSlotBtn from '@/views/industry/components/IndustryDrawerSlotBtn.vue'
+import DrawerContent from '@/views/industry/components/DrawerContent.vue'
+import DrawerButton from '@/views/industry/components/DrawerButton.vue'
 import { mapMutations, mapState } from 'vuex'
 import {
   getIndustryFlatList,
@@ -124,8 +126,8 @@ export default {
   components: {
     IndustrySetting,
     Drawer,
-    IndustryDrawerSlot,
-    IndustryDrawerSlotBtn,
+    DrawerContent,
+    DrawerButton,
     TableForBrand,
     TableForIndustry,
     ChartForIndustry,
@@ -133,10 +135,11 @@ export default {
   },
   data () {
     return {
-      activeName: 'brand',
+      activeName: 'industry',
       rangeItemVal: '1',
       groupItemVal: '0',
       salesItemVal: '1',
+      sortItemVal: '1',
       drawerShow: false,
       categoryForm: {},
       monthOption: [],
@@ -144,7 +147,6 @@ export default {
       industryEchart: {},
       industryTableData: [],
       isLoadingIndustryTable: false,
-      industrySort: '1',
       brandEchart: {
         gmvList: [],
         percentList: [],
@@ -152,7 +154,6 @@ export default {
       },
       brandTableData: [],
       isLoadingBrandTable: false,
-      brandSort: '1',
       page: 1,
       pageSize: 10,
       brandCount: 0
@@ -168,11 +169,12 @@ export default {
     ...mapMutations('industry', ['SET_INDUSTRY_CATRGOTY_TABLE_PARAM']),
     // 切换tab
     handleTabClick (tab) {
+      this.page = 1
+      this.sortItemVal = '1'
       this.getIndustryFlatList()
       this.getIndustryEchart()
       this.getBrandList()
       this.getBrandEchart()
-      this.page = 1
     },
     // 切换范围
     handleRangeClick (rangeItem) {
@@ -192,8 +194,6 @@ export default {
       this.getIndustryEchart()
       this.getMonthOption()
         .then(() => {
-          this.selectdMonth = this.monthOption[0]
-        }).then(() => {
           this.getIndustryFlatList()
           this.getBrandList()
           this.getBrandEchart()
@@ -241,6 +241,24 @@ export default {
         this.$message.error('行业概览总销售趋势图请求失败')
       }
     },
+
+    // 行业tab table 排序
+    handleIndustrySort (val) {
+      this.sortItemVal = val
+      this.page = 1
+      this.getIndustryFlatList()
+    },
+    // 品牌tab table 翻页
+    changeBrandPage (page) {
+      this.page = page
+      this.getBrandList()
+    },
+    // tab 品牌排序
+    handleBrandSort (val) {
+      this.sortItemVal = val
+      this.page = 1
+      this.getBrandList()
+    },
     // 行业tab table
     async getIndustryFlatList () {
       if (!this.categoryObj.id || this.activeName !== 'industry') return ''
@@ -250,7 +268,7 @@ export default {
         tmallMonthList: this.selectdMonth,
         id: this.categoryForm.id,
         remark: this.categoryForm.remark,
-        sort: this.industrySort
+        sort: this.sortItemVal
       }
       this.SET_INDUSTRY_CATRGOTY_TABLE_PARAM(param)
       this.isLoadingIndustryTable = true
@@ -261,12 +279,6 @@ export default {
       } else {
         this.$message.error('行业子品类table数据请求失败')
       }
-    },
-    // 行业tab table 排序
-    handleIndustrySort (val) {
-      this.industrySort = val
-      this.page = 1
-      this.getIndustryFlatList()
     },
     // 品牌tab 图表
     async getBrandEchart () {
@@ -290,7 +302,7 @@ export default {
         tmallMonthList: this.selectdMonth,
         id: this.categoryForm.id,
         remark: this.categoryForm.remark,
-        sort: this.brandSort,
+        sort: this.sortItemVal,
         page: this.page,
         pageSize: this.pageSize
       }
@@ -305,22 +317,12 @@ export default {
         this.$message.error('行业品牌列表请求失败')
       }
     },
-    // 品牌tab table 翻页
-    changeBrandPage (page) {
-      this.page = page
-      this.getBrandList()
-    },
-    // tab 品牌排序
-    handleBrandSort (val) {
-      this.brandSort = val
-      this.page = 1
-      this.getBrandList()
-    },
     // 行业初始化时 monthOption
     async getMonthOption () {
       const res = await getMonthOption({ range: this.rangeItemVal, group: this.groupItemVal })
       if (res.code === 200) {
         this.monthOption = res.result
+        this.selectdMonth = this.monthOption[0]
       } else {
         this.$message.error('行业分类月份列表请求失败')
       }
@@ -328,9 +330,6 @@ export default {
   },
   mounted () {
     this.getMonthOption()
-      .then(() => {
-        this.selectdMonth = this.monthOption[0]
-      })
   }
 }
 </script>
