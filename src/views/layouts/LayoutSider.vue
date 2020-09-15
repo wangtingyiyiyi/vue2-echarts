@@ -7,7 +7,10 @@
       @select="menuSelect">
       <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name">
         <Svg-Icon :icon-class="item.meta.svgIcon" class="m-r-7"/>
-        <span slot="title">{{item.name}}</span>
+        <span slot="title">
+          <span>{{item.name}}</span>
+          <span class="border"></span>
+        </span>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -57,4 +60,13 @@ export default {
   .el-menu
     height 100%
     border-right none
+    .is-active
+      .border
+        width 2px
+        height 20px
+        background-color $base-blue
+        display inline-block
+        position absolute
+        top 18px
+        left 198px
 </style>
