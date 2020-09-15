@@ -1,17 +1,26 @@
 <template>
   <div class="index">
     <div class="login-wapper">
-      <el-form :model="form" label-width="80px" label-position="left" class="login-form">
-        <el-form-item label="账号">
-          <el-input v-model="form.login"></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="form.psw"></el-input>
+      <div class="qr-wapper" @click="changeLoginType">
+        <Svg-Icon icon-class="qrcode" class="qr-code"/>
+      </div>
+      <el-form :model="form" label-position="left" class="login-form" size="large" v-if="isPsw">
+        <div class="title">久谦中台数据库</div>
+        <el-form-item>
+          <el-input v-model="form.login" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">登陆</el-button>
+          <el-input v-model="form.psw" placeholder="请输入登陆密码"></el-input>
         </el-form-item>
+        <div class="flex-between">
+          <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
+          <div class="empty-space"></div>
+          <el-button type="text" size="medium" class="apply-btn" @click="onSubmit">申请试用</el-button>
+        </div>
       </el-form>
+      <div v-if="!isPsw">
+        企业微信扫码登陆
+      </div>
     </div>
   </div>
 </template>
@@ -22,7 +31,9 @@ export default {
   data () {
     return {
       form: {},
-      target: target
+      target: target,
+      isPsw: true
+
     }
   },
   methods: {
@@ -33,6 +44,9 @@ export default {
       sessionStorage.setItem('createUser', '林融卿')
       this.$message.success('hhh')
       this.$router.push({ name: this.target.name })
+    },
+    changeLoginType () {
+      this.isPsw = !this.isPsw
     }
   },
   beforeCreate () {
@@ -50,11 +64,53 @@ export default {
   justify-content center
 
 .login-wapper
-  height 400px
-  width 400px
-  background-color $base-white-smoke
+  height 350px
+  width 510px
+  background-color #fff
 
 .login-form
-  padding 20px
+  padding 54px 92px
 
+.title
+  font-size 18px
+  color #181818
+  margin-bottom 31px
+
+.apply-btn
+  border 1px solid $color-border
+
+.flex-between
+  width 100%
+  display flex
+  align-items baseline
+  justify-content flex-start
+  .login-btn
+    width 47%
+  .empty-space
+    min-width 6%
+  .apply-btn
+    width 47%
+
+.qr-wapper
+  width 40px
+  height 40px
+  background-color #dfdfdf
+  padding 10px
+  float right
+  position relative
+  cursor pointer
+  &::before
+    content: "";
+    position: absolute;
+    left: -29.5px;
+    top: 23px;
+    display: block;
+    width: 85px;
+    height: 48px;
+    background: #fff;
+    transform: rotate(45deg);
+.qr-code
+  width 100%
+  height 100%
+  color #8A8A8A
 </style>

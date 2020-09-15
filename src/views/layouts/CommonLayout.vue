@@ -61,11 +61,11 @@ export default {
   max-width 1440px
   min-width 1200px
   margin 60px auto 0
-  background-color #F8F8F8
+  background-color $base-white
 
 .content-wapper
   padding 20px 0 0 20px
-  background-color #F8F8F8
+  background-color $base-white
 
 .m-l-200
   margin-left 200px
