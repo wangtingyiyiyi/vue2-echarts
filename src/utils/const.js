@@ -1,6 +1,6 @@
 // 常量
 // 范围按钮
-export const RANGE_BUTTONS = [
+export const RANGE_LEVEL = [
   {
     icon: 'user',
     label: '近一年',
@@ -12,7 +12,7 @@ export const RANGE_BUTTONS = [
   }
 ]
 // 颗粒度按钮
-export const GROUP_BUTTONS = [
+export const GROUP_LEVEL = [
   {
     icon: 'user',
     label: '按月',
@@ -32,7 +32,7 @@ export const GROUP_BUTTONS = [
   }
 ]
 // 图标按钮
-export const ECHARTS_BUTTONS = [
+export const VIEW_LEVEL = [
   {
     icon: 'user',
     label: '按销量',
@@ -60,3 +60,48 @@ export const SORT_TYPES = {
   salesSequential: '2', // 销量环比
   gmvSequential: '3' // 销售额环比
 }
+
+// 行业提数-品牌展开
+export const CATEGORY_LEVEL = [
+  {
+    label: '一级品类',
+    value: '0'
+  }, {
+    label: '二级品类',
+    value: '1'
+  }, {
+    label: '三级品类',
+    value: '2'
+  }
+]
+
+// 行业提数-品类聚合
+export const CATEGORT_GROUP = [
+  {
+    label: '按品牌',
+    value: '0'
+  }, {
+    label: '按店铺',
+    value: '1'
+  }, {
+    label: '按SPU',
+    value: '2'
+  }
+]
+
+// 行业提数-数据指标
+export const DATA_INDEX = [
+  {
+    label: '销量',
+    value: '0'
+  }, {
+    label: 'ASP',
+    value: '1'
+  }, {
+    label: 'GMV',
+    value: '3'
+  }, {
+    label: 'SPU数',
+    value: '4'
+  }
+]

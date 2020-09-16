@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ECHARTS_BUTTONS } from '@/utils/const.js'
+import { VIEW_LEVEL } from '@/utils/const.js'
 export default {
   name: 'EchartsButtons',
   props: {
@@ -24,7 +24,7 @@ export default {
   },
   data () {
     return {
-      EchartsButtons: ECHARTS_BUTTONS
+      EchartsButtons: VIEW_LEVEL
     }
   },
   methods: {

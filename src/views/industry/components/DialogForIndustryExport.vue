@@ -2,7 +2,6 @@
   <el-dialog
     :visible.sync="dialogVisible"
     :show-close="false"
-    class="indusrty-select-dialog"
     :modal="true"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
@@ -10,9 +9,51 @@
     width="800px">
     <div slot="title">行业提数</div>
 
-    <div>
-      huhu
-    </div>
+    <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
+      <el-form-item label="目标行业">
+        <Select-Tree />
+      </el-form-item>
+      <el-form-item label="时间范围">
+        <el-button-group v-model="form.range">
+          <el-button
+            v-for="item in RANGE_LEVEL"
+            :key="item.value"
+            :type="form.range === item.value ? 'primary' : ''">{{item.label}}</el-button>
+        </el-button-group>
+      </el-form-item>
+      <el-form-item label="颗粒度">
+        <el-button-group v-model="form.group">
+          <el-button
+            v-for="item in GROUP_LEVEL"
+            :key="item.value"
+            :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
+        </el-button-group>
+      </el-form-item>
+      <el-form-item label="品类展开">
+        <el-checkbox-group v-model="form.cate">
+          <el-checkbox
+            v-for="item in CATEGORY_LEVEL"
+            :key="item.value"
+            :label="item.value">{{item.label}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="品类聚合">
+        <el-checkbox-group v-model="form.cateGroup">
+          <el-checkbox
+            v-for="item in CATEGORT_GROUP"
+            :key="item.value"
+            :label="item.value">{{item.label}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="数据指标">
+        <el-checkbox-group v-model="form.index">
+          <el-checkbox
+            v-for="item in DATA_INDEX"
+            :key="item.value"
+            :label="item.value">{{item.label}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+    </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="onCancel">取消</el-button>
       <el-button type="primary" @click="onSubmit">导出</el-button>
@@ -21,6 +62,8 @@
 </template>
 
 <script>
+import { RANGE_LEVEL, GROUP_LEVEL, CATEGORY_LEVEL, CATEGORT_GROUP, DATA_INDEX } from '@/utils/const.js'
+import SelectTree from '@/views/industry/components/SelectTree.vue'
 export default {
   name: 'DialogForIndustryExport',
   props: {
@@ -31,16 +74,22 @@ export default {
   },
   data () {
     return {
-      likeCondition: '',
-      checkAll: false,
-      form: {},
-      leftTree: [],
-      rightTree: [],
-      resTree: [],
-      tempTree: [],
-      selectTreeId: [],
-      isFilterRes: false
+      form: {
+        range: '1',
+        group: '0',
+        cate: [],
+        cateGroup: [],
+        index: []
+      },
+      RANGE_LEVEL: RANGE_LEVEL,
+      GROUP_LEVEL: GROUP_LEVEL,
+      CATEGORY_LEVEL: CATEGORY_LEVEL,
+      CATEGORT_GROUP: CATEGORT_GROUP,
+      DATA_INDEX: DATA_INDEX
     }
+  },
+  components: {
+    SelectTree
   },
   methods: {
     closeDialog () {
@@ -57,15 +106,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.indusrty-select-dialog >>>
-  .el-dialog
-    margin-top 0px
-    margin-bottom 50px
-    margin-left calc((100vw - 1100px) / 2) // 屏幕宽度 - （抽屉宽度 + 弹出框宽度 ）的一半
-  .el-dialog__header
-    border-bottom 2px solid $color-border
-  .el-dialog__footer
-    text-align center
-  .el-dialog__body
-    padding 23px
 </style>

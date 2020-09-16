@@ -29,7 +29,11 @@ import {
   Tree,
   OptionGroup,
   MessageBox,
-  Pagination
+  Pagination,
+  Radio,
+  RadioGroup,
+  RadioButton,
+  CheckboxGroup
 } from 'element-ui'
 
 const components = [
@@ -60,7 +64,11 @@ const components = [
   Checkbox,
   Tree,
   OptionGroup,
-  Pagination
+  Pagination,
+  Radio,
+  RadioGroup,
+  RadioButton,
+  CheckboxGroup
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

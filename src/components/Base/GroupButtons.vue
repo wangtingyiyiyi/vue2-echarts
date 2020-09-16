@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { GROUP_BUTTONS } from '@/utils/const.js'
+import { GROUP_LEVEL } from '@/utils/const.js'
 export default {
   name: 'groupButtons',
   props: {
@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      groupButtons: GROUP_BUTTONS
+      groupButtons: GROUP_LEVEL
     }
   },
   methods: {

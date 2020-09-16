@@ -205,38 +205,31 @@ export default {
 <style lang="stylus" scoped>
 .indusrty-select-dialog >>>
   .el-dialog
-    margin-top 0px
-    margin-bottom 50px
     margin-left calc((100vw - 1100px) / 2) // 屏幕宽度 - （抽屉宽度 + 弹出框宽度 ）的一半
-  .el-dialog__header
-    border-bottom 2px solid $color-border
-  .el-dialog__footer
-    text-align center
-  .el-dialog__body
-    padding 23px
-    .tree-transfer
-      display flex
-      .transfer-left
-        border-radius 1px
-        width 46%
-        border 1px solid #E7E7E7
-      .transfer-center
-        border-radius 1px
-        width 8%
-        margin auto 0
-        text-align center
-        .el-button
-          margin-left 0
-          margin-bottom 10px
-      .transfer-right
-        border-radius 1px
-        width 46%
-        border 1px solid #E7E7E7
-      .header
-        background-color #FAFAFA
-        padding 16px
-      .tree-wapper
-        height 50vh
-      .check-all
-        padding 10px 0
+  .tree-transfer
+    display flex
+    .transfer-left
+      border-radius 1px
+      width 46%
+      border 1px solid #E7E7E7
+    .transfer-center
+      border-radius 1px
+      width 8%
+      margin auto 0
+      text-align center
+      .el-button
+        margin-left 0
+        margin-bottom 10px
+    .transfer-right
+      border-radius 1px
+      width 46%
+      border 1px solid #E7E7E7
+    .header
+      background-color #FAFAFA
+      padding 16px
+    .tree-wapper
+      height 50vh
+    .check-all
+      padding 10px 0
+
 </style>

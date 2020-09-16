@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { RANGE_BUTTONS } from '@/utils/const.js'
+import { RANGE_LEVEL } from '@/utils/const.js'
 export default {
   name: 'RangeButtons',
   props: {
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      rangeButtons: RANGE_BUTTONS
+      rangeButtons: RANGE_LEVEL
     }
   },
   methods: {
