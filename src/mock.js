@@ -205,3 +205,22 @@ export const mockBrandChartData = {
     }
   ]
 }
+
+// brand SPU table
+export const mockBrandSpuData = [
+  {
+    spuid: '615132457872',
+    spuname: '花西子空气蜜粉/散粉定妆粉饼女持久控油防水防汗遮瑕不脱妆自然',
+    spuUrl: 'http://detail.tmall.com/item.htm?id=615132457872',
+    avgPrice: 162,
+    sumSalescount: 12323,
+    sequential: -0.23117934,
+    sumGmv: 89400000,
+    outCat1: '彩妆/美护工具',
+    outCat2: '面部彩妆',
+    outCat3: '面部彩妆',
+    shopname: '花西子旗舰店',
+    gmvBeanList: [226897856, 245539408, 364132992, 251961344, 169551344],
+    monthBeanList: ['3_2019_3', '3_2019_4', '3_2020_1', '3_2020_2', '3_2020_3']
+  }
+]

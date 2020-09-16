@@ -41,49 +41,19 @@
               <Svg-Icon icon-class="empty" class="empty-svg"/>
             </div>
           </el-tab-pane>
-          <!-- <el-tab-pane label="店铺数据" name="shop">
-            <div v-show="hasBrandFormParam">
-              <Title title="总销售趋势"/>
-              <div class="flex-between m-b-10">
-                <Echarts-Buttons
-                  :activeVal="viewItemVal"
-                  style="width: 100%"
-                  @handleEchartsClick="handleEchartsClick"/>
-
+          <el-tab-pane label="SPU" name="spu">
+            <div class="flex-between m-b-10">
+              <Brand-Table-Brands
+                :brands="brandList"
+                :activeBrand="activeBrand"
+                @changeActiveBrand="changeActiveBrand"/>
                 <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="selectdMonth"
-                  @handleSelectdMonth="handleSelectdMonth"/>
-              </div>
-              <div ref="chartForShop">
-                <Chart-For-Shop :data="shopTableChart" style="width: 100%; height: 500px"/>
-              </div>
-              <Title title="按品牌展开"/>
-              <div class="flex-between m-b-10">
-                <Brand-Table-Brands
-                  :brands="brandList"
-                  :activeBrand="activeBrand"
-                  @changeActiveBrand="changeActiveBrand"/>
-                 <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="tableMonth"
-                  @handleSelectdMonth="handleTableMonth"/>
-              </div>
-               <Table-For-Shop
-                ref="tableForShop"
-                :isLoading="isLoadingOfShopTable"
-                :sortItemVal="sortItemVal"
-                :tableData="shopTableData"
-                @changeSortItemVal="changeSortItemVal"/>
-              </div>
-
-              <div v-show="!hasBrandFormParam">
-                <Title title="总销售趋势"/>
-                <Svg-Icon icon-class="empty" class="empty-svg"/>
-                <Title title="按品牌展开"/>
-                <Svg-Icon icon-class="empty" class="empty-svg"/>
-              </div>
-          </el-tab-pane> -->
+                :monthOption="monthOption"
+                :selectdMonth="tableMonth"
+                @handleSelectdMonth="handleTableMonth"/>
+            </div>
+            <Table-For-Spu :tableData="mockBrandSpuData"/>
+          </el-tab-pane>
       </el-tabs>
 
       <Range-Buttons
@@ -103,10 +73,11 @@
 import BrandSetting from '@/views/brand/components/BrandSetting.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
 import TableForBrand from '@/views/brand/components/TableForBrand.vue'
+import TableForSpu from '@/views/brand/components/TableForSpu.vue'
 import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
 // import ChartForShop from '@/views/brand/components/ChartForShop.vue'
 // import TableForShop from '@/views/brand/components/TableForShop.vue'
-import { mockBrandChartData } from '@/mock'
+import { mockBrandChartData, mockBrandSpuData } from '@/mock'
 import { mapState } from 'vuex'
 import { getMonthOption, getTableForBrandShop, getChartForBrandShop } from '@/api/brand'
 import { deleteEmptyKeyVal } from '@/utils/common.js'
@@ -116,7 +87,8 @@ export default {
     BrandSetting,
     BrandTableBrands,
     TableForBrand,
-    ChartForBrand
+    ChartForBrand,
+    TableForSpu
     // ChartForShop,
     // TableForShop
   },
@@ -136,7 +108,8 @@ export default {
       tableMonth: {},
       isLoadingOfShopTable: false,
       isLoadingOfBrandTable: false,
-      shopTableChart: {}
+      shopTableChart: {},
+      mockBrandSpuData: mockBrandSpuData
     }
   },
   computed: {
