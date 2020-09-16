@@ -16,8 +16,8 @@
       </el-table-column>
       <el-table-column align="right" width="180">
         <template #header>
-          <div class="sort-button" @click="handleSort('0')">销量
-            <i :class="[sortItemVal === '0' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+          <div class="sort-button"  @click="handleSort('0')">销量
+            <Svg-Icon icon-class="descending" :class="[sortItemVal == '0' ? 'active-sort' : '']"/>
           </div>
         </template>
         <template slot-scope="{row}">{{row.sumSales | format}}</template>
@@ -25,7 +25,7 @@
       <el-table-column align="right">
         <template #header>
           <div class="sort-button"  @click="handleSort('1')">销售额
-            <i :class="[sortItemVal === '1' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+            <Svg-Icon icon-class="descending" :class="[sortItemVal == '1' ? 'active-sort' : '']"/>
           </div>
         </template>
         <template slot-scope="{row}">{{row.sumGmv | format}}</template>
@@ -42,7 +42,7 @@
       <el-table-column align="right">
         <template #header>
           <div class="sort-button"  @click="handleSort('2')">销售环比
-            <i :class="[sortItemVal === '2' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+            <Svg-Icon icon-class="descending" :class="[sortItemVal == '2' ? 'active-sort' : '']"/>
           </div>
         </template>
         <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
@@ -50,17 +50,12 @@
       <el-table-column align="right">
         <template #header>
           <div class="sort-button"  @click="handleSort('3')">销售额环比
-            <i :class="[sortItemVal === '3' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+            <Svg-Icon icon-class="descending" :class="[sortItemVal == '3' ? 'active-sort' : '']"/>
           </div>
         </template>
         <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
       </el-table-column>
       <el-table-column align="right" label="均价">
-        <!-- <template #header>
-          <div class="sort-button"  @click="handleSort('avgPrice')">均价
-            <i :class="[activedSortKey == 'avgPrice' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
-          </div>
-        </template> -->
         <template slot-scope="{row}">{{row.avgPrice | format}}</template>
       </el-table-column>
     </el-table>

@@ -25,7 +25,7 @@
               <Title title="按子品牌展开"/>
 
               <Brand-Table-Brands
-                :brands="brands"
+                :brands="brandList"
                 :activeBrand="activeBrand"
                 class="m-b-10"
                 @changeActiveBrand="changeActiveBrand"/>
@@ -41,7 +41,7 @@
               <Svg-Icon icon-class="empty" class="empty-svg"/>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="店铺数据" name="shop">
+          <!-- <el-tab-pane label="店铺数据" name="shop">
             <div v-show="hasBrandFormParam">
               <Title title="总销售趋势"/>
               <div class="flex-between m-b-10">
@@ -56,12 +56,12 @@
                   @handleSelectdMonth="handleSelectdMonth"/>
               </div>
               <div ref="chartForShop">
-                <Chart-For-Shop style="width: 100%; height: 500px"/>
+                <Chart-For-Shop :data="shopTableChart" style="width: 100%; height: 500px"/>
               </div>
               <Title title="按品牌展开"/>
               <div class="flex-between m-b-10">
                 <Brand-Table-Brands
-                  :brands="brands"
+                  :brands="brandList"
                   :activeBrand="activeBrand"
                   @changeActiveBrand="changeActiveBrand"/>
                  <Month-Options
@@ -83,7 +83,7 @@
                 <Title title="按品牌展开"/>
                 <Svg-Icon icon-class="empty" class="empty-svg"/>
               </div>
-          </el-tab-pane>
+          </el-tab-pane> -->
       </el-tabs>
 
       <Range-Buttons
@@ -104,24 +104,25 @@ import BrandSetting from '@/views/brand/components/BrandSetting.vue'
 import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
 import TableForBrand from '@/views/brand/components/TableForBrand.vue'
 import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
-import ChartForShop from '@/views/brand/components/ChartForShop.vue'
-import TableForShop from '@/views/brand/components/TableForShop.vue'
+// import ChartForShop from '@/views/brand/components/ChartForShop.vue'
+// import TableForShop from '@/views/brand/components/TableForShop.vue'
 import { mockBrandChartData } from '@/mock'
 import { mapState } from 'vuex'
-import { getMonthOption, getTableForBrandShop } from '@/api/brand'
+import { getMonthOption, getTableForBrandShop, getChartForBrandShop } from '@/api/brand'
+import { deleteEmptyKeyVal } from '@/utils/common.js'
 
 export default {
   components: {
     BrandSetting,
     BrandTableBrands,
     TableForBrand,
-    ChartForBrand,
-    ChartForShop,
-    TableForShop
+    ChartForBrand
+    // ChartForShop,
+    // TableForShop
   },
   data () {
     return {
-      activeName: 'shop',
+      activeName: 'brand',
       viewItemVal: '0',
       rangeItemVal: '1',
       groupItemVal: '0',
@@ -134,14 +135,15 @@ export default {
       selectdMonth: {},
       tableMonth: {},
       isLoadingOfShopTable: false,
-      isLoadingOfBrandTable: false
+      isLoadingOfBrandTable: false,
+      shopTableChart: {}
     }
   },
   computed: {
     hasBrandFormParam () {
-      return Object.keys(this.brands).length !== 0
+      return Object.keys(this.brandList).length !== 0
     },
-    ...mapState('brand', ['brands'])
+    ...mapState('brand', ['brandList', 'cateList'])
   },
   methods: {
     // 切换tab
@@ -153,7 +155,7 @@ export default {
     },
     // 配置筛选 搜索
     handleSettingParam () {
-      this.activeBrand = this.brands[0]
+      this.activeBrand = this.brandList[0]
       this.getChartForBrand()
       this.getChartForBrand()
       this.getTableForBrand()
@@ -222,8 +224,21 @@ export default {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
     },
     // 店铺 chart
-    getChartForShop () {
+    async getChartForShop () {
       if (!this.activeBrand.brandId || this.activeName !== 'shop') return ''
+      const param = {
+        group: this.groupItemVal,
+        view: this.viewItemVal,
+        brandList: this.brandList,
+        cateList: [deleteEmptyKeyVal(this.cateList[0])],
+        tmallMonthList: this.selectdMonth
+      }
+      const res = await getChartForBrandShop(param)
+      if (res.code === 200) {
+        this.shopTableChart = res.result
+      } else {
+        this.$message.error('')
+      }
     },
     // 店铺 table
     async getTableForShop () {
@@ -232,7 +247,7 @@ export default {
         range: this.rangeItemVal,
         group: this.groupItemVal,
         sort: this.sortItemVal,
-        cateList: [{ outCat1: '面部护肤品' }],
+        cateList: [deleteEmptyKeyVal(this.cateList[0])],
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }

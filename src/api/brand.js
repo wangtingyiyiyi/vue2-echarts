@@ -20,3 +20,8 @@ export function getCategorytByBrand (params) {
 export function getTableForBrandShop (params) {
   return post('brandShop/listTotal', params)
 }
+
+// 品牌店铺 cahrt
+export function getChartForBrandShop (params) {
+  return post('brandShop/listGraph', params)
+}

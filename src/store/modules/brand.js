@@ -1,16 +1,16 @@
 import { SET_BRAND_BRANDS, SET_BRAND_CATEGORY } from '../mutation'
 
 const state = {
-  brands: [],
-  cates: []
+  brandList: [],
+  cateList: []
 }
 
 const mutations = {
   [SET_BRAND_BRANDS] (state, payload) {
-    state.brands = [...payload]
+    state.brandList = [...payload]
   },
   [SET_BRAND_CATEGORY] (state, payload) {
-    state.cates = [...payload]
+    state.cateList = [...payload]
   }
 }
 
