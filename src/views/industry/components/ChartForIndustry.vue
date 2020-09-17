@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, thousands, callMax } from '@/utils/chart.js'
+import { yAxisFormatter, xAxisDateFormatter, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
 export default {
   name: 'ChartForIndustry',
   props: {
@@ -29,6 +29,10 @@ export default {
   },
   methods: {
     init () {
+      const minGmv = callMin(this.industryEchart.gmvList)
+      const maxGmv = callMax(this.industryEchart.gmvList)
+      const minSales = callMin(this.industryEchart.salesList)
+      const maxSales = callMax(this.industryEchart.salesList)
       this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
@@ -86,8 +90,9 @@ export default {
             type: 'value',
             position: 'left',
             min: 0,
-            max: callMax(this.industryEchart.gmvList),
-            interval: Math.ceil(callMax(this.industryEchart.gmvList) / 5),
+            max: maxGmv,
+            interval: callInterval(minGmv, maxGmv),
+            // interval: Math.ceil(callMax(this.industryEchart.gmvList) / 5),
             axisLine: {
               show: false
             },
@@ -100,7 +105,6 @@ export default {
               }
             },
             axisLabel: {
-              showMinLabel: false,
               formatter: function (value) {
                 return yAxisFormatter(value)
               }
@@ -109,8 +113,11 @@ export default {
             type: 'value',
             position: 'right',
             min: 0,
-            max: callMax(this.industryEchart.salesList),
-            interval: Math.ceil(callMax(this.industryEchart.salesList) / 5),
+            max: maxSales,
+            interval: callInterval(minSales, maxSales),
+            // min: callMin(this.industryEchart.salesList),
+            // max: callMax(this.industryEchart.salesList),
+            // interval: Math.ceil((callMax(this.industryEchart.salesList) - callMin(this.industryEchart.salesList)) / 5),
             axisLine: {
               show: false
             },
@@ -123,7 +130,6 @@ export default {
               }
             },
             axisLabel: {
-              showMinLabel: false,
               formatter: function (value) {
                 return yAxisFormatter(value)
               }

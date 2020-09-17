@@ -4,9 +4,9 @@ export function yAxisFormatter (value) {
   if (value >= 0 && value < 10000) {
     return value
   } else if (value >= 10000 && value < 99999999) {
-    return thousands(parseInt((value / 10000))) + '万'
+    return thousands(((value / 10000))) + '万'
   } else {
-    return thousands(parseInt((value / 100000000))) + '亿'
+    return thousands(((value / 100000000))) + '亿'
   }
 }
 
@@ -45,14 +45,67 @@ export function xAxisDateFormatter (value) {
 
 // 计算最大值
 export function callMax (arr) {
-  const max = Math.ceil(Math.max(...arr) / 8) * 10
-  if (max >= 0 && max < 10000) {
-    return max
-  } else if (max >= 10000 && max < 99999999) {
-    return parseInt((max / 100000)) * 100000
-  } else {
-    return parseInt((max / 1000000000)) * 1000000000
+  const max = Math.ceil(Math.max(...arr) / 9.5 * 10)
+  let res = 0
+  if (max >= 0 && max < 10) { // 个
+    res = 10
+  } else if (max >= 10 && max < 99) { // 十
+    res = Math.ceil(max / 10) // 向上取整
+  } else if (max >= 100 && max < 999) { // 百
+    res = Math.ceil(max / 100)
+  } else if (max >= 1000 && max < 9999) { // 千
+    res = Math.ceil(max / 1000)
+  } else if (max >= 10000 && max < 99999) { // 万
+    res = roundingFun(max, 10000)
+  } else if (max >= 100000 && max < 999999) { // 十万
+    res = roundingFun(max, 100000)
+  } else if (max >= 1000000 && max < 9999999) { // 百万
+    res = roundingFun(max, 1000000)
+  } else if (max > 10000000 && max < 99999999) { // 千万
+    res = roundingFun(max, 10000000)
+  } else if (max > 100000000 && max < 999999999) { // 亿
+    res = roundingFun(max, 100000000)
+  } else if (max > 1000000000 && max < 9999999999) { // 十亿
+    res = roundingFun(max, 1000000000)
+  } else if (max > 10000000000) { // 百亿及以上
+    res = roundingFun(max, 10000000000)
   }
+  return res
+}
+
+// 取整策略
+export function roundingFun (max, rank) {
+  const val = max / rank
+  const integer = Math.ceil(val)
+  const decimal = val - integer
+  if (decimal <= 0.5) {
+    return (integer + 0.5) * rank
+  } else {
+    return (integer + 1) * rank
+  }
+}
+
+// 计算最小值
+export function callMin (arr) {
+  const min = Math.ceil(Math.min(...arr) / 11 * 10)
+  let res = 0
+  if (min >= 0 && min < 10000) {
+    res = min
+  } else if (min >= 10000 && min < 99999999) {
+    res = Math.ceil((min / 100000)) * 100000
+  } else {
+    res = Math.ceil((min / 100000000)) * 100000000
+  }
+  console.info(min, 'min', res)
+  return res
+}
+
+// 计算callInterval
+export function callInterval (min, max) {
+  const gap = max - 0
+  const interval = gap / 5
+  console.info(gap, 'callInterval', interval, max)
+  return interval
 }
 
 // 计算百分比
