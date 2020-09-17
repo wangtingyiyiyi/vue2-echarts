@@ -92,7 +92,6 @@ export default {
             min: 0,
             max: maxGmv,
             interval: callInterval(minGmv, maxGmv),
-            // interval: Math.ceil(callMax(this.industryEchart.gmvList) / 5),
             axisLine: {
               show: false
             },
@@ -115,9 +114,6 @@ export default {
             min: 0,
             max: maxSales,
             interval: callInterval(minSales, maxSales),
-            // min: callMin(this.industryEchart.salesList),
-            // max: callMax(this.industryEchart.salesList),
-            // interval: Math.ceil((callMax(this.industryEchart.salesList) - callMin(this.industryEchart.salesList)) / 5),
             axisLine: {
               show: false
             },

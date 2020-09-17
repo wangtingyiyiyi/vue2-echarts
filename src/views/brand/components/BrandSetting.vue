@@ -21,7 +21,7 @@
             :label="item.brand"
           ></el-option>
         </el-select>
-        <el-button type="primary" class="m-l-24" @click="onSubmit" :disabled="brandForm.brandList.length === 0">查询</el-button>
+        <el-button type="primary" class="m-l-24" @click="onSubmit" :disabled="isDisabled">查询</el-button>
         <el-button @click="onClean">清除</el-button>
       </el-form-item>
       <el-form-item label="行业" prop="cid">
@@ -58,11 +58,16 @@ export default {
   mixins: [mixin],
   data () {
     return {
-      brandForm: { brandList: [], cateList: [{ outCat1: '', outCat2: '', outCat3: '' }] },
+      brandForm: { brandList: [], cateList: [{ outCat1: '', outCat2: '', outCat3: '', id: '' }] },
       brandOption: [],
       categoryOption: [],
       categoryLabel: '',
       loading: false
+    }
+  },
+  computed: {
+    isDisabled () {
+      return !(this.brandForm.brandList.length !== 0 && this.brandForm.cateList[0].id !== '')
     }
   },
   methods: {
@@ -87,6 +92,7 @@ export default {
       this.brandForm.cateList[0].outCat1 = data.outCat1
       this.brandForm.cateList[0].outCat2 = data.outCat2
       this.brandForm.cateList[0].outCat3 = data.outCat3
+      this.brandForm.cateList[0].id = data.id
       this.$refs.select.blur()
       console.info(data)
     },

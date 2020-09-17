@@ -25,3 +25,13 @@ export function getTableForBrandShop (params) {
 export function getChartForBrandShop (params) {
   return post('brandShop/listGraph', params)
 }
+
+// 品牌概览 table
+export function getTableForBrand (params) {
+  return post('brand/listTotal', params)
+}
+
+// 品牌概览 chart
+export function getChartForBrand (params) {
+  return post('brand/listGraph', params)
+}

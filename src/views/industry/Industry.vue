@@ -314,7 +314,6 @@ export default {
   },
   mounted () {
     this.getMonthOption()
-    console.info(this.$refs.brandTitle)
   }
 }
 </script>

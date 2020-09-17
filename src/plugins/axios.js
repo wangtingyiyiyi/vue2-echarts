@@ -18,10 +18,9 @@ export function objToStr (obj) {
 // 请求拦截
 axios.interceptors.request.use(function (config) {
   // 封装每一个API传给后段的参数
-  // config.data.token = sessionStorage.getItem('token')
-  // config.data.userId = sessionStorage.getItem('userId')
-  // config.data.role = sessionStorage.getItem('role')
-  // config.data.createUser = sessionStorage.getItem('createUser')
+  // if (sessionStorage.getItem('token')) {
+  //   config.headers.Authorization = sessionStorage.getItem('token')
+  // }
   return config
 }, function (error) {
   // Do something with request error
@@ -44,22 +43,22 @@ export function post (url, params = {}) {
   params.userId = sessionStorage.getItem('userId')
   params.role = sessionStorage.getItem('role')
   params.createUser = sessionStorage.getItem('createUser')
-  // return new Promise((resolve, reject) => {
-  //   axios.post(url, params)
-  //     .then(response => {
-  //       resolve(response.data)
-  //     }, err => {
-  //       reject(err)
-  //     })
-  // })
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     axios.post(url, params)
-      .then(function (response) {
+      .then(response => {
         resolve(response.data)
-      }, function (err) {
+      }, err => {
         reject(err)
       })
   })
+  // return new Promise(function (resolve, reject) {
+  //   axios.post(url, params)
+  //     .then(function (response) {
+  //       resolve(response.data)
+  //     }, function (err) {
+  //       reject(err)
+  //     })
+  // })
 }
 
 export function get (url, params = {}) {

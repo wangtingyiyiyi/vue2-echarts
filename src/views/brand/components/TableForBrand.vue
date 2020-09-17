@@ -1,7 +1,5 @@
 
 <template>
-  <!-- header-cell-class-name="tableCellClass" -->
-  <!-- cell-class-name="tableCellClass" -->
   <el-table
     :data="tableData"
     header-row-class-name="tableHeaderClass"
@@ -9,7 +7,7 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="category"
+      prop="label"
       label="子品类"
       width="180">
     </el-table-column>
@@ -19,93 +17,57 @@
       align="right"
       width="180">
       <template #header>
-        <div class="sort-button" @click="handleSort('salesCount')">销量
-          <i :class="[activedSortKey == 'salesCount' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+        <div class="sort-button"  @click="handleSort('0')">销量
+          <Svg-Icon icon-class="descending" :class="[sortItemVal == '0' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesCount | format}}</template>
+      <template slot-scope="{row}">{{row.sumSales | format}}</template>
     </el-table-column>
-    <el-table-column
-      prop="salesAmount"
-      align="right"
-      label="销售额">
+    <el-table-column align="right">
       <template #header>
-        <div class="sort-button"  @click="handleSort('salesAmount')">销售额
-          <i :class="[activedSortKey == 'salesAmount' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+        <div class="sort-button"  @click="handleSort('1')">销售额
+          <Svg-Icon icon-class="descending" :class="[sortItemVal == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesAmount | format}}</template>
+      <template slot-scope="{row}">{{row.sumGmv | format}}</template>
     </el-table-column>
+    <el-table-column width="40"></el-table-column>
     <el-table-column
       align="right"
       label="销售趋势">
-      <template>
-        <span>echarts</span>
+      <template slot-scope="{row}">
+        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
     </el-table-column>
-    <el-table-column
-      prop="salesCountAcc"
-      align="right"
-      label="销售额">
+    <el-table-column align="center">
       <template #header>
-        <div class="sort-button"  @click="handleSort('salesCountAcc')">销售额
-          <i :class="[activedSortKey == 'salesCountAcc' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+        <div class="sort-button"  @click="handleSort('2')">销量环比
+          <Svg-Icon icon-class="descending" :class="[sortItemVal == '2' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesCountAcc | percentage}}</template>
+      <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column
-      prop="gmvAcc"
-      align="right"
-      label="销售环比">
+    <el-table-column align="right">
       <template #header>
-        <div class="sort-button"  @click="handleSort('gmvAcc')">销售环比
-          <i :class="[activedSortKey == 'gmvAcc' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
+        <div class="sort-button"  @click="handleSort('3')">销售额环比
+          <Svg-Icon icon-class="descending" :class="[sortItemVal == '3' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.gmvAcc | percentage}}</template>
+      <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
     <el-table-column
-      prop="price"
+      prop="avgPrice"
       align="right"
       label="均价">
-      <template #header>
-        <div class="sort-button"  @click="handleSort('price')">均价
-          <i :class="[activedSortKey == 'price' ? 'active-sort' : '', 'el-icon-caret-bottom']"></i>
-        </div>
-      </template>
-      <template slot-scope="{row}">{{row.price | format}}</template>
-    </el-table-column>
-    <el-table-column
-      prop="price"
-      align="right"
-      label="时间">
-      <template>{{new Date() | moment}}</template>
     </el-table-column>
   </el-table>
 </template>
 
 <script>
+import tableMixins from '@/views/brand/components/tableMixins.js'
 export default {
   name: 'TableForBrand',
-  props: {
-    tableData: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data () {
-    return {
-      activedSortKey: ''
-    }
-  },
-  methods: {
-    handleSort (sortKey) {
-      console.info(sortKey)
-      this.activedSortKey = sortKey
-      this.$refs.table.doLayout()
-    }
-  }
+  mixins: [tableMixins]
 }
 </script>
 
@@ -119,7 +81,4 @@ export default {
 .el-table >>> .tableHeaderClass th
   background-color $table-header-bgc !important
   height 48px
-
-.el-table >>> .tableCellClass
-  border-bottom 0px
 </style>

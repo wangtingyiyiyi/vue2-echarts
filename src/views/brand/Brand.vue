@@ -17,9 +17,9 @@
 
               <div ref="brandEchart">
                  <Chart-For-Brand
-                  style="width: 100%; height: 500px"
+                  style="width: 100%; height: 300px"
                   :brandData="brandChart"
-                  ref="brandEchart"/>
+                  :viewItemVal="viewItemVal"/>
               </div>
 
               <Title title="按子品牌展开"/>
@@ -32,7 +32,10 @@
 
               <Table-For-Brand
                 ref="table"
-                :tableData="brandTableData"/>
+                :sortItemVal="sortItemVal"
+                :tableData="brandTableData"
+                :isLoading="isLoadingOfBrandTable"
+                @changeSortItemVal="changeSortItemVal"/>
             </div>
             <div v-show="!hasBrandFormParam">
               <Title title="总销售趋势"/>
@@ -77,11 +80,10 @@ import TableForSpu from '@/views/brand/components/TableForSpu.vue'
 import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
 // import ChartForShop from '@/views/brand/components/ChartForShop.vue'
 // import TableForShop from '@/views/brand/components/TableForShop.vue'
-import { mockBrandChartData, mockBrandSpuData } from '@/mock'
+import { mockBrandSpuData } from '@/mock'
 import { mapState } from 'vuex'
-import { getMonthOption, getTableForBrandShop, getChartForBrandShop } from '@/api/brand'
+import { getMonthOption, getTableForBrandShop, getChartForBrandShop, getTableForBrand, getChartForBrand } from '@/api/brand'
 import { deleteEmptyKeyVal } from '@/utils/common.js'
-
 export default {
   components: {
     BrandSetting,
@@ -102,7 +104,7 @@ export default {
       brandTableData: [],
       shopTableData: [],
       activeBrand: {},
-      brandChart: mockBrandChartData,
+      brandChart: [],
       monthOption: [],
       selectdMonth: {},
       tableMonth: {},
@@ -122,7 +124,7 @@ export default {
     // 切换tab
     handleTabClick () {
       this.getChartForBrand()
-      this.getChartForBrand()
+      this.getChartForShop()
       this.getTableForBrand()
       this.getTableForShop()
     },
@@ -130,7 +132,7 @@ export default {
     handleSettingParam () {
       this.activeBrand = this.brandList[0]
       this.getChartForBrand()
-      this.getChartForBrand()
+      this.getChartForShop()
       this.getTableForBrand()
       this.getTableForShop()
     },
@@ -139,7 +141,7 @@ export default {
       this.rangeItemVal = data.value
       this.getMonthOption().then(() => {
         this.getChartForBrand()
-        this.getChartForBrand()
+        this.getChartForShop()
         this.getTableForBrand()
         this.getTableForShop()
       })
@@ -149,7 +151,7 @@ export default {
       this.groupItemVal = data.value
       this.getMonthOption().then((res) => {
         this.getChartForBrand()
-        this.getChartForBrand()
+        this.getChartForShop()
         this.getTableForBrand()
         this.getTableForShop()
       })
@@ -157,11 +159,13 @@ export default {
     // 切换 销量 或者 销售额
     handleEchartsClick (data) {
       this.viewItemVal = data.value
+      this.getChartForBrand()
     },
     // 按品牌查看店铺列表
     changeActiveBrand (data) {
       this.activeBrand = data
       this.getTableForShop()
+      this.getTableForBrand()
     },
     // table 切换month
     handleTableMonth (val) {
@@ -172,6 +176,7 @@ export default {
     changeSortItemVal (val) {
       this.sortItemVal = val
       this.getTableForShop()
+      this.getTableForBrand()
     },
     // chart 切换month
     handleSelectdMonth (val) {
@@ -189,12 +194,45 @@ export default {
       }
     },
     // 品牌 chart
-    getChartForBrand () {
+    async getChartForBrand () {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
+      const param = {
+        id: this.cateList[0].id,
+        // id: 7667,
+        group: this.groupItemVal,
+        view: this.viewItemVal,
+        range: this.rangeItemVal,
+        brandList: this.brandList,
+        // brandList: [{ brandId: 6308, brand: '珂拉琪/COLOR KEY' }, { brandId: 163509, brand: '完美日记/PERFECT DIARY' }, { brandId: 82755, brand: '花西子' }],
+        tmallMonthList: this.tableMonth
+      }
+      const res = await getChartForBrand(param)
+      if (res.code === 200) {
+        this.brandChart = res.result
+      } else {
+        this.$message.error('品牌趋势图请求失败')
+      }
     },
     // 品牌 table
-    getTableForBrand () {
+    async getTableForBrand () {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
+      const param = {
+        range: this.rangeItemVal,
+        group: this.groupItemVal,
+        sort: this.sortItemVal,
+        id: this.cateList[0].id,
+        brandList: [this.activeBrand],
+        tmallMonthList: this.tableMonth
+      }
+      this.isLoadingOfBrandTable = true
+      const res = await getTableForBrand(param)
+      this.isLoadingOfBrandTable = false
+      if (res.code === 200) {
+        console.info(res.result)
+        this.brandTableData = res.result
+      } else {
+        this.$message.error('品牌概览列表请求失败')
+      }
     },
     // 店铺 chart
     async getChartForShop () {
