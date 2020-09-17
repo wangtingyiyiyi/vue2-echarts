@@ -68,7 +68,6 @@ export default {
       brandData.forEach(item => {
         legenList.push(item.tmallBrand.brand)
       })
-      console.info(legenList)
       return legenList
     },
     getxAxis (brandData) {
@@ -90,6 +89,7 @@ export default {
         },
         legend: {
           right: '20px',
+          top: '20',
           itemGap: 20,
           itemHeight: 3,
           icon: 'roundRect',

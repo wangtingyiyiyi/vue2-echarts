@@ -25,25 +25,16 @@
         <el-button @click="onClean">清除</el-button>
       </el-form-item>
       <el-form-item label="行业" prop="cid">
-          <el-select
-            ref="select"
-            :value="categoryLabel"
-            filterable
-            remote
-            placeholder="请输入搜索品类"
-            style="width: 600px">
-            <el-option value="0" class="hidden"></el-option>
-              <el-tree
-                ref="tree"
-                :data="categoryOption"
-                node-key="key"
-                class="select-tree"
-                @node-click="handleNodeClick"
-                :default-expand-all="true"
-                :render-content="renderContent"
-                :props="{children: 'childList', label: 'label'}">
-              </el-tree>
-          </el-select>
+        <el-cascader
+          style="width: 400px"
+          v-model="brandForm.catetegoryId"
+          :options="categoryOption"
+          :show-all-levels="false"
+          :props="props">
+          <template slot-scope="{ node, data }">
+            <span>{{getNode(node, data)}}</span>
+          </template>
+        </el-cascader>
       </el-form-item>
     </el-form>
   </div>
@@ -53,48 +44,47 @@
 import { mapMutations } from 'vuex'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
-const INITBRANDFORM = { brandList: [], cateList: [] }
+const INITBRANDFORM = { brandList: [], catetegoryId: '' }
 export default {
   mixins: [mixin],
   data () {
     return {
-      brandForm: { brandList: [], cateList: [{ outCat1: '', outCat2: '', outCat3: '', id: '' }] },
+      brandForm: { brandList: [], catetegoryId: '' },
       brandOption: [],
       categoryOption: [],
       categoryLabel: '',
-      loading: false
+      loading: false,
+      props: {
+        children: 'childList',
+        value: 'id',
+        leaf: 'hasChild',
+        emitPath: false,
+        checkStrictly: true,
+        expandTrigger: 'hover'
+      }
     }
   },
   computed: {
     isDisabled () {
-      return !(this.brandForm.brandList.length !== 0 && this.brandForm.cateList[0].id !== '')
+      return !(this.brandForm.brandList.length !== 0 && this.brandForm.catetegoryId !== '')
     }
   },
   methods: {
     ...mapMutations('brand', ['SET_BRAND_BRANDS', 'SET_BRAND_CATEGORY']),
     onSubmit () {
       this.SET_BRAND_BRANDS(this.brandForm.brandList)
-      this.SET_BRAND_CATEGORY(this.brandForm.cateList)
+      this.SET_BRAND_CATEGORY(this.brandForm.catetegoryId)
       this.$emit('brandOnSubmit')
     },
     onClean () {
       this.$refs.brandForm.resetFields()
       this.brandForm = INITBRANDFORM
       this.SET_BRAND_BRANDS([])
-      this.SET_BRAND_CATEGORY([])
+      this.SET_BRAND_CATEGORY('')
       this.$emit('brandOnSubmit', INITBRANDFORM)
     },
     changeBrand () {
       this.getCategory()
-    },
-    handleNodeClick (data, node, ref) {
-      this.categoryLabel = data.label
-      this.brandForm.cateList[0].outCat1 = data.outCat1
-      this.brandForm.cateList[0].outCat2 = data.outCat2
-      this.brandForm.cateList[0].outCat3 = data.outCat3
-      this.brandForm.cateList[0].id = data.id
-      this.$refs.select.blur()
-      console.info(data)
     },
     // 品牌列表模糊查询
     async getBrand (query) {
@@ -123,7 +113,19 @@ export default {
       } else {
         this.$message.error('品牌分类请求失败')
       }
+    },
+    getNode (node, data) {
+      if (node.level === 1) {
+        return data.outCat1
+      } else if (node.level === 2) {
+        return data.outCat2
+      } else if (node.level === 3) {
+        return data.outCat3
+      }
     }
+  },
+  mounted () {
+    this.getCategory()
   }
 }
 </script>

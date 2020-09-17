@@ -33,7 +33,8 @@ import {
   Radio,
   RadioGroup,
   RadioButton,
-  CheckboxGroup
+  CheckboxGroup,
+  Cascader
 } from 'element-ui'
 
 const components = [
@@ -68,7 +69,8 @@ const components = [
   Radio,
   RadioGroup,
   RadioButton,
-  CheckboxGroup
+  CheckboxGroup,
+  Cascader
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

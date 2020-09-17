@@ -4,7 +4,6 @@
     <el-table
       :data="tableData"
       header-row-class-name="tableHeaderClass"
-      ref="table"
       stripe
       :cell-class-name="renderCell"
       @cell-click="handleClick"

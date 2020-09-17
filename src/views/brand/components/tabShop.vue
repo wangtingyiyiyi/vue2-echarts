@@ -14,7 +14,7 @@
           @handleSelectdMonth="handleSelectdMonth"/>
       </div>
       <div ref="chartForShop">
-        <Chart-For-Shop :data="shopTableChart" style="width: 100%; height: 500px"/>
+        <Chart-For-Shop :data="shopTableChart" style="width: 100%; height: 300px"/>
       </div>
       <Title title="按品牌展开"/>
       <div class="flex-between m-b-10">

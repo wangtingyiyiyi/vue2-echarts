@@ -50,11 +50,11 @@ export function callMax (arr) {
   if (max >= 0 && max < 10) { // 个
     res = 10
   } else if (max >= 10 && max < 99) { // 十
-    res = Math.ceil(max / 10) // 向上取整
+    res = Math.ceil(max / 10) * 10
   } else if (max >= 100 && max < 999) { // 百
-    res = Math.ceil(max / 100)
+    res = Math.ceil(max / 100) * 100
   } else if (max >= 1000 && max < 9999) { // 千
-    res = Math.ceil(max / 1000)
+    res = Math.ceil(max / 1000) * 1000
   } else if (max >= 10000 && max < 99999) { // 万
     res = roundingFun(max, 10000)
   } else if (max >= 100000 && max < 999999) { // 十万

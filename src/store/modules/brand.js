@@ -2,7 +2,7 @@ import { SET_BRAND_BRANDS, SET_BRAND_CATEGORY } from '../mutation'
 
 const state = {
   brandList: [],
-  cateList: []
+  categoryId: []
 }
 
 const mutations = {
@@ -10,7 +10,7 @@ const mutations = {
     state.brandList = [...payload]
   },
   [SET_BRAND_CATEGORY] (state, payload) {
-    state.cateList = [...payload]
+    state.categoryId = payload
   }
 }
 

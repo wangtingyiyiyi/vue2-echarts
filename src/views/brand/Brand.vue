@@ -44,7 +44,7 @@
               <Svg-Icon icon-class="empty" class="empty-svg"/>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="SPU" name="spu">
+          <el-tab-pane label="SPU" name="spu" lazy>
             <div class="flex-between m-b-10">
               <Brand-Table-Brands
                 :brands="brandList"
@@ -83,7 +83,7 @@ import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
 import { mockBrandSpuData } from '@/mock'
 import { mapState } from 'vuex'
 import { getMonthOption, getTableForBrandShop, getChartForBrandShop, getTableForBrand, getChartForBrand } from '@/api/brand'
-import { deleteEmptyKeyVal } from '@/utils/common.js'
+// import { deleteEmptyKeyVal } from '@/utils/common.js'
 export default {
   components: {
     BrandSetting,
@@ -118,7 +118,7 @@ export default {
     hasBrandFormParam () {
       return Object.keys(this.brandList).length !== 0
     },
-    ...mapState('brand', ['brandList', 'cateList'])
+    ...mapState('brand', ['brandList', 'categoryId'])
   },
   methods: {
     // 切换tab
@@ -197,13 +197,13 @@ export default {
     async getChartForBrand () {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
       const param = {
-        id: this.cateList[0].id,
-        // id: 7667,
+        id: this.categoryId,
+        // id: 5451,
         group: this.groupItemVal,
         view: this.viewItemVal,
         range: this.rangeItemVal,
         brandList: this.brandList,
-        // brandList: [{ brandId: 6308, brand: '珂拉琪/COLOR KEY' }, { brandId: 163509, brand: '完美日记/PERFECT DIARY' }, { brandId: 82755, brand: '花西子' }],
+        // brandList: [{ brandId: 163509, brand: '完美日记/PERFECT DIARY' }, { brandId: 82755, brand: '花西子' }],
         tmallMonthList: this.tableMonth
       }
       const res = await getChartForBrand(param)
@@ -220,7 +220,7 @@ export default {
         range: this.rangeItemVal,
         group: this.groupItemVal,
         sort: this.sortItemVal,
-        id: this.cateList[0].id,
+        id: this.categoryId,
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
@@ -241,7 +241,7 @@ export default {
         group: this.groupItemVal,
         view: this.viewItemVal,
         brandList: this.brandList,
-        cateList: [deleteEmptyKeyVal(this.cateList[0])],
+        // cateList: [deleteEmptyKeyVal(this.cateList[0])],
         tmallMonthList: this.selectdMonth
       }
       const res = await getChartForBrandShop(param)
@@ -258,7 +258,7 @@ export default {
         range: this.rangeItemVal,
         group: this.groupItemVal,
         sort: this.sortItemVal,
-        cateList: [deleteEmptyKeyVal(this.cateList[0])],
+        // cateList: [deleteEmptyKeyVal(this.cateList[0])],
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
