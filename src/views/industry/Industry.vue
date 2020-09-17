@@ -10,7 +10,7 @@
                 <Title title="总销售趋势"/>
                 <div ref="refIndustryEchart">
                   <Chart-For-Industry
-                    style="width: 100%; height: 500px"
+                    style="width: 100%; height: 400px"
                     :industryEchart="industryEchart"/>
                 </div>
                 <div class="table-title-wapper">
@@ -47,7 +47,7 @@
                 <div ref="refBrandChart">
                   <Chart-For-Brand
                   :salesItemVal="salesItemVal"
-                  style="width: 100%; height: 500px"
+                  style="width: 100%; height: 400px"
                   :brandEchart="brandEchart"/>
                 </div>
                 <div class="table-title-wapper">

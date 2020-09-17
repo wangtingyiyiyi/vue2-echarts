@@ -3,10 +3,10 @@
 export function yAxisFormatter (value) {
   if (value >= 0 && value < 10000) {
     return value
-  } else if (value >= 10000 && value < 9999999) {
+  } else if (value >= 10000 && value < 99999999) {
     return thousands(parseInt((value / 10000))) + '万'
   } else {
-    return thousands(parseInt((value / 10000000))) + '千万'
+    return thousands(parseInt((value / 100000000))) + '亿'
   }
 }
 
@@ -45,7 +45,14 @@ export function xAxisDateFormatter (value) {
 
 // 计算最大值
 export function callMax (arr) {
-  return Math.ceil(Math.max(...arr) / 9.5) * 10
+  const max = Math.ceil(Math.max(...arr) / 8) * 10
+  if (max >= 0 && max < 10000) {
+    return max
+  } else if (max >= 10000 && max < 99999999) {
+    return parseInt((max / 100000)) * 100000
+  } else {
+    return parseInt((max / 1000000000)) * 1000000000
+  }
 }
 
 // 计算百分比
