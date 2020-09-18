@@ -12,6 +12,7 @@
           :remote-method="getBrand"
           :loading="loading"
           :multiple-limit="5"
+          popper-class="brand-select-option-class"
           @change="changeBrand"
           style="width: 400px">
           <el-option
@@ -149,4 +150,8 @@ export default {
   text-align center
   border-radius 10px
   background-color $base-white
+
+.brand-select-option-class
+  .el-select-dropdown__item
+    max-width 400px
 </style>
