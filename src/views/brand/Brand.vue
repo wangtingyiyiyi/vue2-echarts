@@ -10,10 +10,10 @@
               <Title title="总销售趋势"/>
 
               <Echarts-Buttons
-                  :activeVal="viewItemVal"
-                  style="width: 100%"
-                  class="m-b-5"
-                  @handleEchartsClick="handleEchartsClick"/>
+                :activeVal="viewItemVal"
+                style="width: 100%"
+                class="m-b-5"
+                @handleEchartsClick="handleEchartsClick"/>
 
               <div ref="brandEchart">
                  <Chart-For-Brand
@@ -82,7 +82,14 @@ import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
 // import TableForShop from '@/views/brand/components/TableForShop.vue'
 import { mockBrandSpuData } from '@/mock'
 import { mapState } from 'vuex'
-import { getMonthOption, getTableForBrandShop, getChartForBrandShop, getTableForBrand, getChartForBrand } from '@/api/brand'
+import { refLoading } from '@/utils/element.js'
+import {
+  getMonthOption,
+  getTableForBrandShop,
+  getChartForBrandShop,
+  getTableForBrand,
+  getChartForBrand
+} from '@/api/brand'
 // import { deleteEmptyKeyVal } from '@/utils/common.js'
 export default {
   components: {
@@ -198,15 +205,15 @@ export default {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
       const param = {
         id: this.categoryId,
-        // id: 5451,
         group: this.groupItemVal,
         view: this.viewItemVal,
         range: this.rangeItemVal,
         brandList: this.brandList,
-        // brandList: [{ brandId: 163509, brand: '完美日记/PERFECT DIARY' }, { brandId: 82755, brand: '花西子' }],
         tmallMonthList: this.tableMonth
       }
+      const loadingInstance = refLoading(this.$refs.brandEchart)
       const res = await getChartForBrand(param)
+      loadingInstance.close()
       if (res.code === 200) {
         this.brandChart = res.result
       } else {

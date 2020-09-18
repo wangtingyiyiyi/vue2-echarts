@@ -150,7 +150,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('industry', ['SET_INDUSTRY_CATRGOTY_TABLE_PARAM']),
+    ...mapMutations('industry', [
+      'SET_INDUSTRY_CATRGOTY_TABLE_PARAM',
+      'RESET_INDUSTRY_CATRGOTY_TABLE_PARAM',
+      'RESET_INDUSTRY_CATEGORY']),
     // 切换tab
     handleTabClick (tab) {
       this.page = 1
@@ -315,6 +318,10 @@ export default {
   },
   mounted () {
     this.getMonthOption()
+  },
+  beforeDestroy () {
+    this.RESET_INDUSTRY_CATEGORY()
+    this.RESET_INDUSTRY_CATRGOTY_TABLE_PARAM()
   }
 }
 </script>
