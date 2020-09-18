@@ -1,3 +1,5 @@
+import { Message } from 'element-ui'
+
 const Axios = require('axios').default
 
 const config = {
@@ -17,32 +19,34 @@ export function objToStr (obj) {
 
 // 请求拦截
 axios.interceptors.request.use(function (config) {
-  // 封装每一个API传给后段的参数
-  // if (sessionStorage.getItem('token')) {
-  //   config.headers.Authorization = sessionStorage.getItem('token')
-  // }
+  if (sessionStorage.getItem('token')) {
+    config.headers.token = sessionStorage.getItem('token')
+  }
   return config
 }, function (error) {
-  // Do something with request error
   return Promise.reject(error)
 })
 
-// 相应拦截
-axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  return response
-}, function (error) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  return Promise.reject(error)
-})
+// 响应拦截
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    console.info(error)
+    if (error.response.status === 102) {
+      sessionStorage.clear()
+      Message.error('token已过期，请重新登录')
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 3000)
+    }
+    // 返回接口返回的错误信息
+    return Promise.reject(error)
+  }
+)
 
 export function post (url, params = {}) {
-  params.token = sessionStorage.getItem('token')
-  params.userId = sessionStorage.getItem('userId')
-  params.role = sessionStorage.getItem('role')
-  params.createUser = sessionStorage.getItem('createUser')
   return new Promise((resolve, reject) => {
     axios.post(url, params)
       .then(response => {
@@ -51,14 +55,6 @@ export function post (url, params = {}) {
         reject(err)
       })
   })
-  // return new Promise(function (resolve, reject) {
-  //   axios.post(url, params)
-  //     .then(function (response) {
-  //       resolve(response.data)
-  //     }, function (err) {
-  //       reject(err)
-  //     })
-  // })
 }
 
 export function get (url, params = {}) {

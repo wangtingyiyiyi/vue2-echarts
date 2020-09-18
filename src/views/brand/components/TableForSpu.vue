@@ -61,10 +61,7 @@
         <template slot-scope="{row}">{{row.sequential | percentage}}</template>
       </el-table-column>
     </el-table>
-    <el-table-column
-      prop="avgPrice"
-      label="均价">
-    </el-table-column>
+    <div>该数据仅有展示作用，不做为真正的数据统计及分析。</div>
   </div>
 </template>
 

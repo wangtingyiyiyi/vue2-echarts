@@ -246,6 +246,7 @@ export default {
     // 行业tab table
     async getIndustryFlatList () {
       if (!this.categoryObj.id || this.activeName !== 'industry') return ''
+      this.industryTableData = []
       const param = {
         range: this.rangeItemVal,
         group: this.groupItemVal,

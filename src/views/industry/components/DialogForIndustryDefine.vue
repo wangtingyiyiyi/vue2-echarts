@@ -35,7 +35,7 @@
           icon="el-icon-arrow-right"
           @click="goRight"></el-button>
         <el-button type="primary" icon="el-icon-arrow-left" disabled @click="goLeft"></el-button>
-        <el-button type="primary" icon="el-icon-d-arrow-left"  @click="allGoLeft"></el-button>
+        <el-button type="primary" icon="el-icon-d-arrow-left" disabled @click="allGoLeft"></el-button>
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
@@ -60,7 +60,7 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="onCancel">取 消</el-button>
-      <el-button type="primary" @click="onSubmit">确 定</el-button>
+      <el-button type="primary" @click="onSubmit" disabled>确 定</el-button>
     </span>
   </el-dialog>
 </template>

@@ -7,10 +7,10 @@
       <el-form :model="form" label-position="left" class="login-form" size="large" v-if="isPsw">
         <div class="title">久谦中台数据库</div>
         <el-form-item>
-          <el-input v-model="form.login" placeholder="请输入用户名"></el-input>
+          <el-input v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.psw" placeholder="请输入登陆密码"></el-input>
+          <el-input v-model="form.password" show-password placeholder="请输入登陆密码"></el-input>
         </el-form-item>
         <div class="flex-between">
           <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
@@ -26,24 +26,32 @@
 </template>
 
 <script>
+// import { loginApi } from '@/api/login'
+import { mapActions } from 'vuex'
+
 let target = {}
 export default {
   data () {
     return {
-      form: {},
+      form: {
+        username: '123456',
+        password: '654321'
+      },
       target: target,
       isPsw: true
 
     }
   },
   methods: {
+    ...mapActions('user', ['login']),
     onSubmit () {
-      sessionStorage.setItem('token', 'ceshitoken')
-      sessionStorage.setItem('userId', 'test')
-      sessionStorage.setItem('role', 'qywx')
-      sessionStorage.setItem('createUser', '林融卿')
-      this.$message.success('hhh')
-      this.$router.push({ name: this.target.name })
+      this.login(this.form)
+        .then(() => {
+          this.$router.push({ name: this.target.name })
+        })
+        .catch(() => {
+          this.$message.error('登陆失败')
+        })
     },
     changeLoginType () {
       this.isPsw = !this.isPsw
