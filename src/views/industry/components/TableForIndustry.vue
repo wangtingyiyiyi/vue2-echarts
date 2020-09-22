@@ -124,15 +124,17 @@ export default {
           return ''
       }
     },
-    // 查询点击节点
+    // 携带点击的节点信息，打开新页面
     handleCategory (data) {
-      const param = {
-        id: data.categoryId,
-        label: this.getCat(data),
-        remark: data.remark
-      }
-      this.SET_INDUSTRY_CATEGORY(param)
-      this.$emit('handleCate')
+      const { href } = this.$router.resolve({
+        path: '/industry',
+        query: {
+          id: data.categoryId,
+          label: this.getCat(data),
+          remark: data.remark
+        }
+      })
+      window.open(href)
     },
     // 查询子节点
     async load (tree, treeNode, resolve) {

@@ -153,6 +153,7 @@ export default {
     ...mapMutations('industry', [
       'SET_INDUSTRY_CATRGOTY_TABLE_PARAM',
       'RESET_INDUSTRY_CATRGOTY_TABLE_PARAM',
+      'SET_INDUSTRY_CATEGORY',
       'RESET_INDUSTRY_CATEGORY']),
     // 切换tab
     handleTabClick (tab) {
@@ -314,10 +315,20 @@ export default {
       } else {
         this.$message.error('行业分类月份列表请求失败')
       }
+    },
+    // 如果路由携带参数,则立刻请求行业数据
+    handleRoute () {
+      const { query } = this.$route
+      if (Object.keys(query).length !== 0) {
+        this.SET_INDUSTRY_CATEGORY(query)
+        this.brandOnSubmit()
+      }
     }
   },
   mounted () {
-    this.getMonthOption()
+    this.getMonthOption().then(() => {
+      this.handleRoute()
+    })
   },
   beforeDestroy () {
     this.RESET_INDUSTRY_CATEGORY()
