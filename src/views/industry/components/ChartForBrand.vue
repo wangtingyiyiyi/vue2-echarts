@@ -14,7 +14,7 @@ export default {
       type: Object,
       default: () => {}
     },
-    salesItemVal: {
+    viewItemVal: {
       type: String,
       default: '1'
     }
@@ -29,7 +29,7 @@ export default {
     brandEchart: {
       deep: true,
       handler: function (params) {
-        this.legendData = ECHARTS_ACTIVED_PARAM[this.salesItemVal]
+        this.legendData = ECHARTS_ACTIVED_PARAM[this.viewItemVal]
         this.init()
       }
     }
@@ -37,7 +37,7 @@ export default {
   methods: {
     init () {
       this.chart = echarts.init(this.$refs.chart)
-      const tempKey = this.salesItemVal === '1' ? 'gmvList' : 'salesList'
+      const tempKey = this.viewItemVal === '1' ? 'gmvList' : 'salesList'
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',

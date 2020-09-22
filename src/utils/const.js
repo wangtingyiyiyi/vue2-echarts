@@ -38,13 +38,13 @@ export const GROUP_LEVEL = [
 // 图标按钮
 export const VIEW_LEVEL = [
   {
-    icon: 'user',
-    label: '按销量',
-    value: '0'
-  }, {
     icon: 'upload',
     label: '按销售额',
     value: '1'
+  }, {
+    icon: 'user',
+    label: '按销量',
+    value: '0'
   }
 ]
 

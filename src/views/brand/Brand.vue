@@ -104,7 +104,7 @@ export default {
   data () {
     return {
       activeName: 'brand',
-      viewItemVal: '0',
+      viewItemVal: '1',
       rangeItemVal: '1',
       groupItemVal: '0',
       sortItemVal: '1',
