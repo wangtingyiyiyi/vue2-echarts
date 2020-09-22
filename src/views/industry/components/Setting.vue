@@ -28,7 +28,7 @@
         </el-form-item>
         <el-form-item>
           <div style="display: flex">
-            <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button>
+            <!-- <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button> -->
             <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
             <Text-Button text="行业提数" @handleClick="handleExport" class="p-0-15 font-size-13" />
           </div>
@@ -89,6 +89,7 @@ export default {
       this.selectData.label = data.label
       this.SET_INDUSTRY_CATEGORY(this.selectData)
       this.$refs.select.blur()
+      this.$emit('brandOnSubmit', this.selectData)
     },
     async handleSelctRemoteFilter (query) {
       if (query) {
