@@ -29,8 +29,8 @@
         <el-form-item>
           <div style="display: flex">
             <!-- <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button> -->
-            <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-13" />
-            <Text-Button text="行业提数" @handleClick="handleExport" class="p-0-15 font-size-13" />
+            <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-14 m-l-5" />
+            <Text-Button text="行业提数" @handleClick="handleExport" class="p-0-15 font-size-14" />
           </div>
         </el-form-item>
       </el-form>

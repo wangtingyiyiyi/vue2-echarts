@@ -45,16 +45,21 @@ export default {
           }
         },
         legend: {
-          right: '20px',
-          itemGap: 20,
+          right: '70px',
+          itemGap: 40,
+          itemWidth: 12,
           itemHeight: 3,
           icon: 'roundRect',
-          data: ['销售额', '销量']
+          data: ['销售额', '销量'],
+          textStyle: {
+            padding: [0, 0, 0, 10]
+          }
         },
         grid: {
           left: '20px',
           right: '20px',
           bottom: '30px',
+          top: '37px',
           containLabel: true
         },
         xAxis: {

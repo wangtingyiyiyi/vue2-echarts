@@ -62,11 +62,11 @@
       <Range-Buttons
         :activeVal="rangeItemVal"
         @handleRangeClick="handleRangeClick"
-        style='position: absolute; right:350px; top:17px;'/>
+        style='position: absolute; right:380px; top:16px;'/>
       <Group-Buttons
         :activeVal="groupItemVal"
         @handleGroupClick="handleGroupClick"
-        style='position: absolute; right:10px; top:17px;'/>
+        style='position: absolute; right:26px; top:16px;'/>
     </div>
 
   </div>

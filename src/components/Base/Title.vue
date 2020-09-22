@@ -1,5 +1,8 @@
 <template>
-  <div class="title">{{title}}</div>
+  <div class="wapper">
+    <div class="icon"></div>
+    <div class="title">{{title}}</div>
+  </div>
 </template>
 
 <script>
@@ -15,9 +18,15 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.title
-  padding-left 10px
-  border-left 4px solid $base-blue
+.wapper
+  display flex
+  align-items center
   margin-bottom 10px
 
+  .icon
+    height 12px
+    width 3px
+    background-color $base-blue
+  .title
+    padding-left 8px
 </style>

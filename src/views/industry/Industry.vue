@@ -10,7 +10,7 @@
                 <Title title="总销售趋势"/>
                 <div ref="refIndustryEchart">
                   <Chart-For-Industry
-                    style="width: 100%; height: 300px"
+                    style="width: 100%; height: 280px"
                     :industryEchart="industryEchart"/>
                 </div>
                 <div class="table-title-wapper">
@@ -85,11 +85,11 @@
         <Range-Buttons
           :activeVal="rangeItemVal"
           @handleRangeClick="handleRangeClick"
-          style='position: absolute; right:350px; top:17px;'/>
+          style='position: absolute; right:380px; top:16px;'/>
         <Group-Buttons
           :activeVal="groupItemVal"
           @handleGroupClick="handleGroupClick"
-          style='position: absolute; right:10px; top:17px;'/>
+          style='position: absolute; right:26px; top:16px;'/>
     </div>
     <!-- 抽屉 -->
     <Drawer :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">

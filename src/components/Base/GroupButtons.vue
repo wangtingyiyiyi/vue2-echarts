@@ -1,7 +1,7 @@
 
 <template>
   <div class="filter-group-btn-wapper">
-    <div style="margin-right: 10px" class="filter-label">颗粒度</div>
+    <div style="margin-right: 20px" class="filter-label">颗粒度</div>
     <el-button-group>
       <el-button
         v-for="item in groupButtons"

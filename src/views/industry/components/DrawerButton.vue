@@ -32,7 +32,7 @@ export default {
   background-color $base-green
   color #fff
   border 0
-  border-radius: 4px 0 0 4px
+  border-radius: 2px 0 0 2px
   position: absolute
   top 10vh
   left -42px

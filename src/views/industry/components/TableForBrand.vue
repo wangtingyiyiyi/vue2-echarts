@@ -1,10 +1,9 @@
 
 <template>
-  <!-- header-cell-class-name="tableCellClass" -->
-  <!-- cell-class-name="tableCellClass" -->
   <el-table
     :data="tableData"
     header-row-class-name="tableHeaderClass"
+    cell-class-name="tableCellClass"
     ref="table"
     stripe
     style="width: 100%">
@@ -27,7 +26,7 @@
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.sumGmv | format}}</template>
+      <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
     </el-table-column>
     <el-table-column width="40"></el-table-column>
     <el-table-column
@@ -54,7 +53,7 @@
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
     <el-table-column align="right" label="均价/元">
-      <template slot-scope="{row}">{{row.avgPrice | format}}</template>
+      <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
 </template>
@@ -116,13 +115,6 @@ export default {
 
 .active-sort
   color $base-blue
-
-.el-table >>> .tableHeaderClass th
-  background-color $table-header-bgc !important
-  height 48px
-
-.el-table >>> .tableCellClass
-  border-bottom 0px
 
 .el-table >>> .line-in-table-class > div
   margin-left 60px
