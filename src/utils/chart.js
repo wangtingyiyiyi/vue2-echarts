@@ -96,7 +96,6 @@ export function callMin (arr) {
   } else {
     res = Math.ceil((min / 100000000)) * 100000000
   }
-  console.info(min, 'min', res)
   return res
 }
 
@@ -104,7 +103,6 @@ export function callMin (arr) {
 export function callInterval (min, max) {
   const gap = max - 0
   const interval = gap / 5
-  console.info(gap, 'callInterval', interval, max)
   return interval
 }
 

@@ -28,12 +28,13 @@
       <el-form-item label="行业" prop="cid">
         <el-cascader
           style="width: 400px"
+          popper-class="industry-cascader-wapper"
           v-model="brandForm.catetegoryId"
           :options="categoryOption"
           :show-all-levels="false"
           :props="props">
           <template slot-scope="{ node, data }">
-            <span>{{getNode(node, data)}}</span>
+            <span @click="changeIndustry(data)">{{getNode(node, data)}}</span>
           </template>
         </el-cascader>
       </el-form-item>
@@ -104,10 +105,6 @@ export default {
     },
     // 品牌分类
     async getCategory () {
-      if (this.brandForm.brandList.length === 0) {
-        this.categoryOption = []
-        return
-      }
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
         this.categoryOption = res.result
@@ -123,35 +120,27 @@ export default {
       } else if (node.level === 3) {
         return data.outCat3
       }
+    },
+    changeIndustry (data) {
+      this.brandForm.catetegoryId = data.id
     }
-  },
-  mounted () {
-    this.getCategory()
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .brand-setting-wapper
   background-color #ffffff
   padding 20px 26px
 
-.el-select-dropdown
-  .hidden
-    display: none
-
-.select-tree >>> .tree-select-icon
-  display inline-block
-  margin-right 10px
-  font-size 12px
-  width 14px
-  height 14px
-  line-height 14px
-  text-align center
-  border-radius 10px
-  background-color $base-white
-
 .brand-select-option-class
   .el-select-dropdown__item
     max-width 400px
+
+// 去掉radio
+.industry-cascader-wapper
+  .el-cascader-panel
+    .el-cascader-menu__list
+      .el-radio
+        display none
 </style>
