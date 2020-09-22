@@ -60,6 +60,7 @@ export default {
   .el-menu
     height 100%
     border-right none
+    font-weight 500
     .is-active
       .border
         width 2px

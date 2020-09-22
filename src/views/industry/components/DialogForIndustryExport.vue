@@ -10,6 +10,7 @@
     <div slot="title">行业提数</div>
 
     <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
+      {{form}}
       <el-form-item label="目标行业">
         <Select-Tree />
       </el-form-item>
@@ -18,6 +19,7 @@
           <el-button
             v-for="item in RANGE_LEVEL"
             :key="item.value"
+            @click="handleRange(item)"
             :type="form.range === item.value ? 'primary' : ''">{{item.label}}</el-button>
         </el-button-group>
       </el-form-item>
@@ -26,31 +28,32 @@
           <el-button
             v-for="item in GROUP_LEVEL"
             :key="item.value"
+            @click="handleGroup(item)"
             :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
         </el-button-group>
       </el-form-item>
       <el-form-item label="品类展开">
-        <el-checkbox-group v-model="form.cate">
+        <el-checkbox-group v-model="cateFlat">
           <el-checkbox
             v-for="item in CATEGORY_LEVEL"
             :key="item.value"
-            :label="item.value">{{item.label}}</el-checkbox>
+            :label="item.industryWeights">{{item.label}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="品类聚合">
-        <el-checkbox-group v-model="form.cateGroup">
+        <el-checkbox-group v-model="agg">
           <el-checkbox
             v-for="item in CATEGORT_GROUP"
             :key="item.value"
-            :label="item.value">{{item.label}}</el-checkbox>
+            :label="item.industryWeights">{{item.label}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="数据指标">
-        <el-checkbox-group v-model="form.index">
+        <el-checkbox-group v-model="indicator">
           <el-checkbox
             v-for="item in DATA_INDEX"
             :key="item.value"
-            :label="item.value">{{item.label}}</el-checkbox>
+            :label="item.industryWeights">{{item.label}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-form>
@@ -64,6 +67,7 @@
 <script>
 import { RANGE_LEVEL, GROUP_LEVEL, CATEGORY_LEVEL, CATEGORT_GROUP, DATA_INDEX } from '@/utils/const.js'
 import SelectTree from '@/views/industry/components/SelectTree.vue'
+import { replenishSum } from '@/utils/common.js'
 export default {
   name: 'DialogForIndustryExport',
   props: {
@@ -74,12 +78,16 @@ export default {
   },
   data () {
     return {
+      cateFlat: [],
+      agg: [],
+      indicator: [],
       form: {
+        id: '',
         range: '1',
         group: '0',
-        cate: [],
-        cateGroup: [],
-        index: []
+        cateFlat: 0,
+        agg: 0,
+        indicator: 0
       },
       RANGE_LEVEL: RANGE_LEVEL,
       GROUP_LEVEL: GROUP_LEVEL,
@@ -91,6 +99,29 @@ export default {
   components: {
     SelectTree
   },
+  watch: {
+    // 按照品类展开
+    cateFlat: {
+      deep: true,
+      handler: function (arr) {
+        this.handleSum(arr, 'cateFlat', 3)
+      }
+    },
+    // 按照品类聚合
+    agg: {
+      deep: true,
+      handler: function (arr) {
+        this.handleSum(arr, 'agg', 3)
+      }
+    },
+    // 数据指标
+    indicator: {
+      deep: true,
+      handler: function (arr) {
+        this.handleSum(arr, 'indicator', 4)
+      }
+    }
+  },
   methods: {
     closeDialog () {
       this.$emit('closeDialog', false)
@@ -100,7 +131,15 @@ export default {
     },
     onSubmit () {
       this.$message.info('该功能正在开发，敬请期待')
-      // this.closeDialog()
+    },
+    handleSum (arr, key, len) {
+      this.form[key] = replenishSum(arr, len)
+    },
+    handleRange (item) {
+      this.form.range = item.value
+    },
+    handleGroup (item) {
+      this.form.group = item.value
     }
   }
 }

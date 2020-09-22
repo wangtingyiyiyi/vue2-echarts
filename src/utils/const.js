@@ -16,19 +16,23 @@ export const GROUP_LEVEL = [
   {
     icon: 'user',
     label: '按月',
-    value: '0'
+    value: '0',
+    industrySortIndex: [4]
   }, {
     icon: 'upload',
     label: '按季度',
-    value: '1'
+    value: '1',
+    industrySortIndex: [3]
   }, {
     icon: 'upload',
     label: '按半年',
-    value: '2'
+    value: '2',
+    industrySortIndex: [2]
   }, {
     icon: 'upload',
     label: '按年',
-    value: '3'
+    value: '3',
+    industrySortIndex: [1]
   }
 ]
 // 图标按钮
@@ -65,13 +69,19 @@ export const SORT_TYPES = {
 export const CATEGORY_LEVEL = [
   {
     label: '一级品类',
-    value: '0'
+    value: '0',
+    industryWeights: 1,
+    industrySortIndex: [5]
   }, {
     label: '二级品类',
-    value: '1'
+    value: '1',
+    industryWeights: 10,
+    industrySortIndex: [6]
   }, {
     label: '三级品类',
-    value: '2'
+    value: '2',
+    industryWeights: 100,
+    industrySortIndex: [7]
   }
 ]
 
@@ -79,13 +89,19 @@ export const CATEGORY_LEVEL = [
 export const CATEGORT_GROUP = [
   {
     label: '按品牌',
-    value: '0'
+    value: '0',
+    industryWeights: 1,
+    industrySortIndex: [8]
   }, {
     label: '按店铺',
-    value: '1'
+    value: '1',
+    industryWeights: 10,
+    industrySortIndex: [9, 10]
   }, {
     label: '按SPU',
-    value: '2'
+    value: '2',
+    industryWeights: 100,
+    industrySortIndex: [11, 12]
   }
 ]
 
@@ -93,15 +109,44 @@ export const CATEGORT_GROUP = [
 export const DATA_INDEX = [
   {
     label: '销量',
-    value: '0'
+    value: '0',
+    industryWeights: 1,
+    industrySortIndex: [13]
   }, {
     label: 'ASP',
-    value: '1'
+    value: '1',
+    industryWeights: 10,
+    industrySortIndex: [15]
   }, {
     label: 'GMV',
-    value: '3'
+    value: '3',
+    industryWeights: 100,
+    industrySortIndex: [14]
   }, {
     label: 'SPU数',
-    value: '4'
+    value: '4',
+    industryWeights: 1000,
+    industrySortIndex: [16]
   }
 ]
+
+// 行业提数-Excel在线预览表头
+export const EXCEL_RULES = {
+  1: '年',
+  2: '半年',
+  3: '季度',
+  4: '月',
+  5: '一级品类',
+  6: '二级品类',
+  7: '三级品类',
+  8: '品牌',
+  9: '店铺ID',
+  10: '店铺',
+  11: 'SPUID',
+  12: 'SPU名',
+  13: '销量',
+  14: 'GMV',
+  15: 'ASP',
+  16: 'SPU数'
+
+}

@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="industry-setting-wapper">
-      配置筛选
       <el-form class="m-t-20" inline label-position="left" label-width="70px" ref="industryForm">
-        <el-form-item label="目标品类" prop="brandId">
+        <el-form-item prop="brandId">
+          <span slot="label" class="form-label">目标品类</span>
           <el-select
             ref="select"
             :value="categoryObj.label"
@@ -144,7 +144,8 @@ export default {
 .industry-setting-wapper
   background-color #ffffff
   padding 20px 26px
-
+  >>> .form-label
+    font-weight 500
 .industry-tree
   width 400px
   & >>> .vue-treeselect__control
