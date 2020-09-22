@@ -22,7 +22,7 @@
                   :viewItemVal="viewItemVal"/>
               </div>
 
-              <Title title="按子品牌展开"/>
+              <Title class="m-t-10" title="按子品牌展开"/>
 
               <Brand-Table-Brands
                 :brands="brandList"
@@ -35,13 +35,15 @@
                 :sortItemVal="sortItemVal"
                 :tableData="brandTableData"
                 :isLoading="isLoadingOfBrandTable"
+                :paramOfBrandTable="paramOfBrandTable"
                 @changeSortItemVal="changeSortItemVal"/>
             </div>
             <div v-show="!hasBrandFormParam">
-              <Title title="总销售趋势"/>
+              <div class="empty-info">请搜索品牌</div>
+              <!-- <Title title="总销售趋势"/>
               <Svg-Icon icon-class="empty" class="empty-svg"/>
               <Title title="按子品牌展开"/>
-              <Svg-Icon icon-class="empty" class="empty-svg"/>
+              <Svg-Icon icon-class="empty" class="empty-svg"/> -->
             </div>
           </el-tab-pane>
           <el-tab-pane label="SPU" name="spu" lazy>
@@ -73,16 +75,10 @@
 </template>
 
 <script>
-import BrandSetting from '@/views/brand/components/BrandSetting.vue'
-import BrandTableBrands from '@/views/brand/components/TableBrands.vue'
-import TableForBrand from '@/views/brand/components/TableForBrand.vue'
-import TableForSpu from '@/views/brand/components/TableForSpu.vue'
-import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
-// import ChartForShop from '@/views/brand/components/ChartForShop.vue'
-// import TableForShop from '@/views/brand/components/TableForShop.vue'
 import { mockBrandSpuData } from '@/mock'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { refLoading } from '@/utils/element.js'
+import componentsMixin from '@/views/brand/components.js'
 import {
   getMonthOption,
   getTableForBrandShop,
@@ -90,17 +86,8 @@ import {
   getTableForBrand,
   getChartForBrand
 } from '@/api/brand'
-// import { deleteEmptyKeyVal } from '@/utils/common.js'
 export default {
-  components: {
-    BrandSetting,
-    BrandTableBrands,
-    TableForBrand,
-    ChartForBrand,
-    TableForSpu
-    // ChartForShop,
-    // TableForShop
-  },
+  mixins: [componentsMixin],
   data () {
     return {
       activeName: 'brand',
@@ -118,6 +105,7 @@ export default {
       isLoadingOfShopTable: false,
       isLoadingOfBrandTable: false,
       shopTableChart: {},
+      paramOfBrandTable: {},
       mockBrandSpuData: mockBrandSpuData
     }
   },
@@ -128,6 +116,7 @@ export default {
     ...mapState('brand', ['brandList', 'categoryId'])
   },
   methods: {
+    ...mapMutations('brand', ['RESET_BRAND_CATEGORY', 'RESET_BRAND_BRANDS']),
     // 切换tab
     handleTabClick () {
       this.getChartForBrand()
@@ -231,11 +220,12 @@ export default {
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
+      this.paramOfBrandTable = param
       this.isLoadingOfBrandTable = true
       const res = await getTableForBrand(param)
       this.isLoadingOfBrandTable = false
+      this.brandTableData = []
       if (res.code === 200) {
-        console.info(res.result)
         this.brandTableData = res.result
       } else {
         this.$message.error('品牌概览列表请求失败')
@@ -248,7 +238,6 @@ export default {
         group: this.groupItemVal,
         view: this.viewItemVal,
         brandList: this.brandList,
-        // cateList: [deleteEmptyKeyVal(this.cateList[0])],
         tmallMonthList: this.selectdMonth
       }
       const res = await getChartForBrandShop(param)
@@ -265,7 +254,6 @@ export default {
         range: this.rangeItemVal,
         group: this.groupItemVal,
         sort: this.sortItemVal,
-        // cateList: [deleteEmptyKeyVal(this.cateList[0])],
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
@@ -281,6 +269,10 @@ export default {
   },
   mounted () {
     this.getMonthOption()
+  },
+  beforeDestroy () {
+    this.RESET_BRAND_BRANDS()
+    this.RESET_BRAND_CATEGORY()
   }
 }
 </script>

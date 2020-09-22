@@ -1,8 +1,7 @@
 <template>
   <div class="brand-setting-wapper">
-    配置筛选
     <el-form :model="brandForm" class="m-t-20" label-position="left" label-width="70px" ref="brandForm">
-      <el-form-item label="品牌" prop="brandId">
+      <el-form-item label="搜索品牌" prop="brandId">
         <el-select
           v-model="brandForm.brandList"
           value-key="brand"
@@ -25,7 +24,7 @@
         <el-button type="primary" class="m-l-24" @click="onSubmit" :disabled="isDisabled">查询</el-button>
         <el-button @click="onClean">清除</el-button>
       </el-form-item>
-      <el-form-item label="行业" prop="cid">
+      <el-form-item label="行业筛选" prop="cid">
         <el-cascader
           style="width: 400px"
           popper-class="industry-cascader-wapper"

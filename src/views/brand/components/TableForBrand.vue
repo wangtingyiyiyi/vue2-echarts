@@ -3,13 +3,17 @@
   <el-table
     :data="tableData"
     header-row-class-name="tableHeaderClass"
+    cell-class-name="tableCellClass"
     ref="table"
     stripe
-    style="width: 100%">
-    <el-table-column
-      prop="label"
-      label="子品类"
-      width="180">
+    style="width: 100%"
+    lazy
+    row-key="label"
+    :load="load">
+    <el-table-column label="子品类" width="180">
+      <template slot-scope="{row}">
+        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline; color: inherit;" class="font-size-12" />
+      </template>
     </el-table-column>
     <el-table-column
       prop="salesCount"
@@ -29,11 +33,11 @@
           <Svg-Icon icon-class="descending" :class="[sortItemVal == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.sumGmv | format}}</template>
+      <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
     </el-table-column>
     <el-table-column width="40"></el-table-column>
     <el-table-column
-      align="right"
+      align="center"
       label="销售趋势">
       <template slot-scope="{row}">
         <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
@@ -56,18 +60,57 @@
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
     <el-table-column
-      prop="avgPrice"
       align="right"
       label="均价">
+      <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
 </template>
 
 <script>
 import tableMixins from '@/views/brand/components/tableMixins.js'
+import TextButton from '@/components/TextButton.vue'
+import { getTableForBrand } from '@/api/brand'
 export default {
   name: 'TableForBrand',
-  mixins: [tableMixins]
+  mixins: [tableMixins],
+  props: {
+    paramOfBrandTable: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  components: { TextButton },
+  methods: {
+    getCat (data) {
+      return data.label
+      // switch (data.remark) {
+      //   case 'define':
+      //     return data.outCat1
+      //   case '1':
+      //     return data.outCat1
+      //   case '2':
+      //     return data.outCat2
+      //   case '3':
+      //     return data.outCat3
+      //   default:
+      //     return ''
+      // }
+    },
+    handleCategory () {
+
+    },
+    async load (tree, treeNode, resolve) {
+      const cateTableParam = { ...this.paramOfBrandTable }
+      const param = Object.assign(cateTableParam, { id: tree.id })
+      const res = await getTableForBrand(param)
+      if (res.code === 200) {
+        resolve(res.result)
+      } else {
+        this.$message.error('加载子分类失败')
+      }
+    }
+  }
 }
 </script>
 
@@ -78,7 +121,4 @@ export default {
 .active-sort
   color $base-blue
 
-.el-table >>> .tableHeaderClass th
-  background-color $table-header-bgc !important
-  height 48px
 </style>

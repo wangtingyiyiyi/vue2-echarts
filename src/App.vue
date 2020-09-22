@@ -11,4 +11,5 @@
   -moz-osx-font-smoothing grayscale
   font-size 14px
   background-color $base-white
+  color #111111
 </style>

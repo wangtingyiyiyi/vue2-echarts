@@ -10,6 +10,9 @@
 
 // tab nav 自定义
 .el-tabs > .el-tabs__header
+    margin 0px
+    .el-tabs__nav-wrap::after
+      height 1px
     .el-tabs__nav
       .el-tabs__active-bar
         background-color $base-blue
@@ -77,3 +80,6 @@
 
 .el-radio > .el-radio__input > .el-radio__inner:hover
   border-color $base-blue
+
+.el-tag 
+  border-radius 1px

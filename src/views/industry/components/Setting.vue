@@ -3,7 +3,7 @@
     <div class="industry-setting-wapper">
       <el-form class="m-t-20" inline label-position="left" label-width="70px" ref="industryForm">
         <el-form-item prop="brandId">
-          <span slot="label" class="form-label">目标品类</span>
+          <span slot="label" class="form-label">选择行业</span>
           <el-select
             ref="select"
             :value="categoryObj.label"
