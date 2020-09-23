@@ -58,6 +58,8 @@ export default {
         arr.push({
           name: item.tmallBrand.brand || '',
           type: 'line',
+          symbol: 'circle',
+          symbolSize: 5,
           data: item[this.tempKey]
         })
       })
@@ -90,7 +92,7 @@ export default {
         legend: {
           right: '20px',
           top: '20',
-          itemGap: 20,
+          itemGap: 40,
           itemHeight: 3,
           icon: 'roundRect',
           data: this.getLegend(this.brandData)
@@ -99,6 +101,7 @@ export default {
           left: '10px',
           right: '20px',
           bottom: '30px',
+          top: '37px',
           containLabel: true
         },
         xAxis: {

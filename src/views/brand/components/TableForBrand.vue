@@ -12,7 +12,7 @@
     :load="load">
     <el-table-column label="子品类" width="180">
       <template slot-scope="{row}">
-        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline; color: inherit;" class="font-size-12" />
+        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline; color: inherit;" />
       </template>
     </el-table-column>
     <el-table-column

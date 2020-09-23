@@ -45,6 +45,7 @@
 import { mapMutations } from 'vuex'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
+import { debounce } from '@/utils/common.js'
 const INITBRANDFORM = { brandList: [], catetegoryId: '' }
 export default {
   mixins: [mixin],
@@ -88,19 +89,22 @@ export default {
       this.getCategory()
     },
     // 品牌列表模糊查询
-    async getBrand (query) {
-      if (query) {
-        this.loading = true
-        const res = await getBrandByLikeCondition({ likeCondition: query })
-        this.loading = false
-        if (res.code === 200) {
-          this.brandOption = res.result
+    getBrand (query) {
+      debounce(async () => {
+        if (query) {
+          this.loading = true
+          const res = await getBrandByLikeCondition({ likeCondition: query })
+          this.brandOption = []
+          this.loading = false
+          if (res.code === 200) {
+            this.brandOption = res.result
+          } else {
+            this.$message.error('品牌列表搜索失败')
+          }
         } else {
-          this.$message.error('品牌列表搜索失败')
+          this.brandOption = []
         }
-      } else {
-        this.brandOption = []
-      }
+      })
     },
     // 品牌分类
     async getCategory () {

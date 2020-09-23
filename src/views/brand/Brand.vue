@@ -7,7 +7,7 @@
       <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
           <el-tab-pane label="品牌概览" name="brand">
             <div v-show="hasBrandFormParam">
-              <Title title="总销售趋势"/>
+              <Title class="m-b-12" title="总销售趋势"/>
 
               <Echarts-Buttons
                 :activeVal="viewItemVal"
@@ -22,7 +22,7 @@
                   :viewItemVal="viewItemVal"/>
               </div>
 
-              <Title class="m-t-10" title="按子品牌展开"/>
+              <Title class="m-b-12" title="按子品牌展开"/>
 
               <Brand-Table-Brands
                 :brands="brandList"

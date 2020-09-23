@@ -21,12 +21,13 @@ export default {
 .wapper
   display flex
   align-items center
-  margin-bottom 10px
-
+  margin-bottom 12px
   .icon
-    height 12px
+    height 10px
     width 3px
     background-color $base-blue
   .title
     padding-left 8px
+    color $color-title
+    font-weight 500
 </style>

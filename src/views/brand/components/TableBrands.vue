@@ -36,9 +36,10 @@ export default {
 
 .brand-item
   margin-right 70px
-  padding  0 1px 10px
+  margin-bottom 3px
+  padding  0 1px 1px
   cursor pointer
-  font-size 12px
+  font-size 14px
   text-align center
   color $color-second
 

@@ -12,7 +12,7 @@
     style="width: 100%">
     <el-table-column prop="outCat2" label="子品类">
       <template slot-scope="{row}">
-        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" class="font-size-12" />
+        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" />
       </template>
     </el-table-column>
     <el-table-column align="right" width="90">
