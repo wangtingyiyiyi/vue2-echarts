@@ -5,7 +5,7 @@
       :collapse-transition="false"
       :collapse="collapsed"
       @select="menuSelect">
-      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name">
+      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text">
         <Svg-Icon :icon-class="item.meta.svgIcon"/>
         <span slot="title" style="margin-left: 7px">
           <span>{{item.name}}</span>
@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .width-200
   width 200px !important
 .width-63
@@ -63,6 +63,8 @@ export default {
     font-weight 500
     .el-menu-item
       color $color-second
+      .el-tooltip
+        text-align center
     .is-active
       .border
         width 2px
@@ -72,4 +74,5 @@ export default {
         position absolute
         top 18px
         left 198px
+
 </style>
