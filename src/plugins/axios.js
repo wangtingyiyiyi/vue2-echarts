@@ -68,3 +68,20 @@ export function get (url, params = {}) {
       })
   })
 }
+
+// 导出二进制文件
+export function blobPost (url, params = {}) {
+  return new Promise((resolve, reject) => {
+    axios.post(url, params, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      responseType: 'blob'
+    })
+      .then(response => {
+        resolve(response.data)
+      }, err => {
+        reject(err)
+      })
+  })
+}

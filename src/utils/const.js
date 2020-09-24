@@ -17,22 +17,23 @@ export const GROUP_LEVEL = [
     icon: 'user',
     label: '按月',
     value: '0',
-    industrySortIndex: [4]
+    industryExcelHeader: ['月']
   }, {
     icon: 'upload',
     label: '按季度',
     value: '1',
-    industrySortIndex: [3]
+    industryExcelHeader: ['季度']
   }, {
     icon: 'upload',
     label: '按半年',
     value: '2',
-    industrySortIndex: [2]
+    industryExcelHeader: ['半年']
+
   }, {
     icon: 'upload',
     label: '按年',
     value: '3',
-    industrySortIndex: [1]
+    industryExcelHeader: ['年']
   }
 ]
 // 图标按钮
@@ -71,17 +72,17 @@ export const CATEGORY_LEVEL = [
     label: '一级品类',
     value: '0',
     industryWeights: 1,
-    industrySortIndex: [5]
+    industryExcelHeader: ['一级品类']
   }, {
     label: '二级品类',
     value: '1',
     industryWeights: 10,
-    industrySortIndex: [6]
+    industryExcelHeader: ['二级品类']
   }, {
     label: '三级品类',
     value: '2',
     industryWeights: 100,
-    industrySortIndex: [7]
+    industryExcelHeader: ['三级品类']
   }
 ]
 
@@ -91,17 +92,17 @@ export const CATEGORT_GROUP = [
     label: '按品牌',
     value: '0',
     industryWeights: 1,
-    industrySortIndex: [8]
+    industryExcelHeader: ['品牌']
   }, {
     label: '按店铺',
     value: '1',
     industryWeights: 10,
-    industrySortIndex: [9, 10]
+    industryExcelHeader: ['店铺ID', '店铺']
   }, {
     label: '按SPU',
     value: '2',
     industryWeights: 100,
-    industrySortIndex: [11, 12]
+    industryExcelHeader: ['SPUID', 'SPU名']
   }
 ]
 
@@ -111,42 +112,115 @@ export const DATA_INDEX = [
     label: '销量',
     value: '0',
     industryWeights: 1,
-    industrySortIndex: [13]
+    industryExcelHeader: ['销量']
   }, {
     label: 'ASP',
     value: '1',
     industryWeights: 10,
-    industrySortIndex: [15]
+    industryExcelHeader: ['ASP']
   }, {
     label: 'GMV',
     value: '3',
     industryWeights: 100,
-    industrySortIndex: [14]
+    industryExcelHeader: ['GMV']
   }, {
     label: 'SPU数',
     value: '4',
     industryWeights: 1000,
-    industrySortIndex: [16]
+    industryExcelHeader: ['SPU数']
   }
 ]
 
-// 行业提数-Excel在线预览表头
-export const EXCEL_RULES = {
-  1: '年',
-  2: '半年',
-  3: '季度',
-  4: '月',
-  5: '一级品类',
-  6: '二级品类',
-  7: '三级品类',
-  8: '品牌',
-  9: '店铺ID',
-  10: '店铺',
-  11: 'SPUID',
-  12: 'SPU名',
-  13: '销量',
-  14: 'GMV',
-  15: 'ASP',
-  16: 'SPU数'
+export const INDUSTRY_EXCEL_TABLE_PROP = [
+  {
+    label: '年',
+    prop: 'year',
+    align: 'left'
+  }, {
+    label: '半年',
+    prop: 'half',
+    align: 'left'
+  }, {
+    label: '季度',
+    prop: 'quarter',
+    align: 'left'
+  }, {
+    label: '月',
+    prop: 'month',
+    align: 'left'
+  }, {
+    label: '一级品类',
+    prop: 'outCat1',
+    align: 'left'
+  }, {
+    label: '二级品类',
+    prop: 'outCat2',
+    align: 'left'
+  }, {
+    label: '三级品类',
+    prop: 'outCat3',
+    align: 'left'
+  }, {
+    label: '品牌',
+    prop: 'brand',
+    align: 'left'
+  }, {
+    label: '店铺ID',
+    prop: 'shopid',
+    align: 'left'
+  }, {
+    label: '店铺',
+    prop: 'shopName',
+    align: 'left'
+  }, {
+    label: 'SPUID',
+    prop: 'spuid',
+    align: 'left'
+  }, {
+    label: 'SPU名',
+    prop: 'spuName',
+    align: 'left'
+  }, {
+    label: '销量',
+    prop: 'sales',
+    align: 'right',
+    formatter: 'format'
+  }, {
+    label: 'GMV',
+    prop: 'gmv',
+    align: 'right',
+    formatter: 'format'
+  }, {
+    label: 'SPU数',
+    prop: 'spuCount',
+    align: 'right',
+    formatter: 'format'
+  }, {
+    label: 'ASP',
+    prop: 'asp',
+    align: 'right',
+    formatter: 'format'
+  }
+]
 
-}
+export const MOCK_DATA = [
+  {
+    year: '2012',
+    halfyear: '2012H1',
+    q: 'Q1',
+    month: '201201',
+    outCat1: '彩妆',
+    outCat2: '面部护肤',
+    outCat3: '面霜',
+    brand: '完美日记',
+    spuId: 12132312,
+    spuName: '完美日记巴拉巴拉产品',
+    shop: '完美日记旗舰店',
+    shopId: 2712,
+    sales: 12233123846,
+    GMV: 8712361221,
+    gmv: 1221875321,
+    spuCount: 12371,
+    asp: 242.3
+  }
+]

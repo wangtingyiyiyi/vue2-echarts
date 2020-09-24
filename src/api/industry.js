@@ -39,3 +39,8 @@ export function getIndustryBrandTable (params) {
 export function getBrandChart (params) {
   return post('industryBrand/listGraph', params)
 }
+
+// 行业提数 预览待导出excel
+export function previewExcel (params) {
+  return post('userInfo/preView', params)
+}

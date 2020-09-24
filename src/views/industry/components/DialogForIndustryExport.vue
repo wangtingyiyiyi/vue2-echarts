@@ -6,68 +6,110 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     top="10vh"
-    width="800px">
+    width="1200px">
     <div slot="title">行业提数</div>
-
-    <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
-      {{form}}
-      <el-form-item label="目标行业">
-        <Select-Tree />
-      </el-form-item>
-      <el-form-item label="时间范围">
-        <el-button-group v-model="form.range">
-          <el-button
-            v-for="item in RANGE_LEVEL"
-            :key="item.value"
-            @click="handleRange(item)"
-            :type="form.range === item.value ? 'primary' : ''">{{item.label}}</el-button>
-        </el-button-group>
-      </el-form-item>
-      <el-form-item label="颗粒度">
-        <el-button-group v-model="form.group">
-          <el-button
-            v-for="item in GROUP_LEVEL"
-            :key="item.value"
-            @click="handleGroup(item)"
-            :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
-        </el-button-group>
-      </el-form-item>
-      <el-form-item label="品类展开">
-        <el-checkbox-group v-model="cateFlat">
-          <el-checkbox
-            v-for="item in CATEGORY_LEVEL"
-            :key="item.value"
-            :label="item.industryWeights">{{item.label}}</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="品类聚合">
-        <el-checkbox-group v-model="agg">
-          <el-checkbox
-            v-for="item in CATEGORT_GROUP"
-            :key="item.value"
-            :label="item.industryWeights">{{item.label}}</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="数据指标">
-        <el-checkbox-group v-model="indicator">
-          <el-checkbox
-            v-for="item in DATA_INDEX"
-            :key="item.value"
-            :label="item.industryWeights">{{item.label}}</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-    </el-form>
+    <div class="flex-wapper">
+      <div style="width: 30%">
+        <Title title="提数配置"/>
+        <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
+          <el-form-item label="目标行业">
+            <Select-Tree @handleSelectTree="handleSelectTree"/>
+          </el-form-item>
+          <el-form-item label="时间范围">
+            <el-button-group v-model="form.range">
+              <el-button
+                v-for="item in RANGE_LEVEL"
+                :key="item.value"
+                @click="handleRange(item)"
+                :type="form.range === item.value ? 'primary' : ''">{{item.label}}</el-button>
+            </el-button-group>
+          </el-form-item>
+          <el-form-item label="颗粒度">
+            <el-button-group v-model="form.group">
+              <el-button
+                v-for="item in GROUP_LEVEL"
+                :key="item.value"
+                @click="handleGroup(item)"
+                :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
+            </el-button-group>
+          </el-form-item>
+          <el-form-item label="品类展开">
+            <el-checkbox-group v-model="cateFlat" @change="changeCateFlat">
+              <el-checkbox
+                v-for="item in CATEGORY_LEVEL"
+                :key="item.value"
+                checked
+                :label="item">{{item.label}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="品类聚合">
+            <el-checkbox-group v-model="agg" @change="changeAgg">
+              <el-checkbox
+                v-for="item in CATEGORT_GROUP"
+                :key="item.value"
+                :label="item">{{item.label}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          {{indicator}}
+          <el-form-item label="数据指标">
+            <el-checkbox-group v-model="indicator" @change="changeIndicator">
+              <el-checkbox
+                v-for="item in DATA_INDEX"
+                :key="item.value"
+                :label="item">{{item.label}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div style="width: 10%"></div>
+      <div style="width: 60%">
+        {{form}}
+        <Title title="Excel预览"/>
+        <el-table
+          v-if="tableData.length !== 0"
+          :data="tableData"
+          ref="excelTable"
+          class="excel-table"
+          header-row-class-name="excel-header-class"
+          row-class-name="excel-row-class"
+          stripe
+          border>
+          <el-table-column
+            show-overflow-tooltip
+            v-for="item in excelHeader"
+            :key="item.label"
+            :prop="item.prop"
+            :align="item.align"
+            width="120px"
+            :label="item.label">
+            <template slot-scope="{row}">
+              <span  v-if="item.formatter">{{row[item.prop] | format}}</span>
+              <span v-else>{{row[item.prop]}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div v-else>{{emptyMes}}</div>
+      </div>
+    </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="onCancel">取消</el-button>
-      <el-button type="primary" @click="onSubmit">导出</el-button>
+      <el-button @click="onCancel">取消{{percentComplete}}</el-button>
+      <el-button type="primary" @click="onSubmit" :disabled="btnDisabled">导出</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { RANGE_LEVEL, GROUP_LEVEL, CATEGORY_LEVEL, CATEGORT_GROUP, DATA_INDEX } from '@/utils/const.js'
+import {
+  RANGE_LEVEL,
+  GROUP_LEVEL,
+  CATEGORY_LEVEL,
+  CATEGORT_GROUP,
+  DATA_INDEX,
+  INDUSTRY_EXCEL_TABLE_PROP
+} from '@/utils/const.js'
 import SelectTree from '@/views/industry/components/SelectTree.vue'
-import { replenishSum } from '@/utils/common.js'
+import { replenishSum, blolToFile } from '@/utils/common.js'
+import { previewExcel } from '@/api/industry'
 export default {
   name: 'DialogForIndustryExport',
   props: {
@@ -76,52 +118,41 @@ export default {
       default: false
     }
   },
+  computed: {
+    btnDisabled () {
+      return this.indicator.length !== 0
+    }
+  },
   data () {
     return {
       cateFlat: [],
       agg: [],
       indicator: [],
+      group: {},
       form: {
-        id: '',
+        id: '7667',
         range: '1',
         group: '0',
-        cateFlat: 0,
-        agg: 0,
-        indicator: 0
+        cateFlat: '111',
+        agg: '000',
+        indicator: '0000'
       },
       RANGE_LEVEL: RANGE_LEVEL,
       GROUP_LEVEL: GROUP_LEVEL,
       CATEGORY_LEVEL: CATEGORY_LEVEL,
       CATEGORT_GROUP: CATEGORT_GROUP,
-      DATA_INDEX: DATA_INDEX
+      DATA_INDEX: DATA_INDEX,
+      excelHeader: [],
+      tableData: [],
+      percentComplete: 0,
+      downloadLoading: false,
+      emptyMes: '请选择配置项',
+      canSelct: [],
+      cateFlats: [],
+      cateSum: '000'
     }
   },
-  components: {
-    SelectTree
-  },
-  watch: {
-    // 按照品类展开
-    cateFlat: {
-      deep: true,
-      handler: function (arr) {
-        this.handleSum(arr, 'cateFlat', 3)
-      }
-    },
-    // 按照品类聚合
-    agg: {
-      deep: true,
-      handler: function (arr) {
-        this.handleSum(arr, 'agg', 3)
-      }
-    },
-    // 数据指标
-    indicator: {
-      deep: true,
-      handler: function (arr) {
-        this.handleSum(arr, 'indicator', 4)
-      }
-    }
-  },
+  components: { SelectTree },
   methods: {
     closeDialog () {
       this.$emit('closeDialog', false)
@@ -129,21 +160,133 @@ export default {
     onCancel () {
       this.closeDialog()
     },
-    onSubmit () {
-      this.$message.info('该功能正在开发，敬请期待')
+    // 目标行业
+    handleSelectTree (data) {
+      this.form.id = data.id
+      this.handlePreview()
     },
-    handleSum (arr, key, len) {
-      this.form[key] = replenishSum(arr, len)
-    },
+    // 时间范围
     handleRange (item) {
       this.form.range = item.value
     },
+    // 颗粒度
     handleGroup (item) {
       this.form.group = item.value
+      this.group = item
+      this.handleExcelHeader()
+    },
+    // 按照品类展开
+    changeCateFlat (val) {
+      this.handleSum(val, 'cateFlat', 3)
+      this.handleExcelHeader()
+    },
+    // 按照品类聚合
+    changeAgg (arr) {
+      this.handleSum(arr, 'agg', 3)
+    },
+    // 按照数据指标
+    changeIndicator (arr) {
+      this.handleSum(arr, 'agg', 3)
+    },
+    // 导出Excel
+    async onSubmit () {
+      const that = this
+      const filename = this.$moment(new Date()).format('YYYYMMDD')
+      const url = 'http://192.168.0.75:8088/srv/cms/userInfo/download'
+      const param = { id: '5080', range: '1', group: '0', cateFlat: 0, agg: 10, indicator: 1010 }
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', url, true)
+      xhr.responseType = 'blob'
+      xhr.setRequestHeader('Content-Type', ' application/json')
+      xhr.setRequestHeader('token', sessionStorage.getItem('token'))
+      xhr.onprogress = function (event) {
+        const p = (event.loaded / event.total) * 100
+        that.percentComplete = Math.round(p)
+        console.info(event, p)
+      }
+      xhr.onload = function (params) {
+        if (this.status >= 200 && this.status < 300) {
+          const blob = new Blob([this.response], { type: 'application/excel' })
+          blolToFile(blob, filename)
+        }
+      }
+      xhr.send(JSON.stringify(param))
+    },
+    // 求和补位
+    handleSum (arrObj, key, len) {
+      const val = arrObj.map(item => item.industryWeights)
+      this.form[key] = replenishSum(val, len)
+      this.handleExcelHeader()
+    },
+    // 设置Excel表头
+    handleExcelHeader () {
+      const group = this.group.industryExcelHeader || []
+      const cateFlats = this.cateFlat.map(item => item.industryExcelHeader)
+      const aggs = this.agg.map(item => item.industryExcelHeader)
+      const indicators = this.indicator.map(item => item.industryExcelHeader)
+      const selectHeader = [...cateFlats, ...aggs, ...indicators, ...group].flat() // 降维
+      this.excelHeader = INDUSTRY_EXCEL_TABLE_PROP.filter(item => {
+        return selectHeader.indexOf(item.label) !== -1
+      })
+      this.handlePreview()
+    },
+    // 在线预览
+    async handlePreview () {
+      const param = {
+        id: '5080',
+        range: '1',
+        group: '0',
+        cateFlat: '101',
+        agg: '101',
+        indicator: '1001'
+      }
+      // if (!this.form.id || this.form.indicator === '0000') { return }
+      const res = await previewExcel(param)
+      if (res.code === 200) {
+        this.tableData = res.result
+      } else {
+        this.tableData = []
+        this.emptyMes = 'Excel预览数据请求失败'
+      }
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.flex-wapper
+  display flex
+  width 100%
+
+.excel-table
+  width 100%
+
+.excel-table >>> .excel-header-class th
+  padding 0
+  font-weight bolder
+  font-size 14px
+  color #111111
+
+.excel-table >>> .excel-row-class td
+  padding 0
+  font-size 12px
+  color #111111
+
+.excel-table >>> .el-table__body-wrapper
+  &::-webkit-scrollbar{
+    width: 6px;
+  }
+  &::-webkit-scrollbar:horizontal{
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 6px;
+    background-color: #ccc;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-corner{
+    display: none;
+  }
 </style>

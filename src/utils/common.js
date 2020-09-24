@@ -1,3 +1,4 @@
+
 // 去掉value为空字符串的键值对
 export function deleteEmptyKeyVal (obj) {
   const keys = Object.keys(obj)
@@ -23,7 +24,7 @@ export function replenishSum (arr, len) {
       sum = '0' + sum
     }
   }
-  return sum
+  return sum.toString()
 }
 
 // 防抖
@@ -47,3 +48,16 @@ export function throttle (fn, interval = 300) {
 }
 // 鼠标不断点击触发，mousedown(单位时间内只触发一次)
 // 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
+
+// 二进制流转换为文件
+export function blolToFile (res, filename) {
+  const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+  const downloadElement = document.createElement('a') // 新建一个DOM节点
+  const href = window.URL.createObjectURL(blob) // 创建下载的链接
+  downloadElement.href = href
+  downloadElement.download = filename + '.xlsx' // 下载后文件名
+  document.body.appendChild(downloadElement) // 将新增的节点挂载到页面上
+  downloadElement.click() // 点击下载
+  document.body.removeChild(downloadElement) // 下载完成移除元素
+  window.URL.revokeObjectURL(href)
+}

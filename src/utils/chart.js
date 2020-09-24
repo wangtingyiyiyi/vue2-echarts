@@ -76,7 +76,7 @@ export function callMax (arr) {
 // 取整策略
 export function roundingFun (max, rank) {
   const val = max / rank
-  const integer = Math.ceil(val)
+  const integer = Math.floor(val)
   const decimal = val - integer
   if (decimal <= 0.5) {
     return (integer + 0.5) * rank

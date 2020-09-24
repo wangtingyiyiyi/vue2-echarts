@@ -1,11 +1,11 @@
 <template>
   <el-select
     ref="select"
-    :value="categoryObj.label"
+    :value="selectData.label"
     filterable
     remote
     placeholder="请输入搜索品类"
-    style="width: 600px"
+    style="width: 100%"
     :remote-method="handleSelctRemoteFilter">
     <el-option value="0" class="hidden"></el-option>
       <el-tree
@@ -39,10 +39,19 @@ export default {
         children: 'children',
         label: 'label'
       }
+
     }
   },
   computed: {
     ...mapState('industry', ['categoryObj'])
+  },
+  watch: {
+    categoryObj: {
+      deep: true,
+      handler: function (params) {
+        this.selectData = JSON.parse(JSON.stringify(params))
+      }
+    }
   },
   methods: {
     getEmptyText () {
@@ -54,6 +63,7 @@ export default {
       this.selectData.id = data.id
       this.selectData.label = data.label
       this.$refs.select.blur()
+      this.$emit('handleSelectTree', this.selectData)
     },
     async handleSelctRemoteFilter (query) {
       if (query) {

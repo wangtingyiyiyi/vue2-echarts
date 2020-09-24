@@ -1,5 +1,5 @@
 <template>
-  <div class="wapper">
+  <div class="title-wapper">
     <div class="icon"></div>
     <div class="title">{{title}}</div>
   </div>
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wapper
+.title-wapper
   display flex
   align-items center
   margin-bottom 12px
