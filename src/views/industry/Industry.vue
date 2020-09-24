@@ -103,7 +103,7 @@
         <Drawer-Content
           :drawerShow="drawerShow"/>
     </Drawer>
-    <Download-Button :progress="loadingProgress"/>
+    <Download-Button :loadingProgress="loadingProgress" :iconName="iconName"/>
     <!-- 行业提数 -->
     <Dialog-For-Industry-Export
       :dialogVisible="dialogVisible"
@@ -124,6 +124,7 @@ import {
 } from '@/api/industry'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
+import { blolToFile } from '@/utils/common.js'
 export default {
   mixins: [componentsMixin],
   data () {
@@ -151,7 +152,8 @@ export default {
       pageSize: 10,
       brandCount: 0,
       dialogVisible: false,
-      loadingProgress: 0
+      loadingProgress: 0,
+      iconName: 'el-icon-download'
     }
   },
   computed: {
@@ -222,35 +224,34 @@ export default {
     },
     // 行业提数 弹出框
     handleExportDialog () {
-      console.info('handleExportExcel')
       this.dialogVisible = true
     },
     handleExportExcel (param) {
-      console.info(param)
-      // const that = this
-      // const filename = this.$moment(new Date()).format('YYYYMMDD')
-      // const url = `${process.env.VUE_APP_API_URL}/userInfo/download`
-      // const param = { id: '5080', range: '1', group: '0', cateFlat: 0, agg: 10, indicator: 1010 }
-      // const xhr = new XMLHttpRequest()
-      // xhr.open('POST', url, true)
-      // xhr.responseType = 'blob'
-      // xhr.setRequestHeader('Content-Type', ' application/json')
-      // xhr.setRequestHeader('token', sessionStorage.getItem('token'))
-      // xhr.onprogress = function (event) {
-      //   const p = event.loaded / event.total
-      //   that.loadingProgress = p
-      // if (event.loaded === event.total) {
-      //     that.$message.success('下载完成')
-      //     that.loadingProcress = 0
-      //   }
-      // }
-      // xhr.onload = function (params) {
-      //   if (this.status >= 200 && this.status < 300) {
-      //     const blob = new Blob([this.response], { type: 'application/excel' })
-      //     blolToFile(blob, filename)
-      //   }
-      // }
-      // xhr.send(JSON.stringify(param))
+      this.iconName = 'el-icon-loading'
+      const that = this
+      const filename = 'Tmall_' + param.cateName + '_' + this.$moment(new Date()).format('YYYYMMDD')
+      const url = `${process.env.VUE_APP_API_URL}/userInfo/download`
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', url, true)
+      xhr.responseType = 'blob'
+      xhr.setRequestHeader('Content-Type', ' application/json')
+      xhr.setRequestHeader('token', sessionStorage.getItem('token'))
+      xhr.onprogress = function (event) {
+        that.iconName = 'el-icon-download'
+        const p = event.loaded / event.total
+        that.loadingProgress = p
+        if (event.loaded === event.total) {
+          that.$message.success('下载完成')
+        }
+      }
+      xhr.onload = function (params) {
+        console.info(this)
+        if (this.status >= 200 && this.status < 300) {
+          const blob = new Blob([this.response], { type: 'application/excel' })
+          blolToFile(blob, filename)
+        }
+      }
+      xhr.send(JSON.stringify(param))
     },
     // 修改monthOption
     handleSelectdMonth (val) {
@@ -342,7 +343,6 @@ export default {
       const res = await getIndustryBrandTable(param)
       this.isLoadingBrandTable = false
       if (res.code === 200) {
-        console.info(res.result)
         this.brandCount = res.result.brandCount
         this.brandTableData = res.result.detailsBeanList
       } else {

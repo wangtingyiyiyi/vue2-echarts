@@ -50,7 +50,6 @@
                 :label="item">{{item.label}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          {{indicator}}
           <el-form-item label="数据指标">
             <el-checkbox-group v-model="indicator" @change="changeIndicator">
               <el-checkbox
@@ -63,7 +62,6 @@
       </div>
       <div style="width: 10%"></div>
       <div style="width: 60%">
-        {{form}}
         <Title title="Excel预览"/>
         <el-table
           v-if="tableData.length !== 0"
@@ -92,7 +90,7 @@
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="onCancel">取消{{percentComplete}}</el-button>
+      <el-button @click="onCancel">取消</el-button>
       <el-button type="primary" @click="onSubmit" :disabled="btnDisabled">导出</el-button>
     </span>
   </el-dialog>
@@ -109,7 +107,6 @@ import {
 } from '@/utils/const.js'
 import SelectTree from '@/views/industry/components/SelectTree.vue'
 import { replenishSum } from '@/utils/common.js'
-// import { replenishSum, blolToFile } from '@/utils/common.js'
 import { previewExcel } from '@/api/industry'
 export default {
   name: 'DialogForIndustryExport',
@@ -121,7 +118,7 @@ export default {
   },
   computed: {
     btnDisabled () {
-      return this.indicator.length !== 0
+      return this.indicator.length === 0 || this.agg.length === 0
     }
   },
   data () {
@@ -131,12 +128,13 @@ export default {
       indicator: [],
       group: {},
       form: {
-        id: '7667',
+        id: '',
         range: '1',
         group: '0',
         cateFlat: '111',
         agg: '000',
-        indicator: '0000'
+        indicator: '0000',
+        cateName: ''
       },
       RANGE_LEVEL: RANGE_LEVEL,
       GROUP_LEVEL: GROUP_LEVEL,
@@ -145,7 +143,6 @@ export default {
       DATA_INDEX: DATA_INDEX,
       excelHeader: [],
       tableData: [],
-      percentComplete: 0,
       downloadLoading: false,
       emptyMes: '请选择配置项',
       canSelct: [],
@@ -163,6 +160,8 @@ export default {
     },
     // 目标行业
     handleSelectTree (data) {
+      console.info(data)
+      this.form.cateName = data.label
       this.form.id = data.id
       this.handlePreview()
     },
@@ -187,13 +186,12 @@ export default {
     },
     // 按照数据指标
     changeIndicator (arr) {
-      this.handleSum(arr, 'agg', 3)
+      this.handleSum(arr, 'indicator', 4)
     },
     // 导出Excel
     async onSubmit () {
       this.closeDialog()
-      const param = { id: '5080', range: '1', group: '0', cateFlat: 0, agg: 10, indicator: 1010 }
-      this.$emit('handleExportExcel', param)
+      this.$emit('handleExportExcel', this.form)
     },
     // 求和补位
     handleSum (arrObj, key, len) {
@@ -215,16 +213,16 @@ export default {
     },
     // 在线预览
     async handlePreview () {
-      const param = {
-        id: '5080',
-        range: '1',
-        group: '0',
-        cateFlat: '101',
-        agg: '101',
-        indicator: '1001'
+      if (!this.form.id) { return }
+      if (this.form.agg === '000') {
+        this.emptyMes = '请至少选择一种品类聚合类型'
+        return
       }
-      // if (!this.form.id || this.form.indicator === '0000') { return }
-      const res = await previewExcel(param)
+      if (this.form.indicator === '0000') {
+        this.emptyMes = '请至少选择一种数据指标'
+        return
+      }
+      const res = await previewExcel(this.form)
       if (res.code === 200) {
         this.tableData = res.result
       } else {

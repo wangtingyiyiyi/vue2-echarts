@@ -1,15 +1,18 @@
 
 <template>
-  <div class="download-button fixed-position" v-if="loadingProgress === 0">
-    <i class="el-icon-download icon-class"></i>
+<div>
+  <div class="download-button fixed-position" v-show="loadingProgress === 0 || loadingProgress === 1">
+    <i :class="[iconName, 'icon-class']"></i>
   </div>
-  <div class="svg-wapper fixed-position" v-else>
+  <div class="svg-wapper fixed-position" v-show="loadingProgress !== 0 && loadingProgress !== 1">
     <svg width="60" height="60">
       <circle cx="30" cy="30" r="30" stroke-width="5.5" stroke="#e5e5e5" fill="none"></circle>
-      <circle cx="30" cy="30" r="30" ref="circle"  stroke-width="5.5" stroke="#5B8FF9" fill="none"  stroke-dasharray="0 226"></circle>
+      <circle cx="30" cy="30" r="30" ref="circle"  stroke-width="5.5" stroke="#5B8FF9" fill="none"  stroke-dasharray="0 251"></circle>
     </svg>
-    <i class="el-icon-download icon-class"></i>
+    <i :class="[iconName, 'icon-class']"></i>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -19,16 +22,20 @@ export default {
     loadingProgress: {
       type: Number,
       default: 0
+    },
+    // el-icon-loading
+    iconName: {
+      type: String,
+      default: 'el-icon-download'
     }
   },
   watch: {
     loadingProgress: {
-      immediate: true,
       handler: function (loadingProgress) {
         if (loadingProgress !== 0) {
           const circle = this.$refs.circle
-          const percent = 0.1 // 进度
-          const perimeter = Math.PI * 2 * 40 // 周长
+          const percent = loadingProgress // 进度
+          const perimeter = Math.PI * 2 * 30 // 周长
           circle.setAttribute('stroke-dasharray', perimeter * percent + ' ' + perimeter * (1 - percent))
         }
       }
