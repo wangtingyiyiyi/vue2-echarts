@@ -40,10 +40,6 @@
             </div>
             <div v-show="!hasBrandFormParam">
               <div class="empty-info">请搜索品牌</div>
-              <!-- <Title title="总销售趋势"/>
-              <Svg-Icon icon-class="empty" class="empty-svg"/>
-              <Title title="按子品牌展开"/>
-              <Svg-Icon icon-class="empty" class="empty-svg"/> -->
             </div>
           </el-tab-pane>
           <el-tab-pane label="SPU" name="spu" lazy>
@@ -116,7 +112,7 @@ export default {
     ...mapState('brand', ['brandList', 'categoryId'])
   },
   methods: {
-    ...mapMutations('brand', ['RESET_BRAND_CATEGORY', 'RESET_BRAND_BRANDS']),
+    ...mapMutations('brand', ['RESET_BRAND_CATEGORY', 'RESET_BRAND_BRANDS', 'SET_BRAND_BRANDS', 'SET_BRAND_SETTING']),
     // 切换tab
     handleTabClick () {
       this.getChartForBrand()
@@ -265,10 +261,29 @@ export default {
       } else {
         this.$message.error('品牌店铺列表请求失败')
       }
+    },
+    // 如果路由携带参数,则立刻请求行业数据
+    handleRoute () {
+      const { query } = this.$route
+      if (Object.keys(query).length !== 0) {
+        console.info(query)
+        const brandList = JSON.parse(query.brandList)
+        // this.SET_BRAND_BRANDS(brandList)
+        this.SET_BRAND_SETTING({
+          id: query.id,
+          label: query.label,
+          remark: query.remark,
+          brandList: brandList
+        })
+        // this.SET_INDUSTRY_CATEGORY(query)
+        // this.brandOnSubmit()
+      }
     }
   },
   mounted () {
-    this.getMonthOption()
+    this.getMonthOption().then(() => {
+      this.handleRoute()
+    })
   },
   beforeDestroy () {
     this.RESET_BRAND_BRANDS()

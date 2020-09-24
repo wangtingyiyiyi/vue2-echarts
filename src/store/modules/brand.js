@@ -1,8 +1,15 @@
-import { SET_BRAND_BRANDS, SET_BRAND_CATEGORY, RESET_BRAND_BRANDS, RESET_BRAND_CATEGORY } from '../mutation'
+import {
+  SET_BRAND_BRANDS,
+  SET_BRAND_CATEGORY,
+  RESET_BRAND_BRANDS,
+  RESET_BRAND_CATEGORY,
+  SET_BRAND_SETTING
+} from '../mutation'
 
 const state = {
   brandList: [],
-  categoryId: []
+  categoryId: [],
+  settingParam: {}
 }
 
 const mutations = {
@@ -17,6 +24,9 @@ const mutations = {
   },
   [RESET_BRAND_CATEGORY] (state) {
     state.categoryId = []
+  },
+  [SET_BRAND_SETTING] (state) {
+    state.settingParam = state
   }
 }
 
