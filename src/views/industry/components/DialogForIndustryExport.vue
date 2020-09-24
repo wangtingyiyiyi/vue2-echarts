@@ -63,29 +63,31 @@
       <div style="width: 10%"></div>
       <div style="width: 60%">
         <Title title="Excel预览"/>
-        <el-table
-          v-if="tableData.length !== 0"
-          :data="tableData"
-          ref="excelTable"
-          class="excel-table"
-          header-row-class-name="excel-header-class"
-          row-class-name="excel-row-class"
-          stripe
-          border>
-          <el-table-column
-            show-overflow-tooltip
-            v-for="item in excelHeader"
-            :key="item.label"
-            :prop="item.prop"
-            :align="item.align"
-            width="120px"
-            :label="item.label">
-            <template slot-scope="{row}">
-              <span  v-if="item.formatter">{{row[item.prop] | format}}</span>
-              <span v-else>{{row[item.prop]}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div v-if="tableData.length !== 0">
+          <el-table
+            :data="tableData"
+            ref="excelTable"
+            class="excel-table"
+            header-row-class-name="excel-header-class"
+            row-class-name="excel-row-class"
+            stripe
+            border>
+            <el-table-column
+              show-overflow-tooltip
+              v-for="item in excelHeader"
+              :key="item.label"
+              :prop="item.prop"
+              :align="item.align"
+              min-width="120px"
+              :label="item.label">
+              <template slot-scope="{row}">
+                <span  v-if="item.formatter">{{row[item.prop] | format}}</span>
+                <span v-else>{{row[item.prop]}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin-top: 4px">当前共有 {{tableTotal | format}} 条数据</div>
+        </div>
         <div v-else>{{emptyMes}}</div>
       </div>
     </div>
@@ -143,11 +145,8 @@ export default {
       DATA_INDEX: DATA_INDEX,
       excelHeader: [],
       tableData: [],
-      downloadLoading: false,
-      emptyMes: '请选择配置项',
-      canSelct: [],
-      cateFlats: [],
-      cateSum: '000'
+      tableTotal: 0,
+      emptyMes: '请选择配置项'
     }
   },
   components: { SelectTree },
@@ -225,8 +224,10 @@ export default {
       const res = await previewExcel(this.form)
       if (res.code === 200) {
         this.tableData = res.result
+        this.tableTotal = res.total
       } else {
         this.tableData = []
+        this.tableTotal = 0
         this.emptyMes = 'Excel预览数据请求失败'
       }
     }
