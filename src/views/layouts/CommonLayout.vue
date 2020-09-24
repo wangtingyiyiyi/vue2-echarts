@@ -22,6 +22,7 @@ import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -33,8 +34,10 @@ export default {
     HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, HeaderNotice, HeaderAvatar
   },
   methods: {
+    ...mapMutations('sys', ['SET_SYS_COLLAPSED']),
     collapsChange (collapsed) {
       this.collapsed = !collapsed
+      this.SET_SYS_COLLAPSED(collapsed)
     }
   }
 }

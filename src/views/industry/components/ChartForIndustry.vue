@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { yAxisFormatter, xAxisDateFormatter, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
+import { mapState } from 'vuex'
 export default {
   name: 'ChartForIndustry',
   props: {
@@ -25,7 +26,15 @@ export default {
       handler: function (params) {
         this.init()
       }
+    },
+    collapsed: {
+      handler: function (params) {
+        this.chart.resize()
+      }
     }
+  },
+  computed: {
+    ...mapState('sys', ['collapsed'])
   },
   methods: {
     init () {

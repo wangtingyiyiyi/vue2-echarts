@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { yAxisFormatter, xAxisDateFormatter, thousands, callInterval, callMax } from '@/utils/chart.js'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ChartForBrand',
@@ -34,7 +35,15 @@ export default {
         this.initViewItem()
         this.init()
       }
+    },
+    collapsed: {
+      handler: function (params) {
+        this.chart.resize()
+      }
     }
+  },
+  computed: {
+    ...mapState('sys', ['collapsed'])
   },
   methods: {
     initViewItem () {

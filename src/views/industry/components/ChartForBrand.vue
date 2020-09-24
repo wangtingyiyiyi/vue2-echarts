@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 import { ECHARTS_COLORS, ECHARTS_ACTIVED_PARAM } from '@/utils/const.js'
 import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter } from '@/utils/chart.js'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ChartForBrand',
@@ -32,7 +33,15 @@ export default {
         this.legendData = ECHARTS_ACTIVED_PARAM[this.viewItemVal]
         this.init()
       }
+    },
+    collapsed: {
+      handler: function (params) {
+        this.chart.resize()
+      }
     }
+  },
+  computed: {
+    ...mapState('sys', ['collapsed'])
   },
   methods: {
     init () {
