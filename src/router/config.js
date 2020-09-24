@@ -37,7 +37,7 @@ export const routes = [
         path: 'brand',
         name: '品牌',
         meta: {
-          svgIcon: 'tag'
+          svgIcon: 'brand'
         },
         component: Brand
       }

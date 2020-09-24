@@ -6,8 +6,8 @@
       :collapse="collapsed"
       @select="menuSelect">
       <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name">
-        <Svg-Icon :icon-class="item.meta.svgIcon" class="m-r-7"/>
-        <span slot="title">
+        <Svg-Icon :icon-class="item.meta.svgIcon"/>
+        <span slot="title" style="margin-left: 7px">
           <span>{{item.name}}</span>
           <span class="border"></span>
         </span>
@@ -61,6 +61,8 @@ export default {
     height 100%
     border-right none
     font-weight 500
+    .el-menu-item
+      color $color-second
     .is-active
       .border
         width 2px
