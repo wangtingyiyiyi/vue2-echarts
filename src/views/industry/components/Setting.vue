@@ -28,31 +28,24 @@
         </el-form-item>
         <el-form-item>
           <div style="display: flex">
-            <!-- <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button> -->
             <Text-Button text="高级筛选" @handleClick="handleFilter" class="p-0-15 font-size-14 m-l-5" />
-            <Text-Button text="行业提数" @handleClick="handleExport" class="p-0-15 font-size-14" />
+            <Text-Button text="行业提数" @handleClick="handleExportDialog" class="p-0-15 font-size-14" />
           </div>
         </el-form-item>
       </el-form>
     </div>
-    <Dialog-For-Industry-Export
-      :dialogVisible="dialogVisible"
-      v-if="dialogVisible"
-      @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
 <script>
 import TextButton from '@/components/TextButton.vue'
-import DialogForIndustryExport from '@/views/industry/components/DialogForIndustryExport.vue'
 import { getIndustryCategory } from '@/api/industry'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'IndustrySetting',
-  components: { TextButton, DialogForIndustryExport },
+  components: { TextButton },
   data () {
     return {
-      dialogVisible: false,
       selectData: {
         remark: '',
         id: '',
@@ -77,11 +70,8 @@ export default {
     handleFilter () {
       this.$emit('handleFilter', true)
     },
-    handleExport () {
-      this.dialogVisible = true
-    },
-    onSubmit () {
-      this.$emit('brandOnSubmit', this.selectData)
+    handleExportDialog () {
+      this.$emit('handleExportDialog')
     },
     handleNodeClick (data, node, ref) {
       this.selectData.remark = data.remark

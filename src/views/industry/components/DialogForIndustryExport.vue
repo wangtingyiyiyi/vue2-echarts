@@ -108,7 +108,8 @@ import {
   INDUSTRY_EXCEL_TABLE_PROP
 } from '@/utils/const.js'
 import SelectTree from '@/views/industry/components/SelectTree.vue'
-import { replenishSum, blolToFile } from '@/utils/common.js'
+import { replenishSum } from '@/utils/common.js'
+// import { replenishSum, blolToFile } from '@/utils/common.js'
 import { previewExcel } from '@/api/industry'
 export default {
   name: 'DialogForIndustryExport',
@@ -190,27 +191,9 @@ export default {
     },
     // 导出Excel
     async onSubmit () {
-      const that = this
-      const filename = this.$moment(new Date()).format('YYYYMMDD')
-      const url = 'http://192.168.0.75:8088/srv/cms/userInfo/download'
+      this.closeDialog()
       const param = { id: '5080', range: '1', group: '0', cateFlat: 0, agg: 10, indicator: 1010 }
-      const xhr = new XMLHttpRequest()
-      xhr.open('POST', url, true)
-      xhr.responseType = 'blob'
-      xhr.setRequestHeader('Content-Type', ' application/json')
-      xhr.setRequestHeader('token', sessionStorage.getItem('token'))
-      xhr.onprogress = function (event) {
-        const p = (event.loaded / event.total) * 100
-        that.percentComplete = Math.round(p)
-        console.info(event, p)
-      }
-      xhr.onload = function (params) {
-        if (this.status >= 200 && this.status < 300) {
-          const blob = new Blob([this.response], { type: 'application/excel' })
-          blolToFile(blob, filename)
-        }
-      }
-      xhr.send(JSON.stringify(param))
+      this.$emit('handleExportExcel', param)
     },
     // 求和补位
     handleSum (arrObj, key, len) {

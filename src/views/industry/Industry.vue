@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Industry-Setting @handleFilter="drawerShow = $event" @brandOnSubmit="brandOnSubmit"/>
+    <Industry-Setting
+      @handleFilter="drawerShow = $event"
+      @brandOnSubmit="brandOnSubmit"
+      @handleExportDialog="handleExportDialog"/>
     <Empty-Line />
     <div class="industry-tab-wapper">
         <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
@@ -100,7 +103,13 @@
         <Drawer-Content
           :drawerShow="drawerShow"/>
     </Drawer>
-    <Download-Button />
+    <Download-Button :progress="loadingProgress"/>
+    <!-- 行业提数 -->
+    <Dialog-For-Industry-Export
+      :dialogVisible="dialogVisible"
+      v-if="dialogVisible"
+      @handleExportExcel="handleExportExcel"
+      @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
@@ -140,7 +149,9 @@ export default {
       isLoadingBrandTable: false,
       page: 1,
       pageSize: 10,
-      brandCount: 0
+      brandCount: 0,
+      dialogVisible: false,
+      loadingProgress: 0
     }
   },
   computed: {
@@ -208,6 +219,38 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
       this.getBrandEchart()
+    },
+    // 行业提数 弹出框
+    handleExportDialog () {
+      console.info('handleExportExcel')
+      this.dialogVisible = true
+    },
+    handleExportExcel (param) {
+      console.info(param)
+      // const that = this
+      // const filename = this.$moment(new Date()).format('YYYYMMDD')
+      // const url = `${process.env.VUE_APP_API_URL}/userInfo/download`
+      // const param = { id: '5080', range: '1', group: '0', cateFlat: 0, agg: 10, indicator: 1010 }
+      // const xhr = new XMLHttpRequest()
+      // xhr.open('POST', url, true)
+      // xhr.responseType = 'blob'
+      // xhr.setRequestHeader('Content-Type', ' application/json')
+      // xhr.setRequestHeader('token', sessionStorage.getItem('token'))
+      // xhr.onprogress = function (event) {
+      //   const p = event.loaded / event.total
+      //   that.loadingProgress = p
+      // if (event.loaded === event.total) {
+      //     that.$message.success('下载完成')
+      //     that.loadingProcress = 0
+      //   }
+      // }
+      // xhr.onload = function (params) {
+      //   if (this.status >= 200 && this.status < 300) {
+      //     const blob = new Blob([this.response], { type: 'application/excel' })
+      //     blolToFile(blob, filename)
+      //   }
+      // }
+      // xhr.send(JSON.stringify(param))
     },
     // 修改monthOption
     handleSelectdMonth (val) {
