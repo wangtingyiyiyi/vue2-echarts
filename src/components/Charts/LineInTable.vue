@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" style="width: 100%;height:60px;"></div>
+  <div ref="chart" style="width: 100%;height:54px;"></div>
 </template>
 
 <script>
@@ -47,6 +47,12 @@ export default {
               const gmv = params[0].marker + 'GMV: ' + thousands(params[0].value)
               return xAxisDateFormatter(xAxis) + '<br />' + gmv
             }
+          },
+          grid: {
+            top: '10',
+            left: '45',
+            height: '30',
+            width: '100'
           },
           xAxis: {
             type: 'category',

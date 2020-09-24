@@ -33,9 +33,11 @@
     </el-table-column>
     <el-table-column width="40"></el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
-      <template slot-scope="{row}">
-        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
-      </template>
+      <!-- <div style="height: 70px"> -->
+        <template slot-scope="{row}">
+          <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+        </template>
+      <!-- </div> -->
     </el-table-column>
     <el-table-column align="right" width="110">
       <template #header>
@@ -45,7 +47,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" width="150px">
       <template #header>
         <div class="sort-button"  @click="handleSort('3')">销售额环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
@@ -53,8 +55,8 @@
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" label="均价/元">
-      <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
+    <el-table-column align="right" label="均价" width="140px">
+      <template slot-scope="{row}">{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
 </template>
