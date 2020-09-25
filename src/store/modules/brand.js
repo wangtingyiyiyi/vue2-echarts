@@ -8,7 +8,7 @@ import {
 
 const state = {
   brandList: [],
-  categoryId: [],
+  categoryId: '0',
   settingParam: {}
 }
 
@@ -23,10 +23,10 @@ const mutations = {
     state.categoryId = payload
   },
   [RESET_BRAND_CATEGORY] (state) {
-    state.categoryId = []
+    state.categoryId = ''
   },
-  [SET_BRAND_SETTING] (state) {
-    state.settingParam = state
+  [SET_BRAND_SETTING] (state, payload) {
+    state.settingParam = payload
   }
 }
 

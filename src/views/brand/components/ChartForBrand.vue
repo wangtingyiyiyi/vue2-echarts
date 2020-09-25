@@ -72,6 +72,7 @@ export default {
           data: item[this.tempKey]
         })
       })
+      console.info('getSeriesarr', arr)
       return arr
     },
     getLegend (brandData) {
@@ -85,6 +86,9 @@ export default {
       return brandData[0]?.xlist || []
     },
     init () {
+      if (this.chart !== null) {
+        this.chart.clear()
+      }
       this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
@@ -100,7 +104,7 @@ export default {
         },
         legend: {
           right: '20px',
-          top: '20',
+          top: '0',
           itemGap: 40,
           itemHeight: 3,
           icon: 'roundRect',

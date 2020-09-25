@@ -15,7 +15,7 @@
         <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" />
       </template>
     </el-table-column>
-    <el-table-column align="right" width="90">
+    <el-table-column align="right">
       <template #header>
         <div class="sort-button" @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
@@ -31,13 +31,10 @@
       </template>
       <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
     </el-table-column>
-    <el-table-column width="40"></el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
-      <!-- <div style="height: 70px"> -->
-        <template slot-scope="{row}">
-          <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
-        </template>
-      <!-- </div> -->
+      <template slot-scope="{row}">
+        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+      </template>
     </el-table-column>
     <el-table-column align="right" width="110">
       <template #header>
@@ -55,8 +52,13 @@
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" label="均价" width="140px">
-      <template slot-scope="{row}">{{row.avgPrice | format}}</template>
+    <el-table-column align="right">
+      <template #header>
+        <div class="sort-button"  @click="handleSort('4')">均价
+          <Svg-Icon icon-class="descending" :class="[activedSortKey == '4' ? 'active-sort' : '']"/>
+        </div>
+      </template>
+      <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
 </template>

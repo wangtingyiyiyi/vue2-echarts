@@ -13,7 +13,7 @@
           :multiple-limit="5"
           popper-class="brand-select-option-class"
           @change="changeBrand"
-          style="width: 400px">
+          style="width: 600px">
           <el-option
             v-for="(item, index) in brandOption"
             :key="index + item.brand"
@@ -21,12 +21,13 @@
             :label="item.brand"
           ></el-option>
         </el-select>
-        <el-button type="primary" class="m-l-24" @click="onSubmit" :disabled="isDisabled">查询</el-button>
-        <el-button @click="onClean">清除</el-button>
+        <!-- <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button> -->
+        <!-- <el-button @click="onClean">清除</el-button> -->
       </el-form-item>
       <el-form-item label="行业筛选" prop="cid">
         <el-cascader
-          style="width: 400px"
+          style="width: 600px"
+          ref="cascader"
           popper-class="industry-cascader-wapper"
           v-model="brandForm.catetegoryId"
           :options="categoryOption"
@@ -42,18 +43,18 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
-const INITBRANDFORM = { brandList: [], catetegoryId: '' }
+// const INITBRANDFORM = { brandList: [], catetegoryId: '' }
 export default {
   mixins: [mixin],
   data () {
     return {
-      brandForm: { brandList: [], catetegoryId: '' },
+      brandForm: { brandList: [], catetegoryId: '0' },
       brandOption: [],
-      categoryOption: [],
+      categoryOption: [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }],
       categoryLabel: '',
       loading: false,
       props: {
@@ -67,8 +68,20 @@ export default {
     }
   },
   computed: {
-    isDisabled () {
-      return !(this.brandForm.brandList.length !== 0 && this.brandForm.catetegoryId !== '')
+    ...mapState('brand', ['settingParam'])
+  },
+  watch: {
+    settingParam: {
+      deep: true,
+      handler: function (params) {
+        this.SET_BRAND_BRANDS(params.brandList)
+        this.SET_BRAND_CATEGORY(params.id)
+        this.brandForm.brandList = params.brandList
+        this.brandOption = params.brandList
+        this.brandForm.catetegoryId = params.id
+        this.$emit('brandOnSubmit')
+        this.getCategory()
+      }
     }
   },
   methods: {
@@ -78,15 +91,16 @@ export default {
       this.SET_BRAND_CATEGORY(this.brandForm.catetegoryId)
       this.$emit('brandOnSubmit')
     },
-    onClean () {
-      this.$refs.brandForm.resetFields()
-      this.brandForm = INITBRANDFORM
-      this.SET_BRAND_BRANDS([])
-      this.SET_BRAND_CATEGORY('')
-      this.$emit('brandOnSubmit', INITBRANDFORM)
-    },
+    // onClean () {
+    //   this.$refs.brandForm.resetFields()
+    //   this.brandForm = INITBRANDFORM
+    //   this.SET_BRAND_BRANDS([])
+    //   this.SET_BRAND_CATEGORY('')
+    //   this.$emit('brandOnSubmit', INITBRANDFORM)
+    // },
     changeBrand () {
       this.getCategory()
+      this.onSubmit()
     },
     // 品牌列表模糊查询
     getBrand (query) {
@@ -126,6 +140,8 @@ export default {
     },
     changeIndustry (data) {
       this.brandForm.catetegoryId = data.id
+      console.info(this.$refs.cascader)
+      this.onSubmit()
     }
   }
 }

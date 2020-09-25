@@ -112,7 +112,14 @@ export default {
     ...mapState('brand', ['brandList', 'categoryId'])
   },
   methods: {
-    ...mapMutations('brand', ['RESET_BRAND_CATEGORY', 'RESET_BRAND_BRANDS', 'SET_BRAND_BRANDS', 'SET_BRAND_SETTING']),
+    ...mapMutations('brand',
+      [
+        'RESET_BRAND_CATEGORY',
+        'RESET_BRAND_BRANDS',
+        'SET_BRAND_BRANDS',
+        'SET_BRAND_CATEGORY',
+        'SET_BRAND_SETTING'
+      ]),
     // 切换tab
     handleTabClick () {
       this.getChartForBrand()
@@ -190,6 +197,7 @@ export default {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
       const param = {
         id: this.categoryId,
+        // id: '7682',
         group: this.groupItemVal,
         view: this.viewItemVal,
         range: this.rangeItemVal,
@@ -213,6 +221,7 @@ export default {
         group: this.groupItemVal,
         sort: this.sortItemVal,
         id: this.categoryId,
+        // id: '7682',
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
@@ -266,17 +275,10 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        console.info(query)
-        const brandList = JSON.parse(query.brandList)
-        // this.SET_BRAND_BRANDS(brandList)
         this.SET_BRAND_SETTING({
           id: query.id,
-          label: query.label,
-          remark: query.remark,
-          brandList: brandList
+          brandList: JSON.parse(query.brandList)
         })
-        // this.SET_INDUSTRY_CATEGORY(query)
-        // this.brandOnSubmit()
       }
     }
   },

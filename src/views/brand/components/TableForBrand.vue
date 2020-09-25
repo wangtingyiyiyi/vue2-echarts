@@ -35,10 +35,7 @@
       </template>
       <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
     </el-table-column>
-    <el-table-column width="40"></el-table-column>
-    <el-table-column
-      align="center"
-      label="销售趋势">
+    <el-table-column align="center" width="200" label="销售趋势">
       <template slot-scope="{row}">
         <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
@@ -59,9 +56,12 @@
       </template>
       <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
     </el-table-column>
-    <el-table-column
-      align="right"
-      label="均价">
+    <el-table-column align="right">
+      <template #header>
+        <div class="sort-button"  @click="handleSort('4')">均价
+          <Svg-Icon icon-class="descending" :class="[sortItemVal == '4' ? 'active-sort' : '']"/>
+        </div>
+      </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
   </el-table>
@@ -102,17 +102,15 @@ export default {
     },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
-      // console.info(data, this.brandList)
-      // const { href } = this.$router.resolve({
-      //   path: '/brand',
-      //   query: {
-      //     id: data.id,
-      //     label: this.getCat(data),
-      //     remark: data.remark,
-      //     brandList: JSON.stringify(this.brandList)
-      //   }
-      // })
-      // window.open(href)
+      console.info(data, this.brandList)
+      const { href } = this.$router.resolve({
+        path: '/brand',
+        query: {
+          id: data.id,
+          brandList: JSON.stringify(this.brandList)
+        }
+      })
+      window.open(href)
     },
     async load (tree, treeNode, resolve) {
       const cateTableParam = { ...this.paramOfBrandTable }
