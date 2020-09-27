@@ -55,7 +55,7 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: false,
+      dialogVisible: true,
       dialogRemove: false
     }
   },

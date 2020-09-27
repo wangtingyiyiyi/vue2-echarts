@@ -134,7 +134,7 @@ export default {
       groupItemVal: '0',
       viewItemVal: '1',
       sortItemVal: '1',
-      drawerShow: false,
+      drawerShow: true,
       categoryForm: {},
       monthOption: [],
       selectdMonth: {},
