@@ -118,7 +118,7 @@ export default {
       form: {},
       leftTree: [],
       rightTree: [],
-      resTree: [],
+      rootTree: [],
       tempTree: [],
       selectTreeId: [],
       showExpandTree: false,
@@ -161,6 +161,7 @@ export default {
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
           this.leftTree = JSON.parse(JSON.stringify(res))
+          this.rootTree = JSON.parse(JSON.stringify(res))
           this.tempTree = JSON.parse(JSON.stringify(res))
           this.tempTree.forEach(item => {
             if (item.hasChild) {
@@ -261,14 +262,21 @@ export default {
       this.rightTree = []
       this.tempTree = []
       this.selectTreeId = []
-      this.showExpandTree = true
-      this.$nextTick(() => {
-        this.getCategoryTree({ likeCondition: this.likeCondition })
-          .then((res) => {
-            this.leftTree = res
-            this.tempTree = res
-          })
-      })
+      this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
+      this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
+      if (this.likeCondition) {
+        this.showExpandTree = true
+        this.$nextTick(() => {
+          this.getCategoryTree({ likeCondition: this.likeCondition })
+            .then((res) => {
+              this.leftTree = res
+              this.tempTree = res
+            })
+        })
+      } else {
+        this.showExpandTree = false
+        this.leftTree = this.rootTree
+      }
     },
     async getCategoryTree (param = {}) {
       // 去掉value为空字符串的键值对
