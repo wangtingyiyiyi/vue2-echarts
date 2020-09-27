@@ -16,31 +16,17 @@
           <el-input v-model="likeCondition" placeholder="请输入关键字，回车搜索" @keydown.enter.native="handleFilter"></el-input>
         </div>
         <el-checkbox v-model="checkAll" class="m-l-16 check-all">全选</el-checkbox>
-        <div></div>
         <el-tree
-          v-show="!showExpandTree"
           :data="leftTree"
           :props="{ isLeaf: 'isLeaf', children: 'children' }"
           show-checkbox
           node-key="id"
-          ref="asyncTree"
+          ref="leftTree"
           lazy
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
           :load="loadNode"
-          @check="asyncTreeCheck">
-        </el-tree>
-        <el-tree
-          v-show="showExpandTree"
-          :data="leftTree"
-          :props="{ children: 'childList' }"
-          show-checkbox
-          node-key="id"
-          ref="leftTree"
-          :default-expand-all="true"
-          class="tree-wapper beauty-scroll"
-          :render-content="renderContent"
-          @check="syncTreeCheck">
+          @check="leftHandleCheck">
         </el-tree>
       </div>
       <div class="transfer-center">
@@ -53,15 +39,13 @@
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
+        <!-- :render-content="renderContent" -->
+        {{leftTree}}
         <el-tree
           :data="rightTree"
           :props="{ isLeaf: 'isLeaf', children: 'children' }"
-          show-checkbox
-          ref="rightTree"
-          :render-content="renderContent"
           :default-expand-all="true"
-          class="tree-wapper beauty-scroll"
-          :filter-node-method="rightTreeFilter">
+          class="tree-wapper beauty-scroll">
         </el-tree>
       </div>
     </div>
@@ -99,7 +83,7 @@ export default {
       resTree: [],
       tempTree: [],
       selectTreeId: [],
-      showExpandTree: false
+      isFilterRes: false
     }
   },
   methods: {
@@ -112,12 +96,8 @@ export default {
     onSubmit () {
       this.closeDialog()
     },
-    // 异步请求tree点击节点
-    asyncTreeCheck (data, node) {
+    leftHandleCheck (data, node) {
       this.selectTreeId = node.checkedKeys
-    },
-    syncTreeCheck () {
-
     },
     // 设置tree节点显示label
     getTreeLabel (data) {
@@ -193,7 +173,6 @@ export default {
     },
     handleFilter () {
       this.leftTree = []
-      this.showExpandTree = true
       this.$nextTick(() => {
         this.getCategoryTree({ likeCondition: this.likeCondition })
           .then((res) => {
