@@ -5,83 +5,66 @@
       :data="tableData"
       header-row-class-name="tableHeaderClass"
       stripe
+      ref="table"
       :cell-class-name="renderCell"
       @cell-click="handleClick"
       style="width: 100%">
       <el-table-column
         prop="spuname"
-        show-overflow-tooltip
+        width="300"
         label="SPU名称">
       </el-table-column>
       <el-table-column
-        prop="outCat1"
-        width="80"
-        show-overflow-tooltip
-        label="一级品类">
-      </el-table-column>
-      <el-table-column
-        prop="outCat2"
-        label="二级品类">
-      </el-table-column>
-      <el-table-column
-        prop="outCat3"
-        label="二级品类">
-      </el-table-column>
-      <el-table-column
         prop="shopname"
+        show-overflow-tooltip
         label="店铺名称">
       </el-table-column>
-      <el-table-column label="销售趋势图">
-        <template slot-scope="{row}">
-          <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
-        </template>
-      </el-table-column>
-      <el-table-column>
+      <el-table-column align="right">
         <template #header>
           <div class="sort-button"  @click="handleSort('0')">销量
             <Svg-Icon icon-class="descending" :class="[sortItemVal == '0' ? 'active-sort' : '']"/>
           </div>
         </template>
-        <template slot-scope="{row}">{{row.sumSalescount | format}}</template>
+        <template slot-scope="{row}">{{row.sumSales | format}}</template>
       </el-table-column>
-      <el-table-column>
+      <el-table-column align="right">
         <template #header>
-          <div class="sort-button"  @click="handleSort('1')">GMV
-            <Svg-Icon icon-class="descending" :class="[sortItemVal == '1' ? 'active-sort' : '']"/>
+          <div class="sort-button"  @click="handleSort('1')">销售额
+            <Svg-Icon icon-class="descending" :class="[sortItemVal === '1' ? 'active-sort' : '']"/>
           </div>
         </template>
-        <template slot-scope="{row}">{{row.sumGmv | format}}</template>
+        <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
       </el-table-column>
-      <el-table-column>
+      <el-table-column align="center" width="160" label="销售趋势">
+        <template slot-scope="{row}">
+          <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+        </template>
+      </el-table-column>
+      <el-table-column align="right">
         <template #header>
-          <div class="sort-button"  @click="handleSort('2')">环比
-            <Svg-Icon icon-class="descending" :class="[sortItemVal == '2' ? 'active-sort' : '']"/>
+          <div class="sort-button"  @click="handleSort('2')">销售额环比
+            <Svg-Icon icon-class="descending" :class="[sortItemVal === '2' ? 'active-sort' : '']"/>
           </div>
         </template>
-        <template slot-scope="{row}">{{row.sequential | percentage}}</template>
+        <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
+      </el-table-column>
+      <el-table-column align="right">
+        <template #header>
+          <div class="sort-button"  @click="handleSort('4')">均价
+            <Svg-Icon icon-class="descending" :class="[sortItemVal === '4' ? 'active-sort' : '']"/>
+          </div>
+        </template>
+        <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
       </el-table-column>
     </el-table>
-    <div>该数据仅有展示作用，不做为真正的数据统计及分析。</div>
   </div>
 </template>
 
 <script>
+import tableMixins from '@/views/brand/components/tableMixins.js'
 export default {
   name: 'TableForShop',
-  props: {
-    tableData: {
-      type: Array,
-      default: () => []
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    sortItemVal: {
-      type: String,
-      default: '1'
-    }
-  },
+  mixins: [tableMixins],
   methods: {
     handleClick (row, column) {
       if (column.property === 'spuname') {
@@ -98,20 +81,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.el-table >>> .btn-text
-  color $base-blue
-  cursor pointer
-
-.sort-button
-  cursor pointer
-
-.active-sort
-  color $base-blue
-
-.el-table >>> .tableHeaderClass th
-  background-color $table-header-bgc !important
-  height 48px
-
-.el-table >>> .tableCellClass
-  border-bottom 0px
+@import './table.styl'
 </style>

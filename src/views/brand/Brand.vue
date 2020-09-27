@@ -42,18 +42,35 @@
               <div class="empty-info">请搜索品牌</div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="SPU" name="spu" lazy>
-            <div class="flex-between m-b-10">
-              <Brand-Table-Brands
-                :brands="brandList"
-                :activeBrand="activeBrand"
-                @changeActiveBrand="changeActiveBrand"/>
-                <Month-Options
-                :monthOption="monthOption"
-                :selectdMonth="tableMonth"
-                @handleSelectdMonth="handleTableMonth"/>
+          <el-tab-pane label="SPU" name="spu">
+            <div v-show="hasBrandFormParam">
+              <div class="flex-between m-b-10">
+                <Brand-Table-Brands
+                  :brands="brandList"
+                  :activeBrand="activeBrand"
+                  @changeActiveBrand="changeActiveBrand"/>
+                  <Month-Options
+                  :monthOption="monthOption"
+                  :selectdMonth="tableMonth"
+                  @handleSelectdMonth="handleTableMonth"/>
+              </div>
+              <Table-For-Spu
+                :isLoading="isLoadingOfSpuTable"
+                :sortItemVal="sortItemVal"
+                :tableData="tableSpu"/>
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                class="pagination-wapper"
+                @current-change="changeSpuPage"
+                :current-page="spuPage"
+                :page-size="pageSize"
+                :total="spuTotal">
+              </el-pagination>
             </div>
-            <Table-For-Spu :tableData="mockBrandSpuData"/>
+            <div v-show="!hasBrandFormParam">
+              <div class="empty-info">请搜索品牌</div>
+            </div>
           </el-tab-pane>
       </el-tabs>
 
@@ -71,7 +88,6 @@
 </template>
 
 <script>
-import { mockBrandSpuData } from '@/mock'
 import { mapMutations, mapState } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
@@ -80,13 +96,14 @@ import {
   getTableForBrandShop,
   getChartForBrandShop,
   getTableForBrand,
-  getChartForBrand
+  getChartForBrand,
+  getTableForBrandSpu
 } from '@/api/brand'
 export default {
   mixins: [componentsMixin],
   data () {
     return {
-      activeName: 'brand',
+      activeName: 'spu',
       viewItemVal: '1',
       rangeItemVal: '1',
       groupItemVal: '0',
@@ -100,9 +117,13 @@ export default {
       tableMonth: {},
       isLoadingOfShopTable: false,
       isLoadingOfBrandTable: false,
+      isLoadingOfSpuTable: false,
       shopTableChart: {},
       paramOfBrandTable: {},
-      mockBrandSpuData: mockBrandSpuData
+      tableSpu: [],
+      spuPage: 1,
+      spuTotal: 0,
+      pageSize: 10
     }
   },
   computed: {
@@ -126,6 +147,7 @@ export default {
       this.getChartForShop()
       this.getTableForBrand()
       this.getTableForShop()
+      this.getTableForSpu()
     },
     // 配置筛选 搜索
     handleSettingParam () {
@@ -134,6 +156,7 @@ export default {
       this.getChartForShop()
       this.getTableForBrand()
       this.getTableForShop()
+      this.getTableForSpu()
     },
     // 切换范围
     handleRangeClick (data) {
@@ -143,6 +166,7 @@ export default {
         this.getChartForShop()
         this.getTableForBrand()
         this.getTableForShop()
+        this.getTableForSpu()
       })
     },
     // 切换颗粒度
@@ -153,6 +177,7 @@ export default {
         this.getChartForShop()
         this.getTableForBrand()
         this.getTableForShop()
+        this.getTableForSpu()
       })
     },
     // 切换 销量 或者 销售额
@@ -165,11 +190,13 @@ export default {
       this.activeBrand = data
       this.getTableForShop()
       this.getTableForBrand()
+      this.getTableForSpu()
     },
     // table 切换month
     handleTableMonth (val) {
       this.tableMonth = val
       this.getTableForShop()
+      this.getTableForSpu()
     },
     // 列表排序
     changeSortItemVal (val) {
@@ -197,7 +224,6 @@ export default {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
       const param = {
         id: this.categoryId,
-        // id: '7682',
         group: this.groupItemVal,
         view: this.viewItemVal,
         range: this.rangeItemVal,
@@ -213,6 +239,11 @@ export default {
         this.$message.error('品牌趋势图请求失败')
       }
     },
+    // spu 列表翻页
+    changeSpuPage (page) {
+      this.spuPage = page
+      this.getTableForSpu()
+    },
     // 品牌 table
     async getTableForBrand () {
       if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
@@ -221,7 +252,6 @@ export default {
         group: this.groupItemVal,
         sort: this.sortItemVal,
         id: this.categoryId,
-        // id: '7682',
         brandList: [this.activeBrand],
         tmallMonthList: this.tableMonth
       }
@@ -271,6 +301,29 @@ export default {
         this.$message.error('品牌店铺列表请求失败')
       }
     },
+    // spu table
+    async getTableForSpu () {
+      if (!this.activeBrand.brandId || this.activeName !== 'spu') return ''
+      const param = {
+        range: this.rangeItemVal,
+        id: this.categoryId,
+        group: this.groupItemVal,
+        sort: this.sortItemVal,
+        brandList: [this.activeBrand],
+        tmallMonthList: this.tableMonth,
+        page: this.spuPage,
+        pageSize: this.pageSize
+      }
+      this.isLoadingOfSpuTable = true
+      const res = await getTableForBrandSpu(param)
+      this.isLoadingOfSpuTable = false
+      if (res.code === 200) {
+        this.tableSpu = res.result
+        this.spuTotal = res.total
+      } else {
+        this.$message.error('店铺SPU列表请求失败')
+      }
+    },
     // 如果路由携带参数,则立刻请求行业数据
     handleRoute () {
       const { query } = this.$route
@@ -285,6 +338,7 @@ export default {
   mounted () {
     this.getMonthOption().then(() => {
       this.handleRoute()
+      this.getTableForSpu()
     })
   },
   beforeDestroy () {

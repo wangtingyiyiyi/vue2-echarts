@@ -49,9 +49,9 @@ export default {
             }
           },
           grid: {
-            top: '10',
-            left: '45',
-            height: '30',
+            top: '15',
+            left: '30',
+            height: '25',
             width: '100'
           },
           xAxis: {

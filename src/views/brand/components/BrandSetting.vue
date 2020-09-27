@@ -154,7 +154,7 @@ export default {
 
 .brand-select-option-class
   .el-select-dropdown__item
-    max-width 400px
+    max-width 600px
 
 // 去掉radio
 .industry-cascader-wapper

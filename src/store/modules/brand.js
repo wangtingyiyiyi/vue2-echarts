@@ -23,7 +23,7 @@ const mutations = {
     state.categoryId = payload
   },
   [RESET_BRAND_CATEGORY] (state) {
-    state.categoryId = ''
+    state.categoryId = '0'
   },
   [SET_BRAND_SETTING] (state, payload) {
     state.settingParam = payload

@@ -35,3 +35,8 @@ export function getTableForBrand (params) {
 export function getChartForBrand (params) {
   return post('brand/listGraph', params)
 }
+
+// 品牌SPU table
+export function getTableForBrandSpu (params) {
+  return post('brandSpu/listTotal', params)
+}

@@ -28,7 +28,7 @@
       </template>
       <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
     </el-table-column>
-    <el-table-column align="center" label="销售额趋势" width="200px">
+    <el-table-column align="center" label="销售额趋势" width="160px">
       <template slot-scope="{row}">
         <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
