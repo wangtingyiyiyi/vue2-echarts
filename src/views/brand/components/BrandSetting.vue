@@ -114,6 +114,7 @@ export default {
             this.brandOption = res.result
           } else {
             this.$message.error('品牌列表搜索失败')
+            this.brandOption = []
           }
         } else {
           this.brandOption = []

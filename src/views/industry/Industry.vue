@@ -311,6 +311,7 @@ export default {
         this.industryTableData = res.result
       } else {
         this.$message.error('行业子品类table数据请求失败')
+        this.industryTableData = []
       }
     },
     // 品牌tab 图表
@@ -347,6 +348,8 @@ export default {
         this.brandTableData = res.result.detailsBeanList
       } else {
         this.$message.error('行业品牌列表请求失败')
+        this.brandCount = 0
+        this.brandTableData = []
       }
     },
     // 行业初始化时 monthOption

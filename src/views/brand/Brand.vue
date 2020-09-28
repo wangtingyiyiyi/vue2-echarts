@@ -264,6 +264,7 @@ export default {
         this.brandTableData = res.result
       } else {
         this.$message.error('品牌概览列表请求失败')
+        this.brandTableData = []
       }
     },
     // 店铺 chart
@@ -299,6 +300,7 @@ export default {
         this.shopTableData = res.result
       } else {
         this.$message.error('品牌店铺列表请求失败')
+        this.shopTableData = []
       }
     },
     // spu table
@@ -322,6 +324,8 @@ export default {
         this.spuTotal = res.total
       } else {
         this.$message.error('店铺SPU列表请求失败')
+        this.tableSpu = []
+        this.spuTotal = 0
       }
     },
     // 如果路由携带参数,则立刻请求行业数据
