@@ -13,12 +13,12 @@
             style="width: 600px"
             :remote-method="handleSelctRemoteFilter">
             <el-option value="0" class="hidden"></el-option>
+            <!-- :empty-text="getEmptyText()" -->
               <el-tree
                 ref="tree"
                 :data="options"
                 node-key="key"
                 class="select-tree"
-                :empty-text="getEmptyText()"
                 @node-click="handleNodeClick"
                 :default-expand-all="true"
                 :render-content="renderContent"
@@ -39,7 +39,7 @@
 
 <script>
 import TextButton from '@/components/TextButton.vue'
-import { getIndustryCategory } from '@/api/industry'
+import { getIndustryCategory, getCategoryTree } from '@/api/industry'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'IndustrySetting',
@@ -119,6 +119,11 @@ export default {
             <span class="tree-select-icon" style="color: #5D7092;">{node.data.remark}</span>
             <span>{node.label}</span>
           </span>)
+      } else if (node.data.remark === 1) {
+        return (
+          <span class="custom-tree-node">
+            <span>{node.label}</span>
+          </span>)
       } else {
         return (
           <span class="custom-tree-node">
@@ -126,7 +131,19 @@ export default {
             <span>{node.label}</span>
           </span>)
       }
+    },
+    async getCat1 () {
+      const res = await getCategoryTree()
+      if (res.code === 200) {
+        this.options = res.result
+        this.options.forEach(item => {
+          item.label = item.outCat1
+        })
+      }
     }
+  },
+  mounted () {
+    this.getCat1()
   }
 }
 </script>
