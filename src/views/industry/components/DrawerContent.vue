@@ -34,12 +34,13 @@
     <Dialog-For-Industry-Define
       :dialogVisible="dialogVisible"
       v-if="dialogVisible"
+      @onSubmit="onSubmit"
       @closeDialog="dialogVisible = $event"/>
   </div>
 </template>
 
 <script>
-import { getIndustryDefineList } from '@/api/industry.js'
+import { getIndustryDefineList, setDefineIndustry } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 export default {
@@ -55,7 +56,7 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: true,
+      dialogVisible: false,
       dialogRemove: false
     }
   },
@@ -106,6 +107,17 @@ export default {
       }).catch(() => {
         this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
       })
+    },
+    async onSubmit (list) {
+      console.info(list)
+      // this.dialogVisible = false
+      const res = await setDefineIndustry({ list: list })
+      if (res.code === 200) {
+        this.$message.success('保存成功')
+        this.getDefineList()
+      } else {
+        this.$message.error('自定义行业失败')
+      }
     },
     // 请求列表API
     async getDefineList () {

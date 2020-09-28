@@ -15,7 +15,12 @@
         <div class="header">
           <el-input v-model="likeCondition" placeholder="请输入关键字，回车搜索" @keydown.enter.native="handleFilter"></el-input>
         </div>
-        <el-checkbox v-model="checkAll" class="m-l-16 check-all">全选</el-checkbox>
+        <!-- :disabled="!showExpandTree" -->
+        <el-checkbox
+          v-model="checkAll"
+          class="m-l-16 check-all"
+          :disabled="canCheckAll"
+          @change="handleCheckAll">全选</el-checkbox>
         <!-- 异步请求树 -->
         <el-tree
           v-show="!showExpandTree"
@@ -58,7 +63,7 @@
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
-        {{selectTreeId}}
+        <!-- {{selectTreeId}} -->
         <!-- 异步加载 -->
         <el-tree
           v-show="!showExpandTree"
@@ -96,7 +101,7 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="onCancel">取 消</el-button>
-      <el-button type="primary" @click="onSubmit">确 定</el-button>
+      <el-button type="primary" @click="onSubmit" disabled>保 存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -122,6 +127,7 @@ export default {
       tempTree: [],
       selectTreeId: [],
       showExpandTree: false,
+      canCheckAll: true,
       cateList: [],
       leftTreeProps: {
         isLeaf: 'isLeaf',
@@ -142,7 +148,39 @@ export default {
       this.closeDialog()
     },
     onSubmit () {
-      console.info(this.cateList)
+      const param = this.cateList.map(item => {
+        return {
+          outCat1: item.outCat1,
+          outCat2: item.outCat2,
+          outCat3: item.outCat3,
+          category: this.form.category
+        }
+      })
+      this.$emit('onSubmit', param)
+      console.info(param)
+    },
+    handleNodeExpand (data, node, ref) {
+      console.info(data, node, ref)
+    },
+    // 全选
+    handleCheckAll (checked) {
+      const ids = []
+      if (checked) {
+        this.leftTree.forEach(level1 => {
+          ids.push(level1.id)
+          if (level1.childList) {
+            level1.childList.forEach(level2 => {
+              ids.push(level2.id)
+              if (level2.childList) {
+                level2.childList.forEach(level3 => {
+                  ids.push(level3.id)
+                })
+              }
+            })
+          }
+        })
+      }
+      this.$refs.leftTree2.setCheckedKeys(ids)
     },
     // 设置tree节点显示label
     getTreeLabel (data) {
@@ -158,6 +196,7 @@ export default {
     },
     // 异步加载
     loadNode (node, resolve) {
+      console.info(node)
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
           this.leftTree = JSON.parse(JSON.stringify(res))
@@ -207,6 +246,10 @@ export default {
       return this.selectTreeId.includes(data.id)
     },
     goRight () {
+      // 多选场景下
+      if (this.checkAll) {
+        this.canCheckAll = true
+      }
       if (this.showExpandTree) {
         this.cateList = this.$refs.leftTree2.getCheckedNodes()
         this.selectTreeId = this.cateList.map(item => item.id)
@@ -224,6 +267,10 @@ export default {
       }
     },
     goLeft () {
+      if (this.checkAll) {
+        this.checkAll = false
+        this.canCheckAll = false
+      }
       if (this.showExpandTree) {
         const checked = this.$refs.rightTree2.getCheckedNodes(false, true).map(item => item.id)
         this.cateList = this.cateList.filter(item => {
@@ -260,8 +307,10 @@ export default {
     handleFilter () {
       this.leftTree = []
       this.rightTree = []
+      console.info(this.rightTree)
       this.tempTree = []
       this.selectTreeId = []
+      this.canCheckAll = false
       this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
       this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
       if (this.likeCondition) {
@@ -269,6 +318,7 @@ export default {
         this.$nextTick(() => {
           this.getCategoryTree({ likeCondition: this.likeCondition })
             .then((res) => {
+              console.info(res)
               this.leftTree = res
               this.tempTree = res
             })

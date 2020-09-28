@@ -44,3 +44,8 @@ export function getBrandChart (params) {
 export function previewExcel (params) {
   return post('userInfo/preView', params)
 }
+
+// 自定义行业
+export function setDefineIndustry (params) {
+  return post('industry/defineInsert', params)
+}

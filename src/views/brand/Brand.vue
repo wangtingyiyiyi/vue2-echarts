@@ -103,7 +103,7 @@ export default {
   mixins: [componentsMixin],
   data () {
     return {
-      activeName: 'spu',
+      activeName: 'brand',
       viewItemVal: '1',
       rangeItemVal: '1',
       groupItemVal: '0',
