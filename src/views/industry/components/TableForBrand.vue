@@ -7,10 +7,10 @@
     ref="table"
     stripe
     style="width: 100%">
-    <el-table-column
-      prop="brand"
-      show-overflow-tooltip
-      label="品牌">
+    <el-table-column prop="brand" label="品牌">
+      <template slot-scope="{row}">
+        <Text-Button :text="row.brand" @handleClick="handleBrand(row)" style="display: inline" />
+      </template>
     </el-table-column>
     <el-table-column align="right">
       <template #header>
@@ -62,6 +62,8 @@
 
 <script>
 import { refLoading } from '@/utils/element.js'
+import TextButton from '@/components/TextButton.vue'
+
 export default {
   name: 'TableForBrand',
   props: {
@@ -83,6 +85,7 @@ export default {
       loadingInstance: null
     }
   },
+  components: { TextButton },
   computed: {
     tableBody () {
       return this.$refs.table.$refs.bodyWrapper
@@ -106,6 +109,20 @@ export default {
     handleSort (sortKey) {
       this.$emit('handleBrandSort', sortKey)
       this.$refs.table.doLayout()
+    },
+    handleBrand (row) {
+      const { href } = this.$router.resolve({
+        path: '/brand',
+        query: {
+          id: 0,
+          brandList: JSON.stringify([{
+            brandId: row.brandId,
+            brand: row.brand,
+            brandSql: row.brand
+          }])
+        }
+      })
+      window.open(href)
     }
   }
 }
