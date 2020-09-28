@@ -22,7 +22,6 @@
           :disabled="canCheckAll"
           @change="handleCheckAll">全选</el-checkbox>
         <!-- 异步请求树 -->
-        {{showExpandTree}}
         <el-tree
           v-show="!showExpandTree"
           :data="leftTree"
@@ -55,14 +54,17 @@
         <el-button
           type="primary"
           icon="el-icon-arrow-right"
+          :disabled="!hasLeftCheck"
           @click="goRight"></el-button>
         <el-button
           type="primary"
           icon="el-icon-arrow-left"
+          :disabled="!hasRightCheck"
           @click="goLeft"></el-button>
         <el-button
           type="primary"
           icon="el-icon-d-arrow-left"
+          :disabled="selectTreeId.length === 0"
           @click="allGoLeft"></el-button>
       </div>
       <div class="transfer-right">
@@ -76,12 +78,13 @@
           :props="{ children: 'childList' }"
           :default-expand-all="true"
           :filter-node-method="rightTreeFilter"
-          :render-content="renderContent">
+          :render-content="renderContent"
+          @check-change="handleRightCheck">
         </el-tree>
       </div>
     </div>
 
-    <el-form inline class="m-t-24" :model="form">
+    <el-form inline class="m-t-24" :model="form" ref="form">
       <el-form-item
         label="自定义标签名称"
         prop="category"
@@ -114,7 +117,7 @@ export default {
   },
   data () {
     return {
-      likeCondition: '彩妆',
+      likeCondition: '',
       checkAll: false,
       form: {},
       leftTree: [],
@@ -131,7 +134,9 @@ export default {
       },
       listParam: [],
       checkedLeft1: [],
-      checkedLeft2: []
+      checkedLeft2: [],
+      hasLeftCheck: false,
+      hasRightCheck: false
     }
   },
   methods: {
@@ -148,24 +153,30 @@ export default {
     handleLeftCheck () {
       if (this.showExpandTree) {
         this.checkedLeft2.push(...this.$refs.leftTree2.getCheckedNodes())
-        console.info('checkedLeft2', this.showExpandTree)
+        this.hasLeftCheck = this.$refs.leftTree2.getCheckedNodes().length !== 0
       } else {
         this.checkedLeft1.push(...this.$refs.leftTree1.getCheckedNodes())
-        console.info('checkedLeft1', this.showExpandTree)
+        this.hasLeftCheck = this.$refs.leftTree1.getCheckedNodes().length !== 0
       }
     },
+    handleRightCheck () {
+      this.hasRightCheck = this.$refs.rightTree.getCheckedNodes().length !== 0
+    },
     onSubmit () {
-      const uniq = this._.uniqWith(this.checkedLeft1.concat(this.checkedLeft2), this._.isEqual)
-      const param = uniq.map(item => {
-        return {
-          outCat1: item.outCat1,
-          outCat2: item.outCat2,
-          outCat3: item.outCat3,
-          categoryDefine: this.form.category
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          const uniq = this._.uniqWith(this.checkedLeft1.concat(this.checkedLeft2), this._.isEqual)
+          const param = uniq.map(item => {
+            return {
+              outCat1: item.outCat1,
+              outCat2: item.outCat2,
+              outCat3: item.outCat3,
+              categoryDefine: this.form.category
+            }
+          })
+          this.$emit('onSubmit', param)
         }
       })
-      this.$emit('onSubmit', param)
-      console.info(param)
     },
     // 全选
     handleCheckAll (checked) {
@@ -226,6 +237,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.rightTree.filter()
       })
+      this.hasLeftCheck = false
     },
     goLeft () {
       const checked = this.$refs.rightTree.getCheckedNodes(false, true).map(item => item.id)
@@ -249,12 +261,11 @@ export default {
       this.$nextTick(() => {
         this.$refs.rightTree.filter()
       })
+      this.hasRightCheck = false
     },
     // 搜索回调
     handleFilter () {
       this.leftTree = []
-      // this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
-      // this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
       if (this.likeCondition) {
         this.showExpandTree = true
         this.$nextTick(() => {
