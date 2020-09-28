@@ -257,9 +257,9 @@ export default {
       }
       this.paramOfBrandTable = param
       this.isLoadingOfBrandTable = true
+      this.brandTableData = []
       const res = await getTableForBrand(param)
       this.isLoadingOfBrandTable = false
-      this.brandTableData = []
       if (res.code === 200) {
         this.brandTableData = res.result
       } else {
