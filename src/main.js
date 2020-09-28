@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@/utils/components.js' // 注册全局组件
+import _ from 'lodash'
 
 import ElementUI from './plugins/element.js'
 
@@ -18,6 +19,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+Vue.prototype._ = _
 Vue.use(ElementUI)
 Vue.prototype.$moment = Moment
 Vue.config.productionTip = false

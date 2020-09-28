@@ -32,7 +32,8 @@
           lazy
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
-          :load="loadNode">
+          :load="loadNode"
+          @node-click="lazyTreeCheck">
         </el-tree>
         <!-- 同步请求树 -->
         <el-tree
@@ -63,7 +64,7 @@
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
-        <!-- {{selectTreeId}} -->
+        {{selectTreeId}}
         <!-- 异步加载 -->
         <el-tree
           v-show="!showExpandTree"
@@ -94,8 +95,14 @@
     </div>
 
     <el-form inline class="m-t-24" :model="form">
-      <el-form-item label="自定义标签名称" prop="category" :rules="{ required: true, message: '请输入自定义品类标签名'}">
-        <el-input placeholder="保存选中对比品类标签" v-model="form.category" style="width: 215px"/>
+      <el-form-item
+        label="自定义标签名称"
+        prop="category"
+        :rules="{ required: true, message: '请输入自定义品类标签名'}">
+        <el-input
+          placeholder="保存选中对比品类标签"
+          v-model="form.category"
+          style="width: 215px"/>
       </el-form-item>
     </el-form>
 
@@ -146,6 +153,9 @@ export default {
     },
     onCancel () {
       this.closeDialog()
+    },
+    lazyTreeCheck (data, node, child) {
+      console.info('哈哈哈哈哈', data, node, child)
     },
     onSubmit () {
       const param = this.cateList.map(item => {
@@ -199,9 +209,9 @@ export default {
       console.info(node)
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
-          this.leftTree = JSON.parse(JSON.stringify(res))
-          this.rootTree = JSON.parse(JSON.stringify(res))
-          this.tempTree = JSON.parse(JSON.stringify(res))
+          this.leftTree = this._.cloneDeep(res)
+          this.rootTree = this._.cloneDeep(res)
+          this.tempTree = this._.cloneDeep(res)
           this.tempTree.forEach(item => {
             if (item.hasChild) {
               item.childList = []
@@ -253,14 +263,14 @@ export default {
       if (this.showExpandTree) {
         this.cateList = this.$refs.leftTree2.getCheckedNodes()
         this.selectTreeId = this.cateList.map(item => item.id)
-        this.rightTree = JSON.parse(JSON.stringify(this.tempTree))
+        this.rightTree = this._.cloneDeep(this.tempTree)
         this.$nextTick(() => {
           this.$refs.rightTree2.filter()
         })
       } else {
         this.cateList = this.$refs.leftTree1.getCheckedNodes()
         this.selectTreeId = this.cateList.map(item => item.id)
-        this.rightTree = JSON.parse(JSON.stringify(this.tempTree))
+        this.rightTree = this._.cloneDeep(this.tempTree)
         this.$nextTick(() => {
           this.$refs.rightTree1.filter()
         })
