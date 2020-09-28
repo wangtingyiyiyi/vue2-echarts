@@ -10,7 +10,7 @@
     width="800px">
     <div slot="title">高级筛选</div>
 
-    <div class="tree-transfer">
+    <div class="tree-transfer" ref="transferWapper">
       <div class="transfer-left">
         <div class="header">
           <el-input v-model="likeCondition" placeholder="请输入关键字，回车搜索" @keydown.enter.native="handleFilter"></el-input>
@@ -22,6 +22,7 @@
           :disabled="canCheckAll"
           @change="handleCheckAll">全选</el-checkbox>
         <!-- 异步请求树 -->
+        {{showExpandTree}}
         <el-tree
           v-show="!showExpandTree"
           :data="leftTree"
@@ -33,7 +34,7 @@
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
           :load="loadNode"
-          @node-click="lazyTreeCheck">
+          @check-change="handleLeftCheck">
         </el-tree>
         <!-- 同步请求树 -->
         <el-tree
@@ -43,9 +44,11 @@
           show-checkbox
           node-key="id"
           ref="leftTree2"
+          :check-strictly="true"
           :default-expand-all="true"
           class="tree-wapper beauty-scroll"
-          :render-content="renderContent">
+          :render-content="renderContent"
+          @check-change="handleLeftCheck">
         </el-tree>
       </div>
       <div class="transfer-center">
@@ -64,25 +67,9 @@
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
-        {{selectTreeId}}
-        <!-- 异步加载 -->
         <el-tree
-          v-show="!showExpandTree"
           show-checkbox
-          ref="rightTree1"
-          node-key="id"
-          class="tree-wapper beauty-scroll"
-          :data="rightTree"
-          :props="{ isLeaf: 'isLeaf', children: 'childList' }"
-          :render-content="renderContent"
-          :default-expand-all="true"
-          :filter-node-method="rightTreeFilter">
-        </el-tree>
-        <!-- 同步加载 -->
-        <el-tree
-          v-show="showExpandTree"
-          show-checkbox
-          ref="rightTree2"
+          ref="rightTree"
           node-key="id"
           class="tree-wapper beauty-scroll"
           :data="rightTree"
@@ -108,13 +95,15 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="onCancel">取 消</el-button>
-      <el-button type="primary" @click="onSubmit" disabled>保 存</el-button>
+      <el-button type="primary" @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
 import { getCategoryTree } from '@/api/industry'
+import { refLoading } from '@/utils/element.js'
+
 export default {
   name: 'DialogForIndustryDefine',
   props: {
@@ -125,13 +114,12 @@ export default {
   },
   data () {
     return {
-      likeCondition: '',
+      likeCondition: '彩妆',
       checkAll: false,
       form: {},
       leftTree: [],
       rightTree: [],
       rootTree: [],
-      tempTree: [],
       selectTreeId: [],
       showExpandTree: false,
       canCheckAll: true,
@@ -140,7 +128,10 @@ export default {
         isLeaf: 'isLeaf',
         children: 'childList',
         disabled: this.disabledFn
-      }
+      },
+      listParam: [],
+      checkedLeft1: [],
+      checkedLeft2: []
     }
   },
   methods: {
@@ -154,23 +145,27 @@ export default {
     onCancel () {
       this.closeDialog()
     },
-    lazyTreeCheck (data, node, child) {
-      console.info('哈哈哈哈哈', data, node, child)
+    handleLeftCheck () {
+      if (this.showExpandTree) {
+        this.checkedLeft2.push(...this.$refs.leftTree2.getCheckedNodes())
+        console.info('checkedLeft2', this.showExpandTree)
+      } else {
+        this.checkedLeft1.push(...this.$refs.leftTree1.getCheckedNodes())
+        console.info('checkedLeft1', this.showExpandTree)
+      }
     },
     onSubmit () {
-      const param = this.cateList.map(item => {
+      const uniq = this._.uniqWith(this.checkedLeft1.concat(this.checkedLeft2), this._.isEqual)
+      const param = uniq.map(item => {
         return {
           outCat1: item.outCat1,
           outCat2: item.outCat2,
           outCat3: item.outCat3,
-          category: this.form.category
+          categoryDefine: this.form.category
         }
       })
       this.$emit('onSubmit', param)
       console.info(param)
-    },
-    handleNodeExpand (data, node, ref) {
-      console.info(data, node, ref)
     },
     // 全选
     handleCheckAll (checked) {
@@ -206,123 +201,60 @@ export default {
     },
     // 异步加载
     loadNode (node, resolve) {
-      console.info(node)
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
           this.leftTree = this._.cloneDeep(res)
           this.rootTree = this._.cloneDeep(res)
-          this.tempTree = this._.cloneDeep(res)
-          this.tempTree.forEach(item => {
-            if (item.hasChild) {
-              item.childList = []
-              return item
-            }
-          })
         })
-      } else if (node.level === 1) {
-        this.getCategoryTree(node.data)
-          .then((res) => {
-            resolve(res)
-            this.tempTree.forEach(item => {
-              if (item.outCat1 === node.data.outCat1) {
-                res.forEach(r => {
-                  if (r.hasChild) {
-                    r.childList = []
-                    return r
-                  }
-                })
-                item.childList.push(...res)
-                return item
-              }
-            })
-          })
-      } else if (node.level === 2) {
-        this.getCategoryTree(node.data)
-          .then((res) => {
-            resolve(res)
-            this.tempTree.forEach(item => {
-              if (item.outCat1 === node.data.outCat1) {
-                item.childList.forEach(i => {
-                  if (i.outCat2 === node.data.outCat2) {
-                    i.childList.push(...res)
-                  }
-                })
-              }
-            })
-          })
+      } else {
+        this.getCategoryTree(node.data).then((res) => {
+          resolve(res)
+        })
       }
     },
     rightTreeFilter (value, data, node) {
       return this.selectTreeId.includes(data.id)
     },
     goRight () {
-      // 多选场景下
-      if (this.checkAll) {
-        this.canCheckAll = true
-      }
       if (this.showExpandTree) {
-        this.cateList = this.$refs.leftTree2.getCheckedNodes()
-        this.selectTreeId = this.cateList.map(item => item.id)
-        this.rightTree = this._.cloneDeep(this.tempTree)
-        this.$nextTick(() => {
-          this.$refs.rightTree2.filter()
-        })
+        this.cateList = this.$refs.leftTree2.getCheckedNodes().concat(this.cateList)
       } else {
-        this.cateList = this.$refs.leftTree1.getCheckedNodes()
-        this.selectTreeId = this.cateList.map(item => item.id)
-        this.rightTree = this._.cloneDeep(this.tempTree)
-        this.$nextTick(() => {
-          this.$refs.rightTree1.filter()
-        })
+        this.cateList = this.$refs.leftTree1.getCheckedNodes().concat(this.cateList)
       }
+      this.selectTreeId = this.cateList.map(item => item.id).concat(this.selectTreeId)
+      this.$refs.rightTree.setCheckedKeys([])
+      this.$nextTick(() => {
+        this.$refs.rightTree.filter()
+      })
     },
     goLeft () {
-      if (this.checkAll) {
-        this.checkAll = false
-        this.canCheckAll = false
-      }
-      if (this.showExpandTree) {
-        const checked = this.$refs.rightTree2.getCheckedNodes(false, true).map(item => item.id)
-        this.cateList = this.cateList.filter(item => {
-          return !checked.includes(item.id)
-        })
-        this.selectTreeId = this.cateList.map(item => item.id)
-        this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
-        this.goRight()
-      } else {
-        const checked = this.$refs.rightTree1.getCheckedNodes(false, true).map(item => item.id)
-        this.cateList = this.cateList.filter(item => {
-          return !checked.includes(item.id)
-        })
-        this.selectTreeId = this.cateList.map(item => item.id)
-        this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
-        this.goRight()
-      }
+      const checked = this.$refs.rightTree.getCheckedNodes(false, true).map(item => item.id)
+      this.cateList = this.cateList.filter(item => {
+        return !checked.includes(item.id)
+      })
+      this.selectTreeId = this.cateList.map(item => item.id)
+      this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
+      this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
+      this.$refs.rightTree.setCheckedKeys([])
+      this.$nextTick(() => {
+        this.$refs.rightTree.filter()
+      })
     },
     allGoLeft () {
-      if (this.showExpandTree) {
-        console.info('goLeft')
-        this.cateList = []
-        this.selectTreeId = []
-        this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
-        this.goRight()
-      } else {
-        this.cateList = []
-        this.selectTreeId = []
-        this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
-        this.goRight()
-      }
+      this.selectTreeId = []
+      this.cateList = []
+      this.$refs.leftTree2.setCheckedKeys([])
+      this.$refs.leftTree1.setCheckedKeys([])
+      this.$refs.rightTree.setCheckedKeys([])
+      this.$nextTick(() => {
+        this.$refs.rightTree.filter()
+      })
     },
     // 搜索回调
     handleFilter () {
       this.leftTree = []
-      this.rightTree = []
-      console.info(this.rightTree)
-      this.tempTree = []
-      this.selectTreeId = []
-      this.canCheckAll = false
-      this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
-      this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
+      // this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
+      // this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
       if (this.likeCondition) {
         this.showExpandTree = true
         this.$nextTick(() => {
@@ -330,7 +262,6 @@ export default {
             .then((res) => {
               console.info(res)
               this.leftTree = res
-              this.tempTree = res
             })
         })
       } else {
@@ -353,7 +284,22 @@ export default {
         })
         return res.result
       }
+    },
+    renderRightTree () {
+      this.$nextTick(() => {
+        const loadingInstance = refLoading(this.$refs.transferWapper)
+        this.getCategoryTree({ flat: true }).then((res) => {
+          loadingInstance.close()
+          this.rightTree = res
+          this.$nextTick(() => {
+            this.$refs.rightTree.filter()
+          })
+        })
+      })
     }
+  },
+  mounted () {
+    this.renderRightTree()
   }
 }
 </script>

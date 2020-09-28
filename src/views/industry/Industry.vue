@@ -134,7 +134,7 @@ export default {
       groupItemVal: '0',
       viewItemVal: '1',
       sortItemVal: '1',
-      drawerShow: true,
+      drawerShow: false,
       categoryForm: {},
       monthOption: [],
       selectdMonth: {},
@@ -152,8 +152,10 @@ export default {
       pageSize: 10,
       brandCount: 0,
       dialogVisible: false,
+      defineVisible: false,
       loadingProgress: 0,
-      iconName: 'el-icon-download'
+      iconName: 'el-icon-download',
+      meritcoTree: []
     }
   },
   computed: {
@@ -168,6 +170,9 @@ export default {
       'RESET_INDUSTRY_CATRGOTY_TABLE_PARAM',
       'SET_INDUSTRY_CATEGORY',
       'RESET_INDUSTRY_CATEGORY']),
+    handleDefineDialog (val) {
+      console.info(val)
+    },
     // 切换tab
     handleTabClick (tab) {
       this.page = 1

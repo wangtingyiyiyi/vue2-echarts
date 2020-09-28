@@ -57,6 +57,7 @@
               <Table-For-Spu
                 :isLoading="isLoadingOfSpuTable"
                 :sortItemVal="sortItemVal"
+                @changeSortItemVal="changeSortItemVal"
                 :tableData="tableSpu"/>
               <el-pagination
                 background
@@ -143,6 +144,7 @@ export default {
       ]),
     // 切换tab
     handleTabClick () {
+      this.sortItemVal = '1'
       this.getChartForBrand()
       this.getChartForShop()
       this.getTableForBrand()
@@ -203,6 +205,7 @@ export default {
       this.sortItemVal = val
       this.getTableForShop()
       this.getTableForBrand()
+      this.getTableForSpu()
     },
     // chart 切换month
     handleSelectdMonth (val) {

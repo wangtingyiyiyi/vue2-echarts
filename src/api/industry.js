@@ -49,3 +49,8 @@ export function previewExcel (params) {
 export function setDefineIndustry (params) {
   return post('industry/defineInsert', params)
 }
+
+// 自定义行业 删除
+export function delDefineIndustry (params) {
+  return post('industry/defineDel', params)
+}

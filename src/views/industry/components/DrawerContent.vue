@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getIndustryDefineList, setDefineIndustry } from '@/api/industry.js'
+import { getIndustryDefineList, setDefineIndustry, delDefineIndustry } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 export default {
@@ -56,7 +56,7 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: true,
+      dialogVisible: false,
       dialogRemove: false
     }
   },
@@ -95,22 +95,28 @@ export default {
       }
     },
     handleRemove (data, index) {
+      console.info(data)
       this.$parent.$refs.mask.style.background = 'transparent'
-      this.$confirm('删除？？？', '确认信息', {
+      this.$confirm(`您正在删除自定义品类-${data.category}。删除后本条自定义品类将不能恢复。`, `确认删除${data.category}吗?`, {
         distinguishCancelAndClose: true,
         confirmButtonText: '确认',
-        cancelButtonText: '取消'
-      }).then(() => {
-        this.tagList.splice(1, index)
-        this.$message.success('删除成功')
-        this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const res = await delDefineIndustry({ categoryIdList: [data.categoryId] })
+        if (res.code === 200) {
+          this.$message.success('删除成功')
+          this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
+          this.tagList.splice(index, 1)
+        } else {
+          this.$message.error('删除失败,请稍后再试')
+        }
       }).catch(() => {
         this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
       })
     },
     async onSubmit (list) {
-      console.info(list)
-      // this.dialogVisible = false
+      this.dialogVisible = false
       const res = await setDefineIndustry({ list: list })
       if (res.code === 200) {
         this.$message.success('保存成功')

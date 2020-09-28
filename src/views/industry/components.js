@@ -9,6 +9,7 @@ import DrawerContent from '@/views/industry/components/DrawerContent.vue'
 import DrawerButton from '@/views/industry/components/DrawerButton.vue'
 import DownloadButton from '@/components/DownloadButton.vue'
 import DialogForIndustryExport from '@/views/industry/components/DialogForIndustryExport.vue'
+import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 
 export default {
   components: {
@@ -21,6 +22,7 @@ export default {
     ChartForIndustry,
     ChartForBrand,
     DownloadButton,
-    DialogForIndustryExport
+    DialogForIndustryExport,
+    DialogForIndustryDefine
   }
 }
