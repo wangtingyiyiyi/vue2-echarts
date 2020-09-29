@@ -22,7 +22,13 @@
                   :viewItemVal="viewItemVal"/>
               </div>
 
-              <Title class="m-b-12" title="按子品牌展开"/>
+              <div class="table-title-wapper m-b-12">
+                <Title title="按品牌展开"/>
+                <Month-Options
+                  :monthOption="monthOption"
+                  :selectdMonth="selectdMonth"
+                  @handleSelectdMonth="handleMonth"/>
+              </div>
 
               <Brand-Table-Brands
                 :brands="brandList"
@@ -210,6 +216,10 @@ export default {
     // chart 切换month
     handleSelectdMonth (val) {
       this.selectdMonth = val
+    },
+    handleMonth (val) {
+      this.tableMonth = val
+      this.getTableForBrand()
     },
     // 获取月份options
     async getMonthOption () {
