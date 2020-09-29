@@ -10,7 +10,7 @@
           <el-input v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.password" show-password placeholder="请输入登陆密码"></el-input>
+          <el-input v-model="form.password" show-password placeholder="请输入登陆密码"  @click.enter.native="onSubmit"></el-input>
         </el-form-item>
         <div class="flex-between">
           <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
