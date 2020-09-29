@@ -32,10 +32,7 @@
               </div>
 
               <div v-show="!hasCategory">
-                <Title title="总销售趋势"/>
-                <Svg-Icon icon-class="empty" class="empty-svg"/>
-                <Title title="按子品类展开"/>
-                <Svg-Icon icon-class="empty" class="empty-svg"/>
+                <div class="empty-info">请选择行业</div>
               </div>
             </el-tab-pane>
 
@@ -76,11 +73,8 @@
                 </el-pagination>
               </div>
 
-              <div v-show="!hasCategory" class="empty-wapper">
-                <Title ref="brandTitle" title="总销售趋势"/>
-                <Svg-Icon icon-class="empty" class="empty-svg" />
-                <Title title="按品牌展开"/>
-                <Svg-Icon icon-class="empty" class="empty-svg" />
+              <div v-show="!hasCategory">
+                <div class="empty-info">请选择行业</div>
               </div>
             </el-tab-pane>
         </el-tabs>
