@@ -167,6 +167,7 @@ export default {
     // 时间范围
     handleRange (item) {
       this.form.range = item.value
+      this.handleExcelHeader()
     },
     // 颗粒度
     handleGroup (item) {

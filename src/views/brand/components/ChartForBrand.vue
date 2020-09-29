@@ -74,7 +74,6 @@ export default {
           data: item[this.tempKey]
         })
       })
-      console.info('getSeriesarr', arr)
       return arr
     },
     getLegend (brandData) {
