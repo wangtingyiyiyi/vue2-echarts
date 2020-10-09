@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Brand-Setting @brandOnSubmit="handleSettingParam"/>
+    <Brand-Setting
+      @brandOnSubmit="handleSettingParam"
+      @handleExportDialog="handleExportDialog"/>
     <Empty-Line />
 
     <div class="brand-tab-wapper">
@@ -91,6 +93,12 @@
         style='position: absolute; right:26px; top:16px;'/>
     </div>
 
+    <Dialog-For-Brand-Export
+      :dialogVisible="exportDialogVisible"
+      v-if="exportDialogVisible"
+      @handleExportExcel="handleExportExcel"
+      @closeDialog="exportDialogVisible = $event"/>
+
   </div>
 </template>
 
@@ -130,7 +138,8 @@ export default {
       tableSpu: [],
       spuPage: 1,
       spuTotal: 0,
-      pageSize: 10
+      pageSize: 10,
+      exportDialogVisible: false
     }
   },
   computed: {
@@ -146,7 +155,9 @@ export default {
         'RESET_BRAND_BRANDS',
         'SET_BRAND_BRANDS',
         'SET_BRAND_CATEGORY',
-        'SET_BRAND_SETTING'
+        'SET_BRAND_SETTING',
+        'RESET_BRAND_CATEGORY_OPTION',
+        'RESET_BRAND_SETTING'
       ]),
     // 切换tab
     handleTabClick () {
@@ -220,6 +231,13 @@ export default {
     handleMonth (val) {
       this.tableMonth = val
       this.getTableForBrand()
+    },
+    // 品牌提数弹出框
+    handleExportDialog () {
+      this.exportDialogVisible = true
+    },
+    // 品牌提数回调
+    handleExportExcel () {
     },
     // 获取月份options
     async getMonthOption () {
@@ -361,6 +379,8 @@ export default {
   beforeDestroy () {
     this.RESET_BRAND_BRANDS()
     this.RESET_BRAND_CATEGORY()
+    this.RESET_BRAND_CATEGORY_OPTION()
+    this.RESET_BRAND_SETTING()
   }
 }
 </script>

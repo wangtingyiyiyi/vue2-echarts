@@ -21,8 +21,7 @@
             :label="item.brand"
           ></el-option>
         </el-select>
-        <!-- <el-button type="primary" class="m-l-24" @click="onSubmit">查询</el-button> -->
-        <!-- <el-button @click="onClean">清除</el-button> -->
+        <Text-Button text="品牌提数" @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
       </el-form-item>
       <el-form-item label="行业筛选" prop="cid">
         <el-cascader
@@ -47,9 +46,10 @@ import { mapMutations, mapState } from 'vuex'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
-// const INITBRANDFORM = { brandList: [], catetegoryId: '' }
+import TextButton from '@/components/TextButton.vue'
 export default {
   mixins: [mixin],
+  components: { TextButton },
   data () {
     return {
       brandForm: { brandList: [], catetegoryId: '0' },
@@ -85,7 +85,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('brand', ['SET_BRAND_BRANDS', 'SET_BRAND_CATEGORY']),
+    ...mapMutations('brand', ['SET_BRAND_BRANDS', 'SET_BRAND_CATEGORY', 'SET_BRAND_CATEGORY_OPTION']),
     onSubmit () {
       this.SET_BRAND_BRANDS(this.brandForm.brandList)
       this.SET_BRAND_CATEGORY(this.brandForm.catetegoryId)
@@ -126,6 +126,7 @@ export default {
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
         this.categoryOption = res.result
+        this.SET_BRAND_CATEGORY_OPTION(this.categoryOption)
       } else {
         this.$message.error('品牌分类请求失败')
       }
@@ -141,8 +142,10 @@ export default {
     },
     changeIndustry (data) {
       this.brandForm.catetegoryId = data.id
-      console.info(this.$refs.cascader)
       this.onSubmit()
+    },
+    handleExportDialog () {
+      this.$emit('handleExportDialog')
     }
   }
 }
