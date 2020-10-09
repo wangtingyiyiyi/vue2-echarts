@@ -1,4 +1,5 @@
 <template>
+<div>
   <el-select
     ref="select"
     :value="selectData.label"
@@ -20,6 +21,7 @@
         :props="defaultProps">
       </el-tree>
   </el-select>
+</div>
 </template>
 
 <script>
@@ -44,14 +46,6 @@ export default {
   },
   computed: {
     ...mapState('industry', ['categoryObj'])
-  },
-  watch: {
-    categoryObj: {
-      deep: true,
-      handler: function (params) {
-        this.selectData = JSON.parse(JSON.stringify(params))
-      }
-    }
   },
   methods: {
     getEmptyText () {
@@ -110,7 +104,14 @@ export default {
             <span>{node.label}</span>
           </span>)
       }
+    },
+    setSelectData () {
+      this.selectData = this.categoryObj
+      this.handleSelctRemoteFilter(this.selectData.label)
     }
+  },
+  mounted () {
+    this.setSelectData()
   }
 }
 </script>
