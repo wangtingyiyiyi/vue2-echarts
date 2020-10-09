@@ -26,7 +26,7 @@ export function getIndustryFlatList (params) {
 }
 
 // 抽屉 久谦品类树
-export function getCategoryTree (params) {
+export function getCategoryTree (params = {}) {
   return post('industry/listCategory', params)
 }
 

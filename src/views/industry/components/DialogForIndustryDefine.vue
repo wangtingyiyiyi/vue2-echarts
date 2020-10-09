@@ -150,14 +150,18 @@ export default {
     onCancel () {
       this.closeDialog()
     },
-    handleLeftCheck () {
-      if (this.showExpandTree) {
-        this.checkedLeft2.push(...this.$refs.leftTree2.getCheckedNodes())
-        this.hasLeftCheck = this.$refs.leftTree2.getCheckedNodes().length !== 0
-      } else {
-        this.checkedLeft1.push(...this.$refs.leftTree1.getCheckedNodes())
-        this.hasLeftCheck = this.$refs.leftTree1.getCheckedNodes().length !== 0
-      }
+    handleLeftCheck (data, self, child) {
+      console.info(data, self, child)
+      this.getCategoryTree({ categoryId: data.id }).then((res) => {
+        console.info(res)
+      })
+      // if (this.showExpandTree) {
+      //   this.checkedLeft2.push(...this.$refs.leftTree2.getCheckedNodes())
+      //   this.hasLeftCheck = this.$refs.leftTree2.getCheckedNodes().length !== 0
+      // } else {
+      //   this.checkedLeft1.push(...this.$refs.leftTree1.getCheckedNodes())
+      //   this.hasLeftCheck = this.$refs.leftTree1.getCheckedNodes().length !== 0
+      // }
     },
     handleRightCheck () {
       this.hasRightCheck = this.$refs.rightTree.getCheckedNodes().length !== 0
@@ -211,7 +215,7 @@ export default {
         </span>)
     },
     // 异步加载
-    loadNode (node, resolve) {
+    loadNode (node = {}, resolve) {
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
           this.leftTree = this._.cloneDeep(res)
@@ -310,7 +314,7 @@ export default {
     }
   },
   mounted () {
-    this.renderRightTree()
+    // this.renderRightTree()
   }
 }
 </script>

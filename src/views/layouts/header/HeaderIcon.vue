@@ -1,7 +1,7 @@
 <template>
   <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo', 'flex-row']">
     <!-- <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div> -->
-    <Svg-Icon :icon-class="[collapsed ? 'logo1' : 'logo']" :class="[collapsed ? 'svg-class1' : 'svg-class']"/>
+    <Svg-Icon :icon-class="collapsed ? 'logo1' : 'logo'" :class="[collapsed ? 'svg-class1' : 'svg-class']"/>
     <i @click="collapsClick"
     :class="[collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold', 'm-l-10']" />
   </div>
