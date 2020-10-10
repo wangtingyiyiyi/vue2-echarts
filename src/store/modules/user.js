@@ -14,10 +14,15 @@ const mutations = {
 const actions = {
   async login ({ commit }, userInfo) {
     const res = await loginApi(userInfo)
-    if (res.code === 200) {
-      commit('SET_TOKEN', res.result.token)
-      sessionStorage.setItem('token', res.result.token)
-    }
+    return new Promise((resolve, reject) => {
+      if (res.code === 200) {
+        commit('SET_TOKEN', res.result.token)
+        sessionStorage.setItem('token', res.result.token)
+        resolve()
+      } else {
+        reject(res)
+      }
+    })
   }
 }
 export default {

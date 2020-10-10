@@ -4,13 +4,13 @@
       <div class="qr-wapper" @click="changeLoginType">
         <Svg-Icon icon-class="qrcode" class="qr-code"/>
       </div>
-      <el-form :model="form" label-position="left" class="login-form" size="large" v-if="isPsw">
+      <el-form :model="form" ref="form" :rules="rules" label-position="left" class="login-form" size="large" v-if="isPsw">
         <div class="title">久谦中台数据库</div>
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.password" show-password placeholder="请输入登陆密码"  @click.enter.native="onSubmit"></el-input>
+        <el-form-item prop="password">
+          <el-input v-model="form.password" show-password placeholder="请输入登陆密码" @keydown.enter.native="onSubmit"></el-input>
         </el-form-item>
         <div class="flex-between">
           <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-// import { loginApi } from '@/api/login'
 import { mapActions } from 'vuex'
 
 let target = {}
@@ -38,20 +37,27 @@ export default {
         password: ''
       },
       target: target,
-      isPsw: true
-
+      isPsw: true,
+      rules: {
+        username: { required: true, message: '请输入账号', trigger: 'blur' },
+        password: { required: true, message: '请输入密码', trigger: 'blur' }
+      }
     }
   },
   methods: {
     ...mapActions('user', ['login']),
     onSubmit () {
-      this.login(this.form)
-        .then(() => {
-          this.$router.push({ name: this.target.name })
-        })
-        .catch(() => {
-          this.$message.error('登陆失败')
-        })
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          this.login(this.form)
+            .then(() => {
+              this.$router.push({ name: this.target.name })
+            })
+            .catch(() => {
+              this.$message.error('登陆失败')
+            })
+        }
+      })
     },
     changeLoginType () {
       this.isPsw = !this.isPsw
