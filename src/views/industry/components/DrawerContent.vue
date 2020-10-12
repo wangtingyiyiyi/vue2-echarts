@@ -75,6 +75,7 @@ export default {
   methods: {
     // 自定义品类方法
     handleDialog () {
+      this.cateId = []
       this.dialogVisible = true
     },
     // 点击展开或者收起
@@ -90,7 +91,6 @@ export default {
     },
     // 设置高度
     setClass (index) {
-      // this.setIcon(index)
       if (this.setIcon(index) === 'el-icon-arrow-up') {
         return ''
       } else {
