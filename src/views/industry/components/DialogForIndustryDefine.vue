@@ -147,21 +147,6 @@ export default {
       disabledGoRight: true
     }
   },
-  // watch: {
-  //   cateId: {
-  //     immediate: true,
-  //     deep: true,
-  //     handler: function (cateId) {
-  //       console.info(cateId)
-  //       this.selectedIds = cateId
-  //       this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
-  //       this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
-  //       this.goRight()
-  //       // this.renderRightTree()
-  //       // this.renderLeftTree()
-  //     }
-  //   }
-  // },
   methods: {
     disabledFn (data, node) {
       const keys1 = this._.cloneDeep(this.allRightLeafKeys)
@@ -222,7 +207,6 @@ export default {
         </span>)
     },
     goRight () {
-      // console.info(this.selectedIds, 'goRight')
       // this.selectedIds = []
       const checked2 = this.$refs.leftTree2.getCheckedKeys(true)
       const checked1 = this.$refs.leftTree1.getCheckedKeys(false)
@@ -346,7 +330,6 @@ export default {
     }
   },
   mounted () {
-    console.info(this.cateId)
     this.selectedIds = this.cateId
     this.renderLeftTree()
     this.renderRightTree()
