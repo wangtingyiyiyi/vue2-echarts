@@ -9,12 +9,13 @@
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div :class="['item-title']">
           <div class="left">
+              <!-- @showMore="showMore(index)" -->
             <Text-Button
               :text="item.category"
-              @handleClick="handleClick(index)"
+              @handleClick="handleEdit(item)"
               class="font-size-14">
             </Text-Button>
-            <i :class="[setIcon(index), 'gary-text']"  slot="append"></i>
+            <i :class="[setIcon(index), 'gary-text']" @click="showMore(index)" style="cursor: pointer; margin-left: 5px" slot="append"></i>
           </div>
           <div class="right gary-text">
             <div class="m-r-7">{{item.updateTime | moment('YYYY-MM-DD HH:mm')}}</div>
@@ -33,6 +34,7 @@
     </div>
     <Dialog-For-Industry-Define
       :dialogVisible="dialogVisible"
+      :cateId="cateId"
       v-if="dialogVisible"
       @onSubmit="onSubmit"
       @closeDialog="dialogVisible = $event"/>
@@ -57,7 +59,8 @@ export default {
       tagList: [],
       isCollapseGroup: [],
       dialogVisible: false,
-      dialogRemove: false
+      dialogRemove: false,
+      cateId: []
     }
   },
   watch: {
@@ -75,7 +78,7 @@ export default {
       this.dialogVisible = true
     },
     // 点击展开或者收起
-    handleClick (index) {
+    showMore (index) {
       const p = this.isCollapseGroup.indexOf(index)
       p === -1 ? this.isCollapseGroup.push(index) : this.isCollapseGroup.splice(p, 1)
     },
@@ -94,8 +97,8 @@ export default {
         return 'm-b-5'
       }
     },
+    // 删除自定义品类
     handleRemove (data, index) {
-      console.info(data)
       this.$parent.$refs.mask.style.background = 'transparent'
       this.$confirm(`您正在删除自定义品类-${data.category}。删除后本条自定义品类将不能恢复。`, `确认删除${data.category}吗?`, {
         distinguishCancelAndClose: true,
@@ -115,6 +118,7 @@ export default {
         this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
       })
     },
+    // dialog 保存回调
     async onSubmit (param) {
       this.dialogVisible = false
       const res = await setDefineIndustry(param)
@@ -124,6 +128,11 @@ export default {
       } else {
         this.$message.error('自定义行业失败')
       }
+    },
+    // dialog 编辑
+    handleEdit (data) {
+      this.cateId = ['8095', '8096', '8097', '8098', '8228']
+      this.dialogVisible = true
     },
     // 请求列表API
     async getDefineList () {

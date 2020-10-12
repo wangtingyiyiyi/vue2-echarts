@@ -159,7 +159,6 @@ export default {
     },
     // 目标行业
     handleSelectTree (data) {
-      console.info(data)
       this.form.cateName = data.label
       this.form.id = data.id
       this.handlePreview()

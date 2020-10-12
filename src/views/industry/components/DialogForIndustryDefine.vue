@@ -118,6 +118,10 @@ export default {
     dialogVisible: {
       type: Boolean,
       default: true
+    },
+    cateId: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -127,27 +131,37 @@ export default {
       form: {},
       leftTree: [],
       rightTree: [],
-      selectTreeId: [],
       showExpandTree: false,
-      canCheckAll: true,
       leftTreeProps: {
         isLeaf: 'isLeaf',
         children: 'childList',
         disabled: this.disabledFn
       },
-      checkedLeft1: [],
-      checkedLeft2: [],
       selectedIds: [], // 全部的选中节点id
       allRightKeys: [],
       rightHalfKeys: [],
       rootTree: [],
       allRightLeafKeys: [],
-      defaultChecked: [],
       allRightParentKeys: [],
       disabledGoLeft: true,
       disabledGoRight: true
     }
   },
+  // watch: {
+  //   cateId: {
+  //     immediate: true,
+  //     deep: true,
+  //     handler: function (cateId) {
+  //       console.info(cateId)
+  //       this.selectedIds = cateId
+  //       this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
+  //       this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
+  //       this.goRight()
+  //       // this.renderRightTree()
+  //       // this.renderLeftTree()
+  //     }
+  //   }
+  // },
   methods: {
     disabledFn (data, node) {
       const keys1 = this._.cloneDeep(this.allRightLeafKeys)
@@ -208,7 +222,8 @@ export default {
         </span>)
     },
     goRight () {
-      this.selectedIds = []
+      // console.info(this.selectedIds, 'goRight')
+      // this.selectedIds = []
       const checked2 = this.$refs.leftTree2.getCheckedKeys(true)
       const checked1 = this.$refs.leftTree1.getCheckedKeys(false)
       this.selectedIds.push(...checked1, ...checked2)
@@ -329,6 +344,12 @@ export default {
         })
       }
     }
+  },
+  mounted () {
+    console.info(this.cateId)
+    this.selectedIds = this.cateId
+    this.renderLeftTree()
+    this.renderRightTree()
   }
 }
 </script>
