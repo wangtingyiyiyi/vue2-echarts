@@ -115,9 +115,9 @@ export default {
         this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
       })
     },
-    async onSubmit (list) {
+    async onSubmit (param) {
       this.dialogVisible = false
-      const res = await setDefineIndustry({ list: list })
+      const res = await setDefineIndustry(param)
       if (res.code === 200) {
         this.$message.success('保存成功')
         this.getDefineList()

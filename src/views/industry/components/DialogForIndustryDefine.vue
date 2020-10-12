@@ -13,14 +13,19 @@
     <div class="tree-transfer" ref="transferWapper">
       <div class="transfer-left">
         <div class="header">
-          <el-input v-model="likeCondition" placeholder="请输入关键字，回车搜索" @keydown.enter.native="handleFilter"></el-input>
+          <el-input
+            v-model="likeCondition"
+            placeholder="请输入关键字，回车搜索"
+            clearable
+            @clear="handleFilter"
+            @keydown.enter.native="handleFilter"></el-input>
         </div>
-        <!-- :disabled="!showExpandTree" -->
         <el-checkbox
           v-model="checkAll"
           class="m-l-16 check-all"
-          :disabled="canCheckAll"
+          :disabled="!showExpandTree"
           @change="handleCheckAll">全选</el-checkbox>
+          <div>{{selectedIds}}</div>
         <!-- 异步请求树 -->
         <el-tree
           v-show="!showExpandTree"
@@ -33,9 +38,10 @@
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
           :load="loadNode"
-          @check-change="handleLeftCheck">
+          :default-expanded-keys="allRightParentKeys"
+          @check="handleLeftTreeCheck">
         </el-tree>
-        <!-- 同步请求树 -->
+        <!-- 搜索树 -->
         <el-tree
           v-show="showExpandTree"
           :data="leftTree"
@@ -43,32 +49,32 @@
           show-checkbox
           node-key="id"
           ref="leftTree2"
-          :check-strictly="true"
           :default-expand-all="true"
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
-          @check-change="handleLeftCheck">
+          @check="handleLeftTreeCheck">
         </el-tree>
       </div>
       <div class="transfer-center">
         <el-button
           type="primary"
           icon="el-icon-arrow-right"
-          :disabled="!hasLeftCheck"
+          :disabled="disabledGoRight"
           @click="goRight"></el-button>
         <el-button
           type="primary"
           icon="el-icon-arrow-left"
-          :disabled="!hasRightCheck"
+          :disabled="disabledGoLeft"
           @click="goLeft"></el-button>
         <el-button
           type="primary"
           icon="el-icon-d-arrow-left"
-          :disabled="selectTreeId.length === 0"
+          :disabled="selectedIds.length === 0"
           @click="allGoLeft"></el-button>
       </div>
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
+        <!-- 选中树 -->
         <el-tree
           show-checkbox
           ref="rightTree"
@@ -77,9 +83,8 @@
           :data="rightTree"
           :props="{ children: 'childList' }"
           :default-expand-all="true"
-          :filter-node-method="rightTreeFilter"
           :render-content="renderContent"
-          @check-change="handleRightCheck">
+          @check="handleRightTreeCheck">
         </el-tree>
       </div>
     </div>
@@ -95,7 +100,6 @@
           style="width: 215px"/>
       </el-form-item>
     </el-form>
-
     <span slot="footer" class="dialog-footer">
       <el-button @click="onCancel">取 消</el-button>
       <el-button type="primary" @click="onSubmit">保 存</el-button>
@@ -104,8 +108,9 @@
 </template>
 
 <script>
-import { getCategoryTree } from '@/api/industry'
-import { refLoading } from '@/utils/element.js'
+import { getCategoryTree, getCategoryTreeByCategoyrId } from '@/api/industry'
+
+// import { refLoading } from '@/utils/element.js'
 
 export default {
   name: 'DialogForIndustryDefine',
@@ -117,32 +122,46 @@ export default {
   },
   data () {
     return {
-      likeCondition: '',
+      likeCondition: '面霜',
       checkAll: false,
       form: {},
       leftTree: [],
       rightTree: [],
-      rootTree: [],
       selectTreeId: [],
       showExpandTree: false,
       canCheckAll: true,
-      cateList: [],
       leftTreeProps: {
         isLeaf: 'isLeaf',
         children: 'childList',
         disabled: this.disabledFn
       },
-      listParam: [],
       checkedLeft1: [],
       checkedLeft2: [],
-      hasLeftCheck: false,
-      hasRightCheck: false
+      selectedIds: [], // 全部的选中节点id
+      allRightKeys: [],
+      rightHalfKeys: [],
+      rootTree: [],
+      allRightLeafKeys: [],
+      defaultChecked: [],
+      allRightParentKeys: [],
+      disabledGoLeft: true,
+      disabledGoRight: true
     }
   },
   methods: {
-    disabledFn (data) {
-      const disabledIds = this.cateList.map(item => item.id)
-      return disabledIds.includes(data.id)
+    disabledFn (data, node) {
+      const keys1 = this._.cloneDeep(this.allRightLeafKeys)
+      const keys2 = this._.cloneDeep(this.selectedIds)
+      keys1.push(...keys2)
+      return keys1.includes(data.id)
+    },
+    // 控制 goRight 按钮点击状态
+    handleLeftTreeCheck (data, tree) {
+      this.disabledGoRight = tree.checkedNodes.length === 0
+    },
+    // 控制 goLeft 按钮点击状态
+    handleRightTreeCheck (data, tree) {
+      this.disabledGoLeft = tree.checkedNodes.length === 0
     },
     closeDialog () {
       this.$emit('closeDialog', false)
@@ -150,34 +169,13 @@ export default {
     onCancel () {
       this.closeDialog()
     },
-    handleLeftCheck (data, self, child) {
-      console.info(data, self, child)
-      this.getCategoryTree({ categoryId: data.id }).then((res) => {
-        console.info(res)
-      })
-      // if (this.showExpandTree) {
-      //   this.checkedLeft2.push(...this.$refs.leftTree2.getCheckedNodes())
-      //   this.hasLeftCheck = this.$refs.leftTree2.getCheckedNodes().length !== 0
-      // } else {
-      //   this.checkedLeft1.push(...this.$refs.leftTree1.getCheckedNodes())
-      //   this.hasLeftCheck = this.$refs.leftTree1.getCheckedNodes().length !== 0
-      // }
-    },
-    handleRightCheck () {
-      this.hasRightCheck = this.$refs.rightTree.getCheckedNodes().length !== 0
-    },
     onSubmit () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const uniq = this._.uniqWith(this.checkedLeft1.concat(this.checkedLeft2), this._.isEqual)
-          const param = uniq.map(item => {
-            return {
-              outCat1: item.outCat1,
-              outCat2: item.outCat2,
-              outCat3: item.outCat3,
-              categoryDefine: this.form.category
-            }
-          })
+          const param = {
+            categoryDefine: this.form.category,
+            list: this.selectedIds
+          }
           this.$emit('onSubmit', param)
         }
       })
@@ -186,12 +184,11 @@ export default {
     handleCheckAll (checked) {
       const ids = []
       if (checked) {
+        this.disabledGoRight = false
         this.leftTree.forEach(level1 => {
-          ids.push(level1.id)
-          if (level1.childList) {
+          if (level1.hasChild) {
             level1.childList.forEach(level2 => {
-              ids.push(level2.id)
-              if (level2.childList) {
+              if (level2.hasChild) {
                 level2.childList.forEach(level3 => {
                   ids.push(level3.id)
                 })
@@ -202,70 +199,40 @@ export default {
       }
       this.$refs.leftTree2.setCheckedKeys(ids)
     },
-    // 设置tree节点显示label
-    getTreeLabel (data) {
-      const k = `outCat${data.remark}`
-      return data[k]
-    },
     // tree 节点渲染函数
     renderContent (h, { node, data, store }) {
+      const k = `outCat${data.remark}`
       return (
         <span class="custom-tree-node">
-          <span>{this.getTreeLabel(data)}</span>
+          <span>{data[k]} - {data.id}</span>
         </span>)
     },
-    // 异步加载
-    loadNode (node = {}, resolve) {
-      if (node.level === 0) {
-        this.getCategoryTree().then((res) => {
-          this.leftTree = this._.cloneDeep(res)
-          this.rootTree = this._.cloneDeep(res)
-        })
-      } else {
-        this.getCategoryTree(node.data).then((res) => {
-          resolve(res)
-        })
-      }
-    },
-    rightTreeFilter (value, data, node) {
-      return this.selectTreeId.includes(data.id)
-    },
     goRight () {
-      if (this.showExpandTree) {
-        this.cateList = this.$refs.leftTree2.getCheckedNodes().concat(this.cateList)
-      } else {
-        this.cateList = this.$refs.leftTree1.getCheckedNodes().concat(this.cateList)
-      }
-      this.selectTreeId = this.cateList.map(item => item.id).concat(this.selectTreeId)
-      this.$refs.rightTree.setCheckedKeys([])
-      this.$nextTick(() => {
-        this.$refs.rightTree.filter()
-      })
-      this.hasLeftCheck = false
+      this.selectedIds = []
+      const checked2 = this.$refs.leftTree2.getCheckedKeys(true)
+      const checked1 = this.$refs.leftTree1.getCheckedKeys(false)
+      this.selectedIds.push(...checked1, ...checked2)
+      this.selectedIds = this._.uniq(this.selectedIds) // 数组去重
+      this.disabledGoRight = true
+      this.renderRightTree()
     },
     goLeft () {
-      const checked = this.$refs.rightTree.getCheckedNodes(false, true).map(item => item.id)
-      this.cateList = this.cateList.filter(item => {
-        return !checked.includes(item.id)
-      })
-      this.selectTreeId = this.cateList.map(item => item.id)
-      this.$refs.leftTree2.setCheckedKeys(this.selectTreeId)
-      this.$refs.leftTree1.setCheckedKeys(this.selectTreeId)
-      this.$refs.rightTree.setCheckedKeys([])
-      this.$nextTick(() => {
-        this.$refs.rightTree.filter()
+      const checked = this.$refs.rightTree.getCheckedKeys(false) // 选中节点
+      const halfChecked = this.$refs.rightTree.getHalfCheckedKeys() // 半选节点
+      const selectedIds = this._.cloneDeep(this.selectedIds)
+      this.selectedIds = this._.pullAll(selectedIds, checked.concat(halfChecked))
+      this.disabledGoLeft = true
+      this.renderLeftTree().then(() => {
+        this.renderRightTree()
       })
     },
     allGoLeft () {
-      this.selectTreeId = []
-      this.cateList = []
-      this.$refs.leftTree2.setCheckedKeys([])
-      this.$refs.leftTree1.setCheckedKeys([])
-      this.$refs.rightTree.setCheckedKeys([])
-      this.$nextTick(() => {
-        this.$refs.rightTree.filter()
-      })
-      this.hasRightCheck = false
+      this.selectedIds = []
+      this.halfChecked = []
+      this.allRightLeafKeys = []
+      this.allRightParentKeys = []
+      this.rightTree = []
+      this.leftTree = this.rootTree
     },
     // 搜索回调
     handleFilter () {
@@ -275,13 +242,62 @@ export default {
         this.$nextTick(() => {
           this.getCategoryTree({ likeCondition: this.likeCondition })
             .then((res) => {
-              console.info(res)
               this.leftTree = res
             })
         })
       } else {
         this.showExpandTree = false
         this.leftTree = this.rootTree
+      }
+    },
+    // right tree
+    async renderRightTree () {
+      if (this.selectedIds.length === 0) {
+        this.rightTree = []
+        return
+      }
+      const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 0 })
+      if (res.code === 200) {
+        this.rightTree = res.result
+        this.allRightKeys = []
+        const allRightLeafKeys = []
+        this.allRightParentKeys = []
+        res.result.forEach(item => {
+          this.allRightKeys.push(item.id)
+          this.rightHalfKeys.push(item.id)
+          this.allRightParentKeys.push(item.id)
+          if (item.hasChild) {
+            item.childList.forEach(level2 => {
+              this.allRightKeys.push(level2.id)
+              this.allRightParentKeys.push(level2.id)
+              if (level2.hasChild) {
+                level2.childList.forEach(level3 => {
+                  this.allRightKeys.push(level3.id)
+                  allRightLeafKeys.push(level3.id)
+                })
+              }
+            })
+          }
+        })
+        this.allRightLeafKeys = this._.uniq(allRightLeafKeys)
+        const selectedIds = this.selectedIds
+        selectedIds.push(...this.allRightLeafKeys)
+        this.selectedIds = this._.uniq(selectedIds)
+        this.$nextTick(() => {
+          this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
+          this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
+        })
+      }
+    },
+    // left tree
+    async renderLeftTree () {
+      if (this.selectedIds.length === 0) {
+        this.leftTree = this.rootTree
+        return
+      }
+      const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 1 })
+      if (res.code === 200) {
+        this.leftTree = res.result
       }
     },
     async getCategoryTree (param = {}) {
@@ -300,21 +316,19 @@ export default {
         return res.result
       }
     },
-    renderRightTree () {
-      this.$nextTick(() => {
-        const loadingInstance = refLoading(this.$refs.transferWapper)
-        this.getCategoryTree({ flat: true }).then((res) => {
-          loadingInstance.close()
-          this.rightTree = res
-          this.$nextTick(() => {
-            this.$refs.rightTree.filter()
-          })
+    // 异步加载回调函数
+    loadNode (node = {}, resolve) {
+      if (node.level === 0) {
+        this.getCategoryTree().then((res) => {
+          this.leftTree = res
+          this.rootTree = this._.cloneDeep(res)
         })
-      })
+      } else {
+        this.getCategoryTree(node.data).then((res) => {
+          resolve(res)
+        })
+      }
     }
-  },
-  mounted () {
-    // this.renderRightTree()
   }
 }
 </script>

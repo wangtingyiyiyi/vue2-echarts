@@ -54,3 +54,8 @@ export function setDefineIndustry (params) {
 export function delDefineIndustry (params) {
   return post('industry/defineDel', params)
 }
+
+// select tree
+export function getCategoryTreeByCategoyrId (params) {
+  return post('industry/listIdCate', params)
+}
