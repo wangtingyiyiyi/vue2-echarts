@@ -10,7 +10,7 @@
       top="40vh"
       width="432px">
       <div class="title">
-        <i class="el-icon-question icon warning-color"></i>
+        <Svg-Icon icon-class="question" class="icon"/>
         <div>确认删除<span class="warning-color"> {{removeObj.category}} </span>吗？</div>
       </div>
       <div class="conent">您正在删除{{removeObj.category}}行业。删除后本条自定义不能恢复。</div>
@@ -57,8 +57,8 @@ export default {
     .el-dialog__footer
       text-align right
   .icon
-    width 40px
     font-size 22px
+    margin-right 16px
   .warning-color
     color #FFBF00
   .title

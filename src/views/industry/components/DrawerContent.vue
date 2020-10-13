@@ -4,14 +4,15 @@
     <Text-Button text="自定义品类" style="padding: 20px 20px 10px" @handleClick="handleDialog">
       <Svg-Icon icon-class="upload" class="m-r-7" style="font-size: 28px" slot="prepend"/>
     </Text-Button>
-    <Title title="历史自定义标签" style="margin-left: 20px"/>
+    <Title title="历史自定义标签" style="margin-left: 20px; margin-top: 20px"/>
     <div class="drawer-body beauty-scroll">
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div :class="['item-title']">
           <div class="left">
+            <span @click="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" /></span>
             <Text-Button
               :text="item.category"
-              @handleClick="handleEdit(item)"
+              @handleClick="showMore(index)"
               class="font-size-14">
             </Text-Button>
             <i :class="[setIcon(index), 'gary-text']" @click="showMore(index)" style="cursor: pointer; margin-left: 5px" slot="append"></i>
@@ -31,6 +32,7 @@
         </transition-group>
       </div>
     </div>
+    <!-- 行业定义 -->
     <Dialog-For-Industry-Define
       :dialogVisible="defineDialogVisible"
       :cateId="cateId"
@@ -38,6 +40,7 @@
       @onSubmit="onSubmit"
       @closeDialog="defineDialogVisible = $event"/>
 
+     <!-- 自定义行业删除 -->
     <Dialog-For-Industry-Remove
       :dialogVisible="removeDialogVisible"
       :removeObj="removeObj"
@@ -106,6 +109,7 @@ export default {
         return 'm-b-5'
       }
     },
+    // 自定义行业删除回调
     async onRemove (categoryId) {
       const res = await delDefineIndustry({ categoryIdList: categoryId })
       if (res.code === 200) {
@@ -181,6 +185,7 @@ export default {
         align-items center
         font-size 14px
         width 200px
+        font-weight 500
       .right
         display flex
         align-items center
