@@ -131,7 +131,7 @@ export default {
     },
     // dialog 编辑
     handleEdit (data) {
-      this.cateId = ['8095', '8096', '8097', '8098', '8228']
+      this.cateId = data.categoryIdList
       this.dialogVisible = true
     },
     // 请求列表API

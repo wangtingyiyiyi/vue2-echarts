@@ -25,7 +25,6 @@
           class="m-l-16 check-all"
           :disabled="!showExpandTree"
           @change="handleCheckAll">全选</el-checkbox>
-          <div>{{selectedIds}}</div>
         <!-- 异步请求树 -->
         <el-tree
           v-show="!showExpandTree"
@@ -126,7 +125,7 @@ export default {
   },
   data () {
     return {
-      likeCondition: '面霜',
+      likeCondition: '',
       checkAll: false,
       form: {},
       leftTree: [],
@@ -203,7 +202,7 @@ export default {
       const k = `outCat${data.remark}`
       return (
         <span class="custom-tree-node">
-          <span>{data[k]} - {data.id}</span>
+          <span>{data[k]}</span>
         </span>)
     },
     goRight () {
