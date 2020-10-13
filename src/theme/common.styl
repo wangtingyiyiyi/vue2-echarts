@@ -114,3 +114,45 @@
     color $base-blue
   .el-loading-text
     color $base-blue
+
+
+// this.$confirm 样式
+.message-box
+  padding 32px
+  border-radius 1px
+  .el-message-box__header
+    padding 0
+    margin-bottom 12px
+  .el-message-box__content
+    padding 0
+    margin-bottom 24px
+
+// fade 动画
+.fade-enter-active{
+  -webkit-animation: fade-in .3s;
+  animation: fade-in .3s
+  }
+.fade-leave-active{
+  -webkit-animation:fade-out .3s;
+  animation:fade-out .3s}
+
+@keyframes fade-in {
+  0% {
+    transform: translate3d(0,-20px,0)
+    opacity: 0
+  }
+  100% {
+    transform:translate3d(0,0,0)
+    opacity:1
+  }
+}
+@keyframes fade-out {
+  0% {
+    transform:translate3d(0,0,0)
+    opacity:1
+  }
+  100% {
+    transform:translate3d(0,-20px,0)
+    opacity:0
+  }
+}

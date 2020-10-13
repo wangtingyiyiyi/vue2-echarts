@@ -76,6 +76,7 @@ const components = [
 Vue.prototype.$ELEMENT = { size: 'small' }
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$msgbox = MessageBox
 const install = function (Vue) {
   components.map(component => {
     Vue.use(component)

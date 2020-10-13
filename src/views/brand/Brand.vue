@@ -170,7 +170,7 @@ export default {
     },
     // 配置筛选 搜索
     handleSettingParam () {
-      this.activeBrand = this.brandList[0]
+      this.activeBrand = this.brandList[0] || {}
       this.getChartForBrand()
       this.getChartForShop()
       this.getTableForBrand()

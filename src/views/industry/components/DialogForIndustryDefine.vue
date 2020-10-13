@@ -1,4 +1,5 @@
 <template>
+<transition name="fade">
   <el-dialog
     :visible.sync="dialogVisible"
     :show-close="false"
@@ -104,6 +105,8 @@
       <el-button type="primary" @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
+</transition>
+
 </template>
 
 <script>
@@ -277,6 +280,19 @@ export default {
             })
           }
         })
+        // 如果当前子分类数量 = 全部子分类数量，则默认父分类选中
+        res.result.forEach(level1 => {
+          if (level1.count === level1.childList.length) {
+            this.selectedIds.push(level1.id)
+          }
+          if (level1.hasChild) {
+            level1.childList.forEach(level2 => {
+              if (level2.count === level2.childList.length) {
+                this.selectedIds.push(level2.id)
+              }
+            })
+          }
+        })
         this.allRightLeafKeys = this._.uniq(allRightLeafKeys)
         const selectedIds = this.selectedIds
         selectedIds.push(...this.allRightLeafKeys)
@@ -337,6 +353,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 .indusrty-select-dialog >>>
   .el-dialog
     margin-left calc((100vw - 1100px) / 2) // 屏幕宽度 - （抽屉宽度 + 弹出框宽度 ）的一半

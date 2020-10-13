@@ -9,7 +9,6 @@
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div :class="['item-title']">
           <div class="left">
-              <!-- @showMore="showMore(index)" -->
             <Text-Button
               :text="item.category"
               @handleClick="handleEdit(item)"
@@ -33,11 +32,18 @@
       </div>
     </div>
     <Dialog-For-Industry-Define
-      :dialogVisible="dialogVisible"
+      :dialogVisible="defineDialogVisible"
       :cateId="cateId"
-      v-if="dialogVisible"
+      v-if="defineDialogVisible"
       @onSubmit="onSubmit"
-      @closeDialog="dialogVisible = $event"/>
+      @closeDialog="defineDialogVisible = $event"/>
+
+    <Dialog-For-Industry-Remove
+      :dialogVisible="removeDialogVisible"
+      :removeObj="removeObj"
+      v-if="removeDialogVisible"
+      @onSubmit="onRemove"
+      @closeDialog="removeDialogVisible = $event"/>
   </div>
 </template>
 
@@ -45,9 +51,10 @@
 import { getIndustryDefineList, setDefineIndustry, delDefineIndustry } from '@/api/industry.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
+import DialogForIndustryRemove from '@/views/industry/components/DialogForIndustryRemove.vue'
 export default {
   name: 'DrawerContent',
-  components: { TextButton, DialogForIndustryDefine },
+  components: { TextButton, DialogForIndustryDefine, DialogForIndustryRemove },
   props: {
     drawerShow: {
       type: Boolean,
@@ -58,9 +65,11 @@ export default {
     return {
       tagList: [],
       isCollapseGroup: [],
-      dialogVisible: false,
-      dialogRemove: false,
-      cateId: []
+      defineDialogVisible: false,
+      removeDialogVisible: false,
+      cateId: [],
+      removeObj: {},
+      removeIndex: 0
     }
   },
   watch: {
@@ -76,7 +85,7 @@ export default {
     // 自定义品类方法
     handleDialog () {
       this.cateId = []
-      this.dialogVisible = true
+      this.defineDialogVisible = true
     },
     // 点击展开或者收起
     showMore (index) {
@@ -97,30 +106,26 @@ export default {
         return 'm-b-5'
       }
     },
+    async onRemove (categoryId) {
+      const res = await delDefineIndustry({ categoryIdList: categoryId })
+      if (res.code === 200) {
+        this.$message.success('删除成功')
+        this.removeDialogVisible = false
+        this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
+        this.tagList.splice(this.removeIndex, 1)
+      } else {
+        this.$message.error('删除失败,请稍后再试')
+      }
+    },
     // 删除自定义品类
     handleRemove (data, index) {
-      this.$parent.$refs.mask.style.background = 'transparent'
-      this.$confirm(`您正在删除自定义品类-${data.category}。删除后本条自定义品类将不能恢复。`, `确认删除${data.category}吗?`, {
-        distinguishCancelAndClose: true,
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const res = await delDefineIndustry({ categoryIdList: [data.categoryId] })
-        if (res.code === 200) {
-          this.$message.success('删除成功')
-          this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
-          this.tagList.splice(index, 1)
-        } else {
-          this.$message.error('删除失败,请稍后再试')
-        }
-      }).catch(() => {
-        this.$parent.$refs.mask.style.backgroundColor = 'rgba(0,0,0,0.3)'
-      })
+      this.removeObj = data
+      this.removeIndex = index
+      this.removeDialogVisible = true
     },
     // dialog 保存回调
     async onSubmit (param) {
-      this.dialogVisible = false
+      this.defineDialogVisible = false
       const res = await setDefineIndustry(param)
       if (res.code === 200) {
         this.$message.success('保存成功')
@@ -132,7 +137,7 @@ export default {
     // dialog 编辑
     handleEdit (data) {
       this.cateId = data.categoryIdList
-      this.dialogVisible = true
+      this.defineDialogVisible = true
     },
     // 请求列表API
     async getDefineList () {

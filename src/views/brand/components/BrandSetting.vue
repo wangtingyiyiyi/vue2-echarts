@@ -47,6 +47,8 @@ import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
 import TextButton from '@/components/TextButton.vue'
+const DEFAULTCATEGORY = [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }]
+
 export default {
   mixins: [mixin],
   components: { TextButton },
@@ -54,7 +56,7 @@ export default {
     return {
       brandForm: { brandList: [], catetegoryId: '0' },
       brandOption: [],
-      categoryOption: [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }],
+      categoryOption: DEFAULTCATEGORY,
       categoryLabel: '',
       loading: false,
       props: {
@@ -123,6 +125,10 @@ export default {
     },
     // 品牌分类
     async getCategory () {
+      if (this.brandForm.brandList.length === 0) {
+        this.categoryOption = DEFAULTCATEGORY
+        return
+      }
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
         this.categoryOption = res.result
