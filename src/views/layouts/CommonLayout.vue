@@ -12,6 +12,7 @@
       <Layout-Sider :collapsed="collapsed"/>
       <Layout-Content :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
     </div>
+    <Layout-Footer />
   </div>
 </template>
 
@@ -22,6 +23,7 @@ import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
+import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -31,7 +33,7 @@ export default {
     }
   },
   components: {
-    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, HeaderNotice, HeaderAvatar
+    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, HeaderNotice, HeaderAvatar, LayoutFooter
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED']),
@@ -65,6 +67,7 @@ export default {
   min-width 1200px
   margin 60px auto 0
   background-color $base-white
+  min-height calc(100vh - 157px)
 
 .content-wapper
   padding 20px 0 0 20px
