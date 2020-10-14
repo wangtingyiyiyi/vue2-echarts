@@ -33,7 +33,6 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    console.info(error)
     if (error.response.status === 401) {
       sessionStorage.clear()
       Message.error('token已过期，请重新登录')

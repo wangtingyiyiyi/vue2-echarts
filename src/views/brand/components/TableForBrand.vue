@@ -99,7 +99,6 @@ export default {
     },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
-      console.info(data, this.brandList)
       const { href } = this.$router.resolve({
         path: '/brand',
         query: {

@@ -165,7 +165,7 @@ export default {
       'SET_INDUSTRY_CATEGORY',
       'RESET_INDUSTRY_CATEGORY']),
     handleDefineDialog (val) {
-      console.info(val)
+      // console.info(val)
     },
     // 切换tab
     handleTabClick (tab) {
@@ -244,7 +244,6 @@ export default {
         }
       }
       xhr.onload = function (params) {
-        console.info(this)
         if (this.status >= 200 && this.status < 300) {
           const blob = new Blob([this.response], { type: 'application/excel' })
           blolToFile(blob, filename)

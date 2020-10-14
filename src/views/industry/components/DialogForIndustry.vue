@@ -130,7 +130,6 @@ export default {
             resolve(res)
             this.tempTree.forEach(item => {
               if (item.outCat1 === node.data.outCat1) {
-                console.info(item.outCat1 === node.data.outCat1, item, node)
                 res.forEach(r => {
                   if (r.hasChild) {
                     r.children = []
