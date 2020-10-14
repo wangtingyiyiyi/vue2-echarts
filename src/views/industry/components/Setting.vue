@@ -103,7 +103,7 @@ export default {
       this.$emit('handleExportDialog')
     },
     highlight (keyWord, label) {
-      const mes = label.replace(new RegExp(`(${keyWord})`, 'gi'), "<span style='background: #ffeb3b; font-weight: inherit'>$1</span>")
+      const mes = label.replace(new RegExp(`(${keyWord})`, 'gi'), "<span style='background: background: rgba(255, 214, 0, 0.4); font-weight: inherit'>$1</span>")
       return '<span style="font-weight: inherit">' + mes + '</span>'
     },
     handleNodeClick (data, node, ref) {
