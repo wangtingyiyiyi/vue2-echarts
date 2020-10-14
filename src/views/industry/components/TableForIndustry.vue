@@ -10,12 +10,12 @@
     row-key="categoryId"
     :load="load"
     style="width: 100%">
-    <el-table-column prop="outCat2" label="子品类">
+    <el-table-column prop="outCat2" label="子品类" width="220px">
       <template slot-scope="{row}">
         <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" />
       </template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="60px">
       <template #header>
         <div class="sort-button" @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
@@ -60,6 +60,7 @@
       </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
+    <el-table-column width="10px"></el-table-column>
   </el-table>
 </template>
 

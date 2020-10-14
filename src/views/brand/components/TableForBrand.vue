@@ -10,16 +10,12 @@
     lazy
     row-key="id"
     :load="load">
-    <el-table-column label="子品类" width="180">
+    <el-table-column label="子品类" width="220px">
       <template slot-scope="{row}">
         <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline;" />
       </template>
     </el-table-column>
-    <el-table-column
-      prop="salesCount"
-      label="销量"
-      align="right"
-      width="180">
+    <el-table-column prop="salesCount" label="销量" align="right" min-width="60">
       <template #header>
         <div class="sort-button"  @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[sortItemVal == '0' ? 'active-sort' : '']"/>
@@ -64,6 +60,7 @@
       </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
+    <el-table-column width="10px"></el-table-column>
   </el-table>
 </template>
 

@@ -57,6 +57,7 @@
       </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
+    <el-table-column width="10px"></el-table-column>
   </el-table>
 </template>
 
