@@ -218,7 +218,7 @@ export default {
       this.renderRightTree()
     },
     goLeft () {
-      const checked = this.$refs.rightTree.getCheckedKeys(false) // 选中节点
+      const checked = this.$refs.rightTree.getCheckedKeys() // 选中节点
       const halfChecked = this.$refs.rightTree.getHalfCheckedKeys() // 半选节点
       const selectedIds = this._.cloneDeep(this.selectedIds)
       this.selectedIds = this._.pullAll(selectedIds, checked.concat(halfChecked))
@@ -229,11 +229,13 @@ export default {
     },
     allGoLeft () {
       this.selectedIds = []
-      this.halfChecked = []
       this.allRightLeafKeys = []
       this.allRightParentKeys = []
       this.rightTree = []
       this.leftTree = this.rootTree
+      this.disabledGoLeft = true
+      this.$refs.leftTree1.setCheckedKeys([])
+      this.$refs.leftTree2.setCheckedKeys([])
     },
     // 搜索回调
     handleFilter () {
@@ -254,7 +256,12 @@ export default {
     // right tree
     async renderRightTree () {
       if (this.selectedIds.length === 0) {
+        this.selectedIds = []
+        this.allRightLeafKeys = []
+        this.allRightParentKeys = []
         this.rightTree = []
+        this.rightHalfKeys = []
+        this.allRightKeys = []
         return
       }
       const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 0 })
@@ -297,16 +304,14 @@ export default {
         const selectedIds = this.selectedIds
         selectedIds.push(...this.allRightLeafKeys)
         this.selectedIds = this._.uniq(selectedIds)
-        this.$nextTick(() => {
-          this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
-          this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
-        })
+        this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
+        this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
       }
     },
     // left tree
     async renderLeftTree () {
       if (this.selectedIds.length === 0) {
-        this.leftTree = this.rootTree
+        this.allGoLeft()
         return
       }
       const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 1 })
@@ -345,9 +350,11 @@ export default {
     }
   },
   mounted () {
-    this.selectedIds = this.cateId
-    this.renderLeftTree()
-    this.renderRightTree()
+    this.$nextTick(() => {
+      this.selectedIds = this.cateId
+      this.renderLeftTree()
+      this.renderRightTree()
+    })
   }
 }
 </script>
