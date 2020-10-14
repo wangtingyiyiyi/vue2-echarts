@@ -1,7 +1,7 @@
 <template>
   <i
     @click="collapsClick"
-    :class="collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold'" />
+    :class="collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold'" style="cursor: pointer;"/>
 </template>
 
 <script>
