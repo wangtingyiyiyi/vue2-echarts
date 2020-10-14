@@ -29,7 +29,9 @@ export default {
     },
     collapsed: {
       handler: function (params) {
-        this.chart.resize()
+        if (this.chart) {
+          this.chart.resize()
+        }
       }
     }
   },
