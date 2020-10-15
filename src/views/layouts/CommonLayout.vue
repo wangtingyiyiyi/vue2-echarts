@@ -25,19 +25,17 @@ import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
 import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
-      collapsed: false
+      collapsed: false,
+      userName: sessionStorage.getItem('userName')
     }
   },
   components: {
     HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter
-  },
-  computed: {
-    ...mapState('user', ['userName'])
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED']),

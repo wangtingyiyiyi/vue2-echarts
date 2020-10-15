@@ -25,6 +25,7 @@ const actions = {
         commit('SET_TOKEN', res.result.token)
         commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
+        sessionStorage.setItem('userName', res.result.username)
         resolve()
       } else {
         reject(res)
@@ -39,6 +40,7 @@ const actions = {
         commit('SET_TOKEN', res.result.token)
         commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
+        sessionStorage.setItem('userName', res.result.username)
         resolve()
       } else {
         reject(res)

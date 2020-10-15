@@ -79,11 +79,7 @@ export default {
         .catch((err) => {
           console.info(err)
           loadingInstance.close()
-          if (err.code === 700) {
-            this.$message.error('用户操作频繁,请稍后再试')
-          } else {
-            this.$message.error('登陆失败')
-          }
+          this.$message.error(err.message)
           this.$route.push('/Login')
         })
     },
@@ -97,11 +93,7 @@ export default {
         .catch((err) => {
           loadingInstance.close()
           console.info(err)
-          if (err.code === 600) {
-            this.$message.error('cms用户, 首次请扫码登陆')
-          } else {
-            this.$message.error('cms用户登陆失败')
-          }
+          this.$message.error(err.message)
           this.$route.push('/Login')
         })
     },
