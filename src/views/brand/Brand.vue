@@ -367,13 +367,17 @@ export default {
           id: query.id,
           brandList: JSON.parse(query.brandList)
         })
+      } else {
+        this.SET_BRAND_SETTING({
+          id: '0',
+          brandList: [{ brand: '花西子', brandId: '82755', brandSql: '花西子' }]
+        })
       }
     }
   },
   mounted () {
     this.getMonthOption().then(() => {
       this.handleRoute()
-      this.getTableForSpu()
     })
   },
   beforeDestroy () {

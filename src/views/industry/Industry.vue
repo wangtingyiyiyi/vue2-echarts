@@ -376,8 +376,15 @@ export default {
     }
   },
   mounted () {
+    const param = {
+      remark: '1',
+      id: '7667',
+      label: '彩妆/美护工具'
+    }
+    this.SET_INDUSTRY_CATEGORY(param)
     this.getMonthOption().then(() => {
       this.handleRoute()
+      this.brandOnSubmit(param)
     })
   },
   beforeDestroy () {
