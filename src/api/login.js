@@ -10,3 +10,8 @@ export function loginApi (params) {
 export function cmsLogin (params) {
   return post('/auth/user', params)
 }
+
+// 退出登陆
+export function logOut (params) {
+  return post('/userInfo/logout', params)
+}

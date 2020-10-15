@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 let menuData = []
 export default {
   data () {
@@ -21,9 +22,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions('user', ['logOut']),
     handleCommand (command) {
       if (command === 'Login') {
-        sessionStorage.clear()
+        this.logOut()
+        return
       }
       if (this.$route.name !== command) {
         this.$router.push({ name: command })

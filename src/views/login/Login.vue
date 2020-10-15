@@ -34,11 +34,11 @@ export default {
   data () {
     return {
       form: {
-        username: '张三',
-        password: '111'
+        username: 'zx',
+        password: '1'
       },
       target: target,
-      isPsw: !true,
+      isPsw: true,
       rules: {
         username: { required: true, message: '请输入账号', trigger: 'blur' },
         password: { required: true, message: '请输入密码', trigger: 'blur' }

@@ -1,5 +1,5 @@
 
-import { loginApi, cmsLogin } from '@/api/login.js'
+import { loginApi, cmsLogin, logOut } from '@/api/login.js'
 import { SET_TOKEN, SET_USER_NAME } from '../mutation'
 
 const state = {
@@ -39,6 +39,20 @@ const actions = {
         commit('SET_TOKEN', res.result.token)
         commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
+        resolve()
+      } else {
+        reject(res)
+      }
+    })
+  },
+  // 退出登陆
+  async logOut ({ commit, state }) {
+    const res = await logOut({ token: state.token })
+    return new Promise((resolve, reject) => {
+      if (res.code === 200) {
+        commit('SET_TOKEN', '')
+        commit('SET_USER_NAME', '')
+        sessionStorage.clear()
         resolve()
       } else {
         reject(res)
