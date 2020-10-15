@@ -95,7 +95,8 @@
           :drawerShow="drawerShow"
           @handleDrawerBtn="handleDrawerBtn"/>
         <Drawer-Content
-          :drawerShow="drawerShow"/>
+          :drawerShow="drawerShow"
+          @handleSearch="handleSearch"/>
     </Drawer>
     <Download-Button :loadingProgress="loadingProgress" :iconName="iconName"/>
     <!-- 行业提数 -->
@@ -220,6 +221,11 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
       this.getBrandEchart()
+    },
+    // 抽屉中，自定义行业查询
+    handleSearch (param) {
+      this.handleDrawerClose(false)
+      this.brandOnSubmit(param)
     },
     // 行业提数 弹出框
     handleExportDialog () {

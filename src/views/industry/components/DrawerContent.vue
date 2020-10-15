@@ -7,19 +7,19 @@
     <Title title="历史自定义标签" style="margin-left: 20px; margin-top: 20px"/>
     <div class="drawer-body beauty-scroll">
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
-        <div :class="['item-title']">
+        <div class="item-title" @click="showMore(index)">
           <div class="left">
-            <span @click="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" /></span>
+            <span @click.stop="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" /></span>
             <Text-Button
               :text="item.category"
-              @handleClick="showMore(index)"
+              @handleClick="handleSearch(item)"
               class="font-size-14">
             </Text-Button>
-            <i :class="[setIcon(index), 'gary-text']" @click="showMore(index)" style="cursor: pointer; margin-left: 5px" slot="append"></i>
+            <i :class="[setIcon(index), 'gary-text']" style="cursor: pointer; margin-left: 5px" slot="append"></i>
           </div>
           <div class="right gary-text">
             <div class="m-r-7">{{item.updateTime | moment('YYYY-MM-DD HH:mm')}}</div>
-            <i class="el-icon-close m-l-3" style="cursor: pointer" @click="handleRemove(item, index)"></i>
+            <i class="el-icon-close m-l-3" style="cursor: pointer" @click.stop="handleRemove(item, index)"></i>
           </div>
         </div>
         <transition-group name="slide-fade">
@@ -55,6 +55,7 @@ import { getIndustryDefineList, setDefineIndustry, delDefineIndustry } from '@/a
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 import DialogForIndustryRemove from '@/views/industry/components/DialogForIndustryRemove.vue'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'DrawerContent',
   components: { TextButton, DialogForIndustryDefine, DialogForIndustryRemove },
@@ -75,6 +76,9 @@ export default {
       removeIndex: 0
     }
   },
+  computed: {
+    ...mapState('industry', ['categoryObj'])
+  },
   watch: {
     drawerShow: {
       handler: function (drawerShow) {
@@ -85,10 +89,21 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     // 自定义品类方法
     handleDialog () {
       this.cateId = []
       this.defineDialogVisible = true
+    },
+    handleSearch (data) {
+      // event.stopPropagation()
+      const param = {
+        label: data.category,
+        id: data.categoryId,
+        remark: 'define'
+      }
+      this.SET_INDUSTRY_CATEGORY(param)
+      this.$emit('handleSearch', param)
     },
     // 点击展开或者收起
     showMore (index) {
@@ -180,6 +195,7 @@ export default {
       justify-content space-between
       align-items center
       min-height 50px
+      cursor pointer
       .left
         display flex
         align-items center

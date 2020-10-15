@@ -1,5 +1,5 @@
 <template>
-  <div class="text-button" @click="click">
+  <div class="text-button" @click.stop="click">
     <slot name="prepend"/>
     {{text}}
     <slot name="append"/>

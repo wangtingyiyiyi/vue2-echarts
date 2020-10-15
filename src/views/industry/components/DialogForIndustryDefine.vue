@@ -38,6 +38,8 @@
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
           :load="loadNode"
+          :default-checked-keys="ids"
+          :check-strictly="checkStrictly"
           :default-expanded-keys="allRightParentKeys"
           @check="handleLeftTreeCheck">
         </el-tree>
@@ -145,16 +147,19 @@ export default {
       rootTree: [],
       allRightLeafKeys: [],
       allRightParentKeys: [],
+      ids: [],
       disabledGoLeft: true,
-      disabledGoRight: true
+      disabledGoRight: true,
+      checkStrictly: false
     }
   },
   methods: {
     disabledFn (data, node) {
-      const keys1 = this._.cloneDeep(this.allRightLeafKeys)
-      const keys2 = this._.cloneDeep(this.selectedIds)
-      keys1.push(...keys2)
-      return keys1.includes(data.id)
+      // const keys1 = this._.cloneDeep(this.allRightLeafKeys)
+      // const keys2 = this._.cloneDeep(this.selectedIds)
+      // keys1.push(...keys2)
+      // return keys1.includes(data.id)
+      return this.selectedIds.includes(data.id)
     },
     // 控制 goRight 按钮点击状态
     handleLeftTreeCheck (data, tree) {
@@ -287,25 +292,28 @@ export default {
             })
           }
         })
+        const selectedIds = []
         // 如果当前子分类数量 = 全部子分类数量，则默认父分类选中
         res.result.forEach(level1 => {
           if (level1.count === level1.childList.length) {
-            this.selectedIds.push(level1.id)
+            selectedIds.push(level1.id)
           }
           if (level1.hasChild) {
             level1.childList.forEach(level2 => {
               if (level2.count === level2.childList.length) {
-                this.selectedIds.push(level2.id)
+                selectedIds.push(level2.id)
               }
             })
           }
         })
         this.allRightLeafKeys = this._.uniq(allRightLeafKeys)
-        const selectedIds = this.selectedIds
+        // const selectedIds = this.selectedIds
         selectedIds.push(...this.allRightLeafKeys)
         this.selectedIds = this._.uniq(selectedIds)
-        this.$refs.leftTree1.setCheckedKeys(this.selectedIds)
-        this.$refs.leftTree2.setCheckedKeys(this.selectedIds)
+        this.$nextTick(() => {
+          this.$refs.leftTree1.setCheckedKeys(this.selectedIds, false)
+          this.$refs.leftTree2.setCheckedKeys(this.selectedIds, false)
+        })
       }
     },
     // left tree
@@ -350,11 +358,8 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this.selectedIds = this.cateId
-      this.renderLeftTree()
-      this.renderRightTree()
-    })
+    this.selectedIds = this.cateId
+    this.renderRightTree()
   }
 }
 </script>

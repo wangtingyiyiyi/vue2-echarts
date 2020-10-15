@@ -36,9 +36,7 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       sessionStorage.clear()
       Message.error('token已过期，请重新登录')
-      setTimeout(() => {
-        window.location.href = '/login'
-      }, 3000)
+      window.location.href = '/login'
     }
     // 返回接口返回的错误信息
     return Promise.reject(error)
