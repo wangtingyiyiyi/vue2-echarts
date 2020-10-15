@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index" ref="index">
     <div class="login-wapper">
       <div class="qr-wapper" @click="changeLoginType">
         <Svg-Icon icon-class="qrcode" class="qr-code"/>
@@ -27,14 +27,15 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { refLoading } from '@/utils/element.js'
 
 let target = {}
 export default {
   data () {
     return {
       form: {
-        username: '',
-        password: ''
+        username: '123456',
+        password: '654321'
       },
       target: target,
       isPsw: true,
@@ -69,14 +70,26 @@ export default {
       })
     },
     handleLogin (param) {
+      const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.login(param)
-        .then(() => { this.$router.push({ name: this.target.name }) })
-        .catch(() => { this.$message.error('登陆失败') })
+        .then(() => {
+          loadingInstance.close()
+          this.$router.push({ name: this.target.name })
+        })
+        .catch(() => {
+          loadingInstance.close()
+          this.$message.error('登陆失败')
+        })
     },
     handleCmsLogin (userId) {
+      const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.cmsLogin({ userId: userId })
-        .then(() => { this.$router.push({ name: this.target.name }) })
+        .then(() => {
+          loadingInstance.close()
+          this.$router.push({ name: this.target.name })
+        })
         .catch((err) => {
+          loadingInstance.close()
           if (err.code === 600) {
             this.$message.error('cms用户, 首次请扫码登陆')
           } else {
