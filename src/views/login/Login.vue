@@ -4,7 +4,7 @@
       <div class="qr-wapper" @click="changeLoginType">
         <Svg-Icon icon-class="qrcode" class="qr-code"/>
       </div>
-      <el-form :model="form" ref="form" :rules="rules" label-position="left" class="login-form" size="large" v-if="isPsw">
+      <el-form :model="form" ref="form" :rules="rules" label-position="left" class="login-form" size="large" v-show="isPsw">
         <div class="title">久谦中台数据库</div>
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入账号"></el-input>
@@ -12,15 +12,15 @@
         <el-form-item prop="password">
           <el-input v-model="form.password" show-password placeholder="请输入登陆密码" @keydown.enter.native="onSubmit"></el-input>
         </el-form-item>
-        <div class="flex-between">
+        <!-- <div class="flex-between"> -->
           <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
-          <div class="empty-space"></div>
-          <el-button type="text" size="medium" class="apply-btn" @click="onSubmit">申请试用</el-button>
+          <!-- <div class="empty-space"></div> -->
+          <!-- <el-button type="text" size="medium" class="apply-btn" @click="onSubmit">申请试用</el-button> -->
+        <!-- </div> -->
+        </el-form>
+        <div v-show="!isPsw" class="wxCode">
+          <div id="wx_qrcode"></div>
         </div>
-      </el-form>
-      <div v-if="!isPsw">
-        企业微信扫码登陆
-      </div>
     </div>
   </div>
 </template>
@@ -44,27 +44,65 @@ export default {
       }
     }
   },
+  watch: {
+    $route: {
+      immediate: true,
+      handler: function (route) {
+        const query = route.query
+        if (query.userId) { // cms导入用户
+          this.handleCmsLogin(query.userId)
+        } else if (query.code) { // 企业微信扫码用户
+          this.handleLogin(query)
+        } else {
+          console.info('哈哈哈哈')
+        }
+      }
+    }
+  },
   methods: {
-    ...mapActions('user', ['login']),
+    ...mapActions('user', ['login', 'cmsLogin']),
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         if (valid) {
-          this.login(this.form)
-            .then(() => {
-              this.$router.push({ name: this.target.name })
-            })
-            .catch(() => {
-              this.$message.error('登陆失败')
-            })
+          this.handleLogin(this.form)
         }
       })
     },
+    handleLogin (param) {
+      this.login(param)
+        .then(() => { this.$router.push({ name: this.target.name }) })
+        .catch(() => { this.$message.error('登陆失败') })
+    },
+    handleCmsLogin (userId) {
+      this.cmsLogin({ userId: userId })
+        .then(() => { this.$router.push({ name: this.target.name }) })
+        .catch((err) => {
+          if (err.code === 600) {
+            this.$message.error('cms用户, 首次请扫码登陆')
+          } else {
+            this.$message.error('登陆失败')
+          }
+        })
+    },
     changeLoginType () {
       this.isPsw = !this.isPsw
+    },
+    wechatLogin () {
+      window.a = window.WwLogin({
+        id: 'wx_qrcode',
+        appid: 'ww7f4fe84bdcd3e434',
+        agentid: '1000022',
+        redirect_uri: encodeURI('https://exp.meritco-group.com:8956/login'),
+        state: 'STATE',
+        href: ''
+      })
     }
   },
   beforeCreate () {
     target = this.$router.options.routes.find((item) => item.path === '/').children[0]
+  },
+  mounted () {
+    this.wechatLogin()
   }
 }
 </script>
@@ -78,12 +116,12 @@ export default {
   justify-content center
 
 .login-wapper
-  height 350px
+  height 450px
   width 510px
   background-color #fff
 
 .login-form
-  padding 54px 92px
+  padding 74px 92px
 
 .title
   font-size 18px
@@ -93,17 +131,20 @@ export default {
 .apply-btn
   border 1px solid $color-border
 
-.flex-between
+// .flex-between
+//   width 100%
+//   display flex
+//   align-items baseline
+//   justify-content flex-start
+//   .login-btn
+//     width 100%
+//   .empty-space
+//     min-width 6%
+//   .apply-btn
+//     width 47%
+
+.login-btn
   width 100%
-  display flex
-  align-items baseline
-  justify-content flex-start
-  .login-btn
-    width 47%
-  .empty-space
-    min-width 6%
-  .apply-btn
-    width 47%
 
 .qr-wapper
   width 40px
@@ -127,4 +168,8 @@ export default {
   width 100%
   height 100%
   color #8A8A8A
+
+.wxCode
+  padding-left 108px
+  padding-top 30px
 </style>
