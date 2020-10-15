@@ -34,11 +34,11 @@ export default {
   data () {
     return {
       form: {
-        username: '',
-        password: ''
+        username: '张三',
+        password: '111'
       },
       target: target,
-      isPsw: true,
+      isPsw: !true,
       rules: {
         username: { required: true, message: '请输入账号', trigger: 'blur' },
         password: { required: true, message: '请输入密码', trigger: 'blur' }
@@ -76,9 +76,15 @@ export default {
           loadingInstance.close()
           this.$router.push({ name: this.target.name })
         })
-        .catch(() => {
+        .catch((err) => {
+          console.info(err)
           loadingInstance.close()
-          this.$message.error('登陆失败')
+          if (err.code === 700) {
+            this.$message.error('用户操作频繁,请稍后再试')
+          } else {
+            this.$message.error('登陆失败')
+          }
+          this.$route.push('/Login')
         })
     },
     handleCmsLogin (userId) {
@@ -90,15 +96,13 @@ export default {
         })
         .catch((err) => {
           loadingInstance.close()
+          console.info(err)
           if (err.code === 600) {
             this.$message.error('cms用户, 首次请扫码登陆')
-          } else if (err.code === 700) {
-            this.$message.error('用户操作频繁,请稍后再试')
-            this.$route.push('/Login')
           } else {
-            this.$message.error('登陆失败')
-            this.$route.push('/Login')
+            this.$message.error('cms用户登陆失败')
           }
+          this.$route.push('/Login')
         })
     },
     changeLoginType () {
