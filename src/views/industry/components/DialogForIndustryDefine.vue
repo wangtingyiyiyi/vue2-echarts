@@ -126,13 +126,28 @@ export default {
     cateId: {
       type: Array,
       default: () => []
+    },
+    editDefineName: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    editDefineName: {
+      immediate: true,
+      deep: true,
+      handler: function (editDefineName) {
+        this.form.category = editDefineName
+      }
     }
   },
   data () {
     return {
       likeCondition: '',
       checkAll: false,
-      form: {},
+      form: {
+        category: ''
+      },
       leftTree: [],
       rightTree: [],
       showExpandTree: false,
@@ -155,11 +170,10 @@ export default {
   },
   methods: {
     disabledFn (data, node) {
-      // const keys1 = this._.cloneDeep(this.allRightLeafKeys)
-      // const keys2 = this._.cloneDeep(this.selectedIds)
-      // keys1.push(...keys2)
-      // return keys1.includes(data.id)
-      return this.selectedIds.includes(data.id)
+      const keys1 = this._.cloneDeep(this.allRightLeafKeys)
+      const keys2 = this._.cloneDeep(this.selectedIds)
+      keys1.push(...keys2)
+      return keys1.includes(data.id)
     },
     // 控制 goRight 按钮点击状态
     handleLeftTreeCheck (data, tree) {

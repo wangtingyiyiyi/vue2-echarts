@@ -36,6 +36,7 @@
     <Dialog-For-Industry-Define
       :dialogVisible="defineDialogVisible"
       :cateId="cateId"
+      :editDefineName="editDefineName"
       v-if="defineDialogVisible"
       @onSubmit="onSubmit"
       @closeDialog="defineDialogVisible = $event"/>
@@ -72,6 +73,8 @@ export default {
       defineDialogVisible: false,
       removeDialogVisible: false,
       cateId: [],
+      categoryId: '',
+      editDefineName: '',
       removeObj: {},
       removeIndex: 0
     }
@@ -145,6 +148,10 @@ export default {
     // dialog 保存回调
     async onSubmit (param) {
       this.defineDialogVisible = false
+      // 编辑
+      if (this.categoryId !== '') {
+        param.categoryId = this.categoryId
+      }
       const res = await setDefineIndustry(param)
       if (res.code === 200) {
         this.$message.success('保存成功')
@@ -155,7 +162,10 @@ export default {
     },
     // dialog 编辑
     handleEdit (data) {
+      console.info(data)
       this.cateId = data.categoryIdList
+      this.categoryId = data.categoryId
+      this.editDefineName = data.category
       this.defineDialogVisible = true
     },
     // 请求列表API
