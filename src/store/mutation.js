@@ -19,3 +19,4 @@ export const SET_SYS_COLLAPSED = 'SET_SYS_COLLAPSED'
 
 // 用户
 export const SET_TOKEN = 'SET_TOKEN'
+export const SET_USER_NAME = 'SET_USER_NAME'

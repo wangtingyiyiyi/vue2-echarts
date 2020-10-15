@@ -38,8 +38,7 @@
           class="tree-wapper beauty-scroll"
           :render-content="renderContent"
           :load="loadNode"
-          :default-checked-keys="ids"
-          :check-strictly="checkStrictly"
+          :check-strictly="false"
           :default-expanded-keys="allRightParentKeys"
           @check="handleLeftTreeCheck">
         </el-tree>

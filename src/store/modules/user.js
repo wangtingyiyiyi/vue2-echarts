@@ -1,13 +1,18 @@
 
 import { loginApi, cmsLogin } from '@/api/login.js'
-import { SET_TOKEN } from '../mutation'
+import { SET_TOKEN, SET_USER_NAME } from '../mutation'
 
 const state = {
+  token: '',
+  userName: ''
 }
 
 const mutations = {
   [SET_TOKEN] (state, payload) {
     state.token = payload
+  },
+  [SET_USER_NAME] (state, payload) {
+    state.userName = payload
   }
 }
 
@@ -18,6 +23,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       if (res.code === 200) {
         commit('SET_TOKEN', res.result.token)
+        commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
         resolve()
       } else {
@@ -31,6 +37,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       if (res.code === 200) {
         commit('SET_TOKEN', res.result.token)
+        commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
         resolve()
       } else {

@@ -3,8 +3,9 @@
     <el-header class="header-wapper">
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
-        <Header-Notice class="m-0-12"/>
-        <Header-Avatar class="m-0-12"/>
+        <!-- <Header-Notice class="m-0-12"/> -->
+        <!-- <Header-Avatar class="m-0-12"/> -->
+        <div class="m-0-12">{{userName}}</div>
         <Header-Setting class="m-0-12"/>
       </div>
     </el-header>
@@ -18,13 +19,13 @@
 
 <script>
 import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
-import HeaderAvatar from '@/views/layouts/header/HeaderAvatar.vue'
-import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
+// import HeaderAvatar from '@/views/layouts/header/HeaderAvatar.vue'
+// import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
 // import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   data () {
@@ -33,7 +34,10 @@ export default {
     }
   },
   components: {
-    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, HeaderNotice, HeaderAvatar
+    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent
+  },
+  computed: {
+    ...mapState('user', ['userName'])
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED']),

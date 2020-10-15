@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       form: {
-        username: '123456',
-        password: '654321'
+        username: '',
+        password: ''
       },
       target: target,
       isPsw: true,
@@ -55,7 +55,7 @@ export default {
         } else if (query.code) { // 企业微信扫码用户
           this.handleLogin(query)
         } else {
-          console.info('哈哈哈哈')
+          console.info('query 空参数')
         }
       }
     }
@@ -92,8 +92,12 @@ export default {
           loadingInstance.close()
           if (err.code === 600) {
             this.$message.error('cms用户, 首次请扫码登陆')
+          } else if (err.code === 700) {
+            this.$message.error('用户操作频繁,请稍后再试')
+            this.$route.push('/Login')
           } else {
             this.$message.error('登陆失败')
+            this.$route.push('/Login')
           }
         })
     },
@@ -105,7 +109,7 @@ export default {
         id: 'wx_qrcode',
         appid: 'ww7f4fe84bdcd3e434',
         agentid: '1000022',
-        redirect_uri: encodeURI('https://exp.meritco-group.com:8956/login'),
+        redirect_uri: encodeURI('https://exp.meritco-group.com:9580/login'),
         state: 'STATE',
         href: ''
       })
