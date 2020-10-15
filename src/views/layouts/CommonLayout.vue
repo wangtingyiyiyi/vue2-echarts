@@ -13,7 +13,7 @@
       <Layout-Sider :collapsed="collapsed"/>
       <Layout-Content :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
     </div>
-    <!-- <Layout-Footer /> -->
+    <Layout-Footer />
   </div>
 </template>
 
@@ -24,7 +24,7 @@ import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
-// import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
+import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
 import { mapMutations, mapState } from 'vuex'
 
 export default {
@@ -34,7 +34,7 @@ export default {
     }
   },
   components: {
-    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent
+    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter
   },
   computed: {
     ...mapState('user', ['userName'])

@@ -26,7 +26,6 @@ export default {
     handleCommand (command) {
       if (command === 'Login') {
         this.logOut()
-        return
       }
       if (this.$route.name !== command) {
         this.$router.push({ name: command })

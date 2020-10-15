@@ -17,8 +17,21 @@
         :empty-text="getEmptyText()"
         @node-click="handleNodeClick"
         :default-expand-all="true"
-        :render-content="renderContent"
         :props="defaultProps">
+        <span slot-scope="{node, data}">
+          <span class="custom-tree-node">
+            <el-tag v-if="data.remark === '1' || data.remark === 1" size="mini"  style="margin-right: 5px">一级</el-tag>
+            <el-tag v-else-if="data.remark === '2' || data.remark === 2" type="success" size="mini" style="margin-right: 5px">二级</el-tag>
+            <el-tag v-else-if="data.remark === '3' || data.remark === 3" type="warning" size="mini" style="margin-right: 5px">三级</el-tag>
+            <el-tag v-else type="danger" size="mini"  style="margin-right: 5px">自定义</el-tag>
+            <span>{{node.label}}</span>
+            <!-- <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
+            <span class="tree-select-icon" v-else-if="data.remark === '2' || data.remark === 2" style="color: #5AD8A6;">{{data.remark}}</span>
+            <span class="tree-select-icon" v-else-if="data.remark === '3' || data.remark === 3" style="color: #5D7092;">{{data.remark}}</span>
+            <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span> -->
+            <!-- <span v-html="highlight(likeCondition, data.label)"></span> -->
+          </span>
+        </span>
       </el-tree>
   </el-select>
 </div>
@@ -77,36 +90,9 @@ export default {
         this.options = []
       }
     },
-    // render 函数渲染 tree 节点样式
-    renderContent (h, { node, data, store }) {
-      if (node.data.remark === '1') {
-        return (
-          <span class="custom-tree-node">
-            <span class="tree-select-icon" style="color: #5B8FF9;">{node.data.remark}</span>
-            <span>{node.label}</span>
-          </span>)
-      } else if (node.data.remark === '2') {
-        return (
-          <span class="custom-tree-node">
-            <span class="tree-select-icon" style="color: #5AD8A6;">{node.data.remark}</span>
-            <span>{node.label}</span>
-          </span>)
-      } else if (node.data.remark === '3') {
-        return (
-          <span class="custom-tree-node">
-            <span class="tree-select-icon" style="color: #5D7092;">{node.data.remark}</span>
-            <span>{node.label}</span>
-          </span>)
-      } else {
-        return (
-          <span class="custom-tree-node">
-            <span class="tree-select-icon" style="color: #5B8FF9;">自</span>
-            <span>{node.label}</span>
-          </span>)
-      }
-    },
     setSelectData () {
       this.selectData = this.categoryObj
+      this.$emit('handleSelectTree', this.selectData)
       this.handleSelctRemoteFilter(this.selectData.label)
     }
   },
