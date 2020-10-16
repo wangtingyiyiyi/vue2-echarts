@@ -2,12 +2,12 @@
   <el-dropdown @command="handleCommand">
     <span><i class="el-icon-caret-bottom"></i></span>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item
+      <!-- <el-dropdown-item
         v-for="item in menuData"
         :key="item.path"
         :icon="item.meta.icon"
-        :command="item.name">{{item.name}}</el-dropdown-item>
-      <el-dropdown-item divided icon="el-icon-star-off" command="LogOut">退出登陆</el-dropdown-item>
+        :command="item.name">{{item.name}}</el-dropdown-item> -->
+      <el-dropdown-item icon="el-icon-star-off" command="LogOut">退出登陆</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
