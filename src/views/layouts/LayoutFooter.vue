@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div>@2020 久远谦长技术部出品</div>
+    <div>@Meritco Services 久远谦长 2020</div>
   </div>
 </template>
 
@@ -11,6 +11,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .footer
+  font-family Rights Reserved
   font-weight 500
   color #999999
   line-height 17px
