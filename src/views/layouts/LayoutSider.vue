@@ -52,7 +52,7 @@ export default {
 .width-200
   width 200px !important
 .width-63
-  width 63px !important
+  width 64px !important
 .menu-asider
   position fixed
   height 100%
@@ -63,6 +63,7 @@ export default {
     font-weight 500
     .el-menu-item
       color $color-second
+      padding-left 25px !important
       .el-tooltip
         text-align center
     .is-active

@@ -1,9 +1,11 @@
 <template>
   <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo', 'flex-row']">
-    <!-- <div class="logo">{{collapsed ? '谦' : '久谦中台'}}</div> -->
-    <Svg-Icon :icon-class="collapsed ? 'logo1' : 'logo'" :class="[collapsed ? 'svg-class1' : 'svg-class']"/>
-    <i @click="collapsClick"
-    :class="[collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold', 'm-l-10']" />
+    <Svg-Icon
+      :icon-class="collapsed ? 'logo1' : 'logo'"
+      :class="[collapsed ? 'svg-class1' : 'svg-class']"/>
+    <i
+      @click="collapsClick"
+      :class="[collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold', 'm-l-10']" />
   </div>
 </template>
 
@@ -35,24 +37,24 @@ export default {
 }
 
 .expansion-logo {
-  padding: 0 25px;
+  padding: 0 20px;
   div {
     width: 140px;
   }
 }
 .collapse-logo {
   width: 80px;
-  padding: 0 15px;
+  padding: 0 20px;
   div {
     width: 40px;
   }
 }
 
 .svg-class
-  width 120px
-  height 32px
+  width 109px
+  height 36px
 
 .svg-class1
-  width 34px
-  height 32px
+  width 26px
+  height 26px
 </style>
