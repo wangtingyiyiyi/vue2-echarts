@@ -1,105 +1,107 @@
 <template>
-  <div>
-    <Brand-Setting
-      @brandOnSubmit="handleSettingParam"
-      @handleExportDialog="handleExportDialog"/>
-    <Empty-Line />
 
-    <div class="brand-tab-wapper">
-      <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
-          <el-tab-pane label="品牌概览" name="brand">
-            <div v-show="hasBrandFormParam">
-              <Title class="m-b-12" title="总销售趋势"/>
+  <div >
+        <Brand-Setting
+          @brandOnSubmit="handleSettingParam"
+          @handleExportDialog="handleExportDialog"/>
+        <Empty-Line />
 
-              <Echarts-Buttons
-                :activeVal="viewItemVal"
-                style="width: 100%"
-                class="m-b-5"
-                @handleEchartsClick="handleEchartsClick"/>
+        <div class="brand-tab-wapper">
+          <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
+              <el-tab-pane label="品牌概览" name="brand">
+                <div v-show="hasBrandFormParam">
+                  <Title class="m-b-12" title="总销售趋势"/>
 
-              <div ref="brandEchart">
-                 <Chart-For-Brand
-                  style="width: 100%; height: 300px"
-                  :brandData="brandChart"
-                  :viewItemVal="viewItemVal"/>
-              </div>
+                  <Echarts-Buttons
+                    :activeVal="viewItemVal"
+                    style="width: 100%"
+                    class="m-b-5"
+                    @handleEchartsClick="handleEchartsClick"/>
 
-              <div class="table-title-wapper m-b-12">
-                <Title title="按品牌展开"/>
-                <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="selectdMonth"
-                  @handleSelectdMonth="handleMonth"/>
-              </div>
+                  <div ref="brandEchart">
+                     <Chart-For-Brand
+                      style="width: 100%; height: 300px"
+                      :brandData="brandChart"
+                      :viewItemVal="viewItemVal"/>
+                  </div>
 
-              <Brand-Table-Brands
-                :brands="brandList"
-                :activeBrand="activeBrand"
-                class="m-b-10"
-                @changeActiveBrand="changeActiveBrand"/>
+                  <div class="table-title-wapper m-b-12">
+                    <Title title="按品牌展开"/>
+                    <Month-Options
+                      :monthOption="monthOption"
+                      :selectdMonth="selectdMonth"
+                      @handleSelectdMonth="handleMonth"/>
+                  </div>
 
-              <Table-For-Brand
-                ref="table"
-                :sortItemVal="sortItemVal"
-                :tableData="brandTableData"
-                :isLoading="isLoadingOfBrandTable"
-                :paramOfBrandTable="paramOfBrandTable"
-                @changeSortItemVal="changeSortItemVal"/>
-            </div>
-            <div v-show="!hasBrandFormParam">
-              <div class="empty-info">请搜索品牌</div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="SPU" name="spu">
-            <div v-show="hasBrandFormParam">
-              <div class="flex-between m-b-10">
-                <Brand-Table-Brands
-                  :brands="brandList"
-                  :activeBrand="activeBrand"
-                  @changeActiveBrand="changeActiveBrand"/>
-                  <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="tableMonth"
-                  @handleSelectdMonth="handleTableMonth"/>
-              </div>
-              <Table-For-Spu
-                :isLoading="isLoadingOfSpuTable"
-                :sortItemVal="sortItemVal"
-                @changeSortItemVal="changeSortItemVal"
-                :tableData="tableSpu"/>
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                class="pagination-wapper"
-                @current-change="changeSpuPage"
-                :current-page="spuPage"
-                :page-size="pageSize"
-                :total="spuTotal">
-              </el-pagination>
-            </div>
-            <div v-show="!hasBrandFormParam">
-              <div class="empty-info">请搜索品牌</div>
-            </div>
-          </el-tab-pane>
-      </el-tabs>
+                  <Brand-Table-Brands
+                    :brands="brandList"
+                    :activeBrand="activeBrand"
+                    class="m-b-10"
+                    @changeActiveBrand="changeActiveBrand"/>
 
-      <Range-Buttons
-        :activeVal="rangeItemVal"
-        @handleRangeClick="handleRangeClick"
-        style='position: absolute; right:380px; top:16px;'/>
-      <Group-Buttons
-        :activeVal="groupItemVal"
-        @handleGroupClick="handleGroupClick"
-        style='position: absolute; right:26px; top:16px;'/>
-    </div>
+                  <Table-For-Brand
+                    ref="table"
+                    :sortItemVal="sortItemVal"
+                    :tableData="brandTableData"
+                    :isLoading="isLoadingOfBrandTable"
+                    :paramOfBrandTable="paramOfBrandTable"
+                    @changeSortItemVal="changeSortItemVal"/>
+                </div>
+                <div v-show="!hasBrandFormParam">
+                  <div class="empty-info">请搜索品牌</div>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="SPU" name="spu">
+                <div v-show="hasBrandFormParam">
+                  <div class="flex-between m-b-10">
+                    <Brand-Table-Brands
+                      :brands="brandList"
+                      :activeBrand="activeBrand"
+                      @changeActiveBrand="changeActiveBrand"/>
+                      <Month-Options
+                      :monthOption="monthOption"
+                      :selectdMonth="tableMonth"
+                      @handleSelectdMonth="handleTableMonth"/>
+                  </div>
+                  <Table-For-Spu
+                    :isLoading="isLoadingOfSpuTable"
+                    :sortItemVal="sortItemVal"
+                    @changeSortItemVal="changeSortItemVal"
+                    :tableData="tableSpu"/>
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    class="pagination-wapper"
+                    @current-change="changeSpuPage"
+                    :current-page="spuPage"
+                    :page-size="pageSize"
+                    :total="spuTotal">
+                  </el-pagination>
+                </div>
+                <div v-show="!hasBrandFormParam">
+                  <div class="empty-info">请搜索品牌</div>
+                </div>
+              </el-tab-pane>
+          </el-tabs>
 
-    <Dialog-For-Brand-Export
-      :dialogVisible="exportDialogVisible"
-      v-if="exportDialogVisible"
-      @handleExportExcel="handleExportExcel"
-      @closeDialog="exportDialogVisible = $event"/>
+          <Range-Buttons
+            :activeVal="rangeItemVal"
+            @handleRangeClick="handleRangeClick"
+            style='position: absolute; right:380px; top:16px;'/>
+          <Group-Buttons
+            :activeVal="groupItemVal"
+            @handleGroupClick="handleGroupClick"
+            style='position: absolute; right:26px; top:16px;'/>
+        </div>
+
+        <Dialog-For-Brand-Export
+          :dialogVisible="exportDialogVisible"
+          v-if="exportDialogVisible"
+          @handleExportExcel="handleExportExcel"
+          @closeDialog="exportDialogVisible = $event"/>
 
   </div>
+
 </template>
 
 <script>
@@ -116,6 +118,7 @@ import {
   getTableForBrandSpu
 } from '@/api/brand'
 export default {
+
   mixins: [componentsMixin],
   data () {
     return {

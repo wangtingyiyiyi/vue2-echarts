@@ -21,7 +21,7 @@
             :label="item.brand"
           ></el-option>
         </el-select>
-        <Text-Button text="品牌提数" v-if="type === '1'"  @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
+        <Text-Button text="品牌提数" v-permission  @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
       </el-form-item>
       <el-form-item label="行业筛选" prop="cid">
         <el-cascader
@@ -47,12 +47,14 @@ import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
 import TextButton from '@/components/TextButton.vue'
+import permission from '@/utils/directives/permission.js' // 权限判断指令
 
 const DEFAULTCATEGORY = [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }]
 
 export default {
   mixins: [mixin],
   components: { TextButton },
+  directives: { permission },
   data () {
     return {
       brandForm: { brandList: [], catetegoryId: '0' },

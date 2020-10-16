@@ -59,6 +59,7 @@ export default {
   .icon
     font-size 22px
     margin-right 16px
+    color #ffbf00
   .warning-color
     color #FFBF00
   .title

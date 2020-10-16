@@ -86,7 +86,12 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 4px">当前共有 {{tableTotal | format}} 条数据</div>
+          <div style="margin-top: 4px">
+            <span>当前共有 {{tableTotal | format}} 条数据</span>
+            <span v-if="tableTotal > max">,
+              <span style="color: #F56C6C">已超出Excel的最大行数({{max | format}})</span>
+            </span>
+          </div>
         </div>
         <div v-else>{{emptyMes}}</div>
       </div>
@@ -146,7 +151,8 @@ export default {
       excelHeader: [],
       tableData: [],
       tableTotal: 0,
-      emptyMes: '请选择配置项'
+      emptyMes: '请选择配置项',
+      max: 1048576
     }
   },
   components: { SelectTree },

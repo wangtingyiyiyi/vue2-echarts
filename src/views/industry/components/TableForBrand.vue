@@ -7,12 +7,12 @@
     ref="table"
     stripe
     style="width: 100%">
-    <el-table-column prop="brand" label="品牌">
+    <el-table-column prop="brand" label="品牌" width="240px">
       <template slot-scope="{row}">
         <Text-Button :text="row.brand" @handleClick="handleBrand(row)" style="display: inline" />
       </template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="60px">
       <template #header>
         <div class="sort-button" @click="handleSort('0')">销量
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
@@ -33,7 +33,7 @@
         <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right"  width="110">
+    <el-table-column align="right"  width="120">
       <template #header>
         <div class="sort-button"  @click="handleSort('2')">销售环比
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>

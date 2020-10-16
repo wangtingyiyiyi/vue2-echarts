@@ -58,8 +58,8 @@
       </el-form-item>
       <el-form-item>
         <div style="display: flex">
-          <Text-Button text="高级筛选" @handleClick="handleFilter" v-if="type === '1'" class="p-0-15 font-size-14 m-l-5" />
-          <Text-Button text="行业提数" @handleClick="handleExportDialog" v-if="type === '1'" class="p-0-15 font-size-14" />
+          <Text-Button text="高级筛选" @handleClick="handleFilter" v-permission class="p-0-15 font-size-14 m-l-5" />
+          <Text-Button text="行业提数" @handleClick="handleExportDialog" v-permission class="p-0-15 font-size-14" />
         </div>
       </el-form-item>
     </el-form>
@@ -70,9 +70,12 @@
 import TextButton from '@/components/TextButton.vue'
 import { getIndustryCategory, getCategoryTree } from '@/api/industry'
 import { mapMutations, mapState } from 'vuex'
+import permission from '@/utils/directives/permission.js' // 权限判断指令
+
 export default {
   name: 'IndustrySetting',
   components: { TextButton },
+  directives: { permission },
   data () {
     return {
       selectData: {

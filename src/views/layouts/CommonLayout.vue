@@ -11,7 +11,7 @@
     </el-header>
     <div class="main-wapper">
       <Layout-Sider :collapsed="collapsed"/>
-      <Layout-Content :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
+      <Layout-Content :collapsed="collapsed" :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
     </div>
     <Layout-Footer />
   </div>
@@ -72,13 +72,8 @@ export default {
   min-height calc(100vh - 157px)
 
 .content-wapper
-  padding 20px 0 0 20px
+  padding 20px 0 0 0px
   background-color $base-white
-
-.m-l-200
-  margin-left 200px
-.m-l-63
-  margin-left 63px
 
 .scroll-container
   height 100vh

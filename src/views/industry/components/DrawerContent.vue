@@ -9,7 +9,7 @@
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div class="item-title" @click="showMore(index)">
           <div class="left">
-            <span @click.stop="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" /></span>
+            <span @click.stop="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" style="color: #5b8ff9" /></span>
             <Text-Button
               :text="item.category"
               @handleClick="handleSearch(item)"

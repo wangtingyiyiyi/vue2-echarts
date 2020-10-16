@@ -1,111 +1,114 @@
 <template>
-  <div>
-    <Industry-Setting
-      @handleFilter="drawerShow = $event"
-      @brandOnSubmit="brandOnSubmit"
-      @handleExportDialog="handleExportDialog"/>
-    <Empty-Line />
-    <div class="industry-tab-wapper">
-        <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
+    <div  >
 
-            <el-tab-pane label="行业概览" name="industry">
-              <div v-show="hasCategory">
-                <Title title="总销售趋势"/>
-                <div ref="refIndustryEchart">
-                  <Chart-For-Industry
-                    style="width: 100%; height: 280px"
-                    :industryEchart="industryEchart"/>
-                </div>
-                <div class="table-title-wapper">
-                  <Title title="按子品类展开"/>
-                  <Month-Options
-                    :monthOption="monthOption"
-                    :selectdMonth="selectdMonth"
-                    @handleSelectdMonth="handleSelectdMonth"/>
-                </div>
-                <Table-For-Industry
-                  :tableData="industryTableData"
-                  :isLoading="isLoadingIndustryTable"
-                  :activedSortKey="sortItemVal"
-                  @handleCate="brandOnSubmit"
-                  @handleIndustrySort="handleIndustrySort"/>
-              </div>
+      <Industry-Setting
+        @handleFilter="drawerShow = $event"
+        @brandOnSubmit="brandOnSubmit"
+        @handleExportDialog="handleExportDialog"/>
+      <Empty-Line />
 
-              <div v-show="!hasCategory">
-                <div class="empty-info">请选择行业</div>
-              </div>
-            </el-tab-pane>
+      <div class="industry-tab-wapper">
+          <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
 
-            <el-tab-pane label="品牌排行" name="brand">
-              <div v-show="hasCategory">
-                <Title title="总销售趋势"/>
-                <Echarts-Buttons
-                  :activeVal="viewItemVal"
-                  style="width: 100%"
-                  class="m-b-5"
-                  @handleEchartsClick="handleEchartsClick"/>
-                <div ref="refBrandChart">
-                  <Chart-For-Brand
-                  :viewItemVal="viewItemVal"
-                  style="width: 100%; height: 300px"
-                  :brandEchart="brandEchart"/>
+              <el-tab-pane label="行业概览" name="industry">
+                <div v-show="hasCategory">
+                  <Title title="总销售趋势"/>
+                  <div ref="refIndustryEchart">
+                    <Chart-For-Industry
+                      style="width: 100%; height: 280px"
+                      :industryEchart="industryEchart"/>
+                  </div>
+                  <div class="table-title-wapper">
+                    <Title title="按子品类展开"/>
+                    <Month-Options
+                      :monthOption="monthOption"
+                      :selectdMonth="selectdMonth"
+                      @handleSelectdMonth="handleSelectdMonth"/>
+                  </div>
+                  <Table-For-Industry
+                    :tableData="industryTableData"
+                    :isLoading="isLoadingIndustryTable"
+                    :activedSortKey="sortItemVal"
+                    @handleCate="brandOnSubmit"
+                    @handleIndustrySort="handleIndustrySort"/>
                 </div>
-                <div class="table-title-wapper">
-                  <Title title="按品牌展开"/>
-                  <Month-Options
-                    :monthOption="monthOption"
-                    :selectdMonth="selectdMonth"
-                    @handleSelectdMonth="handleSelectdMonth"/>
-                </div>
-                <Table-For-Brand
-                  :tableData="brandTableData"
-                  :isLoading="isLoadingBrandTable"
-                  :activedSortKey="sortItemVal"
-                  @handleBrandSort="handleBrandSort"/>
-                <el-pagination
-                  background
-                  layout="prev, pager, next"
-                  class="pagination-wapper"
-                  @current-change="changeBrandPage"
-                  :current-page="page"
-                  :page-size="pageSize"
-                  :total="brandCount">
-                </el-pagination>
-              </div>
 
-              <div v-show="!hasCategory">
-                <div class="empty-info">请选择行业</div>
-              </div>
-            </el-tab-pane>
-        </el-tabs>
-        <!-- tab buttons -->
-        <Range-Buttons
-          :activeVal="rangeItemVal"
-          @handleRangeClick="handleRangeClick"
-          style='position: absolute; right:380px; top:16px;'/>
-        <Group-Buttons
-          :activeVal="groupItemVal"
-          @handleGroupClick="handleGroupClick"
-          style='position: absolute; right:26px; top:16px;'/>
+                <div v-show="!hasCategory">
+                  <div class="empty-info">请选择行业</div>
+                </div>
+              </el-tab-pane>
+
+              <el-tab-pane label="品牌排行" name="brand">
+                <div v-show="hasCategory">
+                  <Title title="总销售趋势"/>
+                  <Echarts-Buttons
+                    :activeVal="viewItemVal"
+                    style="width: 100%"
+                    class="m-b-5"
+                    @handleEchartsClick="handleEchartsClick"/>
+                  <div ref="refBrandChart">
+                    <Chart-For-Brand
+                    :viewItemVal="viewItemVal"
+                    style="width: 100%; height: 300px"
+                    :brandEchart="brandEchart"/>
+                  </div>
+                  <div class="table-title-wapper">
+                    <Title title="按品牌展开"/>
+                    <Month-Options
+                      :monthOption="monthOption"
+                      :selectdMonth="selectdMonth"
+                      @handleSelectdMonth="handleSelectdMonth"/>
+                  </div>
+                  <Table-For-Brand
+                    :tableData="brandTableData"
+                    :isLoading="isLoadingBrandTable"
+                    :activedSortKey="sortItemVal"
+                    @handleBrandSort="handleBrandSort"/>
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    class="pagination-wapper"
+                    @current-change="changeBrandPage"
+                    :current-page="page"
+                    :page-size="pageSize"
+                    :total="brandCount">
+                  </el-pagination>
+                </div>
+
+                <div v-show="!hasCategory">
+                  <div class="empty-info">请选择行业</div>
+                </div>
+              </el-tab-pane>
+          </el-tabs>
+          <!-- tab buttons -->
+          <Range-Buttons
+            :activeVal="rangeItemVal"
+            @handleRangeClick="handleRangeClick"
+            style='position: absolute; right:380px; top:16px;'/>
+          <Group-Buttons
+            :activeVal="groupItemVal"
+            @handleGroupClick="handleGroupClick"
+            style='position: absolute; right:26px; top:16px;'/>
+      </div>
+      <!-- 抽屉 -->
+      <Drawer v-permission :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
+          <Drawer-Button
+            slot="button"
+            :drawerShow="drawerShow"
+            @handleDrawerBtn="handleDrawerBtn"/>
+          <Drawer-Content
+            :drawerShow="drawerShow"
+            @handleSearch="handleSearch"/>
+      </Drawer>
+      <Download-Button v-permission :loadingProgress="loadingProgress" :iconName="iconName"/>
+      <!-- 行业提数 -->
+      <Dialog-For-Industry-Export
+        :dialogVisible="dialogVisible"
+        v-if="dialogVisible"
+        @handleExportExcel="handleExportExcel"
+        @closeDialog="dialogVisible = $event"/>
     </div>
-    <!-- 抽屉 -->
-    <Drawer v-if="type === '1'" :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
-        <Drawer-Button
-          slot="button"
-          :drawerShow="drawerShow"
-          @handleDrawerBtn="handleDrawerBtn"/>
-        <Drawer-Content
-          :drawerShow="drawerShow"
-          @handleSearch="handleSearch"/>
-    </Drawer>
-    <Download-Button v-if="type === '1'" :loadingProgress="loadingProgress" :iconName="iconName"/>
-    <!-- 行业提数 -->
-    <Dialog-For-Industry-Export
-      :dialogVisible="dialogVisible"
-      v-if="dialogVisible"
-      @handleExportExcel="handleExportExcel"
-      @closeDialog="dialogVisible = $event"/>
-  </div>
+
 </template>
 
 <script>
@@ -121,9 +124,12 @@ import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
 import { blolToFile } from '@/utils/common.js'
 import { DEFAULT_INDUSTRY } from '@/utils/const.js'
+import permission from '@/utils/directives/permission.js' // 权限判断指令
 
 export default {
   mixins: [componentsMixin],
+  directives: { permission },
+
   data () {
     return {
       activeName: 'industry',
