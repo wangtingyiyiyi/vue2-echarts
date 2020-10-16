@@ -50,7 +50,7 @@ export default {
           },
           grid: {
             top: '15',
-            left: '30',
+            left: '50',
             height: '25',
             width: '100'
           },

@@ -57,7 +57,7 @@ export default {
   background-color #ffffff
   top 0
   z-index 1500
-  padding 0 calc((100vw - 1440px) / 2)
+  padding 0 calc((100vw - 1600px) / 2)
 
 .flex-row
   display flex
@@ -65,7 +65,7 @@ export default {
 
 .main-wapper
   margin-top 60px
-  max-width 1440px
+  max-width 1600px
   min-width 1200px
   margin 60px auto 0
   background-color $base-white

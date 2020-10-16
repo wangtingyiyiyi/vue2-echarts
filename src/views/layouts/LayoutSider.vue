@@ -7,7 +7,7 @@
       @select="menuSelect">
       <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text">
         <Svg-Icon :icon-class="item.meta.svgIcon"/>
-        <span slot="title" style="margin-left: 7px">
+        <span slot="title" style="margin-left: 10px; font-weight: 600">
           <span>{{item.name}}</span>
           <span class="border"></span>
         </span>
