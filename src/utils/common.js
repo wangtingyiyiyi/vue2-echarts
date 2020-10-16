@@ -63,14 +63,14 @@ export function blolToFile (res, filename) {
 }
 
 // 按钮权限控制
-export function permission () {
-  const type = sessionStorage.getItem('type')
-  switch (type) {
-    // 扫码用户
-    case 1:
-    case '1':
-      return true
-    default:
-      return false
-  }
-}
+// export function permission () {
+//   const type = sessionStorage.getItem('type')
+//   switch (type) {
+//     // 扫码用户
+//     case 1:
+//     case '1':
+//       return true
+//     default:
+//       return false
+//   }
+// }
