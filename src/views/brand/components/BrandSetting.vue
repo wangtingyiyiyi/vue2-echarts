@@ -21,7 +21,7 @@
             :label="item.brand"
           ></el-option>
         </el-select>
-        <Text-Button text="品牌提数" v-if="$permission"  @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
+        <Text-Button text="品牌提数" v-if="type === '1'"  @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
       </el-form-item>
       <el-form-item label="行业筛选" prop="cid">
         <el-cascader
@@ -71,7 +71,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('brand', ['settingParam'])
+    ...mapState('brand', ['settingParam']),
+    ...mapState('user', ['type'])
   },
   watch: {
     settingParam: {

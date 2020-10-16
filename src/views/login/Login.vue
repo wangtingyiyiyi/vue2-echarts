@@ -58,7 +58,7 @@ export default {
         const query = route.query
         if (query.userId) { // cms导入用户
           this.userFrom = 'query'
-          this.handleQueryLogin({ userId: query.userId })
+          this.handleCmsLogin({ userId: query.userId })
         } else if (query.code) { // 企业微信扫码用户
           this.userFrom = 'query'
           this.handleQueryLogin(query)
@@ -78,6 +78,7 @@ export default {
         }
       })
     },
+    // 账户密码
     handleLogin (param) {
       const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.login(param)
@@ -91,8 +92,18 @@ export default {
           this.$router.push('Login')
         })
     },
+    // 二维码回调
     handleQueryLogin (param) {
       this.login(param)
+        .then(() => { this.$router.push({ name: this.target.name }) })
+        .catch((err) => {
+          this.$message.error(err.message)
+          this.$router.push('Login')
+        })
+    },
+    // cms导入
+    handleCmsLogin (param) {
+      this.cmsLogin(param)
         .then(() => { this.$router.push({ name: this.target.name }) })
         .catch((err) => {
           this.$message.error(err.message)
@@ -111,6 +122,14 @@ export default {
         state: 'STATE',
         href: ''
       })
+    },
+    initForm () {
+      if (process.env.NODE_ENV === 'development') {
+        this.form = {
+          username: '翟迅_测试',
+          password: '123456'
+        }
+      }
     }
   },
   beforeCreate () {
@@ -118,7 +137,7 @@ export default {
   },
   mounted () {
     this.wechatLogin()
-    console.info(this)
+    this.initForm()
   }
 }
 </script>

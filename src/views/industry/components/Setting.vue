@@ -58,8 +58,8 @@
       </el-form-item>
       <el-form-item>
         <div style="display: flex">
-          <Text-Button text="高级筛选" @handleClick="handleFilter" v-if="$permission" class="p-0-15 font-size-14 m-l-5" />
-          <Text-Button text="行业提数" @handleClick="handleExportDialog" v-if="$permission" class="p-0-15 font-size-14" />
+          <Text-Button text="高级筛选" @handleClick="handleFilter" v-if="type === '1'" class="p-0-15 font-size-14 m-l-5" />
+          <Text-Button text="行业提数" @handleClick="handleExportDialog" v-if="type === '1'" class="p-0-15 font-size-14" />
         </div>
       </el-form-item>
     </el-form>
@@ -92,7 +92,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('industry', ['categoryObj'])
+    ...mapState('industry', ['categoryObj']),
+    ...mapState('user', ['type'])
   },
   methods: {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),

@@ -68,6 +68,7 @@ export function permission () {
   switch (type) {
     // 扫码用户
     case 1:
+    case '1':
       return true
     default:
       return false
