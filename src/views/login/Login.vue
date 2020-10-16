@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       form: {
-        username: 'zx',
-        password: '1'
+        username: '',
+        password: ''
       },
       target: target,
       isPsw: true,

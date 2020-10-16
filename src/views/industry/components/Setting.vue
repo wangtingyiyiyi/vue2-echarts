@@ -23,14 +23,10 @@
               :default-expand-all="true">
               <span slot-scope="{node, data}">
                 <span class="custom-tree-node">
-                  <el-tag v-if="data.remark === '1' || data.remark === 1" size="mini"  style="margin-right: 5px">一级</el-tag>
-                  <el-tag v-else-if="data.remark === '2' || data.remark === 2" type="success" size="mini" style="margin-right: 5px">二级</el-tag>
-                  <el-tag v-else-if="data.remark === '3' || data.remark === 3" type="warning" size="mini" style="margin-right: 5px">三级</el-tag>
-                  <el-tag v-else type="danger" size="mini"  style="margin-right: 5px">自定义</el-tag>
-                  <!-- <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
+                  <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
                   <span class="tree-select-icon" v-else-if="data.remark === '2' || data.remark === 2" style="color: #5AD8A6;">{{data.remark}}</span>
                   <span class="tree-select-icon" v-else-if="data.remark === '3' || data.remark === 3" style="color: #5D7092;">{{data.remark}}</span>
-                  <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span> -->
+                  <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span>
                   <span v-html="highlight(likeCondition, data.label)"></span>
                 </span>
               </span>
@@ -50,14 +46,10 @@
               :load="loadNode">
               <span slot-scope="{node, data}">
                 <span class="custom-tree-node">
-                  <!-- <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
+                  <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
                   <span class="tree-select-icon" v-else-if="data.remark === '2' || data.remark === 2" style="color: #5AD8A6;">{{data.remark}}</span>
                   <span class="tree-select-icon" v-else-if="data.remark === '3' || data.remark === 3" style="color: #5D7092;">{{data.remark}}</span>
-                  <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span> -->
-                  <el-tag v-if="data.remark === '1' || data.remark === 1" size="mini" style="margin-right: 5px">一级</el-tag>
-                  <el-tag v-else-if="data.remark === '2' || data.remark === 2" type="success" size="mini" style="margin-right: 5px">二级</el-tag>
-                  <el-tag v-else-if="data.remark === '3' || data.remark === 3" type="warning" size="mini" style="margin-right: 5px">三级</el-tag>
-                  <el-tag v-else type="danger" size="mini" style="margin-right: 5px">自定义</el-tag>
+                  <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span>
                   <span>{{data.label}}</span>
                 </span>
               </span>
