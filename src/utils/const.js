@@ -203,24 +203,4 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
   }
 ]
 
-export const MOCK_DATA = [
-  {
-    year: '2012',
-    halfyear: '2012H1',
-    q: 'Q1',
-    month: '201201',
-    outCat1: '彩妆',
-    outCat2: '面部护肤',
-    outCat3: '面霜',
-    brand: '完美日记',
-    spuId: 12132312,
-    spuName: '完美日记巴拉巴拉产品',
-    shop: '完美日记旗舰店',
-    shopId: 2712,
-    sales: 12233123846,
-    GMV: 8712361221,
-    gmv: 1221875321,
-    spuCount: 12371,
-    asp: 242.3
-  }
-]
+export const APP_NAME = '久谦中台数据库'

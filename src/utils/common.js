@@ -61,3 +61,15 @@ export function blolToFile (res, filename) {
   document.body.removeChild(downloadElement) // 下载完成移除元素
   window.URL.revokeObjectURL(href)
 }
+
+// 按钮权限控制
+export function permission () {
+  const type = sessionStorage.getItem('type')
+  switch (type) {
+    // 扫码用户
+    case 1:
+      return true
+    default:
+      return false
+  }
+}

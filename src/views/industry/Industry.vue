@@ -89,7 +89,7 @@
           style='position: absolute; right:26px; top:16px;'/>
     </div>
     <!-- 抽屉 -->
-    <Drawer :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
+    <Drawer v-if="$permission" :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
         <Drawer-Button
           slot="button"
           :drawerShow="drawerShow"
@@ -98,7 +98,7 @@
           :drawerShow="drawerShow"
           @handleSearch="handleSearch"/>
     </Drawer>
-    <Download-Button :loadingProgress="loadingProgress" :iconName="iconName"/>
+    <Download-Button v-if="$permission" :loadingProgress="loadingProgress" :iconName="iconName"/>
     <!-- 行业提数 -->
     <Dialog-For-Industry-Export
       :dialogVisible="dialogVisible"

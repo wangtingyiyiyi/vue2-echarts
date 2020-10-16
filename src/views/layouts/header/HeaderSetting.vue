@@ -7,7 +7,7 @@
         :key="item.path"
         :icon="item.meta.icon"
         :command="item.name">{{item.name}}</el-dropdown-item>
-      <el-dropdown-item divided icon="el-icon-star-off" command="Login">退出登陆</el-dropdown-item>
+      <el-dropdown-item divided icon="el-icon-star-off" command="LogOut">退出登陆</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -24,8 +24,9 @@ export default {
   methods: {
     ...mapActions('user', ['logOut']),
     handleCommand (command) {
-      if (command === 'Login') {
-        this.logOut()
+      if (command === 'LogOut') {
+        this.logOut().then(() => { this.$router.push('Login') })
+        return
       }
       if (this.$route.name !== command) {
         this.$router.push({ name: command })

@@ -26,6 +26,7 @@ const actions = {
         commit('SET_USER_NAME', res.result.username)
         sessionStorage.setItem('token', res.result.token)
         sessionStorage.setItem('userName', res.result.username)
+        sessionStorage.setItem('type', res.result.level)
         resolve()
       } else {
         reject(res)

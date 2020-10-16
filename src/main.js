@@ -13,6 +13,8 @@ import './theme/index.styl'
 import './icons' // svg icon
 import Moment from 'moment'
 
+import { permission } from '@/utils/common.js' // 全局注册permission方法
+
 // 全局注册filter
 import filters from '@/utils/filter'
 Object.keys(filters).forEach(key => {
@@ -23,6 +25,7 @@ Vue.prototype._ = _
 Vue.use(ElementUI)
 Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
+Vue.prototype.$permission = permission()
 
 new Vue({
   router,
