@@ -204,3 +204,16 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
 ]
 
 export const APP_NAME = '久谦中台数据库'
+
+// 默认的行业
+export const DEFAULT_INDUSTRY = {
+  remark: '1',
+  id: '7667',
+  label: '彩妆/美护工具'
+}
+
+// 默认品牌
+export const DEFINE_BRAND = {
+  id: '0',
+  brandList: [{ brand: '花西子', brandId: '82755', brandSql: '花西子' }]
+}

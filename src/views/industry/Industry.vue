@@ -120,6 +120,8 @@ import {
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
 import { blolToFile } from '@/utils/common.js'
+import { DEFAULT_INDUSTRY } from '@/utils/const.js'
+
 export default {
   mixins: [componentsMixin],
   data () {
@@ -150,7 +152,8 @@ export default {
       defineVisible: false,
       loadingProgress: 0,
       iconName: 'el-icon-download',
-      meritcoTree: []
+      meritcoTree: [],
+      defaultIndustry: DEFAULT_INDUSTRY
     }
   },
   computed: {
@@ -372,19 +375,15 @@ export default {
       if (Object.keys(query).length !== 0) {
         this.SET_INDUSTRY_CATEGORY(query)
         this.brandOnSubmit()
+      } else {
+        this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
+        this.brandOnSubmit()
       }
     }
   },
   mounted () {
-    const param = {
-      remark: '1',
-      id: '7667',
-      label: '彩妆/美护工具'
-    }
-    this.SET_INDUSTRY_CATEGORY(param)
     this.getMonthOption().then(() => {
       this.handleRoute()
-      this.brandOnSubmit(param)
     })
   },
   beforeDestroy () {

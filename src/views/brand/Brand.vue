@@ -106,6 +106,7 @@
 import { mapMutations, mapState } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
+import { DEFINE_BRAND } from '@/utils/const.js'
 import {
   getMonthOption,
   getTableForBrandShop,
@@ -139,7 +140,8 @@ export default {
       spuPage: 1,
       spuTotal: 0,
       pageSize: 10,
-      exportDialogVisible: false
+      exportDialogVisible: false,
+      defaultBrand: DEFINE_BRAND
     }
   },
   computed: {
@@ -368,10 +370,7 @@ export default {
           brandList: JSON.parse(query.brandList)
         })
       } else {
-        this.SET_BRAND_SETTING({
-          id: '0',
-          brandList: [{ brand: '花西子', brandId: '82755', brandSql: '花西子' }]
-        })
+        this.SET_BRAND_SETTING(this.defaultBrand)
       }
     }
   },
