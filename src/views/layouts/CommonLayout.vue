@@ -49,6 +49,7 @@ export default {
 
 <style lang="stylus" scoped>
 .header-wapper
+  box-shadow 0 2px 8px #f0f1f2;
   width 100vw
   display flex
   align-items center

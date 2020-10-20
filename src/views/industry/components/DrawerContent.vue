@@ -180,6 +180,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .el-dialog .el-dialog__header
+    border-bottom 1px solid #ddd
+
   .drawer-wapper
     position relative
     z-index 1
@@ -192,7 +195,7 @@ export default {
     overflow hidden
 
   .drawer-header
-    border-bottom 2px solid $color-border
+    border-bottom 1px solid $color-border
     padding 20px 20px 10px
 
   .drawer-body

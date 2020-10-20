@@ -135,12 +135,28 @@ export default {
       }
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
-        this.categoryOption = res.result
+        // this.categoryOption = res.result
+        this.categoryOption = this.getRecursionData(res.result)
         this.SET_BRAND_CATEGORY_OPTION(this.categoryOption)
       } else {
         this.$message.error('品牌分类请求失败')
       }
     },
+    // 递归方法
+    getRecursionData (data) {
+      // 循环遍历json数据
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].childList.length < 1) {
+          // children若为空数组，则将children设为undefined
+          data[i].childList = undefined
+        } else {
+          // children若不为空数组，则继续 递归调用 本方法
+          this.getRecursionData(data[i].childList)
+        }
+      }
+      return data
+    },
+
     getNode (node, data) {
       if (node.level === 1) {
         return data.outCat1

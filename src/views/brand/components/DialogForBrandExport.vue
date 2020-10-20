@@ -9,7 +9,7 @@
     width="1200px">
     <div slot="title">品牌提数</div>
     <div class="flex-wapper">
-      <div style="width: 30%">
+      <div style="width: 40%">
         <Title title="提数配置"/>
         <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
           <el-form-item label="搜索品牌" prop="brandId">
@@ -66,7 +66,7 @@
                 :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
             </el-button-group>
           </el-form-item>
-          <el-form-item label="品类展开">
+          <el-form-item label="品类展开" style="height: 28px;">
             <el-checkbox-group v-model="cateFlat" @change="changeCateFlat">
               <el-checkbox
                 v-for="item in CATEGORY_LEVEL"
@@ -75,7 +75,7 @@
                 :label="item">{{item.label}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="品类聚合">
+          <el-form-item label="品类聚合" style="height: 28px;">
             <el-checkbox-group v-model="agg" @change="changeAgg">
               <el-checkbox
                 v-for="item in CATEGORT_GROUP"
@@ -83,7 +83,7 @@
                 :label="item">{{item.label}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="数据指标">
+          <el-form-item label="数据指标" style="height: 28px;">
             <el-checkbox-group v-model="indicator" @change="changeIndicator">
               <el-checkbox
                 v-for="item in DATA_INDEX"
@@ -93,8 +93,8 @@
           </el-form-item>
         </el-form>
       </div>
-      <div style="width: 10%"></div>
-      <div style="width: 60%">
+      <div style="width: 5%"></div>
+      <div style="width: 55%">
         <Title title="Excel预览"/>
         <div v-if="tableData.length !== 0">
           <el-table
@@ -332,6 +332,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+
+.el-checkbox
+  margin-right 10px
+  min-width: 80px
+
 .flex-wapper
   display flex
   width 100%
