@@ -135,7 +135,6 @@ export default {
       }
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
-        // this.categoryOption = res.result
         this.categoryOption = this.getRecursionData(res.result)
         this.SET_BRAND_CATEGORY_OPTION(this.categoryOption)
       } else {
