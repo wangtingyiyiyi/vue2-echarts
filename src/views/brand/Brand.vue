@@ -234,7 +234,9 @@ export default {
       this.selectdMonth = val
     },
     handleMonth (val) {
+      console.log('切换month的值', val)
       this.tableMonth = val
+      this.selectdMonth = val
       this.getTableForBrand()
     },
     // 品牌提数弹出框

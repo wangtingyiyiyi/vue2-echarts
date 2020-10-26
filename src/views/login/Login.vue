@@ -11,9 +11,9 @@
           <el-input v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" show-password placeholder="请输入登陆密码" @keydown.enter.native="onSubmit"></el-input>
+          <el-input v-model="form.password" show-password placeholder="请输入登录密码" @keydown.enter.native="onSubmit"></el-input>
         </el-form-item>
-        <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登陆</el-button>
+        <el-button type="primary" size="medium" class="login-btn" @click="onSubmit">登录</el-button>
         </el-form>
         <div v-show="!isPsw" class="wxCode">
           <div id="wx_qrcode"></div>

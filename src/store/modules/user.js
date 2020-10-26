@@ -21,7 +21,7 @@ const mutations = {
 }
 
 const actions = {
-  // 账号密码登陆
+  // 账号密码登录
   async login ({ commit }, userInfo) {
     const res = await loginApi(userInfo)
     return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ const actions = {
       }
     })
   },
-  // cms用户从tmall icon 登陆
+  // cms用户从tmall icon 登录
   async cmsLogin ({ commit }, userId) {
     const res = await cmsLogin(userId)
     return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ const actions = {
       }
     })
   },
-  // 退出登陆
+  // 退出登录
   async logOut ({ commit, state }) {
     const res = await logOut({ token: state.token })
     return new Promise((resolve, reject) => {

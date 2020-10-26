@@ -200,6 +200,11 @@ export default {
     },
     // 求和补位
     handleSum (arrObj, key, len) {
+      if (key === 'agg' && (arrObj.length === 0)) {
+        this.form.agg = '000'
+      } else if (key === 'indicator' && (arrObj.length === 0)) {
+        this.form.indicator = '0000'
+      }
       const val = arrObj.map(item => item.industryWeights)
       this.form[key] = replenishSum(val, len)
       this.handleExcelHeader()
@@ -221,10 +226,12 @@ export default {
       if (!this.form.id) { return }
       if (this.form.agg === '000') {
         this.emptyMes = '请至少选择一种品类聚合类型'
+        this.tableData = []
         return
       }
       if (this.form.indicator === '0000') {
         this.emptyMes = '请至少选择一种数据指标'
+        this.tableData = []
         return
       }
       const res = await previewExcel(this.form)

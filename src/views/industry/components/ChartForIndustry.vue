@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
+import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
 import { mapState } from 'vuex'
 export default {
   name: 'ChartForIndustry',
@@ -88,15 +88,15 @@ export default {
           },
           // x轴文字
           axisLabel: {
-            show: false,
+            show: true,
             interval: 0,
             rotate: 0,
             textStyle: {
-              fontSize: '14',
-              color: '#727484'
+              fontSize: '12',
+              color: '#878999'
             },
             formatter: function (value) {
-              return xAxisDateFormatter(value)
+              return xAxisDateSplit(xAxisDateFormatter(value))
             }
           },
           data: this.industryEchart.xlist

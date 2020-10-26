@@ -43,6 +43,18 @@ export function xAxisDateFormatter (value) {
   }
 }
 
+// X轴时间截取 202009 -> 09
+export function xAxisDateSplit (value) {
+  const sDate = value.substring(2, 4)
+  const eDate = value.substring(4, 6)
+  const arr = ['01', '04', '07', '10']
+  if (arr.indexOf(eDate) !== -1) {
+    return sDate + '/' + eDate
+  } else {
+    return ''
+  }
+}
+
 // 计算最大值
 export function callMax (arr) {
   const max = Math.ceil(Math.max(...arr) / 9.5 * 10)

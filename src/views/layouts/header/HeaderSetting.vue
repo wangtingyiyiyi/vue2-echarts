@@ -8,7 +8,7 @@
         :icon="item.meta.icon"
         :command="item.name">{{item.name}}</el-dropdown-item> -->
       <el-dropdown-item command="LogOut">
-        <Svg-Icon icon-class="logout" style="margin-right: 10px"/>退出登陆</el-dropdown-item>
+        <Svg-Icon icon-class="logout" style="margin-right: 10px"/>退出登录</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>

@@ -93,6 +93,7 @@ export default {
   methods: {
     ...mapMutations('brand', ['SET_BRAND_BRANDS', 'SET_BRAND_CATEGORY', 'SET_BRAND_CATEGORY_OPTION']),
     onSubmit () {
+      console.log('上传的数据', this.brandForm.catetegoryId)
       this.SET_BRAND_BRANDS(this.brandForm.brandList)
       this.SET_BRAND_CATEGORY(this.brandForm.catetegoryId)
       this.$emit('brandOnSubmit')
