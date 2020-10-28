@@ -21,6 +21,11 @@ export function getIndustryEchart (params) {
 }
 
 // 行业 子品类table
+export function getVerifyDownload (params) {
+  return post('userInfo/download', params)
+}
+
+// 验证下载是否可行
 export function getIndustryFlatList (params) {
   return post('industry/flatList', params)
 }

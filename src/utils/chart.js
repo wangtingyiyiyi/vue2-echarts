@@ -47,9 +47,11 @@ export function xAxisDateFormatter (value) {
 export function xAxisDateSplit (value) {
   const sDate = value.substring(2, 4)
   const eDate = value.substring(4, 6)
-  const arr = ['01', '04', '07', '10']
+  const arr = ['01', '04', '07', '10', 'Q1', 'Q2', 'Q3', 'Q4', 'H1', 'H2']
   if (arr.indexOf(eDate) !== -1) {
     return sDate + '/' + eDate
+  } else if (!eDate) {
+    return value.substring(0, 4)
   } else {
     return ''
   }

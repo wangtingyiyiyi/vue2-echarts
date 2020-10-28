@@ -115,6 +115,7 @@
 import { mapMutations, mapState } from 'vuex'
 import {
   getIndustryFlatList,
+  getVerifyDownload,
   getMonthOption,
   getIndustryEchart,
   getIndustryBrandTable,
@@ -242,6 +243,7 @@ export default {
       this.dialogVisible = true
     },
     handleExportExcel (param) {
+      // this.verifyDownload(param)
       this.iconName = 'el-icon-loading'
       const that = this
       const filename = 'Tmall_' + param.cateName + '_' + this.$moment(new Date()).format('YYYYMMDD')
@@ -251,12 +253,22 @@ export default {
       xhr.responseType = 'blob'
       xhr.setRequestHeader('Content-Type', ' application/json')
       xhr.setRequestHeader('token', sessionStorage.getItem('token'))
+      xhr.onreadystatechange = function (oEvent) {
+        if (xhr.readyState === 4) {
+          if (xhr.status !== 200) {
+            that.$message.error('文件下载失败')
+          }
+        }
+      }
       xhr.onprogress = function (event) {
         that.iconName = 'el-icon-download'
-        const p = event.loaded / event.total
-        that.loadingProgress = p
-        if (event.loaded === event.total) {
-          that.$message.success('下载完成')
+        console.log('event.total', event.total)
+        if (event.total !== 0) {
+          const p = event.loaded / event.total
+          that.loadingProgress = p
+          if (event.loaded === event.total) {
+            that.$message.success('下载完成')
+          }
         }
       }
       xhr.onload = function (params) {
@@ -266,6 +278,15 @@ export default {
         }
       }
       xhr.send(JSON.stringify(param))
+    },
+    // 自写验证下载
+    async verifyDownload (param) {
+      const res = await getVerifyDownload(param)
+      if (res.code !== 500) {
+
+      } else {
+        this.$message.error(res.message)
+      }
     },
     // 修改monthOption
     handleSelectdMonth (val) {
