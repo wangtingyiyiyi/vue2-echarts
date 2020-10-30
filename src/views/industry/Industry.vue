@@ -100,7 +100,7 @@
             :drawerShow="drawerShow"
             @handleSearch="handleSearch"/>
       </Drawer>
-      <Download-Button v-permission :loadingProgress="loadingProgress" :iconName="iconName"/>
+      <Download-Button v-if="totalData" v-permission :loadingProgress="loadingProgress" :iconName="iconName"/>
       <!-- 行业提数 -->
       <Dialog-For-Industry-Export
         :dialogVisible="dialogVisible"
@@ -160,6 +160,8 @@ export default {
       loadingProgress: 0,
       iconName: 'el-icon-download',
       meritcoTree: [],
+      // total下载进度
+      totalData: 0,
       defaultIndustry: DEFAULT_INDUSTRY
     }
   },
@@ -244,6 +246,7 @@ export default {
     },
     handleExportExcel (param) {
       // this.verifyDownload(param)
+      this.totalData = 1
       this.iconName = 'el-icon-loading'
       const that = this
       const filename = 'Tmall_' + param.cateName + '_' + this.$moment(new Date()).format('YYYYMMDD')
@@ -268,12 +271,14 @@ export default {
           that.loadingProgress = p
           if (event.loaded === event.total) {
             that.$message.success('下载完成')
+            that.totalData = 0
           }
         }
       }
       xhr.onload = function (params) {
         if (this.status >= 200 && this.status < 300) {
           const blob = new Blob([this.response], { type: 'application/excel' })
+          console.log(blob)
           blolToFile(blob, filename)
         }
       }

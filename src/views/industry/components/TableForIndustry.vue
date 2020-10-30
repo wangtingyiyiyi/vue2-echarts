@@ -5,7 +5,6 @@
     header-row-class-name="tableHeaderClass"
     cell-class-name="tableCellClass"
     ref="table"
-    stripe
     lazy
     row-key="categoryId"
     :load="load"
