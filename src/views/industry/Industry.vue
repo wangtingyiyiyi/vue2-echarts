@@ -3,7 +3,7 @@
 
       <Industry-Setting
         @handleFilter="drawerShow = $event"
-        @brandOnSubmit="brandOnSubmit"
+        @industryNodeClick="industryNodeClick"
         @handleExportDialog="handleExportDialog"/>
       <Empty-Line />
 
@@ -234,6 +234,14 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
       this.getBrandEchart()
+    },
+    // setting 选择行业 待参数刷新
+    industryNodeClick (data) {
+      this.$router.push({
+        path: '/industry',
+        query: data
+      })
+      this.handleRoute()
     },
     // 抽屉中，自定义行业查询
     handleSearch (param) {

@@ -116,7 +116,7 @@ export default {
       this.selectData.label = data.label
       this.SET_INDUSTRY_CATEGORY(this.selectData)
       this.$refs.select.blur()
-      this.$emit('brandOnSubmit', this.selectData)
+      this.$emit('industryNodeClick', this.selectData)
     },
     async handleSelctRemoteFilter (query) {
       this.likeCondition = query
