@@ -5,7 +5,6 @@
     header-row-class-name="tableHeaderClass"
     cell-class-name="tableCellClass"
     ref="table"
-    stripe
     style="width: 100%">
     <el-table-column prop="brand" label="品牌" width="240px">
       <template slot-scope="{row}">

@@ -23,7 +23,7 @@ export default {
   align-items center
   margin-bottom 12px
   .icon
-    height 10px
+    height 14px
     width 3px
     background-color $base-blue
   .title

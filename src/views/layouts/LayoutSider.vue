@@ -1,12 +1,12 @@
 <template>
-  <el-aside :class="[collapsed ? 'width-63' : 'width-200', 'menu-asider']">
+  <el-aside :class="[collapsed ? 'width-63' : 'width-180', 'menu-asider']">
     <el-menu
       :default-active="activeMenu"
       :collapse-transition="false"
       :collapse="collapsed"
       @select="menuSelect">
-      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text">
-        <Svg-Icon :icon-class="item.meta.svgIcon" style="margin-top: 3px;"/>
+      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text" >
+        <Svg-Icon :icon-class="item.meta.svgIcon" :class="[collapsed ? 'margin-left-5' : '']" style="margin-top: 3px;"/>
         <span slot="title" style="margin-left: 15px; font-weight: 600">
           <span>{{item.name}}</span>
           <span class="border"></span>
@@ -49,11 +49,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.margin-left-5
+  margin-left 5px
 .svg-icon
   vertical-align middle
 
-.width-200
-  width 200px !important
+.width-180
+  width 180px !important
 .width-63
   width 64px !important
 .menu-asider
@@ -77,6 +79,6 @@ export default {
         display inline-block
         position absolute
         top 18px
-        left 198px
+        left 178px
 
 </style>
