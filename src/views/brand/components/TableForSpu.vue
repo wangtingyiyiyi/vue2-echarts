@@ -3,7 +3,6 @@
   <el-table
     :data="tableData"
     header-row-class-name="tableHeaderClass"
-    stripe
     ref="table"
     :cell-class-name="renderCell"
     @cell-click="handleClick"

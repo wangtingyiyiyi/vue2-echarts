@@ -78,7 +78,7 @@ export default {
         background-color $base-blue
         display inline-block
         position absolute
-        top 18px
+        top 21px
         left 178px
 
 </style>
