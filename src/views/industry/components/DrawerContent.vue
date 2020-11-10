@@ -200,7 +200,7 @@ export default {
 
   .drawer-body
     height calc(100% - 197px)
-    padding 0 20px
+    padding 0 12px 0 20px
     .border-dotted-bottom
       border-bottom 1px dotted $color-border
     .item-title
@@ -209,6 +209,9 @@ export default {
       align-items center
       min-height 50px
       cursor pointer
+      position sticky
+      top 0
+      background-color #fff
       .left
         display flex
         align-items center
