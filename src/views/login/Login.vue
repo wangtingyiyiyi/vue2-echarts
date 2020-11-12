@@ -116,7 +116,7 @@ export default {
           if (!window.localStorage) {
             return false
           } else {
-            var storage = window.localStorage
+            const storage = window.localStorage
             if (this.rememberPassword) {
               storage.username = this.form.username
               storage.password = this.form.password
