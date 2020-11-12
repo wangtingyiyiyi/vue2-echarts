@@ -12,13 +12,14 @@ import './theme/index.styl'
 
 import './icons' // svg icon
 import Moment from 'moment'
+import VueClipboard from 'vue-clipboard2'
 
 // 全局注册filter
 import filters from '@/utils/filter'
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
+Vue.use(VueClipboard)
 Vue.prototype._ = _
 Vue.use(ElementUI)
 Vue.prototype.$moment = Moment

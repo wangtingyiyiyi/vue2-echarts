@@ -48,6 +48,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body {
+  width: 100vw;
+  overflow: hidden;
+  padding-left: calc(100vw - 100%);
+}
 .header-wapper
   box-shadow 0 2px 8px #f0f1f2;
   width 100vw

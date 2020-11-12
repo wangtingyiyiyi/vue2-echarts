@@ -203,7 +203,7 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
   }
 ]
 
-export const APP_NAME = '久谦中台数据库'
+export const APP_NAME = '欢迎登录久谦中台'
 
 // 默认的行业
 export const DEFAULT_INDUSTRY = {
