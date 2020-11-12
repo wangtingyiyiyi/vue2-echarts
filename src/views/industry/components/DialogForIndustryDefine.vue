@@ -412,5 +412,15 @@ export default {
       height 50vh
     .check-all
       padding 10px 0
+    .el-button--small
+      width: 70%
+      padding-left 15%
+      padding-right 15%
+    .el-button--primary.is-disabled
+      background-color #f5f5f5
+      border-color #ddd
+      color #ccc
+    .el-button--small
+      padding: 5px 15px
 
 </style>

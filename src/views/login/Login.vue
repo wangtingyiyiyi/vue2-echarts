@@ -1,63 +1,47 @@
 <template>
   <div class="index" ref="index">
     <!-- 一般用户 -->
-    <div v-show="!isPc">
-      <div style="display: block; margin: auto; width: 200px; height: 200px;">
-        <div style="font-size: 20px; font-weight: 400; color: #363746; line-height: 40px; text-align: center">请移步PC端查看</div>
-        <div style="font-size: 10px; font-weight: 400; color: #363746; margin-top: 0px; line-height: 40px; text-align: center">https://exp.meritco-group.com:9580</div>
-        <el-button type="primary" style="width: 120px; margin-left: 40px; margin-top: 30px;" size="medium" class="copyBtn" v-clipboard:copy="copyUrl"
-        v-clipboard:success="onCopy"
-        v-clipboard:error="onError">复制链接</el-button>
-      </div>
-    </div>
-    <div v-show="isPc" style="width: 100%; height: 100%;">
+    <div v-if="isPc" style="width: 100%; height: 100%;">
       <div class="top">
-        <Svg-Icon
-      :icon-class="'logo'"
-      :class="'svg-class'"/>
+        <Svg-Icon icon-class="logo" class="svg-class"/>
       </div>
-      <div class="title">{{isPsw ? appName : appName}}</div>
-      <div class="login-wapper" v-show="userFrom === 'normal'">
-        <!-- <div class="qr-wapper" @click="changeLoginType">
-          <Svg-Icon icon-class="qrcode" class="qr-code"/>
-        </div> -->
+      <div class="title">{{appName}}</div>
+      <div v-show="userFrom === 'normal'" class="login-wapper" >
         <el-form :model="form" ref="form" :rules="rules" label-position="left" class="login-form" size="large" v-show="isPsw">
           <el-form-item prop="username" >
             <el-input v-model="form.username" class="login-input" placeholder="请输入账号">
-              <Svg-Icon
-              icon-class="loginUser"
-              slot="prefix"
-              />
+              <Svg-Icon icon-class="loginUser" slot="prefix" />
             </el-input>
           </el-form-item>
           <el-form-item prop="password" >
             <el-input v-model="form.password" :type="inputType" class="login-input" placeholder="请输入登录密码" @keydown.enter.native="onSubmit">
-              <Svg-Icon
-              icon-class="loginPassword"
-              slot="prefix"
-              />
-              <div slot="suffix"
-              v-if="inputType === 'text'" @click="inputType = 'password'">
-                <Svg-Icon
-              icon-class="loginEve"
-              />
+              <Svg-Icon icon-class="loginPassword" slot="prefix" />
+              <div slot="suffix" v-if="inputType === 'text'" @click="inputType = 'password'">
+                <Svg-Icon icon-class="loginEve" />
               </div>
-              <div slot="suffix"
-              v-if="inputType === 'password'"  @click="inputType = 'text'">
-                <Svg-Icon
-              icon-class="loginEveB"
-              />
+              <div slot="suffix" v-if="inputType === 'password'"  @click="inputType = 'text'">
+                <Svg-Icon icon-class="loginEveB" />
               </div>
             </el-input>
           </el-form-item>
           <el-checkbox style="margin-left: 200px; margin-top: 0px;" v-model="rememberPassword">记住密码</el-checkbox>
           <el-button type="primary" style="margin-top: 40px;" size="medium" class="login-btn" @click="onSubmit">登录</el-button>
           </el-form>
-          <div v-show="!isPsw" class="wxCode">
+          <div v-show="!isPsw" class="wx-code">
             <div id="wx_qrcode"></div>
           </div>
       </div>
       <div @click="changeLoginType" class="footer">{{isPsw ? '切换至企业微信登录' : '切换至账号登录'}}</div>
+    </div>
+    <div v-else>
+      <div class="mobile-wapper">
+        <div class="mobile-title mobile-text">请移步PC端查看</div>
+        <div class="mobile-url mobile-text">https://exp.meritco-group.com:9580</div>
+        <el-button type="primary" class="mobile-btn" size="medium"
+          v-clipboard:copy="copyUrl"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError">复制链接</el-button>
+      </div>
     </div>
     <div v-show="userFrom === 'query'">
       正在进入{{appName}}<i class="el-icon-loading loading-icon"></i>
@@ -92,7 +76,8 @@ export default {
       },
       userFrom: 'normal',
       query: query,
-      appName: APP_NAME
+      appName: APP_NAME,
+      agents: ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
     }
   },
   watch: {
@@ -108,7 +93,6 @@ export default {
           this.handleQueryLogin(query)
         } else {
           this.userFrom = 'normal'
-          console.info('query 空参数')
         }
       }
     }
@@ -181,36 +165,28 @@ export default {
         href: ''
       })
     },
-    initForm () {
+    judgePc () {
       // 判断是否是移动设备
-      var userAgent = navigator.userAgent
-      var Agents = ['Android', 'iPhone',
-        'SymbianOS', 'Windows Phone',
-        'iPad', 'iPod']
-      for (var v = 0; v < Agents.length; v++) {
-        if (userAgent.indexOf(Agents[v]) > 0) {
+      const userAgent = navigator.userAgent
+      for (let v = 0; v < this.agents.length; v++) {
+        if (userAgent.indexOf(this.agents[v]) > 0) {
           this.isPc = false
           break
         }
       }
-      // alert('是否是PC:' + this.isPc)
-      // console.log('是否是PC:', this.isPc)
-      if (process.env.NODE_ENV === 'development') {
-        this.form = {
-          // username: '翟迅_测试',
-          // password: '123456'
-        }
-      }
-      if (!window.localStorage) {
-        return false
-      } else {
-        const storage = window.localStorage
-        if (!(storage.username === 'null' && storage.password === 'null')) {
-          this.form = {
-            username: storage.username,
-            password: storage.password
+      if (this.isPc) {
+        this.wechatLogin()
+        if (!window.localStorage) {
+          return false
+        } else {
+          const storage = window.localStorage
+          if (!(storage.username === 'null' && storage.password === 'null')) {
+            this.form = {
+              username: storage.username,
+              password: storage.password
+            }
+            storage.rememberPassword === 'true' ? this.rememberPassword = true : this.rememberPassword = false
           }
-          storage.rememberPassword === 'true' ? this.rememberPassword = true : this.rememberPassword = false
         }
       }
     },
@@ -221,38 +197,30 @@ export default {
       this.$message.error('复制失败')
     }
   },
-
   beforeCreate () {
     target = this.$router.options.routes.find((item) => item.path === '/').children[0]
   },
   mounted () {
-    this.wechatLogin()
-    this.initForm()
+    this.judgePc()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.logo {
-  background: $base-blue;
-  color: #ffffff;
-  padding: 4px 28px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.logo
+  background $base-blue
+  color #ffffff
+  padding 4px 28px
+  height 32px
+  display flex
+  align-items center
+  justify-content center
+
 .svg-class
   width 109px
   height 36px
   margin 15px 20px 0 20px
 
-.expansion-logo {
-  padding: 0 20px;
-  div {
-    width: 140px;
-  }
-}
 .index
   height 100vh
   width 100vw
@@ -295,47 +263,17 @@ export default {
   margin-bottom 40px
   font-size 26px
   font-weight 400
-  color #363746
+  color $color-deep-gray
   line-height 40px
   text-align: center
-
-.apply-btn
-  border 1px solid $color-border
 
 .login-btn
   width 100%
   box-shadow: 0px 4px 12px rgba(51, 81, 143, 0.2)
 
-.qr-wapper
-  width 40px
-  height 40px
-  background-color #dfdfdf
-  padding 5px 5px 10px 10px
-  float right
-  position relative
-  cursor pointer
-  &::before
-    content: "";
-    position: absolute;
-    left: -26px;
-    top: 21.7px;
-    display: block;
-    width: 78px;
-    height: 40px;
-    background: #fff;
-    transform: rotate(45deg);
-.qr-code
-  width 100%
-  height 100%
-  color #8A8A8A
-
-.wxCode
+.wx-code
   padding-left 44px
   padding-top 30px
-
-.wxCode >>>
-  .qrcode
-    width 100px
 
 .loading-icon
   color $base-blue
@@ -343,17 +281,27 @@ export default {
 
 .login-input >>>
   .el-input__inner
-    color #363746
+    color $color-deep-gray
     font-weight 450
     height 32px
     border none
     font-size 16px
     border-bottom 1px solid #DCDFE6
 
-.el-icon-minus
-  -webkit-text-security: none
-
-.el-icon-view
-  -webkit-text-security: disc
-
+.mobile-wapper
+  margin auto
+  width 200px
+  height 200px
+  .mobile-text
+    color $color-deep-gray
+    text-align center
+    line-height 40px
+  .mobile-title
+    font-size 20px
+  .mobile-url
+    font-size 10px
+  .mobile-btn
+    width 120px
+    margin-left 40px
+    margin-top 30px
 </style>
