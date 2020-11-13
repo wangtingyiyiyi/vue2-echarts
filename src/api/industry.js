@@ -7,7 +7,8 @@ export function getIndustryDefineList (params) {
 
 // 配置筛选 option
 export function getIndustryCategory (params) {
-  return post('industry/category', params)
+  // return post('industry/category', params)
+  return post('cate/list', params)
 }
 
 // 行业 month options
@@ -37,12 +38,12 @@ export function getCategoryTree (params) {
 
 // 品牌 table
 export function getIndustryBrandTable (params) {
-  return post('industryBrand/listTotal', params)
+  return post('cate/brand/list', params)
 }
 
 // 品牌 图表
 export function getBrandChart (params) {
-  return post('industryBrand/listGraph', params)
+  return post('cate/brand/graph', params)
 }
 
 // 行业提数 预览待导出excel

@@ -35,7 +35,7 @@
             <el-tree
               v-show="!showExpandTree"
               :props="leftTreeProps"
-              node-key="id"
+              node-key="label"
               :data="rootTree"
               highlight-current
               check-on-click-node
@@ -80,7 +80,6 @@ export default {
     return {
       selectData: {
         rank: '',
-        id: '',
         label: ''
       },
       options: [],
@@ -111,9 +110,7 @@ export default {
       return '<span style="font-weight: inherit">' + mes + '</span>'
     },
     handleNodeClick (data, node, ref) {
-      this.selectData.rank = data.rank
-      this.selectData.id = data.id
-      this.selectData.label = data.label
+      this.selectData = data
       this.SET_INDUSTRY_CATEGORY(this.selectData)
       this.$refs.select.blur()
       this.$emit('industryNodeClick', this.selectData)
@@ -147,7 +144,6 @@ export default {
           delete param[k]
         }
       })
-      // console.log('我是图标!!!!', param)
       if (param.rank !== 3) {
         const res = await getCategoryTree(param)
         if (res.code === 200) {
@@ -157,10 +153,7 @@ export default {
     },
     loadNode (node = {}, resolve) {
       if (node.level === 0) {
-        const dic = {
-
-        }
-        this.getCategoryTree(dic).then((res) => {
+        this.getCategoryTree({}).then((res) => {
           this.rootTree = res
           resolve(res)
         })

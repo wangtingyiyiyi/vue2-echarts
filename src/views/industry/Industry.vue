@@ -133,11 +133,11 @@ export default {
 
   data () {
     return {
-      activeName: 'industry',
-      rangeItemVal: 'one_year',
+      activeName: 'brand',
+      rangeItemVal: 'all',
       groupItemVal: 'month',
-      viewItemVal: '1',
-      sortItemVal: '1',
+      viewItemVal: 'gmv',
+      sortItemVal: 'gmv',
       drawerShow: false,
       categoryForm: {},
       monthOption: [],
@@ -162,23 +162,7 @@ export default {
       meritcoTree: [],
       // total下载进度
       totalData: 0,
-      defaultIndustry: DEFAULT_INDUSTRY,
-      // 新接口字段
-      subDic: {
-        cateList: ''
-      },
-      cateList: [
-        {
-          category: '',
-          category1: '',
-          category2: '',
-          category3: '',
-          children: [],
-          isLeaf: true,
-          label: '',
-          rank: 0
-        }
-      ]
+      defaultIndustry: DEFAULT_INDUSTRY
     }
   },
   computed: {
@@ -245,7 +229,6 @@ export default {
     // 搜索
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
-      console.log('走搜索了', data, this.categoryForm)
       this.page = 1
       this.getIndustryEchart()
       this.getIndustryFlatList()
@@ -328,14 +311,7 @@ export default {
     // 行业tab 图表
     async getIndustryEchart () {
       if (this.activeName !== 'industry') return ''
-      this.cateList[0].label = { ...this.categoryForm }.label
-      this.cateList[0].rank = { ...this.categoryForm }.rank
-      this.cateList[0].category1 = { ...this.categoryForm }.label.split(' > ')[0]
-      this.cateList[0].category2 = { ...this.categoryForm }.label.split(' > ')[1] ? { ...this.categoryForm }.label.split(' > ')[1] : ''
-      this.cateList[0].category3 = { ...this.categoryForm }.label.split(' > ')[2] ? { ...this.categoryForm }.label.split(' > ')[2] : ''
-      this.subDic.cateList = this.cateList
-      // console.log('又走搜索了', this.subDic)
-      const param = Object.assign(this.subDic, { range: this.rangeItemVal, particle: this.groupItemVal })
+      const param = Object.assign({ cateList: [this.categoryForm] }, { range: this.rangeItemVal, particle: this.groupItemVal })
       const loadingInstance = refLoading(this.$refs.refIndustryEchart)
       const res = await getIndustryEchart(param)
       loadingInstance.close()
@@ -368,18 +344,7 @@ export default {
       if (this.activeName !== 'industry') return ''
       this.industryTableData = []
       const param = {
-        cateList: [
-          {
-            category: '',
-            category1: this.categoryForm.label.split(' > ')[0],
-            category2: this.categoryForm.label.split(' > ')[1] ? { ...this.categoryForm }.label.split(' > ')[1] : '',
-            category3: this.categoryForm.label.split(' > ')[2] ? { ...this.categoryForm }.label.split(' > ')[2] : '',
-            children: [],
-            isLeaf: true,
-            label: this.categoryForm.label,
-            rank: this.categoryForm.rank
-          }
-        ],
+        cateList: [this.categoryForm],
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -398,8 +363,13 @@ export default {
     },
     // 品牌tab 图表
     async getBrandEchart () {
-      if (!this.categoryObj.id || this.activeName !== 'brand') return ''
-      const param = Object.assign({ ...this.categoryForm }, { range: this.rangeItemVal, group: this.groupItemVal, view: this.viewItemVal })
+      if (!this.categoryObj.label || this.activeName !== 'brand') return ''
+      const param = {
+        cateList: [this.categoryForm],
+        range: this.rangeItemVal,
+        particle: this.groupItemVal,
+        data: this.viewItemVal
+      }
       const loadingInstance = refLoading(this.$refs.refBrandChart)
       const res = await getBrandChart(param)
       loadingInstance.close()
@@ -411,23 +381,22 @@ export default {
     },
     // 品牌tab table
     async getBrandList () {
-      if (!this.categoryObj.id || this.activeName !== 'brand') return ''
+      if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
         range: this.rangeItemVal,
-        group: this.groupItemVal,
-        tmallMonthList: this.selectdMonth,
-        id: this.categoryForm.id,
-        rank: this.categoryForm.rank,
+        particle: this.groupItemVal,
+        month: this.selectdMonth,
         sort: this.sortItemVal,
         page: this.page,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        cateList: [this.categoryForm]
       }
       this.isLoadingBrandTable = true
       const res = await getIndustryBrandTable(param)
       this.isLoadingBrandTable = false
       if (res.code === 200) {
-        this.brandCount = res.result.brandCount
-        this.brandTableData = res.result.detailsBeanList
+        // this.brandCount = res.result.brandCount
+        // this.brandTableData = res.result.detailsBeanList
       } else {
         this.$message.error('行业品牌列表请求失败')
         this.brandCount = 0

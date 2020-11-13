@@ -6,7 +6,6 @@ import {
 } from '../mutation'
 const state = {
   categoryObj: {
-    id: '',
     label: '',
     remark: ''
   },

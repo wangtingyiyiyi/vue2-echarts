@@ -41,11 +41,11 @@ export const VIEW_LEVEL = [
   {
     icon: 'upload',
     label: '按销售额',
-    value: '1'
+    value: 'gmv'
   }, {
     icon: 'user',
     label: '按销量',
-    value: '0'
+    value: 'sales'
   }
 ]
 
@@ -208,8 +208,10 @@ export const APP_NAME = '欢迎登录久谦中台'
 // 默认的行业
 export const DEFAULT_INDUSTRY = {
   remark: '1',
-  id: '7667',
-  label: '彩妆/美护工具'
+  label: '彩妆/美护工具',
+  category1: '彩妆/美护工具',
+  category2: '',
+  category3: ''
 }
 
 // 默认品牌
