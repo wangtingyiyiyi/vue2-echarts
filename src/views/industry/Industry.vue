@@ -3,7 +3,7 @@
 
       <Industry-Setting
         @handleFilter="drawerShow = $event"
-        @industryNodeClick="industryNodeClick"
+        @industryNodeClick="brandOnSubmit"
         @handleExportDialog="handleExportDialog"/>
       <Empty-Line />
 
@@ -134,14 +134,14 @@ export default {
   data () {
     return {
       activeName: 'industry',
-      rangeItemVal: '1',
-      groupItemVal: '0',
+      rangeItemVal: 'one_year',
+      groupItemVal: 'month',
       viewItemVal: '1',
       sortItemVal: '1',
       drawerShow: false,
       categoryForm: {},
       monthOption: [],
-      selectdMonth: {},
+      selectdMonth: '',
       industryEchart: {},
       industryTableData: [],
       isLoadingIndustryTable: false,
@@ -162,7 +162,23 @@ export default {
       meritcoTree: [],
       // total下载进度
       totalData: 0,
-      defaultIndustry: DEFAULT_INDUSTRY
+      defaultIndustry: DEFAULT_INDUSTRY,
+      // 新接口字段
+      subDic: {
+        cateList: ''
+      },
+      cateList: [
+        {
+          category: '',
+          category1: '',
+          category2: '',
+          category3: '',
+          children: [],
+          isLeaf: true,
+          label: '',
+          rank: 0
+        }
+      ]
     }
   },
   computed: {
@@ -229,6 +245,7 @@ export default {
     // 搜索
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
+      console.log('走搜索了', data, this.categoryForm)
       this.page = 1
       this.getIndustryEchart()
       this.getIndustryFlatList()
@@ -310,8 +327,15 @@ export default {
     },
     // 行业tab 图表
     async getIndustryEchart () {
-      if (!this.categoryObj.id || this.activeName !== 'industry') return ''
-      const param = Object.assign({ ...this.categoryForm }, { range: this.rangeItemVal, group: this.groupItemVal })
+      if (this.activeName !== 'industry') return ''
+      this.cateList[0].label = { ...this.categoryForm }.label
+      this.cateList[0].rank = { ...this.categoryForm }.rank
+      this.cateList[0].category1 = { ...this.categoryForm }.label.split(' > ')[0]
+      this.cateList[0].category2 = { ...this.categoryForm }.label.split(' > ')[1] ? { ...this.categoryForm }.label.split(' > ')[1] : ''
+      this.cateList[0].category3 = { ...this.categoryForm }.label.split(' > ')[2] ? { ...this.categoryForm }.label.split(' > ')[2] : ''
+      this.subDic.cateList = this.cateList
+      // console.log('又走搜索了', this.subDic)
+      const param = Object.assign(this.subDic, { range: this.rangeItemVal, particle: this.groupItemVal })
       const loadingInstance = refLoading(this.$refs.refIndustryEchart)
       const res = await getIndustryEchart(param)
       loadingInstance.close()
@@ -341,14 +365,24 @@ export default {
     },
     // 行业tab table
     async getIndustryFlatList () {
-      if (!this.categoryObj.id || this.activeName !== 'industry') return ''
+      if (this.activeName !== 'industry') return ''
       this.industryTableData = []
       const param = {
+        cateList: [
+          {
+            category: '',
+            category1: this.categoryForm.label.split(' > ')[0],
+            category2: this.categoryForm.label.split(' > ')[1] ? { ...this.categoryForm }.label.split(' > ')[1] : '',
+            category3: this.categoryForm.label.split(' > ')[2] ? { ...this.categoryForm }.label.split(' > ')[2] : '',
+            children: [],
+            isLeaf: true,
+            label: this.categoryForm.label,
+            rank: this.categoryForm.rank
+          }
+        ],
         range: this.rangeItemVal,
-        group: this.groupItemVal,
-        tmallMonthList: this.selectdMonth,
-        id: this.categoryForm.id,
-        remark: this.categoryForm.remark,
+        particle: this.groupItemVal,
+        month: this.selectdMonth,
         sort: this.sortItemVal
       }
       this.SET_INDUSTRY_CATRGOTY_TABLE_PARAM(param)
@@ -383,7 +417,7 @@ export default {
         group: this.groupItemVal,
         tmallMonthList: this.selectdMonth,
         id: this.categoryForm.id,
-        remark: this.categoryForm.remark,
+        rank: this.categoryForm.rank,
         sort: this.sortItemVal,
         page: this.page,
         pageSize: this.pageSize
@@ -402,7 +436,7 @@ export default {
     },
     // 行业初始化时 monthOption
     async getMonthOption () {
-      const res = await getMonthOption({ range: this.rangeItemVal, group: this.groupItemVal })
+      const res = await getMonthOption({ range: this.rangeItemVal, particle: this.groupItemVal })
       if (res.code === 200) {
         this.monthOption = res.result
         this.selectdMonth = this.monthOption[0]

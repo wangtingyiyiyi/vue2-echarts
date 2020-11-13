@@ -145,7 +145,7 @@ export default {
     // 递归方法
     getRecursionData (data) {
       // 循环遍历json数据
-      for (var i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         if (data[i].childList.length < 1) {
           // children若为空数组，则将children设为undefined
           data[i].childList = undefined

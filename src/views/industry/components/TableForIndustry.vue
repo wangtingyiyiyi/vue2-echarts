@@ -9,7 +9,7 @@
     row-key="categoryId"
     :load="load"
     style="width: 100%">
-    <el-table-column prop="outCat2" label="子品类" width="220px">
+    <el-table-column prop="category2" label="子品类" width="220px">
       <template slot-scope="{row}">
         <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" />
       </template>
@@ -20,7 +20,7 @@
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.sumSales | format}}</template>
+      <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="90px">
       <template #header>
@@ -28,7 +28,7 @@
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
+      <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
       <template slot-scope="{row}">
@@ -41,7 +41,7 @@
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
+      <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="80px">
       <template #header>
@@ -49,7 +49,7 @@
           <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
         </div>
       </template>
-      <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
+      <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right">
       <template #header>
@@ -114,15 +114,15 @@ export default {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     // 显示品类
     getCat (data) {
-      switch (data.remark) {
+      switch (data.rank) {
         case 'define':
-          return data.outCat1
+          return data.category1
         case '1':
-          return data.outCat1
+          return data.category1
         case '2':
-          return data.outCat2
+          return data.category2
         case '3':
-          return data.outCat3
+          return data.category3
         default:
           return ''
       }

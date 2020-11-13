@@ -12,12 +12,12 @@ export function getIndustryCategory (params) {
 
 // 行业 month options
 export function getMonthOption (params) {
-  return post('industry/months', params)
+  return post('/cate/months', params)
 }
 
 // 行业 趋势图
 export function getIndustryEchart (params) {
-  return post('industry/listGraph', params)
+  return post('/cate/graph', params)
 }
 
 // 行业 子品类table
@@ -25,14 +25,14 @@ export function getVerifyDownload (params) {
   return post('userInfo/download', params)
 }
 
-// 验证下载是否可行
+// 按照子品类展开
 export function getIndustryFlatList (params) {
-  return post('industry/flatList', params)
+  return post('/cate/branch', params)
 }
 
 // 抽屉 久谦品类树
-export function getCategoryTree (params = {}) {
-  return post('industry/listCategory', params)
+export function getCategoryTree (params) {
+  return post('cate/list', params)
 }
 
 // 品牌 table

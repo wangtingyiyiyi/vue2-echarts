@@ -4,11 +4,11 @@ export const RANGE_LEVEL = [
   {
     icon: 'user',
     label: '近一年',
-    value: '1'
+    value: 'one_year'
   }, {
     icon: 'upload',
     label: '全部',
-    value: '0'
+    value: 'all'
   }
 ]
 // 颗粒度按钮
@@ -16,23 +16,23 @@ export const GROUP_LEVEL = [
   {
     icon: 'user',
     label: '按月',
-    value: '0',
+    value: 'month',
     industryExcelHeader: ['月']
   }, {
     icon: 'upload',
     label: '按季度',
-    value: '1',
+    value: 'quarter',
     industryExcelHeader: ['季度']
   }, {
     icon: 'upload',
     label: '按半年',
-    value: '2',
+    value: 'half_year',
     industryExcelHeader: ['半年']
 
   }, {
     icon: 'upload',
     label: '按年',
-    value: '3',
+    value: 'year',
     industryExcelHeader: ['年']
   }
 ]

@@ -2,8 +2,8 @@
   <el-select :value="selectdMonth" class="sup-mini-select" placeholder="请选择" size="mini" @change="handleChange" value-key="name">
     <el-option
       v-for="item in monthOption"
-      :key="item.name"
-      :label="setLable(item.name)"
+      :key="item"
+      :label="item"
       :value="item">
     </el-option>
   </el-select>
@@ -18,8 +18,8 @@ export default {
       default: () => []
     },
     selectdMonth: {
-      type: Object,
-      default: () => {}
+      type: [String, Number],
+      default: ''
     }
   },
   data () {
