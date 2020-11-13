@@ -86,7 +86,7 @@ export default {
         this.brandOption = params.brandList
         this.brandForm.catetegoryId = params.id
         this.$emit('brandOnSubmit')
-        this.getCategory()
+        // this.getCategory()
       }
     }
   },
@@ -98,13 +98,6 @@ export default {
       this.SET_BRAND_CATEGORY(this.brandForm.catetegoryId)
       this.$emit('brandOnSubmit')
     },
-    // onClean () {
-    //   this.$refs.brandForm.resetFields()
-    //   this.brandForm = INITBRANDFORM
-    //   this.SET_BRAND_BRANDS([])
-    //   this.SET_BRAND_CATEGORY('')
-    //   this.$emit('brandOnSubmit', INITBRANDFORM)
-    // },
     changeBrand () {
       this.getCategory()
       this.onSubmit()

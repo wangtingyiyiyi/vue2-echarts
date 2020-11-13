@@ -133,7 +133,7 @@ export default {
 
   data () {
     return {
-      activeName: 'brand',
+      activeName: 'industry',
       rangeItemVal: 'all',
       groupItemVal: 'month',
       viewItemVal: 'gmv',

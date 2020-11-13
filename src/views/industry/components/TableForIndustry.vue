@@ -11,22 +11,29 @@
     style="width: 100%">
     <el-table-column prop="category2" label="子品类" width="220px">
       <template slot-scope="{row}">
-        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline" />
+        <Text-Button
+          :text="getCat(row)"
+          @handleClick="handleCategory(row)"
+          style="display: inline" />
       </template>
     </el-table-column>
     <el-table-column align="right" min-width="60px">
       <template #header>
-        <div class="sort-button" @click="handleSort('0')">销量
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == '0' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销量"
+          sortVal="sales"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="90px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('1')">销售额
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == '1' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销售额"
+          sortVal="gmv"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
@@ -37,25 +44,31 @@
     </el-table-column>
     <el-table-column align="right" min-width="50px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('2')">销量环比
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == '2' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销量环比"
+          sortVal="salesRate"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="80px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('3')">销售额环比
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == '3' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销售额环比"
+          sortVal="gmvRate"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right">
       <template #header>
-        <div class="sort-button"  @click="handleSort('4')">均价
-          <Svg-Icon icon-class="descending" :class="[activedSortKey == '4' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="均价"
+          sortVal="avgPrice"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
@@ -81,7 +94,7 @@ export default {
     },
     activedSortKey: {
       type: String,
-      default: '1'
+      default: 'gmv'
     }
   },
   data () {
@@ -117,11 +130,11 @@ export default {
       switch (data.rank) {
         case 'define':
           return data.category1
-        case '1':
+        case 1:
           return data.category1
-        case '2':
+        case 2:
           return data.category2
-        case '3':
+        case 3:
           return data.category3
         default:
           return ''
@@ -159,12 +172,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.sort-button
-  cursor pointer
-
-.active-sort
-  color $base-blue
-
 .el-table >>> .line-in-table-class > div
   margin-left 60px
 </style>

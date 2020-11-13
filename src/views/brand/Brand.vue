@@ -110,30 +110,30 @@ import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
 import { DEFINE_BRAND } from '@/utils/const.js'
 import {
-  getMonthOption,
-  getTableForBrandShop,
-  getChartForBrandShop,
   getTableForBrand,
   getChartForBrand,
   getTableForBrandSpu
 } from '@/api/brand'
+import {
+  getMonthOption
+} from '@/api/industry'
 export default {
 
   mixins: [componentsMixin],
   data () {
     return {
       activeName: 'brand',
-      viewItemVal: '1',
-      rangeItemVal: '1',
-      groupItemVal: '0',
-      sortItemVal: '1',
+      rangeItemVal: 'all',
+      groupItemVal: 'month',
+      viewItemVal: 'gmv',
+      sortItemVal: 'gmv',
       brandTableData: [],
       shopTableData: [],
       activeBrand: {},
       brandChart: [],
       monthOption: [],
-      selectdMonth: {},
-      tableMonth: {},
+      selectdMonth: '',
+      tableMonth: '',
       isLoadingOfShopTable: false,
       isLoadingOfBrandTable: false,
       isLoadingOfSpuTable: false,
@@ -170,16 +170,13 @@ export default {
       this.getChartForBrand()
       this.getChartForShop()
       this.getTableForBrand()
-      this.getTableForShop()
       this.getTableForSpu()
     },
     // 配置筛选 搜索
     handleSettingParam () {
       this.activeBrand = this.brandList[0] || {}
       this.getChartForBrand()
-      this.getChartForShop()
       this.getTableForBrand()
-      this.getTableForShop()
       this.getTableForSpu()
     },
     // 切换范围
@@ -187,9 +184,7 @@ export default {
       this.rangeItemVal = data.value
       this.getMonthOption().then(() => {
         this.getChartForBrand()
-        this.getChartForShop()
         this.getTableForBrand()
-        this.getTableForShop()
         this.getTableForSpu()
       })
     },
@@ -198,9 +193,7 @@ export default {
       this.groupItemVal = data.value
       this.getMonthOption().then((res) => {
         this.getChartForBrand()
-        this.getChartForShop()
         this.getTableForBrand()
-        this.getTableForShop()
         this.getTableForSpu()
       })
     },
@@ -212,20 +205,17 @@ export default {
     // 按品牌查看店铺列表
     changeActiveBrand (data) {
       this.activeBrand = data
-      this.getTableForShop()
       this.getTableForBrand()
       this.getTableForSpu()
     },
     // table 切换month
     handleTableMonth (val) {
       this.tableMonth = val
-      this.getTableForShop()
       this.getTableForSpu()
     },
     // 列表排序
     changeSortItemVal (val) {
       this.sortItemVal = val
-      this.getTableForShop()
       this.getTableForBrand()
       this.getTableForSpu()
     },
@@ -248,7 +238,7 @@ export default {
     },
     // 获取月份options
     async getMonthOption () {
-      const res = await getMonthOption({ range: this.rangeItemVal, group: this.groupItemVal })
+      const res = await getMonthOption({ range: this.rangeItemVal, particle: this.groupItemVal })
       if (res.code === 200) {
         this.monthOption = res.result
         this.selectdMonth = res.result[0]
@@ -259,14 +249,14 @@ export default {
     },
     // 品牌 chart
     async getChartForBrand () {
-      if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
+      if (this.activeBrand.brandId || this.activeName !== 'brand') return ''
       const param = {
-        id: this.categoryId,
-        group: this.groupItemVal,
-        view: this.viewItemVal,
+        cateList: [],
+        particle: this.groupItemVal,
+        data: this.viewItemVal,
         range: this.rangeItemVal,
         brandList: this.brandList,
-        tmallMonthList: this.tableMonth
+        month: this.tableMonth
       }
       const loadingInstance = refLoading(this.$refs.brandEchart)
       const res = await getChartForBrand(param)
@@ -276,11 +266,6 @@ export default {
       } else {
         this.$message.error('品牌趋势图请求失败')
       }
-    },
-    // spu 列表翻页
-    changeSpuPage (page) {
-      this.spuPage = page
-      this.getTableForSpu()
     },
     // 品牌 table
     async getTableForBrand () {
@@ -305,41 +290,10 @@ export default {
         this.brandTableData = []
       }
     },
-    // 店铺 chart
-    async getChartForShop () {
-      if (!this.activeBrand.brandId || this.activeName !== 'shop') return ''
-      const param = {
-        group: this.groupItemVal,
-        view: this.viewItemVal,
-        brandList: this.brandList,
-        tmallMonthList: this.selectdMonth
-      }
-      const res = await getChartForBrandShop(param)
-      if (res.code === 200) {
-        this.shopTableChart = res.result
-      } else {
-        this.$message.error('')
-      }
-    },
-    // 店铺 table
-    async getTableForShop () {
-      if (!this.activeBrand.brandId || this.activeName !== 'shop') return ''
-      const param = {
-        range: this.rangeItemVal,
-        group: this.groupItemVal,
-        sort: this.sortItemVal,
-        brandList: [this.activeBrand],
-        tmallMonthList: this.tableMonth
-      }
-      this.isLoadingOfShopTable = true
-      const res = await getTableForBrandShop(param)
-      this.isLoadingOfShopTable = false
-      if (res.code === 200) {
-        this.shopTableData = res.result
-      } else {
-        this.$message.error('品牌店铺列表请求失败')
-        this.shopTableData = []
-      }
+    // spu 列表翻页
+    changeSpuPage (page) {
+      this.spuPage = page
+      this.getTableForSpu()
     },
     // spu table
     async getTableForSpu () {
