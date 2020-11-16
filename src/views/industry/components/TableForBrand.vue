@@ -22,7 +22,7 @@
           :activedSortKey="activedSortKey"
           @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">{{row.sumSales | format}}</template>
+      <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
     <el-table-column align="right" label="销售额">
       <template #header>
@@ -32,11 +32,11 @@
           :activedSortKey="activedSortKey"
           @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
+      <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
     <el-table-column align="center" label="销售额趋势" width="200px">
       <template slot-scope="{row}">
-        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+        <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
     <el-table-column align="right"  width="120">
@@ -47,7 +47,7 @@
           :activedSortKey="activedSortKey"
           @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">{{row.salesSequential | percentage}}</template>
+      <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right">
       <template #header>
@@ -57,7 +57,7 @@
           :activedSortKey="activedSortKey"
           @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
+      <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right">
       <template #header>

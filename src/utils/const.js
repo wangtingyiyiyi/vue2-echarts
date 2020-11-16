@@ -51,8 +51,8 @@ export const VIEW_LEVEL = [
 
 // 行业-品牌累计占比
 export const ECHARTS_ACTIVED_PARAM = {
-  0: ['销量', '销量累计占比'],
-  1: ['销售额', '销售额累计占比']
+  sales: ['销量', '销量累计占比'],
+  gmv: ['销售额', '销售额累计占比']
 }
 
 // echart 主题颜色
@@ -99,9 +99,14 @@ export const CATEGORT_GROUP = [
     industryWeights: 10,
     industryExcelHeader: ['店铺ID', '店铺']
   }, {
-    label: '按SPU',
+    label: '按品名',
     value: '2',
     industryWeights: 100,
+    industryExcelHeader: ['品名']
+  }, {
+    label: '按SPU',
+    value: '3',
+    industryWeights: 1000,
     industryExcelHeader: ['SPUID', 'SPU名']
   }
 ]
@@ -112,20 +117,24 @@ export const DATA_INDEX = [
     label: '销量',
     value: '0',
     industryWeights: 1,
+    disabled: true,
     industryExcelHeader: ['销量']
   }, {
     label: 'ASP',
     value: '1',
+    disabled: true,
     industryWeights: 10,
     industryExcelHeader: ['ASP']
   }, {
     label: 'GMV',
     value: '3',
+    disabled: true,
     industryWeights: 100,
     industryExcelHeader: ['GMV']
   }, {
     label: 'SPU数',
     value: '4',
+    disabled: false,
     industryWeights: 1000,
     industryExcelHeader: ['SPU数']
   }
@@ -205,7 +214,7 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
 
 export const APP_NAME = '欢迎登录久谦中台'
 
-// 默认的行业
+// 行业-默认参数
 export const DEFAULT_INDUSTRY = {
   remark: '1',
   label: '彩妆/美护工具',
@@ -214,8 +223,7 @@ export const DEFAULT_INDUSTRY = {
   category3: ''
 }
 
-// 默认品牌
+// 品牌-默认参数
 export const DEFINE_BRAND = {
-  id: '0',
-  brandList: [{ brand: '花西子', brandId: '82755', brandSql: '花西子' }]
+  brandList: ['花西子']
 }

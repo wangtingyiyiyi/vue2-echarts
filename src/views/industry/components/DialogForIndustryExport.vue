@@ -25,12 +25,12 @@
             </el-button-group>
           </el-form-item>
           <el-form-item label="颗粒度">
-            <el-button-group v-model="form.group">
+            <el-button-group v-model="form.particle">
               <el-button
                 v-for="item in GROUP_LEVEL"
                 :key="item.value"
                 @click="handleGroup(item)"
-                :type="form.group === item.value ? 'primary' : ''">{{item.label}}</el-button>
+                :type="form.particle === item.value ? 'primary' : ''">{{item.label}}</el-button>
             </el-button-group>
           </el-form-item>
           <el-form-item label="品类展开" style="height: 28px;">
@@ -55,6 +55,7 @@
               <el-checkbox
                 v-for="item in DATA_INDEX"
                 :key="item.value"
+                :disabled="item.disabled"
                 :label="item">{{item.label}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -114,7 +115,7 @@ import {
 } from '@/utils/const.js'
 import SelectTree from '@/views/industry/components/SelectTree.vue'
 import { replenishSum } from '@/utils/common.js'
-import { previewExcel } from '@/api/industry'
+import { previewExcel } from '@/api/download'
 export default {
   name: 'DialogForIndustryExport',
   props: {
@@ -132,16 +133,16 @@ export default {
     return {
       cateFlat: [],
       agg: [],
-      indicator: [],
+      indicator: DATA_INDEX.slice(0, 3),
       group: {},
       form: {
-        id: '',
-        range: '1',
-        group: '0',
+        range: 'one_year',
+        particle: 'month',
         cateFlat: '111',
         agg: '000',
-        indicator: '0000',
-        cateName: ''
+        indicator: '0111',
+        cateList: [],
+        brandList: null
       },
       RANGE_LEVEL: RANGE_LEVEL,
       GROUP_LEVEL: GROUP_LEVEL,
@@ -165,8 +166,7 @@ export default {
     },
     // 目标行业
     handleSelectTree (data) {
-      this.form.cateName = data.label
-      this.form.id = data.id
+      this.form.cateList = data
       this.handlePreview()
     },
     // 时间范围
@@ -223,14 +223,9 @@ export default {
     },
     // 在线预览
     async handlePreview () {
-      if (!this.form.id) { return }
+      if (this.form.cateList.length === 0) { return }
       if (this.form.agg === '000') {
         this.emptyMes = '请至少选择一种品类聚合类型'
-        this.tableData = []
-        return
-      }
-      if (this.form.indicator === '0000') {
-        this.emptyMes = '请至少选择一种数据指标'
         this.tableData = []
         return
       }

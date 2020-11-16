@@ -20,17 +20,17 @@
               remote
               filterable
               collapse-tags
-              :remote-method="getBrand"
+              :remote-method="getBrandSearch"
               :loading="loading"
               :multiple-limit="5"
               popper-class="brand-select-option-class"
-              @change="changeBrand"
-              style="width: 100%">
+              style="width: 100%"
+              @change="changeBrand">
               <el-option
                 v-for="(item, index) in brandOption"
-                :key="index + item.brand"
+                :key="index + item"
                 :value="item"
-                :label="item.brand"
+                :label="item"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -39,12 +39,12 @@
               style="width: 100%"
               ref="cascader"
               popper-class="industry-cascader-wapper"
-              v-model="form.catetegoryId"
+              v-model="form.cateList"
               :options="categoryOption"
               :show-all-levels="false"
               :props="props">
               <template slot-scope="{ node, data }">
-                <span @click="changeIndustry(data)">{{getNode(node, data)}}</span>
+                <span @click="changeIndustry(data)">{{data.category}}</span>
               </template>
             </el-cascader>
           </el-form-item>
@@ -88,6 +88,7 @@
               <el-checkbox
                 v-for="item in DATA_INDEX"
                 :key="item.value"
+                :disabled="item.disabled"
                 :label="item">{{item.label}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -96,6 +97,7 @@
       <div style="width: 5%"></div>
       <div style="width: 55%">
         <Title title="Excel预览"/>
+        {{cate}}--{{brandList}}
         <div v-if="tableData.length !== 0">
           <el-table
             :data="tableData"
@@ -141,7 +143,7 @@ import {
   INDUSTRY_EXCEL_TABLE_PROP
 } from '@/utils/const.js'
 import { replenishSum, debounce } from '@/utils/common.js'
-import { previewExcel } from '@/api/industry'
+import { previewExcel } from '@/api/download'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import { mapState } from 'vuex'
 export default {
@@ -153,7 +155,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('brand', ['brandList', 'categoryId', 'categoryOptions']),
+    ...mapState('brand', ['brandList', 'cate']),
     btnDisabled () {
       return this.indicator.length === 0 || this.agg.length === 0
     }
@@ -162,7 +164,7 @@ export default {
     return {
       cateFlat: [],
       agg: [],
-      indicator: [],
+      indicator: DATA_INDEX.slice(0, 3),
       group: {},
       form: {
         id: '',
@@ -172,7 +174,7 @@ export default {
         agg: '000',
         indicator: '0000',
         cateName: '',
-        catetegoryId: '',
+        cateList: [],
         brandList: []
       },
       RANGE_LEVEL,
@@ -188,9 +190,7 @@ export default {
       brandOption: [],
       loading: false,
       props: {
-        children: 'childList',
-        value: 'id',
-        leaf: 'hasChild',
+        value: 'category',
         emitPath: false,
         checkStrictly: true,
         expandTrigger: 'hover'
@@ -204,17 +204,8 @@ export default {
     onCancel () {
       this.closeDialog()
     },
-    getNode (node, data) {
-      if (node.level === 1) {
-        return data.outCat1
-      } else if (node.level === 2) {
-        return data.outCat2
-      } else if (node.level === 3) {
-        return data.outCat3
-      }
-    },
-    changeBrand () {
-
+    changeIndustry (data) {
+      this.form.cateList = data.category
     },
     // 目标行业
     handleSelectTree (data) {
@@ -291,13 +282,20 @@ export default {
         this.emptyMes = 'Excel预览数据请求失败'
       }
     },
-    getBrand (query) {
+    changeBrand () {
+      this.form.cateList = []
+      this.categoryOption = []
+      this.getCategoryByBrands()
+    },
+    // 品牌列表模糊查询
+    getBrandSearch (query) {
       debounce(async () => {
         if (query) {
           this.loading = true
           const res = await getBrandByLikeCondition({ likeCondition: query })
           this.brandOption = []
           this.loading = false
+          console.info(res)
           if (res.code === 200) {
             this.brandOption = res.result
           } else {
@@ -309,8 +307,8 @@ export default {
         }
       })
     },
-    // 品牌分类
-    async getCategory () {
+    // 根据品牌查询行业分类
+    async getCategoryByBrands () {
       const res = await getCategorytByBrand({ brandList: this.form.brandList })
       if (res.code === 200) {
         this.categoryOption = res.result
@@ -321,12 +319,14 @@ export default {
     setBrandData () {
       this.brandOption = this.brandList
       this.form.brandList = this.brandList
-      this.form.catetegoryId = this.categoryId
-      this.categoryOption = this.categoryOptions
     }
   },
   mounted () {
-    this.setBrandData()
+    this.brandOption = this.brandList
+    this.form.brandList = this.brandList
+    this.getCategoryByBrands().then(() => {
+      this.form.cateList = this.categoryOption[0].category
+    })
   }
 }
 </script>

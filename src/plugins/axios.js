@@ -4,7 +4,8 @@ const Axios = require('axios').default
 
 const config = {
   baseURL: process.env.VUE_APP_API_URL,
-  headers: { 'Content-Type': 'application/json;charset=utf-8' }
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
+  timeout: 5000
 }
 
 const axios = Axios.create(config)

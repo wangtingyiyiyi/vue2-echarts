@@ -55,10 +55,10 @@ export default {
         allGmv.push(...item.gmvList)
         allSales.push(...item.salesList)
       })
-      if (this.viewItemVal === '1') {
+      if (this.viewItemVal === 'gmv') {
         this.tempKey = 'gmvList'
         this.maxValue = callMax(allGmv)
-      } else if (this.viewItemVal === '0') {
+      } else if (this.viewItemVal === 'sales') {
         this.tempKey = 'salesList'
         this.maxValue = callMax(allSales)
       }
@@ -67,7 +67,7 @@ export default {
       const arr = []
       brandData.forEach(item => {
         arr.push({
-          name: item.tmallBrand.brand || '',
+          name: item.brand || '',
           type: 'line',
           symbol: 'circle',
           symbolSize: 5,
@@ -79,7 +79,7 @@ export default {
     getLegend (brandData) {
       const legenList = []
       brandData.forEach(item => {
-        legenList.push(item.tmallBrand.brand)
+        legenList.push(item.brand)
       })
       return legenList
     },

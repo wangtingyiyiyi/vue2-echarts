@@ -1,7 +1,17 @@
 <template>
-  <div class="index" ref="index">
-    <!-- 一般用户 -->
-    <div v-if="isPc" style="width: 100%; height: 100%;">
+  <div v-if="!isPc" class="index">
+    <div class="mobile-wapper">
+      <div class="mobile-title mobile-text">请移步PC端查看</div>
+      <div class="mobile-url mobile-text">https://exp.meritco-group.com:9580</div>
+      <el-button type="primary" class="mobile-btn" size="medium"
+        v-clipboard:copy="copyUrl"
+        v-clipboard:success="onCopy"
+        v-clipboard:error="onError">复制链接</el-button>
+    </div>
+  </div>
+  <div class="index" ref="index" v-else>
+    <!-- 账号密码用户 -->
+    <div style="width: 100%; height: 100%;">
       <div class="top">
         <Svg-Icon icon-class="logo" class="svg-class"/>
       </div>
@@ -33,16 +43,7 @@
       </div>
       <div @click="changeLoginType" class="footer">{{isPsw ? '切换至企业微信登录' : '切换至账号登录'}}</div>
     </div>
-    <div v-else>
-      <div class="mobile-wapper">
-        <div class="mobile-title mobile-text">请移步PC端查看</div>
-        <div class="mobile-url mobile-text">https://exp.meritco-group.com:9580</div>
-        <el-button type="primary" class="mobile-btn" size="medium"
-          v-clipboard:copy="copyUrl"
-          v-clipboard:success="onCopy"
-          v-clipboard:error="onError">复制链接</el-button>
-      </div>
-    </div>
+    <!-- 路由携带参数 -->
     <div v-show="userFrom === 'query'">
       正在进入{{appName}}<i class="el-icon-loading loading-icon"></i>
     </div>

@@ -39,7 +39,7 @@
     </el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
       <template slot-scope="{row}">
-        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+        <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
     <el-table-column align="right" min-width="50px">
@@ -145,12 +145,31 @@ export default {
       const { href } = this.$router.resolve({
         path: '/industry',
         query: {
-          id: data.categoryId,
-          label: this.getCat(data),
-          remark: data.remark
+          cateList: JSON.stringify({
+            category1: data.category1,
+            category2: data.category2,
+            category3: data.category3,
+            rank: data.rank,
+            label: this.setCateLabel(data)
+          })
         }
       })
       window.open(href)
+    },
+    setCateLabel (data) {
+      switch (data.rank) {
+        case 1:
+        case '1':
+          return data.category1
+        case 2:
+        case '2':
+          return data.category1 + ' > ' + data.category2
+        case 3:
+        case '3':
+          return data.category1 + ' > ' + data.category2 + ' + ' + data.category3
+        default:
+          return ''
+      }
     },
     // 查询子节点
     async load (tree, treeNode, resolve) {

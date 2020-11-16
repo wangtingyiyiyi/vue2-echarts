@@ -7,11 +7,15 @@ export default {
     },
     sortItemVal: {
       type: String,
-      default: '1'
+      default: 'gmv'
     },
     isLoading: {
       type: Boolean,
       default: false
+    },
+    activedSortKey: {
+      type: String,
+      default: 'gmv'
     }
   },
   computed: {

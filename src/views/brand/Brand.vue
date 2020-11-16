@@ -1,15 +1,15 @@
 <template>
-
-  <div >
+  <div>
         <Brand-Setting
-          @brandOnSubmit="handleSettingParam"
+          @handleSetBrands="handleSetBrands"
+          @handleSetCategroy="handleSetCategroy"
           @handleExportDialog="handleExportDialog"/>
+
         <Empty-Line />
 
         <div class="brand-tab-wapper">
           <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
               <el-tab-pane label="品牌概览" name="brand">
-                <div v-show="hasBrandFormParam">
                   <Title class="m-b-12" title="总销售趋势"/>
 
                   <Echarts-Buttons
@@ -41,18 +41,13 @@
 
                   <Table-For-Brand
                     ref="table"
-                    :sortItemVal="sortItemVal"
+                    :activedSortKey="sortItemVal"
                     :tableData="brandTableData"
                     :isLoading="isLoadingOfBrandTable"
                     :paramOfBrandTable="paramOfBrandTable"
                     @changeSortItemVal="changeSortItemVal"/>
-                </div>
-                <div v-show="!hasBrandFormParam">
-                  <div class="empty-info">请搜索品牌</div>
-                </div>
               </el-tab-pane>
               <el-tab-pane label="SPU" name="spu">
-                <div v-show="hasBrandFormParam">
                   <div class="flex-between m-b-10">
                     <Brand-Table-Brands
                       :brands="brandList"
@@ -65,7 +60,7 @@
                   </div>
                   <Table-For-Spu
                     :isLoading="isLoadingOfSpuTable"
-                    :sortItemVal="sortItemVal"
+                    :activedSortKey="sortItemVal"
                     @changeSortItemVal="changeSortItemVal"
                     :tableData="tableSpu"/>
                   <el-pagination
@@ -77,10 +72,6 @@
                     :page-size="pageSize"
                     :total="spuTotal">
                   </el-pagination>
-                </div>
-                <div v-show="!hasBrandFormParam">
-                  <div class="empty-info">请搜索品牌</div>
-                </div>
               </el-tab-pane>
           </el-tabs>
 
@@ -101,18 +92,18 @@
           @closeDialog="exportDialogVisible = $event"/>
 
   </div>
-
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
 import { DEFINE_BRAND } from '@/utils/const.js'
 import {
   getTableForBrand,
   getChartForBrand,
-  getTableForBrandSpu
+  getTableForBrandSpu,
+  getCategorytByBrand
 } from '@/api/brand'
 import {
   getMonthOption
@@ -127,9 +118,11 @@ export default {
       groupItemVal: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
+      brandList: [],
+      cateList: [],
       brandTableData: [],
       shopTableData: [],
-      activeBrand: {},
+      activeBrand: '',
       brandChart: [],
       monthOption: [],
       selectdMonth: '',
@@ -148,10 +141,7 @@ export default {
     }
   },
   computed: {
-    hasBrandFormParam () {
-      return Object.keys(this.brandList).length !== 0
-    },
-    ...mapState('brand', ['brandList', 'categoryId'])
+    // ...mapState('brand', ['brandList', 'categoryId'])
   },
   methods: {
     ...mapMutations('brand',
@@ -159,22 +149,31 @@ export default {
         'RESET_BRAND_CATEGORY',
         'RESET_BRAND_BRANDS',
         'SET_BRAND_BRANDS',
-        'SET_BRAND_CATEGORY',
-        'SET_BRAND_SETTING',
-        'RESET_BRAND_CATEGORY_OPTION',
-        'RESET_BRAND_SETTING'
+        'SET_BRAND_CATEGORY'
       ]),
     // 切换tab
     handleTabClick () {
-      this.sortItemVal = '1'
+      this.sortItemVal = 'gmv'
       this.getChartForBrand()
-      this.getChartForShop()
+      this.getTableForBrand()
+      this.getTableForSpu()
+    },
+    handleSetBrands (brands) {
+      this.brandList = brands
+      this.getChartForBrand()
+      this.getTableForBrand()
+      this.getTableForSpu()
+      console.info(brands, 'get搜索品牌, 刷新table')
+    },
+    handleSetCategroy (cate) {
+      this.cateList = [cate]
+      this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
     },
     // 配置筛选 搜索
     handleSettingParam () {
-      this.activeBrand = this.brandList[0] || {}
+      this.activeBrand = this.brandList[0] || ''
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
@@ -236,6 +235,11 @@ export default {
     // 品牌提数回调
     handleExportExcel () {
     },
+    // spu 列表翻页
+    changeSpuPage (page) {
+      this.spuPage = page
+      this.getTableForSpu()
+    },
     // 获取月份options
     async getMonthOption () {
       const res = await getMonthOption({ range: this.rangeItemVal, particle: this.groupItemVal })
@@ -249,9 +253,9 @@ export default {
     },
     // 品牌 chart
     async getChartForBrand () {
-      if (this.activeBrand.brandId || this.activeName !== 'brand') return ''
+      if (this.activeBrand.length === 0 || this.activeName !== 'brand') return ''
       const param = {
-        cateList: [],
+        cateList: this.cateList,
         particle: this.groupItemVal,
         data: this.viewItemVal,
         range: this.rangeItemVal,
@@ -269,14 +273,14 @@ export default {
     },
     // 品牌 table
     async getTableForBrand () {
-      if (!this.activeBrand.brandId || this.activeName !== 'brand') return ''
+      if (!this.activeBrand.length === 0 || this.activeName !== 'brand') return ''
       const param = {
         range: this.rangeItemVal,
-        group: this.groupItemVal,
+        particle: this.groupItemVal,
         sort: this.sortItemVal,
-        id: this.categoryId,
+        cateList: this.cateList,
         brandList: [this.activeBrand],
-        tmallMonthList: this.tableMonth
+        month: this.tableMonth
       }
       this.paramOfBrandTable = param
       this.isLoadingOfBrandTable = true
@@ -290,21 +294,16 @@ export default {
         this.brandTableData = []
       }
     },
-    // spu 列表翻页
-    changeSpuPage (page) {
-      this.spuPage = page
-      this.getTableForSpu()
-    },
     // spu table
     async getTableForSpu () {
-      if (!this.activeBrand.brandId || this.activeName !== 'spu') return ''
+      if (!this.activeBrand.length === 0 || this.activeName !== 'spu') return ''
       const param = {
         range: this.rangeItemVal,
-        id: this.categoryId,
-        group: this.groupItemVal,
+        cateList: this.cateList,
+        particle: this.groupItemVal,
         sort: this.sortItemVal,
         brandList: [this.activeBrand],
-        tmallMonthList: this.tableMonth,
+        month: this.tableMonth,
         page: this.spuPage,
         pageSize: this.pageSize
       }
@@ -313,23 +312,37 @@ export default {
       this.isLoadingOfSpuTable = false
       if (res.code === 200) {
         this.tableSpu = res.result
-        this.spuTotal = res.total
+        this.spuTotal = res.count
       } else {
         this.$message.error('店铺SPU列表请求失败')
         this.tableSpu = []
         this.spuTotal = 0
       }
     },
+    async getCategoryByBrands () {
+      const res = await getCategorytByBrand({ brandList: this.brandList })
+      if (res.code === 200) {
+        this.cateList = [Object.assign(res.result[0], { children: null })]
+      } else {
+        this.$message.error('品牌分类请求失败')
+      }
+    },
     // 如果路由携带参数,则立刻请求行业数据
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        this.SET_BRAND_SETTING({
-          id: query.id,
-          brandList: JSON.parse(query.brandList)
-        })
+        // this.SET_BRAND_SETTING({
+        //   id: query.id,
+        //   brandList: JSON.parse(query.brandList)
+        // })
       } else {
-        this.SET_BRAND_SETTING(this.defaultBrand)
+        this.brandList = this.defaultBrand.brandList
+        this.activeBrand = this.brandList[0]
+        this.getCategoryByBrands().then(() => {
+          this.getChartForBrand()
+          this.getTableForBrand()
+          this.getTableForSpu()
+        })
       }
     }
   },
@@ -341,8 +354,6 @@ export default {
   beforeDestroy () {
     this.RESET_BRAND_BRANDS()
     this.RESET_BRAND_CATEGORY()
-    this.RESET_BRAND_CATEGORY_OPTION()
-    this.RESET_BRAND_SETTING()
   }
 }
 </script>

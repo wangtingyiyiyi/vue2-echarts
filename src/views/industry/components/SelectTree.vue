@@ -20,9 +20,9 @@
         :props="defaultProps">
         <span slot-scope="{node, data}">
           <span class="custom-tree-node">
-            <span class="tree-select-icon" v-if="data.remark === '1' || data.remark === 1" style="color: #5B8FF9;">{{data.remark}}</span>
-            <span class="tree-select-icon" v-else-if="data.remark === '2' || data.remark === 2" style="color: #5AD8A6;">{{data.remark}}</span>
-            <span class="tree-select-icon" v-else-if="data.remark === '3' || data.remark === 3" style="color: #5D7092;">{{data.remark}}</span>
+            <span class="tree-select-icon" v-if="data.rank === '1' || data.rank === 1" style="color: #5B8FF9;">{{data.rank}}</span>
+            <span class="tree-select-icon" v-else-if="data.rank === '2' || data.rank === 2" style="color: #5AD8A6;">{{data.rank}}</span>
+            <span class="tree-select-icon" v-else-if="data.rank === '3' || data.rank === 3" style="color: #5D7092;">{{data.rank}}</span>
             <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span>
             <span>{{data.label}}</span>
           </span>
@@ -39,11 +39,7 @@ export default {
   name: 'SelectTree',
   data () {
     return {
-      selectData: {
-        remark: '',
-        id: '',
-        label: ''
-      },
+      selectData: {},
       options: [],
       defaultProps: {
         children: 'children',
@@ -61,9 +57,7 @@ export default {
       return (query === '' && this.options.length === 0) ? '请输入关键字' : '暂无匹配数据'
     },
     handleNodeClick (data, node, ref) {
-      this.selectData.remark = data.remark
-      this.selectData.id = data.id
-      this.selectData.label = data.label
+      this.selectData = data
       this.$refs.select.blur()
       this.$emit('handleSelectTree', this.selectData)
     },
@@ -73,7 +67,7 @@ export default {
         if (res.code === 200) {
           // 移除自定义下children数组, 目的在于不显示自定义的子分类
           res.result.forEach(element => {
-            if (element.remark === 'define') {
+            if (element.rank === 'define') {
               delete element.children
             }
           })

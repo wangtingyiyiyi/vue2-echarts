@@ -19,38 +19,46 @@
     </el-table-column>
     <el-table-column align="right" min-width="30px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('0')">销量
-          <Svg-Icon icon-class="descending" :class="[sortItemVal == '0' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销量"
+          sortVal="sales"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">{{row.sumSales | format}}</template>
+      <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="30px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('1')">销售额
-          <Svg-Icon icon-class="descending" :class="[sortItemVal === '1' ? 'active-sort' : '']"/>
-        </div>
+         <Table-Sort-Button
+          title="销售额"
+          sortVal="gmv"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">¥{{row.sumGmv | format}}</template>
+      <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
     <el-table-column align="center" width="200" label="销售趋势">
       <template slot-scope="{row}">
-        <Line-In-Table :seriesData="row.gmvBeanList" :xAxisData="row.monthBeanList"/>
+        <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
     <el-table-column align="right" min-width="30px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('2')">销售额环比
-          <Svg-Icon icon-class="descending" :class="[sortItemVal === '2' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="销量环比"
+          sortVal="salesRate"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">{{row.gmvSequential | percentage}}</template>
+      <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
     <el-table-column align="right" min-width="30px">
       <template #header>
-        <div class="sort-button"  @click="handleSort('4')">均价
-          <Svg-Icon icon-class="descending" :class="[sortItemVal === '4' ? 'active-sort' : '']"/>
-        </div>
+        <Table-Sort-Button
+          title="均价"
+          sortVal="avgPrice"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
@@ -66,7 +74,7 @@ export default {
   methods: {
     handleClick (row, column) {
       if (column.property === 'spuname') {
-        window.open(row.spuUrl)
+        window.open(`http://detail.tmall.com/item.htm?id=${row.spuid}`)
       }
     },
     renderCell ({ column }) {

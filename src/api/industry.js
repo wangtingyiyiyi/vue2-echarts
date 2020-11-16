@@ -46,11 +46,6 @@ export function getBrandChart (params) {
   return post('cate/brand/graph', params)
 }
 
-// 行业提数 预览待导出excel
-export function previewExcel (params) {
-  return post('userInfo/preView', params)
-}
-
 // 自定义行业
 export function setDefineIndustry (params) {
   return post('industry/defineInsert', params)

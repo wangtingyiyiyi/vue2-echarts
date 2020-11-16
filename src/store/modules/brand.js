@@ -2,18 +2,13 @@ import {
   SET_BRAND_BRANDS,
   SET_BRAND_CATEGORY,
   RESET_BRAND_BRANDS,
-  RESET_BRAND_CATEGORY,
-  SET_BRAND_SETTING,
-  SET_BRAND_CATEGORY_OPTION,
-  RESET_BRAND_CATEGORY_OPTION,
-  RESET_BRAND_SETTING
+  RESET_BRAND_CATEGORY
 } from '../mutation'
+import { DEFINE_BRAND } from '@/utils/const.js'
 
 const state = {
-  brandList: [],
-  categoryId: '0',
-  settingParam: {},
-  categoryOptions: [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }]
+  brandList: DEFINE_BRAND.brandList,
+  cate: {}
 }
 
 const mutations = {
@@ -21,25 +16,13 @@ const mutations = {
     state.brandList = [...payload]
   },
   [SET_BRAND_CATEGORY] (state, payload) {
-    state.categoryId = payload
-  },
-  [SET_BRAND_CATEGORY_OPTION] (state, payload) {
-    state.categoryOptions = payload
-  },
-  [SET_BRAND_SETTING] (state, payload) {
-    state.settingParam = payload
+    state.cate = payload
   },
   [RESET_BRAND_BRANDS] (state) {
     state.brandList = []
   },
   [RESET_BRAND_CATEGORY] (state) {
-    state.categoryId = '0'
-  },
-  [RESET_BRAND_CATEGORY_OPTION] () {
-    state.categoryOptions = [{ childList: null, hasChild: false, id: '0', label: '全部', outCat1: '全部', remark: 1 }]
-  },
-  [RESET_BRAND_SETTING] (state, payload) {
-    state.settingParam = {}
+    state.cate = {}
   }
 }
 

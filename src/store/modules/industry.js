@@ -5,10 +5,7 @@ import {
   SET_INDUSTRY_CATRGOTY_TABLE_PARAM
 } from '../mutation'
 const state = {
-  categoryObj: {
-    label: '',
-    remark: ''
-  },
+  categoryObj: {},
   cateTableParam: {}
 }
 

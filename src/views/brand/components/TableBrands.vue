@@ -2,9 +2,9 @@
   <div class="brands-wapper">
     <div
       v-for="item in brands"
-      :key="item.brandId"
-      :class="['brand-item', activeBrand.brandId === item.brandId ? 'actived' : '']"
-      @click="click(item)">{{item.brand}}</div>
+      :key="item"
+      :class="['brand-item', activeBrand === item ? 'actived' : '']"
+      @click="click(item)">{{item}}</div>
   </div>
 </template>
 
@@ -17,8 +17,8 @@ export default {
       default: () => []
     },
     activeBrand: {
-      type: Object,
-      default: () => {}
+      type: String,
+      default: ''
     }
   },
   methods: {

@@ -48,7 +48,7 @@ export default {
   methods: {
     init () {
       this.chart = echarts.init(this.$refs.chart)
-      const tempKey = this.viewItemVal === '1' ? 'gmvList' : 'salesList'
+      const tempKey = this.viewItemVal === 'gmv' ? 'gmvList' : 'salesList'
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',

@@ -11,7 +11,6 @@
           <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
 
               <el-tab-pane label="行业概览" name="industry">
-                <div v-show="hasCategory">
                   <Title title="总销售趋势"/>
                   <div ref="refIndustryEchart">
                     <Chart-For-Industry
@@ -31,26 +30,25 @@
                     :activedSortKey="sortItemVal"
                     @handleCate="brandOnSubmit"
                     @handleIndustrySort="handleIndustrySort"/>
-                </div>
-
-                <div v-show="!hasCategory">
-                  <div class="empty-info">请选择行业</div>
-                </div>
               </el-tab-pane>
 
               <el-tab-pane label="品牌排行" name="brand">
-                <div v-show="hasCategory">
                   <Title title="总销售趋势"/>
-                  <Echarts-Buttons
-                    :activeVal="viewItemVal"
-                    style="width: 100%"
-                    class="m-b-5"
-                    @handleEchartsClick="handleEchartsClick"/>
+                  <div style="display: flex; justify-content: space-between;">
+                    <Echarts-Buttons
+                      :activeVal="viewItemVal"
+                      style="width: 100%"
+                      @handleEchartsClick="handleEchartsClick"/>
+                    <Month-Options
+                      :monthOption="monthOption"
+                      :selectdMonth="chartSelectMonth"
+                      @handleSelectdMonth="handleChartSelectdMonth"/>
+                  </div>
                   <div ref="refBrandChart">
                     <Chart-For-Brand
-                    :viewItemVal="viewItemVal"
-                    style="width: 100%; height: 300px"
-                    :brandEchart="brandEchart"/>
+                      :viewItemVal="viewItemVal"
+                      style="width: 100%; height: 300px"
+                      :brandEchart="brandEchart"/>
                   </div>
                   <div class="table-title-wapper">
                     <Title title="按品牌展开"/>
@@ -73,11 +71,6 @@
                     :page-size="pageSize"
                     :total="brandCount">
                   </el-pagination>
-                </div>
-
-                <div v-show="!hasCategory">
-                  <div class="empty-info">请选择行业</div>
-                </div>
               </el-tab-pane>
           </el-tabs>
           <!-- tab buttons -->
@@ -142,6 +135,7 @@ export default {
       categoryForm: {},
       monthOption: [],
       selectdMonth: '',
+      chartSelectMonth: '',
       industryEchart: {},
       industryTableData: [],
       isLoadingIndustryTable: false,
@@ -167,10 +161,7 @@ export default {
   },
   computed: {
     ...mapState('industry', ['categoryObj']),
-    ...mapState('user', ['type']),
-    hasCategory: function () {
-      return Object.keys(this.categoryForm).length !== 0
-    }
+    ...mapState('user', ['type'])
   },
   methods: {
     ...mapMutations('industry', [
@@ -178,13 +169,10 @@ export default {
       'RESET_INDUSTRY_CATRGOTY_TABLE_PARAM',
       'SET_INDUSTRY_CATEGORY',
       'RESET_INDUSTRY_CATEGORY']),
-    handleDefineDialog (val) {
-      // console.info(val)
-    },
     // 切换tab
     handleTabClick (tab) {
       this.page = 1
-      this.sortItemVal = '1'
+      this.sortItemVal = 'gmv'
       this.getIndustryFlatList()
       this.getIndustryEchart()
       this.getBrandList()
@@ -253,7 +241,6 @@ export default {
       this.dialogVisible = true
     },
     handleExportExcel (param) {
-      // this.verifyDownload(param)
       this.totalData = 1
       this.iconName = 'el-icon-loading'
       const that = this
@@ -295,9 +282,7 @@ export default {
     // 自写验证下载
     async verifyDownload (param) {
       const res = await getVerifyDownload(param)
-      if (res.code !== 500) {
-
-      } else {
+      if (res.code === 500) {
         this.$message.error(res.message)
       }
     },
@@ -308,10 +293,21 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
     },
+    // 品牌堆积图修改montth
+    handleChartSelectdMonth (val) {
+      this.chartSelectMonth = val
+      this.getBrandEchart()
+    },
     // 行业tab 图表
     async getIndustryEchart () {
       if (this.activeName !== 'industry') return ''
-      const param = Object.assign({ cateList: [this.categoryForm] }, { range: this.rangeItemVal, particle: this.groupItemVal })
+      const param = {
+        cateList: [this.categoryForm],
+        range: this.rangeItemVal,
+        particle: this.groupItemVal,
+        data: this.viewItemVal,
+        month: this.selectdMonth
+      }
       const loadingInstance = refLoading(this.$refs.refIndustryEchart)
       const res = await getIndustryEchart(param)
       loadingInstance.close()
@@ -368,7 +364,8 @@ export default {
         cateList: [this.categoryForm],
         range: this.rangeItemVal,
         particle: this.groupItemVal,
-        data: this.viewItemVal
+        data: this.viewItemVal,
+        month: this.chartSelectMonth
       }
       const loadingInstance = refLoading(this.$refs.refBrandChart)
       const res = await getBrandChart(param)
@@ -395,8 +392,8 @@ export default {
       const res = await getIndustryBrandTable(param)
       this.isLoadingBrandTable = false
       if (res.code === 200) {
-        // this.brandCount = res.result.brandCount
-        // this.brandTableData = res.result.detailsBeanList
+        this.brandCount = res.count
+        this.brandTableData = res.result
       } else {
         this.$message.error('行业品牌列表请求失败')
         this.brandCount = 0
@@ -409,6 +406,7 @@ export default {
       if (res.code === 200) {
         this.monthOption = res.result
         this.selectdMonth = this.monthOption[0]
+        this.chartSelectMonth = this.monthOption[0]
       } else {
         this.$message.error('行业分类月份列表请求失败')
       }
@@ -417,7 +415,8 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        this.SET_INDUSTRY_CATEGORY(query)
+        console.info(JSON.parse(query.cateList))
+        this.SET_INDUSTRY_CATEGORY(JSON.parse(query.cateList))
         this.brandOnSubmit()
       } else {
         this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)

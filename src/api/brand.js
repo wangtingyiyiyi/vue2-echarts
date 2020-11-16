@@ -3,17 +3,17 @@ import { post } from '@/plugins/axios'
 
 // 品牌模糊查询
 export function getBrandByLikeCondition (params) {
-  return post('brand/list', params)
+  return post('brand/search', params)
 }
 
 // 品牌分类
 export function getCategorytByBrand (params) {
-  return post('brandShop/categorys', params)
+  return post('brand/cate', params)
 }
 
 // 品牌概览 table
 export function getTableForBrand (params) {
-  return post('brandShop/list', params)
+  return post('brand/list', params)
 }
 
 // 品牌概览 chart
