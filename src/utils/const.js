@@ -216,7 +216,7 @@ export const APP_NAME = '欢迎登录久谦中台'
 
 // 行业-默认参数
 export const DEFAULT_INDUSTRY = {
-  remark: '1',
+  rank: '1',
   label: '彩妆/美护工具',
   category1: '彩妆/美护工具',
   category2: '',

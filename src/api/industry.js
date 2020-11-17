@@ -1,13 +1,7 @@
 import { post } from '@/plugins/axios'
 
-// 抽屉中自定义行业列表
-export function getIndustryDefineList (params) {
-  return post('industry/defineList', params)
-}
-
 // 配置筛选 option
 export function getIndustryCategory (params) {
-  // return post('industry/category', params)
   return post('cate/list', params)
 }
 
@@ -46,17 +40,7 @@ export function getBrandChart (params) {
   return post('cate/brand/graph', params)
 }
 
-// 自定义行业
-export function setDefineIndustry (params) {
-  return post('industry/defineInsert', params)
-}
-
-// 自定义行业 删除
-export function delDefineIndustry (params) {
-  return post('industry/defineDel', params)
-}
-
-// select tree
-export function getCategoryTreeByCategoyrId (params) {
-  return post('industry/listIdCate', params)
-}
+// // select tree
+// export function getCategoryTreeByCategoyrId (params) {
+//   return post('industry/listIdCate', params)
+// }

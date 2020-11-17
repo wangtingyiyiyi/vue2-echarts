@@ -57,6 +57,14 @@ export default {
       asyncTree: []
     }
   },
+  watch: {
+    defaultObj: {
+      deep: true,
+      handler: function (params) {
+        this.selectData = this.defaultObj
+      }
+    }
+  },
   mounted () {
     this.selectData = this.defaultObj
   },

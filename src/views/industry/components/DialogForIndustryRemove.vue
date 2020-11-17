@@ -11,9 +11,9 @@
       width="432px">
       <div class="title">
         <Svg-Icon icon-class="question" class="icon"/>
-        <div>确认删除<span class="warning-color"> {{removeObj.category}} </span>吗？</div>
+        <div>确认删除<span class="warning-color"> {{removeObj.title}} </span>吗？</div>
       </div>
-      <div class="conent">您正在删除{{removeObj.category}}行业。删除后本条自定义不能恢复。</div>
+      <div class="conent">您正在删除{{removeObj.title}}行业。删除后本条自定义不能恢复。</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onCancel">取 消</el-button>
         <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -42,7 +42,7 @@ export default {
       this.$emit('closeDialog', false)
     },
     onSubmit () {
-      this.$emit('onSubmit', [this.removeObj.categoryId])
+      this.$emit('onSubmit', [this.removeObj.id])
     }
   }
 }

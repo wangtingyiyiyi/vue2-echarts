@@ -4,8 +4,7 @@ const Axios = require('axios').default
 
 const config = {
   baseURL: process.env.VUE_APP_API_URL,
-  headers: { 'Content-Type': 'application/json;charset=utf-8' },
-  timeout: 5000
+  headers: { 'Content-Type': 'application/json;charset=utf-8' }
 }
 
 const axios = Axios.create(config)
@@ -46,6 +45,7 @@ axios.interceptors.response.use(
 )
 
 export function post (url, params = {}) {
+  console.info(url, params)
   return new Promise((resolve, reject) => {
     axios.post(url, params)
       .then(response => {

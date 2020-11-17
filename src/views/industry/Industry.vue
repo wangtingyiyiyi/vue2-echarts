@@ -92,7 +92,7 @@
             @handleDrawerBtn="handleDrawerBtn"/>
           <Drawer-Content
             :drawerShow="drawerShow"
-            @handleSearch="handleSearch"/>
+            @handleDefineSearch="handleDefineSearch"/>
       </Drawer>
       <Download-Button v-if="totalData" v-permission :loadingProgress="loadingProgress" :iconName="iconName"/>
       <!-- 行业提数 -->
@@ -157,7 +157,8 @@ export default {
       meritcoTree: [],
       // total下载进度
       totalData: 0,
-      defaultIndustry: DEFAULT_INDUSTRY
+      defaultIndustry: DEFAULT_INDUSTRY,
+      defineItemId: ''
     }
   },
   computed: {
@@ -233,9 +234,19 @@ export default {
       this.handleRoute()
     },
     // 抽屉中，自定义行业查询
-    handleSearch (param) {
+    handleDefineSearch (param) {
       this.handleDrawerClose(false)
-      this.brandOnSubmit(param)
+      this.defaultIndustry = {
+        rank: param.rank,
+        label: param.label
+      }
+      this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
+      this.defineItemId = param.id
+      this.page = 1
+      this.getIndustryEchart()
+      this.getIndustryFlatList()
+      this.getBrandList()
+      this.getBrandEchart()
     },
     // 行业提数 弹出框
     handleExportDialog () {
@@ -303,7 +314,8 @@ export default {
     async getIndustryEchart () {
       if (this.activeName !== 'industry') return ''
       const param = {
-        cateList: [this.categoryForm],
+        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
+        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -341,7 +353,8 @@ export default {
       if (this.activeName !== 'industry') return ''
       this.industryTableData = []
       const param = {
-        cateList: [this.categoryForm],
+        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
+        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -362,7 +375,8 @@ export default {
     async getBrandEchart () {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
-        cateList: [this.categoryForm],
+        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
+        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -381,13 +395,14 @@ export default {
     async getBrandList () {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
+        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
+        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
         sort: this.sortItemVal,
         page: this.page,
-        pageSize: this.pageSize,
-        cateList: [this.categoryForm]
+        pageSize: this.pageSize
       }
       this.isLoadingBrandTable = true
       const res = await getIndustryBrandTable(param)

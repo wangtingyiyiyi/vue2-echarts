@@ -16,76 +16,72 @@
         <div class="header">
           <el-input
             v-model="likeCondition"
-            placeholder="请输入关键字，回车搜索"
             clearable
+            placeholder="请输入关键字，回车搜索"
             @clear="handleFilter"
             @keydown.enter.native="handleFilter"></el-input>
         </div>
         <el-checkbox
           v-model="checkAll"
-          class="m-l-16 check-all"
+          class="m-l-16 p-10-0"
           :disabled="!showExpandTree"
-          @change="handleCheckAll">全选</el-checkbox>
+          @change="handleCheckAll">全选{{showExpandTree}}</el-checkbox>
         <!-- 异步请求树 -->
         <el-tree
           v-show="!showExpandTree"
-          :data="leftTree"
-          :props="leftTreeProps"
           show-checkbox
-          node-key="id"
-          ref="leftTree1"
+          node-key="label"
+          ref="lazyTree"
           lazy
           class="tree-wapper beauty-scroll"
-          :render-content="renderContent"
+          :data="lazyTreeData"
+          :props="{ label: 'category', isLeaf: 'isLeaf' }"
           :load="loadNode"
           :check-strictly="false"
-          :default-expanded-keys="allRightParentKeys"
-          @check="handleLeftTreeCheck">
+          :default-expanded-keys="allRightParentKeys">
         </el-tree>
         <!-- 搜索树 -->
         <el-tree
           v-show="showExpandTree"
-          :data="leftTree"
-          :props="leftTreeProps"
+          :data="searchTreeData"
+          :props="{ label: 'category', isLeaf: 'isLeaf' }"
           show-checkbox
-          node-key="id"
-          ref="leftTree2"
+          node-key="label"
+          ref="searchTree"
           :default-expand-all="true"
-          class="tree-wapper beauty-scroll"
-          :render-content="renderContent"
-          @check="handleLeftTreeCheck">
+          class="tree-wapper beauty-scroll">
         </el-tree>
       </div>
+
       <div class="transfer-center">
         <el-button
           type="primary"
           icon="el-icon-arrow-right"
-          :disabled="disabledGoRight"
+          class="center-btn"
           @click="goRight"></el-button>
         <el-button
           type="primary"
           icon="el-icon-arrow-left"
-          :disabled="disabledGoLeft"
+          class="center-btn"
           @click="goLeft"></el-button>
         <el-button
           type="primary"
           icon="el-icon-d-arrow-left"
-          :disabled="selectedIds.length === 0"
+          class="center-btn"
           @click="allGoLeft"></el-button>
       </div>
+
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
         <!-- 选中树 -->
         <el-tree
           show-checkbox
           ref="rightTree"
-          node-key="id"
-          class="tree-wapper beauty-scroll"
+          node-key="label"
+          class="right-tree-wapper beauty-scroll"
           :data="rightTree"
-          :props="{ children: 'childList' }"
-          :default-expand-all="true"
-          :render-content="renderContent"
-          @check="handleRightTreeCheck">
+          :props="{ label: 'category' }"
+          :default-expand-all="false">
         </el-tree>
       </div>
     </div>
@@ -93,25 +89,25 @@
     <el-form inline class="m-t-24" :model="form" ref="form">
       <el-form-item
         label="自定义标签名称"
-        prop="category"
+        prop="title"
         :rules="{ required: true, message: '请输入自定义品类标签名'}">
         <el-input
           placeholder="保存选中对比品类标签"
-          v-model="form.category"
+          v-model="form.title"
           style="width: 215px"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="onCancel">取 消</el-button>
+      <el-button @click="closeDialog">取 消</el-button>
       <el-button type="primary" @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
 </transition>
-
 </template>
 
 <script>
-import { getCategoryTree, getCategoryTreeByCategoyrId } from '@/api/industry'
+import { getCategoryTree } from '@/api/industry'
+import { getDefineTree } from '@/api/define'
 
 // import { refLoading } from '@/utils/element.js'
 
@@ -131,228 +127,75 @@ export default {
       default: ''
     }
   },
-  watch: {
-    editDefineName: {
-      immediate: true,
-      deep: true,
-      handler: function (editDefineName) {
-        this.form.category = editDefineName
-      }
-    }
-  },
+  // watch: {
+  //   editDefineName: {
+  //     immediate: true,
+  //     deep: true,
+  //     handler: function (editDefineName) {
+  //       this.form.category = editDefineName
+  //     }
+  //   }
+  // },
   data () {
     return {
       likeCondition: '',
       checkAll: false,
       form: {
-        category: ''
+        cateList: '',
+        title: ''
       },
-      leftTree: [],
+      lazyTreeData: [],
+      searchTreeData: [],
       rightTree: [],
       showExpandTree: false,
-      leftTreeProps: {
-        isLeaf: 'isLeaf',
-        children: 'childList',
-        disabled: this.disabledFn
-      },
-      selectedIds: [], // 全部的选中节点id
-      allRightKeys: [],
-      rightHalfKeys: [],
       rootTree: [],
-      allRightLeafKeys: [],
       allRightParentKeys: [],
-      ids: [],
-      disabledGoLeft: true,
-      disabledGoRight: true,
-      checkStrictly: false
+      checkedNotes: []
     }
   },
   methods: {
-    disabledFn (data, node) {
-      const keys1 = this._.cloneDeep(this.allRightLeafKeys)
-      const keys2 = this._.cloneDeep(this.selectedIds)
-      keys1.push(...keys2)
-      return keys1.includes(data.id)
-    },
-    // 控制 goRight 按钮点击状态
-    handleLeftTreeCheck (data, tree) {
-      this.disabledGoRight = tree.checkedNodes.length === 0
-    },
-    // 控制 goLeft 按钮点击状态
-    handleRightTreeCheck (data, tree) {
-      this.disabledGoLeft = tree.checkedNodes.length === 0
-    },
     closeDialog () {
       this.$emit('closeDialog', false)
     },
-    onCancel () {
-      this.closeDialog()
-    },
     onSubmit () {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
-          const param = {
-            categoryDefine: this.form.category,
-            list: this.selectedIds
-          }
-          this.$emit('onSubmit', param)
+          this.form.cateList = this.rightTree
+          this.$emit('onSubmit', this.form)
         }
       })
     },
     // 全选
     handleCheckAll (checked) {
-      const ids = []
-      if (checked) {
-        this.disabledGoRight = false
-        this.leftTree.forEach(level1 => {
-          if (level1.hasChild) {
-            level1.childList.forEach(level2 => {
-              if (level2.hasChild) {
-                level2.childList.forEach(level3 => {
-                  ids.push(level3.id)
-                })
-              }
-            })
-          }
-        })
-      }
-      this.$refs.leftTree2.setCheckedKeys(ids)
-    },
-    // tree 节点渲染函数
-    renderContent (h, { node, data, store }) {
-      const k = `outCat${data.remark}`
-      return (
-        <span class="custom-tree-node">
-          <span>{data[k]}</span>
-        </span>)
     },
     goRight () {
-      // this.selectedIds = []
-      const checked2 = this.$refs.leftTree2.getCheckedKeys(true)
-      const checked1 = this.$refs.leftTree1.getCheckedKeys(false)
-      this.selectedIds.push(...checked1, ...checked2)
-      this.selectedIds = this._.uniq(this.selectedIds) // 数组去重
-      this.disabledGoRight = true
+      this.checkedNotes = this.$refs.lazyTree.getCheckedNodes()
       this.renderRightTree()
     },
     goLeft () {
-      const checked = this.$refs.rightTree.getCheckedKeys() // 选中节点
-      const halfChecked = this.$refs.rightTree.getHalfCheckedKeys() // 半选节点
-      const selectedIds = this._.cloneDeep(this.selectedIds)
-      this.selectedIds = this._.pullAll(selectedIds, checked.concat(halfChecked))
-      this.disabledGoLeft = true
-      this.renderLeftTree().then(() => {
-        this.renderRightTree()
-      })
+
     },
     allGoLeft () {
-      this.selectedIds = []
-      this.allRightLeafKeys = []
-      this.allRightParentKeys = []
-      this.rightTree = []
-      this.leftTree = this.rootTree
-      this.disabledGoLeft = true
-      this.$refs.leftTree1.setCheckedKeys([])
-      this.$refs.leftTree2.setCheckedKeys([])
     },
-    // 搜索回调
+    // 关键字搜索
     handleFilter () {
-      this.leftTree = []
+      this.searchTreeData = []
       if (this.likeCondition) {
         this.showExpandTree = true
         this.$nextTick(() => {
           this.getCategoryTree({ likeCondition: this.likeCondition })
             .then((res) => {
-              this.leftTree = res
+              this.searchTreeData = res
             })
         })
       } else {
         this.showExpandTree = false
-        this.leftTree = this.rootTree
-      }
-    },
-    // right tree
-    async renderRightTree () {
-      if (this.selectedIds.length === 0) {
-        this.selectedIds = []
-        this.allRightLeafKeys = []
-        this.allRightParentKeys = []
-        this.rightTree = []
-        this.rightHalfKeys = []
-        this.allRightKeys = []
-        return
-      }
-      const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 0 })
-      if (res.code === 200) {
-        this.rightTree = res.result
-        this.allRightKeys = []
-        const allRightLeafKeys = []
-        this.allRightParentKeys = []
-        res.result.forEach(item => {
-          this.allRightKeys.push(item.id)
-          this.rightHalfKeys.push(item.id)
-          this.allRightParentKeys.push(item.id)
-          if (item.hasChild) {
-            item.childList.forEach(level2 => {
-              this.allRightKeys.push(level2.id)
-              this.allRightParentKeys.push(level2.id)
-              if (level2.hasChild) {
-                level2.childList.forEach(level3 => {
-                  this.allRightKeys.push(level3.id)
-                  allRightLeafKeys.push(level3.id)
-                })
-              }
-            })
-          }
-        })
-        const selectedIds = []
-        // 如果当前子分类数量 = 全部子分类数量，则默认父分类选中
-        res.result.forEach(level1 => {
-          if (level1.count === level1.childList.length) {
-            selectedIds.push(level1.id)
-          }
-          if (level1.hasChild) {
-            level1.childList.forEach(level2 => {
-              if (level2.count === level2.childList.length) {
-                selectedIds.push(level2.id)
-              }
-            })
-          }
-        })
-        this.allRightLeafKeys = this._.uniq(allRightLeafKeys)
-        // const selectedIds = this.selectedIds
-        selectedIds.push(...this.allRightLeafKeys)
-        this.selectedIds = this._.uniq(selectedIds)
-        this.$nextTick(() => {
-          this.$refs.leftTree1.setCheckedKeys(this.selectedIds, false)
-          this.$refs.leftTree2.setCheckedKeys(this.selectedIds, false)
-        })
-      }
-    },
-    // left tree
-    async renderLeftTree () {
-      if (this.selectedIds.length === 0) {
-        this.allGoLeft()
-        return
-      }
-      const res = await getCategoryTreeByCategoyrId({ cateIdList: this.selectedIds, state: 1 })
-      if (res.code === 200) {
-        this.leftTree = res.result
+        this.searchTreeData = this.rootTree
       }
     },
     async getCategoryTree (param = {}) {
-      // 去掉value为空字符串的键值对
-      const keys = Object.keys(param)
-      keys.forEach(k => {
-        if (!param[k]) {
-          delete param[k]
-        }
-      })
       const res = await getCategoryTree(param)
       if (res.code === 200) {
-        res.result.forEach(item => {
-          item.isLeaf = !item.hasChild
-        })
         return res.result
       }
     },
@@ -360,7 +203,7 @@ export default {
     loadNode (node = {}, resolve) {
       if (node.level === 0) {
         this.getCategoryTree().then((res) => {
-          this.leftTree = res
+          this.lazyTreeData = res
           this.rootTree = this._.cloneDeep(res)
         })
       } else {
@@ -368,22 +211,19 @@ export default {
           resolve(res)
         })
       }
+    },
+    async renderRightTree () {
+      const res = await getDefineTree({ cateList: this.checkedNotes })
+      if (res.code === 200) {
+        this.rightTree = res.result
+      }
     }
-  },
-  mounted () {
-    this.selectedIds = this.cateId
-    this.renderRightTree()
+
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 .indusrty-select-dialog >>>
   .el-dialog
     margin-left calc((100vw - 1100px) / 2) // 屏幕宽度 - （抽屉宽度 + 弹出框宽度 ）的一半
@@ -398,7 +238,9 @@ export default {
       width 8%
       margin auto 0
       text-align center
-      .el-button
+      .center-btn
+        width: 70%
+        padding 5px 15px
         margin-left 0
         margin-bottom 10px
     .transfer-right
@@ -408,19 +250,10 @@ export default {
     .header
       background-color #FAFAFA
       padding 16px
+      height 32px
+      line-height 2
     .tree-wapper
       height 50vh
-    .check-all
-      padding 10px 0
-    .el-button--small
-      width: 70%
-      padding-left 15%
-      padding-right 15%
-    .el-button--primary.is-disabled
-      background-color #f5f5f5
-      border-color #ddd
-      color #ccc
-    .el-button--small
-      padding: 5px 15px
-
+    .right-tree-wapper
+      height calc(50vh + 40px)
 </style>

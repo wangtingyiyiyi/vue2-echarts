@@ -9,9 +9,11 @@
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div class="item-title" @click="showMore(index)">
           <div class="left">
-            <span @click.stop="handleEdit(item)" style="cursor: pointer;"><Svg-Icon icon-class="left" class="m-r-7" style="color: #5b8ff9" /></span>
+            <span @click.stop="handleEdit(item)" style="cursor: pointer;">
+              <Svg-Icon icon-class="left" class="m-r-7" style="color: #5b8ff9" />
+            </span>
             <Text-Button
-              :text="item.category"
+              :text="item.title"
               @handleClick="handleSearch(item)"
               class="font-size-14">
             </Text-Button>
@@ -52,7 +54,7 @@
 </template>
 
 <script>
-import { getIndustryDefineList, setDefineIndustry, delDefineIndustry } from '@/api/industry.js'
+import { getIndustryDefineList, setIndustryDefineList, removeIndustryDefineList } from '@/api/define.js'
 import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 import DialogForIndustryRemove from '@/views/industry/components/DialogForIndustryRemove.vue'
@@ -101,12 +103,12 @@ export default {
     handleSearch (data) {
       // event.stopPropagation()
       const param = {
-        label: data.category,
-        id: data.categoryId,
-        remark: 'define'
+        label: data.title,
+        id: data.id,
+        rank: 'define'
       }
-      this.SET_INDUSTRY_CATEGORY(param)
-      this.$emit('handleSearch', param)
+      // this.SET_INDUSTRY_CATEGORY(param)
+      this.$emit('handleDefineSearch', param)
     },
     // 点击展开或者收起
     showMore (index) {
@@ -128,8 +130,8 @@ export default {
       }
     },
     // 自定义行业删除回调
-    async onRemove (categoryId) {
-      const res = await delDefineIndustry({ categoryIdList: categoryId })
+    async onRemove () {
+      const res = await removeIndustryDefineList({ id: this.removeObj.id })
       if (res.code === 200) {
         this.$message.success('删除成功')
         this.removeDialogVisible = false
@@ -148,11 +150,11 @@ export default {
     // dialog 保存回调
     async onSubmit (param) {
       this.defineDialogVisible = false
-      // 编辑
-      if (this.categoryId !== '') {
-        param.categoryId = this.categoryId
-      }
-      const res = await setDefineIndustry(param)
+      // // 编辑
+      // if (this.categoryId !== '') {
+      //   param.categoryId = this.categoryId
+      // }
+      const res = await setIndustryDefineList(param)
       if (res.code === 200) {
         this.$message.success('保存成功')
         this.getDefineList()

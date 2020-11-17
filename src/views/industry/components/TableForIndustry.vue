@@ -6,7 +6,7 @@
     cell-class-name="tableCellClass"
     ref="table"
     lazy
-    row-key="categoryId"
+    row-key="label"
     :load="load"
     style="width: 100%">
     <el-table-column prop="category2" label="子品类" width="220px">
@@ -174,7 +174,14 @@ export default {
     // 查询子节点
     async load (tree, treeNode, resolve) {
       const cateTableParam = { ...this.cateTableParam }
-      const param = Object.assign(cateTableParam, { id: tree.categoryId, remark: tree.remark })
+      const param = Object.assign(cateTableParam, {
+        cateList: [{
+          category1: tree.category1,
+          category2: tree.category2,
+          category3: tree.category3,
+          rank: tree.rank
+        }]
+      })
       const res = await getIndustryFlatList(param)
       if (res.code === 200) {
         resolve(res.result)
