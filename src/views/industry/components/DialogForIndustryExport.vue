@@ -13,7 +13,7 @@
         <Title title="提数配置"/>
         <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
           <el-form-item label="目标行业">
-            <Select-Tree @handleSelectTree="handleSelectTree"/>
+            <Industry-Select-Tree :defaultObj="categoryObj" @handleSelectTree="handleSelectTree"/>
           </el-form-item>
           <el-form-item label="时间范围">
             <el-button-group v-model="form.range">
@@ -63,6 +63,7 @@
       </div>
       <div style="width: 5%"></div>
       <div style="width: 55%">
+        {{form}}
         <Title title="Excel预览"/>
         <div v-if="tableData.length !== 0">
           <el-table
@@ -98,7 +99,7 @@
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="onCancel">取消</el-button>
+      <el-button @click="closeDialog">取消</el-button>
       <el-button type="primary" @click="onSubmit" :disabled="btnDisabled">导出</el-button>
     </span>
   </el-dialog>
@@ -113,9 +114,10 @@ import {
   DATA_INDEX,
   INDUSTRY_EXCEL_TABLE_PROP
 } from '@/utils/const.js'
-import SelectTree from '@/views/industry/components/SelectTree.vue'
+import IndustrySelectTree from '@/views/industry/components/IndustrySelectTree.vue'
 import { replenishSum } from '@/utils/common.js'
 import { previewExcel } from '@/api/download'
+import { mapState } from 'vuex'
 export default {
   name: 'DialogForIndustryExport',
   props: {
@@ -124,11 +126,7 @@ export default {
       default: false
     }
   },
-  computed: {
-    btnDisabled () {
-      return this.indicator.length === 0 || this.agg.length === 0
-    }
-  },
+  components: { IndustrySelectTree },
   data () {
     return {
       cateFlat: [],
@@ -156,17 +154,23 @@ export default {
       max: 1048576
     }
   },
-  components: { SelectTree },
+  computed: {
+    ...mapState('industry', ['categoryObj']),
+    btnDisabled () {
+      return this.indicator.length === 0 || this.agg.length === 0
+    }
+  },
+  mounted () {
+    this.form.cateList = [this.categoryObj]
+  },
   methods: {
     closeDialog () {
       this.$emit('closeDialog', false)
     },
-    onCancel () {
-      this.closeDialog()
-    },
     // 目标行业
     handleSelectTree (data) {
-      this.form.cateList = data
+      console.info(data)
+      this.form.cateList = [data]
       this.handlePreview()
     },
     // 时间范围

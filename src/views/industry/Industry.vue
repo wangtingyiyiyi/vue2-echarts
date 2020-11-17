@@ -1,10 +1,11 @@
 <template>
-    <div  >
-
+    <div>
       <Industry-Setting
+        :defaultObj="defaultIndustry"
         @handleFilter="drawerShow = $event"
         @industryNodeClick="brandOnSubmit"
         @handleExportDialog="handleExportDialog"/>
+
       <Empty-Line />
 
       <div class="industry-tab-wapper">
@@ -416,7 +417,8 @@ export default {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
         console.info(JSON.parse(query.cateList))
-        this.SET_INDUSTRY_CATEGORY(JSON.parse(query.cateList))
+        this.defaultIndustry = JSON.parse(query.cateList)
+        this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
         this.brandOnSubmit()
       } else {
         this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
