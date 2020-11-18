@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     closeDialog () {
-      console.info('closeDialog from mixin')
       this.$emit('closeDialog', false)
     },
     handleOnExcel () {
@@ -29,13 +28,11 @@ export default {
       this.$emit('handleExportExcel', this.form)
     },
     handleExcelHeader (regulator, excelHeader) {
-      console.info('handleExcelHeader from mixin')
       this.regulatorForm = regulator
       this.excelHeader = excelHeader
       this.handlePreview()
     },
     async handlePreview () {
-      console.info('handlePreview from mixin')
       if (this.regulatorForm.agg === undefined || this.regulatorForm.agg === '0000') {
         this.emptyMes = '请至少选择一种品类聚合类型'
         this.tableData = []

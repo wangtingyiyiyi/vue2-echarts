@@ -282,7 +282,7 @@ export default {
       if (this.activeName !== 'industry') return ''
       const param = {
         cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -321,7 +321,7 @@ export default {
       this.industryTableData = []
       const param = {
         cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -343,7 +343,7 @@ export default {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
         cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -363,7 +363,7 @@ export default {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
         cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        id: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -409,9 +409,8 @@ export default {
     }
   },
   mounted () {
-    this.getMonthOption().then(() => {
-      this.handleRoute()
-    })
+    this.handleRoute()
+    this.getMonthOption()
   },
   beforeDestroy () {
     this.RESET_INDUSTRY_CATEGORY()

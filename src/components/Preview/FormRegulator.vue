@@ -32,7 +32,8 @@
         <el-checkbox
           v-for="item in CATEGORT_GROUP"
           :key="item.value"
-          :label="item">{{item.label}}</el-checkbox>
+          :label="item"
+          @change="val => handleCurrentAgg(val, item)">{{item.label}}</el-checkbox>
       </el-checkbox-group>
     </el-form-item>
     <el-form-item label="数据指标" style="height: 28px;">
@@ -78,7 +79,8 @@ export default {
       CATEGORY_LEVEL,
       CATEGORT_GROUP,
       DATA_INDEX,
-      INDUSTRY_EXCEL_TABLE_PROP
+      INDUSTRY_EXCEL_TABLE_PROP,
+      currentCheckedAgg: {}
     }
   },
   methods: {
@@ -94,9 +96,16 @@ export default {
     changeCateFlat (val) {
       this.handleSum(val, 'cateFlat', 3)
     },
+    handleCurrentAgg (val, item) {
+      val ? this.currentCheckedAgg = item : this.currentCheckedAgg = {}
+    },
     // 按照品类聚合
     changeAgg (arr) {
-      this.handleSum(arr, 'agg', 4)
+      if (this.currentCheckedAgg.label === '按品名') {
+        arr.push(CATEGORT_GROUP[0])
+        this.agg = this._.uniqBy(arr, 'label')
+      }
+      this.handleSum(this.agg, 'agg', 4)
     },
     // 按照数据指标
     changeIndicator (arr) {

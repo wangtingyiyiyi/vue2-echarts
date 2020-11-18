@@ -368,9 +368,8 @@ export default {
     }
   },
   mounted () {
-    this.getMonthOption().then(() => {
-      this.handleRoute()
-    })
+    this.handleRoute()
+    this.getMonthOption()
   },
   beforeDestroy () {
     this.RESET_BRAND_BRANDS()
