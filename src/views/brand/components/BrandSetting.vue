@@ -1,19 +1,24 @@
 <template>
   <div class="brand-setting-wapper">
-    <el-form :model="brandForm" class="m-t-20" label-position="left" label-width="70px" ref="brandForm">
+    <el-form
+      ref="brandForm"
+      class="m-t-20"
+      label-position="left"
+      label-width="70px"
+      :model="brandForm" >
       <el-form-item label="搜索品牌">
         <el-select
           v-model="brandForm.brandList"
           value-key="brand"
+          style="width: 600px"
+          popper-class="brand-select-option-class"
           multiple
           remote
           filterable
           :remote-method="getBrandSearch"
           :loading="loading"
           :multiple-limit="5"
-          popper-class="brand-select-option-class"
-          @change="changeBrand"
-          style="width: 600px">
+          @change="changeBrand">
           <el-option
             v-for="(item, index) in brandOption"
             :key="index + item"
@@ -21,18 +26,23 @@
             :label="item"
           ></el-option>
         </el-select>
-        <Text-Button text="品牌提数" v-permission  @handleClick="handleExportDialog" style="display: initial;" class="p-0-15 font-size-14" />
+        <Text-Button
+          v-permission
+          text="品牌提数"
+          style="display: initial;"
+          class="p-0-15 font-size-14"
+          @handleClick="handleExportDialog" />
       </el-form-item>
       <el-form-item label="行业筛选">
         <el-cascader
-          style="width: 600px"
-          ref="cascader"
           v-model="brandForm.cate"
+          ref="cascader"
+          popper-class="industry-cascader-wapper"
+          style="width: 600px"
           :options="categoryOption"
           :show-all-levels="false"
-          popper-class="industry-cascader-wapper"
-          @change="changeIndustry"
-          :props="props">
+          :props="props"
+          @change="changeIndustry">
           <template slot-scope="{ node, data }">
             <span @click="changeIndustry(data)">{{data.category}}</span>
           </template>
@@ -44,7 +54,7 @@
 
 <script>
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
-import mixin from '@/utils/mixin/selectTree.js'
+// import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
 import TextButton from '@/components/TextButton.vue'
 import { DEFINE_BRAND } from '@/utils/const.js'
@@ -52,7 +62,7 @@ import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { mapMutations } from 'vuex'
 
 export default {
-  mixins: [mixin],
+  // mixins: [mixin],
   components: { TextButton },
   directives: { permission },
   data () {
@@ -121,6 +131,7 @@ export default {
   mounted () {
     this.getCategoryByBrands().then(() => {
       this.brandForm.cate = this.categoryOption[0].category
+      this.SET_BRAND_BRANDS(this.brandForm.brandList)
       this.SET_BRAND_CATEGORY(Object.assign(this.categoryOption[0], { children: null }))
     })
   }

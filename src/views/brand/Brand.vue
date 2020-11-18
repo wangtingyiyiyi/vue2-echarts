@@ -84,7 +84,10 @@
             @handleGroupClick="handleGroupClick"
             style='position: absolute; right:26px; top:16px;'/>
         </div>
-
+        <Download-Button
+          v-if="showDownloadBtn"
+          v-permission
+          :loadingProgress="loadingProgress"/>
         <Dialog-For-Brand-Export
           :dialogVisible="exportDialogVisible"
           v-if="exportDialogVisible"
@@ -99,6 +102,11 @@ import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
 import { DEFINE_BRAND } from '@/utils/const.js'
+import { downloadFile } from '@/utils/common.js'
+import downloadMixim from '@/utils/mixin/downloadCallback.js'
+
+import permission from '@/utils/directives/permission.js' // 权限判断指令
+
 import {
   getTableForBrand,
   getChartForBrand,
@@ -109,8 +117,9 @@ import {
   getMonthOption
 } from '@/api/industry'
 export default {
-
-  mixins: [componentsMixin],
+  name: 'Brand',
+  directives: { permission },
+  mixins: [componentsMixin, downloadMixim],
   data () {
     return {
       activeName: 'brand',
@@ -137,7 +146,9 @@ export default {
       spuTotal: 0,
       pageSize: 10,
       exportDialogVisible: false,
-      defaultBrand: DEFINE_BRAND
+      defaultBrand: DEFINE_BRAND,
+      loadingProgress: 0,
+      showDownloadBtn: false
     }
   },
   computed: {
@@ -233,7 +244,17 @@ export default {
       this.exportDialogVisible = true
     },
     // 品牌提数回调
-    handleExportExcel () {
+    handleExportExcel (formParam) {
+      const brandName = formParam.brandList.join('/')
+      const option = {
+        param: formParam,
+        url: process.env.VUE_APP_API_URL + '/downLoad/download',
+        filename: `Tmall_${formParam.cate}(${brandName})_${this.$moment(new Date()).format('YYYYMMDD')}`,
+        onprogress: this.onprogress,
+        onreadystatechange: this.onreadystatechange
+      }
+      this.showDownloadBtn = true
+      downloadFile(option)
     },
     // spu 列表翻页
     changeSpuPage (page) {

@@ -4,6 +4,8 @@ import TableForBrand from '@/views/brand/components/TableForBrand.vue'
 import TableForSpu from '@/views/brand/components/TableForSpu.vue'
 import ChartForBrand from '@/views/brand/components/ChartForBrand.vue'
 import DialogForBrandExport from '@/views/brand/components/DialogForBrandExport.vue'
+import DownloadButton from '@/components/DownloadButton.vue'
+
 export default {
   components: {
     BrandSetting,
@@ -11,6 +13,7 @@ export default {
     TableForBrand,
     ChartForBrand,
     TableForSpu,
-    DialogForBrandExport
+    DialogForBrandExport,
+    DownloadButton
   }
 }

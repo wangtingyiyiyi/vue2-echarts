@@ -94,11 +94,14 @@
             :drawerShow="drawerShow"
             @handleDefineSearch="handleDefineSearch"/>
       </Drawer>
-      <Download-Button v-if="totalData" v-permission :loadingProgress="loadingProgress" :iconName="iconName"/>
+      <Download-Button
+        v-if="showDownloadBtn"
+        v-permission
+        :loadingProgress="loadingProgress"/>
       <!-- 行业提数 -->
       <Dialog-For-Industry-Export
-        :dialogVisible="dialogVisible"
         v-if="dialogVisible"
+        :dialogVisible="dialogVisible"
         @handleExportExcel="handleExportExcel"
         @closeDialog="dialogVisible = $event"/>
     </div>
@@ -109,7 +112,6 @@
 import { mapMutations, mapState } from 'vuex'
 import {
   getIndustryFlatList,
-  getVerifyDownload,
   getMonthOption,
   getIndustryEchart,
   getIndustryBrandTable,
@@ -117,14 +119,15 @@ import {
 } from '@/api/industry'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
-import { blolToFile } from '@/utils/common.js'
+import downloadMixim from '@/utils/mixin/downloadCallback.js'
 import { DEFAULT_INDUSTRY } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
+import { downloadFile } from '@/utils/common.js'
 
 export default {
-  mixins: [componentsMixin],
+  name: 'Industry',
+  mixins: [componentsMixin, downloadMixim],
   directives: { permission },
-
   data () {
     return {
       activeName: 'industry',
@@ -156,7 +159,7 @@ export default {
       iconName: 'el-icon-download',
       meritcoTree: [],
       // total下载进度
-      totalData: 0,
+      showDownloadBtn: false,
       defaultIndustry: DEFAULT_INDUSTRY,
       defineItemId: ''
     }
@@ -252,51 +255,15 @@ export default {
     handleExportDialog () {
       this.dialogVisible = true
     },
-    handleExportExcel (param) {
-      this.totalData = 1
-      this.iconName = 'el-icon-loading'
-      const that = this
-      const filename = 'Tmall_' + param.cateName + '_' + this.$moment(new Date()).format('YYYYMMDD')
-      const url = `${process.env.VUE_APP_API_URL}/userInfo/download`
-      const xhr = new XMLHttpRequest()
-      xhr.open('POST', url, true)
-      xhr.responseType = 'blob'
-      xhr.setRequestHeader('Content-Type', ' application/json')
-      xhr.setRequestHeader('token', sessionStorage.getItem('token'))
-      xhr.onreadystatechange = function (oEvent) {
-        if (xhr.readyState === 4) {
-          if (xhr.status !== 200) {
-            that.$message.error('文件下载失败')
-          }
-        }
+    handleExportExcel (formParam) {
+      const option = {
+        param: formParam,
+        url: process.env.VUE_APP_API_URL + '/downLoad/download',
+        filename: `Tmall_${formParam.cateName}_${this.$moment(new Date()).format('YYYYMMDD')}`,
+        onprogress: this.onprogress,
+        onreadystatechange: this.onreadystatechange
       }
-      xhr.onprogress = function (event) {
-        that.iconName = 'el-icon-download'
-        console.log('event.total', event.total)
-        if (event.total !== 0) {
-          const p = event.loaded / event.total
-          that.loadingProgress = p
-          if (event.loaded === event.total) {
-            that.$message.success('下载完成')
-            that.totalData = 0
-          }
-        }
-      }
-      xhr.onload = function (params) {
-        if (this.status >= 200 && this.status < 300) {
-          const blob = new Blob([this.response], { type: 'application/excel' })
-          console.log(blob)
-          blolToFile(blob, filename)
-        }
-      }
-      xhr.send(JSON.stringify(param))
-    },
-    // 自写验证下载
-    async verifyDownload (param) {
-      const res = await getVerifyDownload(param)
-      if (res.code === 500) {
-        this.$message.error(res.message)
-      }
+      downloadFile(option)
     },
     // 修改monthOption
     handleSelectdMonth (val) {

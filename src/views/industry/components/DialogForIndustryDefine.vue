@@ -25,7 +25,7 @@
           v-model="checkAll"
           class="m-l-16 p-10-0"
           :disabled="!showExpandTree"
-          @change="handleCheckAll">全选{{showExpandTree}}</el-checkbox>
+          @change="handleCheckAll">全选</el-checkbox>
         <!-- 异步请求树 -->
         <el-tree
           v-show="!showExpandTree"
@@ -81,7 +81,7 @@
           class="right-tree-wapper beauty-scroll"
           :data="rightTree"
           :props="{ label: 'category' }"
-          :default-expand-all="false">
+          :default-expand-all="true">
         </el-tree>
       </div>
     </div>
@@ -169,7 +169,12 @@ export default {
     handleCheckAll (checked) {
     },
     goRight () {
-      this.checkedNotes = this.$refs.lazyTree.getCheckedNodes()
+      const lazyTreeCheckedNotes = this.$refs.lazyTree.getCheckedNodes(false)
+      const searchTreeCheckedNotes = this.$refs.searchTree.getCheckedNodes(true)
+      this.checkedNotes.push(...lazyTreeCheckedNotes, ...searchTreeCheckedNotes)
+      this.checkedNotes = this._.uniqBy(this.checkedNotes, 'label')
+      console.info(this.checkedNotes)
+      // this.checkedNotes = this.$refs.lazyTree.getCheckedNodes()
       this.renderRightTree()
     },
     goLeft () {

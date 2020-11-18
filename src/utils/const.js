@@ -190,6 +190,10 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
     prop: 'spuName',
     align: 'left'
   }, {
+    label: '品名',
+    prop: 'series',
+    align: 'left'
+  }, {
     label: '销量',
     prop: 'sales',
     align: 'right',
@@ -217,6 +221,7 @@ export const APP_NAME = '欢迎登录久谦中台'
 // 行业-默认参数
 export const DEFAULT_INDUSTRY = {
   rank: '1',
+  category: '彩妆/美护工具',
   label: '彩妆/美护工具',
   category1: '彩妆/美护工具',
   category2: '',

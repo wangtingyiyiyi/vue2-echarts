@@ -28,15 +28,17 @@ export function replenishSum (arr, len) {
 }
 
 // 防抖
+// search搜索联想，用户在不断输入值时，用防抖来节约请求资源。
+// window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
 export function debounce (fn, interval = 500) {
   let timeout = null
   clearTimeout(timeout)
   timeout = setTimeout(fn, interval)
 }
-// search搜索联想，用户在不断输入值时，用防抖来节约请求资源。
-// window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
 
 // 节流
+// 鼠标不断点击触发，mousedown(单位时间内只触发一次)
+// 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
 export function throttle (fn, interval = 300) {
   let canRan = true
   if (!canRan) return
@@ -46,8 +48,6 @@ export function throttle (fn, interval = 300) {
     canRan = true
   }, interval)
 }
-// 鼠标不断点击触发，mousedown(单位时间内只触发一次)
-// 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
 
 // 二进制流转换为文件
 export function blolToFile (res, filename) {
@@ -62,15 +62,25 @@ export function blolToFile (res, filename) {
   window.URL.revokeObjectURL(href)
 }
 
-// 按钮权限控制
-// export function permission () {
-//   const type = sessionStorage.getItem('type')
-//   switch (type) {
-//     // 扫码用户
-//     case 1:
-//     case '1':
-//       return true
-//     default:
-//       return false
-//   }
-// }
+// 导出excel
+export function downloadFile (option) {
+  console.info('downloadFiledownloadFile')
+  const xhr = new XMLHttpRequest()
+  xhr.open('POST', option.url, true)
+  xhr.responseType = 'blob'
+  xhr.setRequestHeader('Content-Type', ' application/json')
+  xhr.setRequestHeader('token', '801bb15a-6bf8-406d-bf06-86eef3ba16a6')
+  xhr.onreadystatechange = function (response) {
+    option.onreadystatechange(xhr, response)
+  }
+  xhr.onprogress = function (params) {
+    option.onprogress(params)
+  }
+  xhr.onload = function (params) {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      const blob = new Blob([xhr.response], { type: 'application/excel' })
+      blolToFile(blob, option.filename)
+    }
+  }
+  xhr.send(JSON.stringify(option.param))
+}

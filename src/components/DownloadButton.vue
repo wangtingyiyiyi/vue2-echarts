@@ -2,14 +2,14 @@
 <template>
 <div>
   <div class="download-button fixed-position" v-show="loadingProgress === 0 || loadingProgress === 1">
-    <i :class="[iconName, 'icon-class']"></i>
+    <i :class="['el-icon-loading', 'icon-class']"></i>
   </div>
   <div class="svg-wapper fixed-position" v-show="loadingProgress !== 0 && loadingProgress !== 1">
     <svg width="60" height="60">
       <circle cx="30" cy="30" r="30" stroke-width="5.5" stroke="#e5e5e5" fill="none"></circle>
       <circle cx="30" cy="30" r="30" ref="circle"  stroke-width="5.5" stroke="#5B8FF9" fill="none"  stroke-dasharray="0 251"></circle>
     </svg>
-    <i :class="[iconName, 'icon-class']"></i>
+    <i :class="['el-icon-download', 'icon-class']"></i>
   </div>
 </div>
 
@@ -22,11 +22,6 @@ export default {
     loadingProgress: {
       type: Number,
       default: 0
-    },
-    // el-icon-loading
-    iconName: {
-      type: String,
-      default: 'el-icon-download'
     }
   },
   watch: {

@@ -17,7 +17,7 @@ const mutations = {
     state.cateTableParam = { ...payload }
   },
   [RESET_INDUSTRY_CATEGORY] (state) {
-    state.categoryObj = { id: '', label: '', remark: '' }
+    state.categoryObj = { }
   },
   [RESET_INDUSTRY_CATRGOTY_TABLE_PARAM] (state) {
     state.cateTableParam = {}

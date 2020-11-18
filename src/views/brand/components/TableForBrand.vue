@@ -7,11 +7,11 @@
     ref="table"
     style="width: 100%"
     lazy
-    row-key="id"
+    row-key="label"
     :load="load">
     <el-table-column label="子品类" width="220px">
       <template slot-scope="{row}">
-        <Text-Button :text="getCat(row)" @handleClick="handleCategory(row)" style="display: inline;" />
+        <Text-Button :text="row.category" @handleClick="handleCategory(row)" style="display: inline;" />
       </template>
     </el-table-column>
     <el-table-column prop="salesCount" label="销量" align="right" min-width="60">
@@ -76,7 +76,7 @@
 <script>
 import tableMixins from '@/views/brand/components/tableMixins.js'
 import TextButton from '@/components/TextButton.vue'
-// import { getTableForBrand } from '@/api/brand'
+import { getIndustryFlatList } from '@/api/industry'
 import { mapState } from 'vuex'
 export default {
   name: 'TableForBrand',
@@ -92,20 +92,6 @@ export default {
     ...mapState('brand', ['brandList'])
   },
   methods: {
-    getCat (data) {
-      switch (data.remark) {
-        case 'define':
-          return data.outCat1
-        case 1:
-          return data.outCat1
-        case 2:
-          return data.outCat2
-        case 3:
-          return data.outCat3
-        default:
-          return ''
-      }
-    },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
       const { href } = this.$router.resolve({
@@ -118,14 +104,21 @@ export default {
       window.open(href)
     },
     async load (tree, treeNode, resolve) {
-      // const cateTableParam = { ...this.paramOfBrandTable }
-      // const param = Object.assign(cateTableParam, { id: tree.id })
-      // const res = await getTableForBrand(param)
-      // if (res.code === 200) {
-      //   resolve(res.result)
-      // } else {
-      //   this.$message.error('加载子分类失败')
-      // }
+      const cateTableParam = { ...this.paramOfBrandTable }
+      const param = Object.assign(cateTableParam, {
+        cateList: [{
+          category1: tree.category1,
+          category2: tree.category2,
+          category3: tree.category3,
+          rank: tree.rank
+        }]
+      })
+      const res = await getIndustryFlatList(param)
+      if (res.code === 200) {
+        resolve(res.result)
+      } else {
+        this.$message.error('加载子分类失败')
+      }
     }
   }
 }
