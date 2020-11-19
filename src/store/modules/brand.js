@@ -2,13 +2,15 @@ import {
   SET_BRAND_BRANDS,
   SET_BRAND_CATEGORY,
   RESET_BRAND_BRANDS,
-  RESET_BRAND_CATEGORY
+  RESET_BRAND_CATEGORY,
+  SET_ACTIVE_BRAND
 } from '../mutation'
 import { DEFINE_BRAND } from '@/utils/const.js'
 
 const state = {
   brandList: DEFINE_BRAND.brandList,
-  cate: {}
+  cate: {},
+  activeBrand: ''
 }
 
 const mutations = {
@@ -23,6 +25,9 @@ const mutations = {
   },
   [RESET_BRAND_CATEGORY] (state) {
     state.cate = {}
+  },
+  [SET_ACTIVE_BRAND] (state, payload) {
+    state.activeBrand = payload
   }
 }
 

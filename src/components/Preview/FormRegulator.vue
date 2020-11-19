@@ -10,7 +10,7 @@
       </el-button-group>
     </el-form-item>
     <el-form-item label="颗粒度">
-      <el-button-group v-model="form.particle">
+      <el-button-group v-model="particle">
         <el-button
           v-for="item in GROUP_LEVEL"
           :key="item.value"
@@ -65,7 +65,7 @@ export default {
       cateFlat: [],
       agg: [],
       indicator: DATA_INDEX.slice(0, 3),
-      particle: {},
+      particle: GROUP_LEVEL[0],
       excelHeader: [],
       form: {
         range: 'one_year',
@@ -89,6 +89,7 @@ export default {
       this.handleFlat()
     },
     handleGroup (item) {
+      this.particle = item
       this.form.particle = item.value
       this.handleFlat()
     },
@@ -97,6 +98,10 @@ export default {
       this.handleSum(val, 'cateFlat', 3)
     },
     handleCurrentAgg (val, item) {
+      if (item.label === '按品牌') {
+        this.currentCheckedAgg = item
+        return
+      }
       val ? this.currentCheckedAgg = item : this.currentCheckedAgg = {}
     },
     // 按照品类聚合
@@ -104,6 +109,9 @@ export default {
       if (this.currentCheckedAgg.label === '按品名') {
         arr.push(CATEGORT_GROUP[0])
         this.agg = this._.uniqBy(arr, 'label')
+      }
+      if (this.currentCheckedAgg.label === '按品牌') {
+        this.agg = this._.remove(arr, item => item.label !== '按品名')
       }
       this.handleSum(this.agg, 'agg', 4)
     },

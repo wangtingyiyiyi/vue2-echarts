@@ -71,6 +71,7 @@ export default {
   methods: {
     handleNodeClick (data, node, ref) {
       this.selectData = data
+      this.selectData.label = data.label.split('&&')[0]
       this.$refs.select.blur()
       this.$emit('handleSelectTree', Object.assign(this.selectData, { children: null }))
     },
@@ -83,7 +84,7 @@ export default {
         if (res.code === 200) {
           // 移除自定义下children数组, 目的在于不显示自定义的子分类
           res.result.forEach(element => {
-            if (element.rank === 'define') {
+            if (element.rank === 0) {
               delete element.children
             }
           })

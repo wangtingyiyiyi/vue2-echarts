@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'BrandTableBrands',
   props: {
@@ -21,7 +22,16 @@ export default {
       default: ''
     }
   },
+  watch: {
+    activeBrand: {
+      immediate: true,
+      handler: function (params) {
+        this.SET_ACTIVE_BRAND(params)
+      }
+    }
+  },
   methods: {
+    ...mapMutations('brand', ['SET_ACTIVE_BRAND']),
     click (item) {
       this.$emit('changeActiveBrand', item)
     }

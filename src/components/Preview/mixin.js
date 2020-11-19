@@ -39,6 +39,9 @@ export default {
         this.tableTotal = 0
         return
       }
+      this.emptyMes = '计算中...'
+      this.tableData = []
+      this.tableTotal = 0
       const res = await previewExcel(Object.assign(this.form, this.regulatorForm))
       if (res.code === 200) {
         this.tableData = res.result

@@ -12,7 +12,6 @@ export default {
       }
     },
     onreadystatechange (xhr, response) {
-      console.info('audsfhaufhuash')
       if (xhr.readyState === 4 && xhr.status !== 200) {
         this.$message.error('文件下载失败')
         this.showDownloadBtn = false

@@ -2,7 +2,7 @@
 import { SET_SYS_COLLAPSED } from '../mutation'
 
 const state = {
-  collapsed: false
+  collapsed: !false
 }
 
 const mutations = {

@@ -9,12 +9,15 @@
     lazy
     row-key="label"
     :load="load">
-    <el-table-column label="子品类" width="220px">
+    <el-table-column label="子品类">
       <template slot-scope="{row}">
-        <Text-Button :text="row.category" @handleClick="handleCategory(row)" style="display: inline;" />
+        <Text-Button
+          style="display: inline;"
+          :text="row.category"
+          @handleClick="handleCategory(row)"/>
       </template>
     </el-table-column>
-    <el-table-column prop="salesCount" label="销量" align="right" min-width="60">
+    <el-table-column align="right" min-width="60">
       <template #header>
         <Table-Sort-Button
           title="销量"
@@ -24,7 +27,7 @@
       </template>
       <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="90px">
+    <el-table-column align="right" min-width="60">
       <template #header>
         <Table-Sort-Button
           title="销售额"
@@ -39,7 +42,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="50px">
+    <el-table-column align="right" min-width="40px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -49,7 +52,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="80px">
+    <el-table-column align="right" min-width="50px">
       <template #header>
         <Table-Sort-Button
           title="销售额环比"
@@ -59,7 +62,7 @@
       </template>
       <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="45">
       <template #header>
         <Table-Sort-Button
           title="均价"
@@ -70,17 +73,20 @@
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
     <el-table-column width="10px"></el-table-column>
+    <div slot="empty">{{emptyText}}</div>
   </el-table>
 </template>
 
 <script>
-import tableMixins from '@/views/brand/components/tableMixins.js'
+// import tableMixins from '@/views/brand/components/tableMixins.js'
 import TextButton from '@/components/TextButton.vue'
 import { getIndustryFlatList } from '@/api/industry'
 import { mapState } from 'vuex'
+import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
+
 export default {
   name: 'TableForBrand',
-  mixins: [tableMixins],
+  mixins: [tableLoadingMixin],
   props: {
     paramOfBrandTable: {
       type: Object,
@@ -89,16 +95,26 @@ export default {
   },
   components: { TextButton },
   computed: {
-    ...mapState('brand', ['brandList'])
+    ...mapState('brand', ['activeBrand'])
   },
   methods: {
+    handleSort (sortVal) {
+      this.$emit('changeSortItemVal', sortVal)
+    },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
       const { href } = this.$router.resolve({
         path: '/brand',
         query: {
-          id: data.id,
-          brandList: JSON.stringify(this.brandList)
+          brandList: JSON.stringify(this.activeBrand),
+          cateList: JSON.stringify({
+            category: data.category,
+            category1: data.category1,
+            category2: data.category2,
+            category3: data.category3,
+            rank: data.rank,
+            label: data.label
+          })
         }
       })
       window.open(href)

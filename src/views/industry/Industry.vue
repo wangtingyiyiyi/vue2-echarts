@@ -64,6 +64,7 @@
                     :activedSortKey="sortItemVal"
                     @handleBrandSort="handleBrandSort"/>
                   <el-pagination
+                    v-show="brandCount !== 0"
                     background
                     layout="prev, pager, next"
                     class="pagination-wapper"
@@ -131,7 +132,7 @@ export default {
   data () {
     return {
       activeName: 'industry',
-      rangeItemVal: 'all',
+      rangeItemVal: 'one_year',
       groupItemVal: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
@@ -178,6 +179,8 @@ export default {
     handleTabClick (tab) {
       this.page = 1
       this.sortItemVal = 'gmv'
+      this.brandCount = 0
+      this.brandTableData = []
       this.getIndustryFlatList()
       this.getIndustryEchart()
       this.getBrandList()
@@ -186,25 +189,26 @@ export default {
     // 切换范围
     handleRangeClick (rangeItem) {
       this.rangeItemVal = rangeItem.value
+      this.selectdMonth = ''
+      this.chartSelectMonth = ''
       this.page = 1
       this.getIndustryEchart()
-      this.getMonthOption().then(() => {
-        this.getIndustryFlatList()
-        this.getBrandList()
-        this.getBrandEchart()
-      })
+      this.getIndustryFlatList()
+      this.getBrandList()
+      this.getBrandEchart()
+      this.getMonthOption()
     },
     // 切换颗粒度
     handleGroupClick (groupItem) {
       this.groupItemVal = groupItem.value
       this.page = 1
+      this.selectdMonth = ''
+      this.chartSelectMonth = ''
       this.getIndustryEchart()
+      this.getIndustryFlatList()
+      this.getBrandList()
+      this.getBrandEchart()
       this.getMonthOption()
-        .then(() => {
-          this.getIndustryFlatList()
-          this.getBrandList()
-          this.getBrandEchart()
-        })
     },
     // 销量 和 销售额切换
     handleEchartsClick (item) {
@@ -258,11 +262,12 @@ export default {
     handleExportExcel (formParam) {
       const option = {
         param: formParam,
-        url: process.env.VUE_APP_API_URL + '/downLoad/download',
+        url: process.env.VUE_APP_API_URL + '/download/file',
         filename: `Tmall_${formParam.cateName}_${this.$moment(new Date()).format('YYYYMMDD')}`,
         onprogress: this.onprogress,
         onreadystatechange: this.onreadystatechange
       }
+      this.showDownloadBtn = true
       downloadFile(option)
     },
     // 修改monthOption
@@ -281,8 +286,8 @@ export default {
     async getIndustryEchart () {
       if (this.activeName !== 'industry') return ''
       const param = {
-        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -320,8 +325,8 @@ export default {
       if (this.activeName !== 'industry') return ''
       this.industryTableData = []
       const param = {
-        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -342,8 +347,8 @@ export default {
     async getBrandEchart () {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
-        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         data: this.viewItemVal,
@@ -362,8 +367,8 @@ export default {
     async getBrandList () {
       if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
-        cateList: this.categoryObj.rank === 'define' ? null : [this.categoryForm],
-        defineId: this.categoryObj.rank === 'define' ? this.defineItemId : null,
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         month: this.selectdMonth,
@@ -398,7 +403,6 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        console.info(JSON.parse(query.cateList))
         this.defaultIndustry = JSON.parse(query.cateList)
         this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
         this.brandOnSubmit()

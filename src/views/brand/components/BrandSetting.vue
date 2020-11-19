@@ -86,6 +86,7 @@ export default {
   methods: {
     ...mapMutations('brand', ['SET_BRAND_CATEGORY', 'SET_BRAND_BRANDS']),
     changeBrand () {
+      console.info(this.brandForm)
       this.$emit('handleSetBrands', this.brandForm.brandList)
       this.SET_BRAND_BRANDS(this.brandForm.brandList)
       this.getCategoryByBrands()
@@ -126,14 +127,25 @@ export default {
       } else {
         this.$message.error('品牌分类请求失败')
       }
+    },
+    handleRoute () {
+      const { query } = this.$route
+      if (Object.keys(query).length !== 0) {
+        this.brandForm.brandList = [JSON.parse(query.brandList)]
+        this.brandForm.cate = JSON.parse(query.cateList).category
+        this.SET_BRAND_BRANDS(this.brandForm.brandList)
+        this.getCategoryByBrands()
+      } else {
+        this.getCategoryByBrands().then(() => {
+          this.brandForm.cate = this.categoryOption[0].category
+          this.SET_BRAND_BRANDS(this.brandForm.brandList)
+          this.SET_BRAND_CATEGORY(Object.assign(this.categoryOption[0], { children: null }))
+        })
+      }
     }
   },
   mounted () {
-    this.getCategoryByBrands().then(() => {
-      this.brandForm.cate = this.categoryOption[0].category
-      this.SET_BRAND_BRANDS(this.brandForm.brandList)
-      this.SET_BRAND_CATEGORY(Object.assign(this.categoryOption[0], { children: null }))
-    })
+    this.handleRoute()
   }
 }
 </script>

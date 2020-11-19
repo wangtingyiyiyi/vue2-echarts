@@ -9,15 +9,15 @@
     row-key="label"
     :load="load"
     style="width: 100%">
-    <el-table-column prop="category2" label="子品类" width="220px">
+    <el-table-column prop="category2" label="子品类">
       <template slot-scope="{row}">
         <Text-Button
-          :text="getCat(row)"
-          @handleClick="handleCategory(row)"
-          style="display: inline" />
+          style="display: inline"
+          :text="row.category"
+          @handleClick="handleCategory(row)"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="60px">
+    <el-table-column align="right" min-width="60">
       <template #header>
         <Table-Sort-Button
           title="销量"
@@ -27,7 +27,7 @@
       </template>
       <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="90px">
+    <el-table-column align="right" min-width="70">
       <template #header>
         <Table-Sort-Button
           title="销售额"
@@ -42,7 +42,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="50px">
+    <el-table-column align="right" min-width="40px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -52,7 +52,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="80px">
+    <el-table-column align="right" min-width="60px">
       <template #header>
         <Table-Sort-Button
           title="销售额环比"
@@ -62,7 +62,7 @@
       </template>
       <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="45">
       <template #header>
         <Table-Sort-Button
           title="均价"
@@ -73,73 +73,38 @@
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
     <el-table-column width="10px"></el-table-column>
+    <div slot="empty">{{emptyText}}</div>
   </el-table>
 </template>
 
 <script>
 import { getIndustryFlatList } from '@/api/industry'
 import TextButton from '@/components/TextButton.vue'
-import { refLoading } from '@/utils/element.js'
-import { mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
+import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
+
 export default {
   name: 'TableForIndustry',
-  props: {
-    tableData: {
-      type: Array,
-      default: () => []
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    activedSortKey: {
-      type: String,
-      default: 'gmv'
-    }
-  },
-  data () {
-    return {
-      loadingInstance: null
-    }
-  },
+  mixins: [tableLoadingMixin],
+  // props: {
+  //   tableData: {
+  //     type: Array,
+  //     default: () => []
+  //   },
+  //   isLoading: {
+  //     type: Boolean,
+  //     default: false
+  //   },
+  //   activedSortKey: {
+  //     type: String,
+  //     default: 'gmv'
+  //   }
+  // },
   components: { TextButton },
   computed: {
-    ...mapState('industry', ['categoryObj', 'cateTableParam']),
-    tableBody () {
-      return this.$refs.table.$refs.bodyWrapper
-    }
-  },
-  watch: {
-    isLoading: {
-      immediate: true,
-      handler: function (isLoading) {
-        if (isLoading) {
-          this.loadingInstance = refLoading(this.tableBody)
-        } else {
-          if (this.loadingInstance) {
-            this.loadingInstance.close()
-          }
-        }
-      }
-    }
+    ...mapState('industry', ['cateTableParam'])
   },
   methods: {
-    ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
-    // 显示品类
-    getCat (data) {
-      switch (data.rank) {
-        case 'define':
-          return data.category1
-        case 1:
-          return data.category1
-        case 2:
-          return data.category2
-        case 3:
-          return data.category3
-        default:
-          return ''
-      }
-    },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
       const { href } = this.$router.resolve({
@@ -150,26 +115,11 @@ export default {
             category2: data.category2,
             category3: data.category3,
             rank: data.rank,
-            label: this.setCateLabel(data)
+            label: data.label
           })
         }
       })
       window.open(href)
-    },
-    setCateLabel (data) {
-      switch (data.rank) {
-        case 1:
-        case '1':
-          return data.category1
-        case 2:
-        case '2':
-          return data.category1 + ' > ' + data.category2
-        case 3:
-        case '3':
-          return data.category1 + ' > ' + data.category2 + ' + ' + data.category3
-        default:
-          return ''
-      }
     },
     // 查询子节点
     async load (tree, treeNode, resolve) {

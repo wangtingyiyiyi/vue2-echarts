@@ -5,8 +5,8 @@
     header-row-class-name="tableHeaderClass"
     cell-class-name="tableCellClass"
     ref="table"
-    style="width: 100%">
-    <el-table-column prop="brand" label="品牌" width="240px">
+    style="width: 100%; min-height: 100%">
+    <el-table-column prop="brand" label="品牌">
       <template slot-scope="{row}">
         <Text-Button
           :text="row.brand"
@@ -24,7 +24,7 @@
       </template>
       <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
-    <el-table-column align="right" label="销售额">
+    <el-table-column align="right" label="销售额" min-width="70">
       <template #header>
         <Table-Sort-Button
           title="销售额"
@@ -39,7 +39,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right"  width="120">
+    <el-table-column align="right" width="120px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -49,7 +49,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="50">
       <template #header>
         <Table-Sort-Button
           title="销售额环比"
@@ -59,7 +59,7 @@
       </template>
       <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" min-width="45">
       <template #header>
         <Table-Sort-Button
           title="均价"
@@ -70,69 +70,52 @@
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
     <el-table-column width="10px"></el-table-column>
+    <div slot="empty">{{emptyText}}</div>
   </el-table>
 </template>
 
 <script>
-import { refLoading } from '@/utils/element.js'
 import TextButton from '@/components/TextButton.vue'
+import { mapState } from 'vuex'
+import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
 
 export default {
   name: 'TableForBrand',
-  props: {
-    tableData: {
-      type: Array,
-      default: () => []
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    activedSortKey: {
-      type: String,
-      default: 'gmv'
-    }
-  },
+  mixins: [tableLoadingMixin],
+  // props: {
+  //   tableData: {
+  //     type: Array,
+  //     default: () => []
+  //   },
+  //   isLoading: {
+  //     type: Boolean,
+  //     default: false
+  //   },
+  //   activedSortKey: {
+  //     type: String,
+  //     default: 'gmv'
+  //   }
+  // },
   data () {
     return {
-      loadingInstance: null
+      loadingInstance: null,
+      emptyText: ''
     }
   },
   components: { TextButton },
   computed: {
-    tableBody () {
-      return this.$refs.table.$refs.bodyWrapper
-    }
-  },
-  watch: {
-    isLoading: {
-      immediate: true,
-      handler: function (isLoading) {
-        if (isLoading) {
-          this.loadingInstance = refLoading(this.tableBody)
-        } else {
-          if (this.loadingInstance) {
-            this.loadingInstance.close()
-          }
-        }
-      }
-    }
+    ...mapState('industry', ['categoryObj'])
   },
   methods: {
     handleSort (sortKey) {
       this.$emit('handleBrandSort', sortKey)
-      this.$refs.table.doLayout()
     },
     handleBrand (row) {
       const { href } = this.$router.resolve({
         path: '/brand',
         query: {
-          id: 0,
-          brandList: JSON.stringify([{
-            brandId: row.brandId,
-            brand: row.brand,
-            brandSql: row.brand
-          }])
+          brandList: JSON.stringify(row.brand),
+          cateList: JSON.stringify(this.categoryObj)
         }
       })
       window.open(href)

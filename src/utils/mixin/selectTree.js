@@ -23,7 +23,7 @@ export default {
             <span class="tree-select-icon" style="color: #5D7092;">{data.remark}</span>
             <span>{data.label}</span>
           </span>)
-      } else if (data.remark === 'define') {
+      } else if (data.remark === 0) {
         return (
           <span class="custom-tree-node">
             <span class="tree-select-icon" style="color: #5B8FF9;">自</span>

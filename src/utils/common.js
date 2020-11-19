@@ -64,7 +64,6 @@ export function blolToFile (res, filename) {
 
 // 导出excel
 export function downloadFile (option) {
-  console.info('downloadFiledownloadFile')
   const xhr = new XMLHttpRequest()
   xhr.open('POST', option.url, true)
   xhr.responseType = 'blob'

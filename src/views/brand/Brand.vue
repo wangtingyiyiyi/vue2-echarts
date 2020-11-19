@@ -55,7 +55,7 @@
                       @changeActiveBrand="changeActiveBrand"/>
                       <Month-Options
                       :monthOption="monthOption"
-                      :selectdMonth="tableMonth"
+                      :selectdMonth="selectdMonth"
                       @handleSelectdMonth="handleTableMonth"/>
                   </div>
                   <Table-For-Spu
@@ -64,13 +64,14 @@
                     @changeSortItemVal="changeSortItemVal"
                     :tableData="tableSpu"/>
                   <el-pagination
+                    v-show="spuTotal !== 0"
                     background
                     layout="prev, pager, next"
                     class="pagination-wapper"
-                    @current-change="changeSpuPage"
                     :current-page="spuPage"
                     :page-size="pageSize"
-                    :total="spuTotal">
+                    :total="spuTotal"
+                    @current-change="changeSpuPage">
                   </el-pagination>
               </el-tab-pane>
           </el-tabs>
@@ -123,7 +124,7 @@ export default {
   data () {
     return {
       activeName: 'brand',
-      rangeItemVal: 'all',
+      rangeItemVal: 'one_year',
       groupItemVal: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
@@ -165,16 +166,18 @@ export default {
     // 切换tab
     handleTabClick () {
       this.sortItemVal = 'gmv'
+      this.tableSpu = []
+      this.spuTotal = 0
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
     },
     handleSetBrands (brands) {
       this.brandList = brands
+      this.activeBrand = this.brandList[0] || ''
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
-      console.info(brands, 'get搜索品牌, 刷新table')
     },
     handleSetCategroy (cate) {
       this.cateList = [cate]
@@ -192,20 +195,20 @@ export default {
     // 切换范围
     handleRangeClick (data) {
       this.rangeItemVal = data.value
-      this.getMonthOption().then(() => {
-        this.getChartForBrand()
-        this.getTableForBrand()
-        this.getTableForSpu()
-      })
+      this.selectdMonth = ''
+      this.getChartForBrand()
+      this.getTableForBrand()
+      this.getTableForSpu()
+      this.getMonthOption()
     },
     // 切换颗粒度
     handleGroupClick (data) {
       this.groupItemVal = data.value
-      this.getMonthOption().then((res) => {
-        this.getChartForBrand()
-        this.getTableForBrand()
-        this.getTableForSpu()
-      })
+      this.selectdMonth = ''
+      this.getChartForBrand()
+      this.getTableForBrand()
+      this.getTableForSpu()
+      this.getMonthOption()
     },
     // 切换 销量 或者 销售额
     handleEchartsClick (data) {
@@ -220,7 +223,7 @@ export default {
     },
     // table 切换month
     handleTableMonth (val) {
-      this.tableMonth = val
+      this.selectdMonth = val
       this.getTableForSpu()
     },
     // 列表排序
@@ -234,8 +237,6 @@ export default {
       this.selectdMonth = val
     },
     handleMonth (val) {
-      console.log('切换month的值', val)
-      this.tableMonth = val
       this.selectdMonth = val
       this.getTableForBrand()
     },
@@ -248,7 +249,7 @@ export default {
       const brandName = formParam.brandList.join('/')
       const option = {
         param: formParam,
-        url: process.env.VUE_APP_API_URL + '/downLoad/download',
+        url: process.env.VUE_APP_API_URL + '/download/file',
         filename: `Tmall_${formParam.cate}(${brandName})_${this.$moment(new Date()).format('YYYYMMDD')}`,
         onprogress: this.onprogress,
         onreadystatechange: this.onreadystatechange
@@ -267,7 +268,6 @@ export default {
       if (res.code === 200) {
         this.monthOption = res.result
         this.selectdMonth = res.result[0]
-        this.tableMonth = res.result[0]
       } else {
         this.$message.error('行业分类月份列表请求失败')
       }
@@ -281,7 +281,7 @@ export default {
         data: this.viewItemVal,
         range: this.rangeItemVal,
         brandList: this.brandList,
-        month: this.tableMonth
+        month: this.selectdMonth
       }
       const loadingInstance = refLoading(this.$refs.brandEchart)
       const res = await getChartForBrand(param)
@@ -294,14 +294,14 @@ export default {
     },
     // 品牌 table
     async getTableForBrand () {
-      if (!this.activeBrand.length === 0 || this.activeName !== 'brand') return ''
+      if (!this.activeBrand || this.activeName !== 'brand') return ''
       const param = {
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         sort: this.sortItemVal,
         cateList: this.cateList,
         brandList: [this.activeBrand],
-        month: this.tableMonth
+        month: this.selectdMonth
       }
       this.paramOfBrandTable = param
       this.isLoadingOfBrandTable = true
@@ -324,7 +324,7 @@ export default {
         particle: this.groupItemVal,
         sort: this.sortItemVal,
         brandList: [this.activeBrand],
-        month: this.tableMonth,
+        month: this.selectdMonth,
         page: this.spuPage,
         pageSize: this.pageSize
       }
@@ -352,10 +352,13 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        // this.SET_BRAND_SETTING({
-        //   id: query.id,
-        //   brandList: JSON.parse(query.brandList)
-        // })
+        console.info(query)
+        this.brandList = [JSON.parse(query.brandList)]
+        this.activeBrand = this.brandList[0]
+        this.cateList = [JSON.parse(query.cateList)]
+        this.getChartForBrand()
+        this.getTableForBrand()
+        this.getTableForSpu()
       } else {
         this.brandList = this.defaultBrand.brandList
         this.activeBrand = this.brandList[0]

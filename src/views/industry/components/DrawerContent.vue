@@ -105,7 +105,7 @@ export default {
       const param = {
         label: data.title,
         id: data.id,
-        rank: 'define'
+        rank: 0
       }
       // this.SET_INDUSTRY_CATEGORY(param)
       this.$emit('handleDefineSearch', param)

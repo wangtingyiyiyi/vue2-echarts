@@ -9,15 +9,16 @@
     style="width: 100%">
     <el-table-column
       prop="spuname"
+      width="450"
       label="SPU名称">
     </el-table-column>
     <el-table-column
       prop="shopname"
       show-overflow-tooltip
-      width="120px"
+      min-width="30"
       label="店铺名称">
     </el-table-column>
-    <el-table-column align="right" min-width="30px">
+    <el-table-column align="right" min-width="20px">
       <template #header>
         <Table-Sort-Button
           title="销量"
@@ -42,7 +43,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="30px">
+    <el-table-column align="right" min-width="20px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -52,7 +53,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="30px">
+    <el-table-column align="right" min-width="25">
       <template #header>
         <Table-Sort-Button
           title="均价"
@@ -63,15 +64,20 @@
       <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
     </el-table-column>
     <el-table-column width="10px"></el-table-column>
+    <div slot="empty">{{emptyText}}</div>
   </el-table>
 </template>
 
 <script>
-import tableMixins from '@/views/brand/components/tableMixins.js'
+import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
+
 export default {
   name: 'TableForShop',
-  mixins: [tableMixins],
+  mixins: [tableLoadingMixin],
   methods: {
+    handleSort (sortVal) {
+      this.$emit('changeSortItemVal', sortVal)
+    },
     handleClick (row, column) {
       if (column.property === 'spuname') {
         window.open(`http://detail.tmall.com/item.htm?id=${row.spuid}`)
