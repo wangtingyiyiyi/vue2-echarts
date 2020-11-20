@@ -11,7 +11,7 @@
   </div>
   <div class="index" ref="index" v-else>
     <!-- 账号密码用户 -->
-    <div style="width: 100%; height: 100%;">
+    <div v-show="userFrom !== 'query'" style="width: 100%; height: 100%;">
       <div class="top">
         <Svg-Icon icon-class="logo" class="svg-class"/>
       </div>
@@ -137,18 +137,28 @@ export default {
     },
     // 二维码回调
     handleQueryLogin (param) {
+      const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.login(param)
-        .then(() => { this.$router.push({ name: this.target.name }) })
+        .then(() => {
+          loadingInstance.close()
+          this.$router.push({ name: this.target.name })
+        })
         .catch((err) => {
+          loadingInstance.close()
           this.$message.error(err.message)
           this.$router.push('Login')
         })
     },
     // cms导入
     handleCmsLogin (param) {
+      const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.cmsLogin(param)
-        .then(() => { this.$router.push({ name: this.target.name }) })
+        .then(() => {
+          loadingInstance.close()
+          this.$router.push({ name: this.target.name })
+        })
         .catch((err) => {
+          loadingInstance.close()
           this.$message.error(err.message)
           this.$router.push('Login')
         })
