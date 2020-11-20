@@ -120,7 +120,7 @@ export default {
     },
     changeIndustry (data) {
       this.form.cate = data.category
-      this.form.cateList = [Object.assign(data, { children: null })]
+      this.form.cateList = [Object.assign(this._.cloneDeep(data), { children: null })]
       this.handlePreview()
     },
     // 品牌列表模糊查询

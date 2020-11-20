@@ -121,7 +121,7 @@ import {
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
 import downloadMixim from '@/utils/mixin/downloadCallback.js'
-import { DEFAULT_INDUSTRY } from '@/utils/const.js'
+import { INDUSTRY_DEFAULT_INDUSTRY } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { downloadFile } from '@/utils/common.js'
 
@@ -161,7 +161,7 @@ export default {
       meritcoTree: [],
       // total下载进度
       showDownloadBtn: false,
-      defaultIndustry: DEFAULT_INDUSTRY,
+      defaultIndustry: INDUSTRY_DEFAULT_INDUSTRY,
       defineItemId: ''
     }
   },

@@ -54,21 +54,19 @@
 
 <script>
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
-// import mixin from '@/utils/mixin/selectTree.js'
 import { debounce } from '@/utils/common.js'
 import TextButton from '@/components/TextButton.vue'
-import { DEFINE_BRAND } from '@/utils/const.js'
+import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { mapMutations } from 'vuex'
 
 export default {
-  // mixins: [mixin],
   components: { TextButton },
   directives: { permission },
   data () {
     return {
       brandForm: {
-        brandList: DEFINE_BRAND.brandList,
+        brandList: BRAND_DEFINE_BRAND.brandList,
         cate: ''
       },
       brandOption: [],
@@ -93,7 +91,7 @@ export default {
     },
     changeIndustry (data) {
       this.brandForm.cate = data.category
-      const obj = Object.assign(data, { children: null })
+      const obj = Object.assign(this._.cloneDeep(data), { children: null })
       this.SET_BRAND_CATEGORY(obj)
       this.$emit('handleSetCategroy', obj)
     },
@@ -123,9 +121,11 @@ export default {
     async getCategoryByBrands () {
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
+        this.categoryOption = []
         this.categoryOption = res.result
       } else {
         this.$message.error('品牌分类请求失败')
+        this.categoryOption = []
       }
     },
     handleRoute () {
@@ -139,7 +139,7 @@ export default {
         this.getCategoryByBrands().then(() => {
           this.brandForm.cate = this.categoryOption[0].category
           this.SET_BRAND_BRANDS(this.brandForm.brandList)
-          this.SET_BRAND_CATEGORY(Object.assign(this.categoryOption[0], { children: null }))
+          this.SET_BRAND_CATEGORY(Object.assign(this._.cloneDeep(this.categoryOption[0]), { children: null }))
         })
       }
     }

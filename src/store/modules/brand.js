@@ -5,10 +5,10 @@ import {
   RESET_BRAND_CATEGORY,
   SET_ACTIVE_BRAND
 } from '../mutation'
-import { DEFINE_BRAND } from '@/utils/const.js'
+import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
 
 const state = {
-  brandList: DEFINE_BRAND.brandList,
+  brandList: BRAND_DEFINE_BRAND.brandList,
   cate: {},
   activeBrand: ''
 }

@@ -75,7 +75,7 @@ export default {
       this.selectData = data
       this.selectData.label = data.label.split('&&')[0]
       this.$refs.select.blur()
-      this.$emit('handleSelectTree', Object.assign(this.selectData, { children: null }))
+      this.$emit('handleSelectTree', Object.assign(this._.cloneDeep(this.selectData), { children: null }))
     },
     // 异步搜索
     async handleSelctRemoteFilter (query) {

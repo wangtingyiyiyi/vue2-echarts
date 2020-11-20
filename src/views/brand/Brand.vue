@@ -102,7 +102,7 @@
 import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
-import { DEFINE_BRAND } from '@/utils/const.js'
+import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
 import { downloadFile } from '@/utils/common.js'
 import downloadMixim from '@/utils/mixin/downloadCallback.js'
 
@@ -147,7 +147,7 @@ export default {
       spuTotal: 0,
       pageSize: 10,
       exportDialogVisible: false,
-      defaultBrand: DEFINE_BRAND,
+      defaultBrand: BRAND_DEFINE_BRAND,
       loadingProgress: 0,
       showDownloadBtn: false
     }

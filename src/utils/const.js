@@ -219,7 +219,7 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
 export const APP_NAME = '欢迎登录久谦中台'
 
 // 行业-默认参数
-export const DEFAULT_INDUSTRY = {
+export const INDUSTRY_DEFAULT_INDUSTRY = {
   rank: '1',
   category: '彩妆/美护工具',
   label: '彩妆/美护工具',
@@ -229,6 +229,9 @@ export const DEFAULT_INDUSTRY = {
 }
 
 // 品牌-默认参数
-export const DEFINE_BRAND = {
+export const BRAND_DEFINE_BRAND = {
   brandList: ['花西子']
 }
+
+// 品牌-默认品牌
+// export const
