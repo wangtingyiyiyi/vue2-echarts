@@ -86,26 +86,11 @@ import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
 export default {
   name: 'TableForIndustry',
   mixins: [tableLoadingMixin],
-  // props: {
-  //   tableData: {
-  //     type: Array,
-  //     default: () => []
-  //   },
-  //   isLoading: {
-  //     type: Boolean,
-  //     default: false
-  //   },
-  //   activedSortKey: {
-  //     type: String,
-  //     default: 'gmv'
-  //   }
-  // },
   components: { TextButton },
   computed: {
     ...mapState('industry', ['cateTableParam'])
   },
   methods: {
-    // 携带点击的节点信息，打开新页面
     handleCategory (data) {
       const { href } = this.$router.resolve({
         path: '/industry',
@@ -121,7 +106,6 @@ export default {
       })
       window.open(href)
     },
-    // 查询子节点
     async load (tree, treeNode, resolve) {
       const cateTableParam = { ...this.cateTableParam }
       const param = Object.assign(cateTableParam, {
@@ -138,10 +122,6 @@ export default {
       } else {
         this.$message.error('加载子分类失败')
       }
-    },
-    // 排序
-    handleSort (sortVal) {
-      this.$emit('handleIndustrySort', sortVal)
     }
   }
 }

@@ -4,7 +4,7 @@
         :defaultObj="defaultIndustry"
         @handleFilter="drawerShow = $event"
         @industryNodeClick="brandOnSubmit"
-        @handleExportDialog="handleExportDialog"/>
+        @handleExportDialog="dialogVisible = true"/>
 
       <Empty-Line />
 
@@ -30,7 +30,7 @@
                     :isLoading="isLoadingIndustryTable"
                     :activedSortKey="sortItemVal"
                     @handleCate="brandOnSubmit"
-                    @handleIndustrySort="handleIndustrySort"/>
+                    @changeSortItemVal="changeSortItemVal"/>
               </el-tab-pane>
 
               <el-tab-pane label="品牌排行" name="brand">
@@ -62,7 +62,7 @@
                     :tableData="brandTableData"
                     :isLoading="isLoadingBrandTable"
                     :activedSortKey="sortItemVal"
-                    @handleBrandSort="handleBrandSort"/>
+                    @changeSortItemVal="changeSortItemVal"/>
                   <el-pagination
                     v-show="brandCount !== 0"
                     background
@@ -227,6 +227,7 @@ export default {
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
       this.page = 1
+      this.sortItemVal = 'gmv'
       this.getIndustryEchart()
       this.getIndustryFlatList()
       this.getBrandList()
@@ -255,10 +256,7 @@ export default {
       this.getBrandList()
       this.getBrandEchart()
     },
-    // 行业提数 弹出框
-    handleExportDialog () {
-      this.dialogVisible = true
-    },
+    // 提数接口
     handleExportExcel (formParam) {
       const option = {
         param: formParam,
@@ -282,42 +280,16 @@ export default {
       this.chartSelectMonth = val
       this.getBrandEchart()
     },
-    // 行业tab 图表
-    async getIndustryEchart () {
-      if (this.activeName !== 'industry') return ''
-      const param = {
-        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
-        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
-        range: this.rangeItemVal,
-        particle: this.groupItemVal,
-        data: this.viewItemVal,
-        month: this.selectdMonth
-      }
-      const loadingInstance = refLoading(this.$refs.refIndustryEchart)
-      const res = await getIndustryEchart(param)
-      loadingInstance.close()
-      if (res.code === 200) {
-        this.industryEchart = res.result
-      } else {
-        this.$message.error('行业概览总销售趋势图请求失败')
-      }
-    },
-
-    // 行业tab table 排序
-    handleIndustrySort (val) {
+    // table 排序
+    changeSortItemVal (val) {
       this.sortItemVal = val
       this.page = 1
       this.getIndustryFlatList()
+      this.getBrandList()
     },
     // 品牌tab table 翻页
     changeBrandPage (page) {
       this.page = page
-      this.getBrandList()
-    },
-    // tab 品牌排序
-    handleBrandSort (val) {
-      this.sortItemVal = val
-      this.page = 1
       this.getBrandList()
     },
     // 行业tab table
@@ -341,6 +313,26 @@ export default {
       } else {
         this.$message.error('行业子品类table数据请求失败')
         this.industryTableData = []
+      }
+    },
+    // 行业tab 图表
+    async getIndustryEchart () {
+      if (this.activeName !== 'industry') return ''
+      const param = {
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
+        range: this.rangeItemVal,
+        particle: this.groupItemVal,
+        data: this.viewItemVal,
+        month: this.selectdMonth
+      }
+      const loadingInstance = refLoading(this.$refs.refIndustryEchart)
+      const res = await getIndustryEchart(param)
+      loadingInstance.close()
+      if (res.code === 200) {
+        this.industryEchart = res.result
+      } else {
+        this.$message.error('行业概览总销售趋势图请求失败')
       }
     },
     // 品牌tab 图表

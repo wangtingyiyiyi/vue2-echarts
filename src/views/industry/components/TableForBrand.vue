@@ -82,34 +82,11 @@ import tableLoadingMixin from '@/utils/mixin/tableLoading.js'
 export default {
   name: 'TableForBrand',
   mixins: [tableLoadingMixin],
-  // props: {
-  //   tableData: {
-  //     type: Array,
-  //     default: () => []
-  //   },
-  //   isLoading: {
-  //     type: Boolean,
-  //     default: false
-  //   },
-  //   activedSortKey: {
-  //     type: String,
-  //     default: 'gmv'
-  //   }
-  // },
-  data () {
-    return {
-      loadingInstance: null,
-      emptyText: ''
-    }
-  },
   components: { TextButton },
   computed: {
     ...mapState('industry', ['categoryObj'])
   },
   methods: {
-    handleSort (sortKey) {
-      this.$emit('handleBrandSort', sortKey)
-    },
     handleBrand (row) {
       const { href } = this.$router.resolve({
         path: '/brand',

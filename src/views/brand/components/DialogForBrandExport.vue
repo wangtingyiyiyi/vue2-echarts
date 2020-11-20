@@ -19,7 +19,6 @@
               multiple
               remote
               filterable
-              collapse-tags
               :remote-method="getBrandSearch"
               :loading="loading"
               :multiple-limit="5"
@@ -115,8 +114,8 @@ export default {
   },
   methods: {
     changeBrand () {
-      this.form.cateList = []
-      this.form.cate = ''
+      // this.form.cateList = []
+      // this.form.cate = ''
       this.getCategoryByBrands()
     },
     changeIndustry (data) {

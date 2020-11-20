@@ -75,9 +75,6 @@ export default {
   name: 'TableForShop',
   mixins: [tableLoadingMixin],
   methods: {
-    handleSort (sortVal) {
-      this.$emit('changeSortItemVal', sortVal)
-    },
     handleClick (row, column) {
       if (column.property === 'spuname') {
         window.open(`http://detail.tmall.com/item.htm?id=${row.spuid}`)

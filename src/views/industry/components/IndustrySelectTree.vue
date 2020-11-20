@@ -22,16 +22,18 @@
       <!-- 异步请求树 -->
       <el-tree
         v-show="!showExpandTree"
+        lazy
+        ref="leftTree1"
         node-key="label"
-        :data="asyncTree"
+        class="select-tree"
         highlight-current
         check-on-click-node
-        ref="leftTree1"
-        lazy
-        class="select-tree"
-        @node-click="handleNodeClick"
-        :load="loadNode">
-        <IndustrySelectTreeLabel slot-scope="{data}" :data="data"/>
+        :data="asyncTree"
+        :props="{ isLeaf: 'isLeaf' }"
+        :expand-on-click-node="false"
+        :load="loadNode"
+        @node-click="handleNodeClick">
+        <IndustrySelectTreeLabel slot-scope="{data}" :data="data" label="category"/>
       </el-tree>
   </el-select>
 </template>

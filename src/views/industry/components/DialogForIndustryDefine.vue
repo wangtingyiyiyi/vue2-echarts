@@ -99,7 +99,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary" @click="onSubmit">保 存</el-button>
+      <el-button type="primary" disabled @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
 </transition>

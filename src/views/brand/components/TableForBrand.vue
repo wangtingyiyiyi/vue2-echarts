@@ -98,9 +98,6 @@ export default {
     ...mapState('brand', ['activeBrand'])
   },
   methods: {
-    handleSort (sortVal) {
-      this.$emit('changeSortItemVal', sortVal)
-    },
     // 携带点击的节点信息，打开新页面
     handleCategory (data) {
       const { href } = this.$router.resolve({

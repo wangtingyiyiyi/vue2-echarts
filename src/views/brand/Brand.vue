@@ -196,6 +196,7 @@ export default {
     handleRangeClick (data) {
       this.rangeItemVal = data.value
       this.selectdMonth = ''
+      this.spuPage = 1
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
@@ -205,6 +206,7 @@ export default {
     handleGroupClick (data) {
       this.groupItemVal = data.value
       this.selectdMonth = ''
+      this.spuPage = 1
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
@@ -223,6 +225,7 @@ export default {
     },
     // table 切换month
     handleTableMonth (val) {
+      this.spuPage = 1
       this.selectdMonth = val
       this.getTableForSpu()
     },
@@ -246,7 +249,7 @@ export default {
     },
     // 品牌提数回调
     handleExportExcel (formParam) {
-      const brandName = formParam.brandList.join('/')
+      const brandName = formParam.brandList.join('&')
       const option = {
         param: formParam,
         url: process.env.VUE_APP_API_URL + '/download/file',

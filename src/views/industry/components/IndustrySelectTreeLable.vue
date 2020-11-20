@@ -4,8 +4,7 @@
     <span class="tree-select-icon" v-else-if="data.rank === '2' || data.rank === 2" style="color: #5AD8A6;">{{data.rank}}</span>
     <span class="tree-select-icon" v-else-if="data.rank === '3' || data.rank === 3" style="color: #5D7092;">{{data.rank}}</span>
     <span class="tree-select-icon" v-else style="color: #5B8FF9;">自</span>
-    <!-- <span v-html="highlight(likeCondition, data.label)"></span> -->
-    <span v-html="highlight(likeCondition, data.label.split('&&')[0])"></span>
+    <span v-html="highlight(likeCondition, data[this.label].split('&&')[0])"></span>
   </span>
 </template>
 
@@ -20,6 +19,10 @@ export default {
     likeCondition: {
       type: String,
       default: ''
+    },
+    label: {
+      type: String,
+      default: 'label'
     }
   },
   methods: {
