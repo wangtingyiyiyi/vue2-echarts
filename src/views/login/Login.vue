@@ -165,6 +165,9 @@ export default {
     },
     changeLoginType () {
       this.isPsw = !this.isPsw
+      if (!this.isPsw) {
+        this.wechatLogin()
+      }
     },
     wechatLogin () {
       window.a = window.WwLogin({
@@ -186,7 +189,6 @@ export default {
         }
       }
       if (this.isPc) {
-        this.wechatLogin()
         if (!window.localStorage) {
           return false
         } else {
