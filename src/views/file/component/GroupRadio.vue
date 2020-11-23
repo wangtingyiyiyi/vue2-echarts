@@ -34,7 +34,11 @@ export default {
   },
   methods: {
     rangeClick (val) {
+      const industryExcelHeader = this._.find(this.options, function (item) {
+        return item.value === val
+      }).industryExcelHeader || []
       this.$emit('handleOnGroupRadio', this.formKey, val)
+      this.$emit('handleOnExcelHeader', this.formKey, industryExcelHeader)
     }
   }
 }

@@ -1,11 +1,12 @@
 <template>
   <div class="flex-row m-b-12">
     <div style="width: 90px" class="label">{{label}}</div>
-    <el-checkbox-group v-model="val" @change="handleGroup">
+    <el-checkbox-group v-model="array" @change="handleGroup">
       <el-checkbox
         v-for="item in options"
         :key="item.value"
         :label="item"
+        :disabled="item.disabled"
         @change="val => handleCurrent(val, item)">{{item.label}}</el-checkbox>
     </el-checkbox-group>
   </div>
@@ -40,7 +41,7 @@ export default {
   },
   data () {
     return {
-      val: [],
+      array: [],
       currentCheckedAgg: {}
     }
   },
@@ -49,27 +50,37 @@ export default {
   },
   methods: {
     handleCurrent (val, item) {
-      // if (item.label === '按品牌') {
-      //   this.currentCheckedAgg = item
-      //   return
-      // }
-      // val ? this.currentCheckedAgg = item : this.currentCheckedAgg = {}
+      if (item.label === '按品牌') {
+        this.currentCheckedAgg = item
+        return
+      }
+      val ? this.currentCheckedAgg = item : this.currentCheckedAgg = {}
     },
     handleGroup (arr) {
-      const val = arr.map(item => item.industryWeights)
+      if (this.currentCheckedAgg.label === '按品名') {
+        arr.push(this.options[0])
+        this.array = this._.uniqBy(arr, 'label')
+      }
+      if (this.currentCheckedAgg.label === '按品牌') {
+        this.array = this._.remove(arr, item => item.label !== '按品名')
+      }
+      const val = this.array.map(item => item.industryWeights)
+      const industryExcelHeader = this.array.map(item => item.industryExcelHeader).flat()
+      this.$emit('handleOnExcelHeader', this.formKey, industryExcelHeader)
       this.$emit('handleOnGroupCheckbox', this.formKey, replenishSum(val, this.codeLen))
     },
     // 将传入的默认值进行解码
     deCode () {
       let sum = parseInt(this._.cloneDeep(this.activeVal))
+      const max = sum.toString().length
       const weight = []
-      for (let index = 0; index < this.codeLen; index++) {
-        if (parseInt(sum / Math.pow(10, index)) > 0) {
+      for (let index = max - 1; index >= 0; index--) {
+        if (parseInt(sum / Math.pow(10, index)) >= 1) {
           weight.push(Math.pow(10, index))
+          sum = sum - Math.pow(10, index)
         }
-        sum = sum - Math.pow(10, index)
       }
-      this.val = this.options.filter(item => {
+      this.array = this.options.filter(item => {
         return weight.includes(item.industryWeights)
       })
     }

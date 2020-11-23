@@ -1,6 +1,7 @@
 import IndustrySelectTree from '@/views/industry/components/IndustrySelectTree.vue'
 import GroupRadio from '@/views/file/component/GroupRadio.vue'
 import GroupCheckbox from '@/views/file/component/GroupCheckbox.vue'
+import PreviewTable from '@/views/file/component/PreviewTable.vue'
 
 import {
   RANGE_LEVEL,
@@ -24,6 +25,7 @@ export default {
   components: {
     IndustrySelectTree,
     GroupRadio,
-    GroupCheckbox
+    GroupCheckbox,
+    PreviewTable
   }
 }

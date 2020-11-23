@@ -16,7 +16,7 @@
         node-key="key"
         class="select-tree"
         @node-click="handleNodeClick"
-        :default-expand-all="true">
+        :default-expand-all="false">
         <IndustrySelectTreeLabel slot-scope="{data}" :data="data" :likeCondition="likeCondition"/>
       </el-tree>
       <!-- 异步请求树 -->

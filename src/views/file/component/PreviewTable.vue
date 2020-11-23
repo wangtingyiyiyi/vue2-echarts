@@ -1,38 +1,32 @@
 <template>
-  <div v-if="tableData.length !== 0">
-    <el-table
-      :data="tableData"
-      ref="excelTable"
-      class="excel-table"
-      header-row-class-name="excel-header-class"
-      row-class-name="excel-row-class"
-      stripe
-      border>
-      <el-table-column
-        show-overflow-tooltip
-        v-for="item in excelHeader"
-        :key="item.label"
-        :prop="item.prop"
-        :align="item.align"
-        min-width="120px"
-        :label="item.label">
-        <template slot-scope="{row}">
-          <span  v-if="item.formatter">{{row[item.prop] | format}}</span>
-          <span v-else>{{row[item.prop]}}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div style="margin-top: 4px">
-      <span>当前共有 {{tableTotal | format}} 条数据</span>
-      <span v-if="tableTotal > max">, <span style="color: rgb(245, 108, 108);">已超出Excel的最大行数({{max | format}})</span></span>
-    </div>
-  </div>
-  <div v-else>{{emptyMes}}</div>
+  <el-table
+    :data="tableData"
+    ref="excelTable"
+    class="excel-table"
+    header-row-class-name="excel-header-class"
+    row-class-name="excel-row-class"
+    stripe
+    border>
+    <el-table-column
+      show-overflow-tooltip
+      v-for="item in excelHeader"
+      :key="item.label"
+      :prop="item.prop"
+      :align="item.align"
+      min-width="120px"
+      :label="item.label">
+      <template slot-scope="{row}">
+        <span  v-if="item.formatter">{{row[item.prop] | format}}</span>
+        <span v-else>{{row[item.prop]}}</span>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script>
+import { INDUSTRY_EXCEL_TABLE_PROP } from '@/utils/const.js'
 export default {
-  name: 'PriviewTable',
+  name: 'PreviewTable',
   props: {
     tableData: {
       type: Array,
@@ -45,15 +39,12 @@ export default {
     tableTotal: {
       type: [Number],
       default: 0
-    },
-    emptyMes: {
-      type: String,
-      default: '请选择配置项'
     }
   },
   data () {
     return {
-      max: 1048576
+      max: 1048576,
+      INDUSTRY_EXCEL_TABLE_PROP
     }
   }
 }
@@ -62,6 +53,7 @@ export default {
 <style lang="stylus" scoped>
 .excel-table
   width 100%
+  margin-top 10px
 
 .excel-table >>> .excel-header-class th
   padding 0

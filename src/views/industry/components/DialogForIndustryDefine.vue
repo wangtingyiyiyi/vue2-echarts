@@ -38,7 +38,8 @@
           :props="{ label: 'category', isLeaf: 'isLeaf' }"
           :load="loadNode"
           :check-strictly="false"
-          :default-expanded-keys="allRightParentKeys">
+          :default-expanded-keys="allRightParentKeys"
+          @check="handleLeftTreeCheck">
         </el-tree>
         <!-- 搜索树 -->
         <el-tree
@@ -49,7 +50,8 @@
           node-key="label"
           ref="searchTree"
           :default-expand-all="true"
-          class="tree-wapper beauty-scroll">
+          class="tree-wapper beauty-scroll"
+          @check="handleLeftTreeCheck">
         </el-tree>
       </div>
 
@@ -58,11 +60,13 @@
           type="primary"
           icon="el-icon-arrow-right"
           class="center-btn"
+          :disabled="disabledGoRight"
           @click="goRight"></el-button>
         <el-button
           type="primary"
           icon="el-icon-arrow-left"
           class="center-btn"
+          :disabled="disabledGoLeft"
           @click="goLeft"></el-button>
         <el-button
           type="primary"
@@ -76,12 +80,13 @@
         <!-- 选中树 -->
         <el-tree
           show-checkbox
-          ref="rightTree"
+          ref="resTree"
           node-key="label"
           class="right-tree-wapper beauty-scroll"
           :data="rightTree"
           :props="{ label: 'category' }"
-          :default-expand-all="true">
+          :default-expand-all="true"
+          @check="handleRightTreeCheck">
         </el-tree>
       </div>
     </div>
@@ -109,8 +114,6 @@
 import { getCategoryTree } from '@/api/industry'
 import { getDefineTree } from '@/api/define'
 
-// import { refLoading } from '@/utils/element.js'
-
 export default {
   name: 'DialogForIndustryDefine',
   props: {
@@ -127,15 +130,6 @@ export default {
       default: ''
     }
   },
-  // watch: {
-  //   editDefineName: {
-  //     immediate: true,
-  //     deep: true,
-  //     handler: function (editDefineName) {
-  //       this.form.category = editDefineName
-  //     }
-  //   }
-  // },
   data () {
     return {
       likeCondition: '',
@@ -150,7 +144,9 @@ export default {
       showExpandTree: false,
       rootTree: [],
       allRightParentKeys: [],
-      checkedNotes: []
+      checkedNotes: [],
+      disabledGoRight: true,
+      disabledGoLeft: true
     }
   },
   methods: {
@@ -165,6 +161,14 @@ export default {
         }
       })
     },
+    // 控制 goRight 按钮点击状态
+    handleLeftTreeCheck (data, tree) {
+      this.disabledGoRight = tree.checkedNodes.length === 0
+    },
+    // 控制 goLeft 按钮点击状态
+    handleRightTreeCheck (data, tree) {
+      this.disabledGoLeft = tree.checkedNodes.length === 0
+    },
     // 全选
     handleCheckAll (checked) {
     },
@@ -173,12 +177,19 @@ export default {
       const searchTreeCheckedNotes = this.$refs.searchTree.getCheckedNodes(true)
       this.checkedNotes.push(...lazyTreeCheckedNotes, ...searchTreeCheckedNotes)
       this.checkedNotes = this._.uniqBy(this.checkedNotes, 'label')
-      console.info(this.checkedNotes)
-      // this.checkedNotes = this.$refs.lazyTree.getCheckedNodes()
-      this.renderRightTree()
+      this.renderRightTree().then(() => {
+        this.disabledGoRight = true
+      })
     },
     goLeft () {
-
+      const checked = this.$refs.resTree.getCheckedNodes() // 选中节点
+      const halfChecked = this.$refs.resTree.getHalfCheckedNodes() // 半选节点
+      // const checkedNotes = this._.cloneDeep(this.checkedNotes)
+      // const aaa = this._.pullAll(checkedNotes, checked.push(...halfChecked))
+      console.info(checked, halfChecked)
+      // this.renderRightTree().then(() => {
+      //   this.disabledGoLeft = true
+      // })
     },
     allGoLeft () {
     },
