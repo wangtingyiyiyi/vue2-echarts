@@ -1,7 +1,9 @@
 <template>
   <div class="title-wapper">
-    <div class="icon"></div>
-    <div class="title">{{title}}</div>
+    <div class="icon" :style="{backgroundColor: backgroundColor}"></div>
+    <div class="title">{{title}}
+      <span class="second-title">{{slotText}}</span>
+    </div>
   </div>
 </template>
 
@@ -12,6 +14,14 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    slotText: {
+      type: String,
+      default: ''
+    },
+    backgroundColor: {
+      type: String,
+      default: '#5b8ff9'
     }
   }
 }
@@ -30,4 +40,6 @@ export default {
     padding-left 8px
     color $color-title
     font-weight 500
+  .second-title
+    color $color-light-gary
 </style>

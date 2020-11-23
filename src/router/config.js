@@ -1,16 +1,11 @@
-const CommonLayoutView = () => import(/* webpackChunkName: "CommonLayoutView" */ '../views/layouts/CommonLayout.vue')
-const Login = () => import(/* webpackChunkName: "Login" */ '../views/login/Login.vue')
-const User = () => import(/* webpackChunkName: "User" */ '../views/user/User.vue')
-const Setting = () => import(/* webpackChunkName: "Setting" */ '../views/setting/Setting.vue')
-const Industry = () => import(/* webpackChunkName: "Industry" */ '../views/industry/Industry.vue')
-const Brand = () => import(/* webpackChunkName: "Brand" */ '../views/brand/Brand.vue')
-
-// import Login from '@/views/login/Login.vue'
-// import CommonLayoutView from '@/views/layouts/CommonLayout.vue'
-// import Brand from '@/views/brand/Brand.vue'
-// import Industry from '@/views/industry/Industry.vue'
-// import User from '@/views/user/User.vue'
-// import Setting from '@/views/setting/Setting.vue'
+const CommonLayoutView = () => import('../views/layouts/CommonLayout.vue')
+const Login = () => import('../views/login/Login.vue')
+const User = () => import('../views/user/User.vue')
+const Setting = () => import('../views/setting/Setting.vue')
+const Industry = () => import('../views/industry/Industry.vue')
+const Brand = () => import('../views/brand/Brand.vue')
+const File = () => import('../views/file/File.vue')
+const Page404 = () => import('../views/error/404.vue')
 
 export const routes = [
   {
@@ -32,14 +27,21 @@ export const routes = [
           svgIcon: 'menu'
         },
         component: Industry
-      },
-      {
+      }, {
         path: 'brand',
         name: '品牌',
         meta: {
           svgIcon: 'brand'
         },
         component: Brand
+      }, {
+        path: 'file',
+        name: '提数',
+        meta: {
+          permission: ['1'],
+          svgIcon: 'excel'
+        },
+        component: File
       }
     ]
   }, {
@@ -54,8 +56,7 @@ export const routes = [
           icon: 'el-icon-user'
         },
         component: User
-      },
-      {
+      }, {
         path: 'setting',
         name: '设置',
         meta: {
@@ -64,5 +65,9 @@ export const routes = [
         component: Setting
       }
     ]
+  }, {
+    path: '/error',
+    name: 'page404',
+    component: Page404
   }
 ]

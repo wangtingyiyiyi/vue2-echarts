@@ -5,7 +5,7 @@
       :collapse-transition="false"
       :collapse="collapsed"
       @select="menuSelect">
-      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text" >
+      <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name" style="text">
         <Svg-Icon :icon-class="item.meta.svgIcon" :class="[collapsed ? 'margin-left-5' : '']" style="margin-top: 3px;"/>
         <span slot="title" style="margin-left: 15px; font-weight: 600">
           <span>{{item.name}}</span>
@@ -43,7 +43,10 @@ export default {
     }
   },
   beforeCreate () {
-    menuData = this.$router.options.routes.find((item) => item.path === '/').children
+    const route = this.$router.options.routes.find((item) => item.path === '/').children
+    menuData = this._.filter(route, item => {
+      return !item.meta.permission || item.meta.permission.includes(sessionStorage.getItem('type'))
+    })
   }
 }
 </script>

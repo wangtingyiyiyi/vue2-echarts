@@ -41,7 +41,6 @@
         <el-checkbox
           v-for="item in DATA_INDEX"
           :key="item.value"
-          :disabled="item.disabled"
           :label="item">{{item.label}}</el-checkbox>
       </el-checkbox-group>
     </el-form-item>

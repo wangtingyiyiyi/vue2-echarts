@@ -14,9 +14,13 @@ const router = new VueRouter({
 // 用户通过url进入项目, 判断是否存在token等信息，如果没有，导航至login
 router.beforeEach((to, form, next) => {
   const token = sessionStorage.getItem('token')
+  const roleType = sessionStorage.getItem('type')
   if (to.name !== 'Login' && !token) {
     next({ name: 'Login' })
+  } else if (to.meta.permission && !to.meta.permission.includes(roleType)) {
+    next({ name: 'page404' })
   } else {
+    console.info(to)
     next()
   }
 })
