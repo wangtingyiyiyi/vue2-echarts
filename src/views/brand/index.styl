@@ -6,14 +6,15 @@
 .brand-tab-wapper
   background-color #ffffff
   position relative
-  min-height: calc(100% - 182px)
+  // min-height calc(100vh - 402px)
 
 .brand-tab-wapper >>> .el-tabs__item
     padding-left 25px !important
     font-size 16px
     line-height 56px
     height 56px
-
+.brand-tab-wapper >>> .el-tabs__content
+    min-height calc(100vh - 454px)
 .pagination-wapper
   text-align center
   margin 20px 0 0

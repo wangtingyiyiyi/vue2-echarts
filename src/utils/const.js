@@ -230,8 +230,8 @@ export const INDUSTRY_DEFAULT_INDUSTRY = {
 
 // 品牌-默认参数
 export const BRAND_DEFINE_BRAND = {
-  brandList: ['花西子']
-  // brandList: ["欧莱雅/L'OREAL", '玉兰油/Olay', '娇韵诗/Clarins', '娇兰/Guerlain', '雅诗兰黛/Estee Lauder']
+  // brandList: ['花西子']
+  brandList: ["欧莱雅/L'OREAL", '玉兰油/Olay', '娇韵诗/Clarins', '娇兰/Guerlain', '雅诗兰黛/Estee Lauder']
 }
 
 // 品牌-默认品牌

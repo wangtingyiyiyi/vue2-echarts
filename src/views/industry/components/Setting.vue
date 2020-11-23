@@ -5,7 +5,7 @@
         <span slot="label" class="form-label">选择行业</span>
         <Industry-Select-Tree
           ref="IndustrySelectTree"
-          style="width: 600px"
+          class="industry-select"
           :defaultObj="$attrs.defaultObj"
           @handleSelectTree="handleNodeClick"/>
       </el-form-item>
@@ -59,4 +59,7 @@ export default {
   padding 20px 26px
   >>> .form-label
     font-weight 500
+.industry-select
+  width calc(100vh / 6)
+  min-width 400px
 </style>

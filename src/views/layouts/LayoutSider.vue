@@ -63,7 +63,7 @@ export default {
   width 64px !important
 .menu-asider
   position fixed
-  /* height 100% */
+  height 100%
   z-index 3
   .el-menu
     height 100%

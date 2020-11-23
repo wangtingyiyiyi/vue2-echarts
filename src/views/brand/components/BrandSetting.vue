@@ -10,8 +10,7 @@
         <el-select
           v-model="brandForm.brandList"
           value-key="brand"
-          style="width: 600px"
-          popper-class="brand-select-option-class"
+          class="brand-select"
           multiple
           remote
           filterable
@@ -38,7 +37,7 @@
           v-model="brandForm.cate"
           ref="cascader"
           popper-class="industry-cascader-wapper"
-          style="width: 600px"
+          class="industry-select"
           :options="categoryOption"
           :show-all-levels="false"
           :props="props"
@@ -54,7 +53,6 @@
 
 <script>
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
-import { debounce } from '@/utils/common.js'
 import TextButton from '@/components/TextButton.vue'
 import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
@@ -98,23 +96,21 @@ export default {
       this.$emit('handleExportDialog')
     },
     // 品牌列表模糊查询
-    getBrandSearch (query) {
-      debounce(async () => {
-        if (query) {
-          this.loading = true
-          const res = await getBrandByLikeCondition({ likeCondition: query })
-          this.brandOption = []
-          this.loading = false
-          if (res.code === 200) {
-            this.brandOption = res.result
-          } else {
-            this.$message.error('品牌列表搜索失败')
-            this.brandOption = []
-          }
+    async getBrandSearch (query) {
+      if (query) {
+        this.loading = true
+        const res = await getBrandByLikeCondition({ likeCondition: query })
+        this.brandOption = []
+        this.loading = false
+        if (res.code === 200) {
+          this.brandOption = res.result
         } else {
+          this.$message.error('品牌列表搜索失败')
           this.brandOption = []
         }
-      })
+      } else {
+        this.brandOption = []
+      }
     },
     // 根据品牌查询行业分类
     async getCategoryByBrands () {
@@ -154,14 +150,17 @@ export default {
   background-color #ffffff
   padding 20px 26px
 
-.brand-select-option-class
-  .el-select-dropdown__item
-    max-width 600px
-
 // 去掉radio
 .industry-cascader-wapper
   .el-cascader-panel
     .el-cascader-menu__list
       .el-radio
         display none
+
+.brand-select
+  width calc(100vw / 3)
+  min-width 800px
+.industry-select
+  width calc(100vh / 6)
+  min-width 400px
 </style>

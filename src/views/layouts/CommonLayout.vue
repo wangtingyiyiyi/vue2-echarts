@@ -3,24 +3,22 @@
     <el-header class="header-wapper">
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
-        <!-- <Header-Notice class="m-0-12"/> -->
-        <!-- <Header-Avatar class="m-0-12"/> -->
         <div class="m-0-12">{{userName}}</div>
         <Header-Setting class="m-0-12"/>
       </div>
     </el-header>
     <div class="main-wapper">
       <Layout-Sider :collapsed="collapsed"/>
-      <Layout-Content :collapsed="collapsed" :class="[ collapsed ? 'm-l-63' : 'm-l-200', 'content-wapper']"/>
+      <Layout-Content
+        :collapsed="collapsed"
+        class="content-wapper"/>
+      <Layout-Footer />
     </div>
-    <Layout-Footer />
   </div>
 </template>
 
 <script>
 import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
-// import HeaderAvatar from '@/views/layouts/header/HeaderAvatar.vue'
-// import HeaderNotice from '@/views/layouts/header/HeaderNotice.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
@@ -68,7 +66,8 @@ body {
   background-color #ffffff
   top 0
   z-index 1500
-  padding 0 calc((100vw - 1600px) / 2)
+  // padding 0 calc((100vw - 1600px) / 2)
+  padding 0
 
 .flex-row
   display flex
@@ -76,17 +75,21 @@ body {
 
 .main-wapper
   margin-top 60px
-  max-width 1600px
-  min-width 1200px
+  width 100%
+  // max-width 1600px
+  // min-width 1200px
   margin 60px auto 0
   background-color $base-white
-  min-height calc(100vh - 157px)
+  // min-height calc(100vh - 157px)
+  min-height calc(100vh - 60px)
 
 .content-wapper
-  padding 20px 0 0 0px
+  padding 20px 33px 0 20px
   background-color $base-white
+  min-height calc(100vh - 150px)
 
 .scroll-container
   height 100vh
   overflow-x auto
+
 </style>

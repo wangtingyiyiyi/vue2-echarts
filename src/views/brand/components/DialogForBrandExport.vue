@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import { debounce } from '@/utils/common.js'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import { mapState } from 'vuex'
 import PreviewMixin from '@/components/Preview/mixin.js'
@@ -124,23 +123,21 @@ export default {
       this.handlePreview()
     },
     // 品牌列表模糊查询
-    getBrandSearch (query) {
-      debounce(async () => {
-        if (query) {
-          this.loading = true
-          const res = await getBrandByLikeCondition({ likeCondition: query })
-          this.brandOption = []
-          this.loading = false
-          if (res.code === 200) {
-            this.brandOption = res.result
-          } else {
-            this.$message.error('品牌列表搜索失败')
-            this.brandOption = []
-          }
+    async getBrandSearch (query) {
+      if (query) {
+        this.loading = true
+        const res = await getBrandByLikeCondition({ likeCondition: query })
+        this.brandOption = []
+        this.loading = false
+        if (res.code === 200) {
+          this.brandOption = res.result
         } else {
+          this.$message.error('品牌列表搜索失败')
           this.brandOption = []
         }
-      })
+      } else {
+        this.brandOption = []
+      }
     },
     // 根据品牌查询行业分类
     async getCategoryByBrands () {
