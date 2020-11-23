@@ -9,16 +9,15 @@
     style="width: 100%">
     <el-table-column
       prop="spuname"
-      width="450"
+      min-width="100"
       label="SPU名称">
     </el-table-column>
     <el-table-column
       prop="shopname"
-      show-overflow-tooltip
-      min-width="30"
+      min-width="50"
       label="店铺名称">
     </el-table-column>
-    <el-table-column align="right" min-width="20px">
+    <el-table-column align="right" min-width="60px">
       <template #header>
         <Table-Sort-Button
           title="销量"
@@ -28,7 +27,7 @@
       </template>
       <template slot-scope="{row}">{{row.sales | format}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="30px">
+    <el-table-column align="right" min-width="60px">
       <template #header>
          <Table-Sort-Button
           title="销售额"
@@ -38,12 +37,12 @@
       </template>
       <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
-    <el-table-column align="center" width="200" label="销售趋势">
+    <el-table-column align="center" min-width="70" label="销售趋势">
       <template slot-scope="{row}">
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" width="95" min-width="25">
+    <el-table-column align="right"  min-width="50px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -53,7 +52,17 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="25" width="95">
+    <el-table-column align="right" min-width="50px">
+      <template #header>
+        <Table-Sort-Button
+          title="销售额环比"
+          sortVal="gmvRate"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
+      </template>
+      <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
+    </el-table-column>
+    <el-table-column align="right"  min-width="45">
       <template #header>
         <Table-Sort-Button
           title="均价"

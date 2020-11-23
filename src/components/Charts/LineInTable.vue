@@ -49,8 +49,8 @@ export default {
             }
           },
           grid: {
-            top: '15',
-            left: '50',
+            top: 'middle',
+            left: 'center',
             height: '25',
             width: '100'
           },

@@ -34,12 +34,12 @@
       </template>
       <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
-    <el-table-column align="center" label="销售额趋势" width="200px">
+    <el-table-column align="center" label="销售额趋势" min-width="70">
       <template slot-scope="{row}">
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" width="120px">
+    <el-table-column align="right" min-width="40px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -49,7 +49,7 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
-    <el-table-column align="right" min-width="50">
+    <el-table-column align="right" min-width="60px">
       <template #header>
         <Table-Sort-Button
           title="销售额环比"
