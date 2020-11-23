@@ -74,7 +74,7 @@ export default {
       categoryLabel: '',
       loading: false,
       props: {
-        value: 'category',
+        value: 'label',
         emitPath: false,
         checkStrictly: true,
         expandTrigger: 'hover'
@@ -84,13 +84,12 @@ export default {
   methods: {
     ...mapMutations('brand', ['SET_BRAND_CATEGORY', 'SET_BRAND_BRANDS']),
     changeBrand () {
-      console.info(this.brandForm)
       this.$emit('handleSetBrands', this.brandForm.brandList)
       this.SET_BRAND_BRANDS(this.brandForm.brandList)
       this.getCategoryByBrands()
     },
     changeIndustry (data) {
-      this.brandForm.cate = data.category
+      this.brandForm.cate = data.label
       const obj = Object.assign(this._.cloneDeep(data), { children: null })
       this.SET_BRAND_CATEGORY(obj)
       this.$emit('handleSetCategroy', obj)

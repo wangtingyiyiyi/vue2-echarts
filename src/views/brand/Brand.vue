@@ -10,44 +10,53 @@
         <div class="brand-tab-wapper">
           <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
               <el-tab-pane label="品牌概览" name="brand">
-                  <Title class="m-b-12" title="总销售趋势"/>
-
-                  <Echarts-Buttons
-                    :activeVal="viewItemVal"
-                    style="width: 100%"
-                    class="m-b-5"
-                    @handleEchartsClick="handleEchartsClick"/>
-
-                  <div ref="brandEchart">
-                     <Chart-For-Brand
-                      style="width: 100%; height: 300px"
-                      :brandData="brandChart"
-                      :viewItemVal="viewItemVal"/>
-                  </div>
-
-                  <div class="table-title-wapper m-b-12">
+                  <div v-show="showEmpty">
+                    <Title class="m-b-12" title="总销售趋势"/>
+                    <Empty-Icon />
                     <Title title="按品牌展开"/>
-                    <Month-Options
-                      :monthOption="monthOption"
-                      :selectdMonth="selectdMonth"
-                      @handleSelectdMonth="handleMonth"/>
+                    <Empty-Icon />
                   </div>
 
-                  <Brand-Table-Brands
-                    :brands="brandList"
-                    :activeBrand="activeBrand"
-                    class="m-b-10"
-                    @changeActiveBrand="changeActiveBrand"/>
+                  <div v-show="!showEmpty">
+                    <Echarts-Buttons
+                      :activeVal="viewItemVal"
+                      style="width: 100%"
+                      class="m-b-5"
+                      @handleEchartsClick="handleEchartsClick"/>
 
-                  <Table-For-Brand
-                    ref="table"
-                    :activedSortKey="sortItemVal"
-                    :tableData="brandTableData"
-                    :isLoading="isLoadingOfBrandTable"
-                    :paramOfBrandTable="paramOfBrandTable"
-                    @changeSortItemVal="changeSortItemVal"/>
+                    <div ref="brandEchart">
+                      <Chart-For-Brand
+                        style="width: 100%; height: 300px"
+                        :brandData="brandChart"
+                        :viewItemVal="viewItemVal"/>
+                    </div>
+
+                    <div class="table-title-wapper m-b-12">
+                      <Title title="按品牌展开"/>
+                      <Month-Options
+                        :monthOption="monthOption"
+                        :selectdMonth="selectdMonth"
+                        @handleSelectdMonth="handleMonth"/>
+                    </div>
+
+                    <Brand-Table-Brands
+                      :brands="brandList"
+                      :activeBrand="activeBrand"
+                      class="m-b-10"
+                      @changeActiveBrand="changeActiveBrand"/>
+
+                    <Table-For-Brand
+                      ref="table"
+                      :activedSortKey="sortItemVal"
+                      :tableData="brandTableData"
+                      :isLoading="isLoadingOfBrandTable"
+                      :paramOfBrandTable="paramOfBrandTable"
+                      @changeSortItemVal="changeSortItemVal"/>
+                  </div>
               </el-tab-pane>
               <el-tab-pane label="SPU" name="spu">
+                <Empty-Icon v-show="showEmpty"/>
+                <div v-show="!showEmpty">
                   <div class="flex-between m-b-10">
                     <Brand-Table-Brands
                       :brands="brandList"
@@ -73,6 +82,7 @@
                     :total="spuTotal"
                     @current-change="changeSpuPage">
                   </el-pagination>
+                </div>
               </el-tab-pane>
           </el-tabs>
 
@@ -153,7 +163,9 @@ export default {
     }
   },
   computed: {
-    // ...mapState('brand', ['brandList', 'categoryId'])
+    showEmpty () {
+      return this.brandList.length === 0
+    }
   },
   methods: {
     ...mapMutations('brand',
@@ -320,7 +332,7 @@ export default {
     },
     // spu table
     async getTableForSpu () {
-      if (!this.activeBrand.length === 0 || this.activeName !== 'spu') return ''
+      if (!this.activeBrand || this.activeName !== 'spu') return ''
       const param = {
         range: this.rangeItemVal,
         cateList: this.cateList,

@@ -43,7 +43,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="20px">
+    <el-table-column align="right" min-width="25px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
