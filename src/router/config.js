@@ -4,7 +4,7 @@ const User = () => import('../views/user/User.vue')
 const Setting = () => import('../views/setting/Setting.vue')
 const Industry = () => import('../views/industry/Industry.vue')
 const Brand = () => import('../views/brand/Brand.vue')
-const File = () => import('../views/file/File.vue')
+// const File = () => import('../views/file/File.vue')
 const Page404 = () => import('../views/error/404.vue')
 
 export const routes = [
@@ -34,15 +34,16 @@ export const routes = [
           svgIcon: 'brand'
         },
         component: Brand
-      }, {
-        path: 'file',
-        name: '提数',
-        meta: {
-          permission: ['1'],
-          svgIcon: 'excel'
-        },
-        component: File
       }
+      // , {
+      //   path: 'file',
+      //   name: '提数',
+      //   meta: {
+      //     permission: ['1'],
+      //     svgIcon: 'excel'
+      //   },
+      //   component: File
+      // }
     ]
   }, {
     path: '/user',
