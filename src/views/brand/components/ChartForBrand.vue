@@ -3,13 +3,14 @@
 </template>
 
 <script>
-import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callInterval, callMax } from '@/utils/chart.js'
 import { mapState } from 'vuex'
+import chartMixin from '@/utils/mixin/chart.js'
 
 export default {
   name: 'ChartForBrand',
+  mixins: [chartMixin],
   props: {
     brandData: {
       type: Array,
@@ -22,7 +23,6 @@ export default {
   },
   data () {
     return {
-      chart: null,
       legenList: [],
       tempKey: '',
       maxValue: 0
@@ -34,13 +34,6 @@ export default {
       handler: function (params) {
         this.initViewItem()
         this.init()
-      }
-    },
-    collapsed: {
-      handler: function (params) {
-        if (this.chart) {
-          this.chart.resize()
-        }
       }
     }
   },
@@ -99,7 +92,6 @@ export default {
       if (this.chart !== null) {
         this.chart.clear()
       }
-      this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',

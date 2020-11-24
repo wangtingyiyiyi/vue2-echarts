@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import echarts from 'echarts'
 import { ECHARTS_COLORS, ECHARTS_ACTIVED_PARAM } from '@/utils/const.js'
 import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter } from '@/utils/chart.js'
-import { mapState } from 'vuex'
+import chartMixin from '@/utils/mixin/chart.js'
 
 export default {
   name: 'ChartForBrand',
+  mixins: [chartMixin],
   props: {
     brandEchart: {
       type: Object,
@@ -22,7 +22,6 @@ export default {
   },
   data () {
     return {
-      chart: null,
       legendData: []
     }
   },
@@ -33,21 +32,10 @@ export default {
         this.legendData = ECHARTS_ACTIVED_PARAM[this.viewItemVal]
         this.init()
       }
-    },
-    collapsed: {
-      handler: function (params) {
-        if (this.chart) {
-          this.chart.resize()
-        }
-      }
     }
-  },
-  computed: {
-    ...mapState('sys', ['collapsed'])
   },
   methods: {
     init () {
-      this.chart = echarts.init(this.$refs.chart)
       const tempKey = this.viewItemVal === 'gmv' ? 'gmvList' : 'salesList'
       this.chart.setOption({
         tooltip: {

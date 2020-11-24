@@ -3,21 +3,17 @@
 </template>
 
 <script>
-import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
 import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
-import { mapState } from 'vuex'
+import chartMixin from '@/utils/mixin/chart.js'
+
 export default {
   name: 'ChartForIndustry',
+  mixins: [chartMixin],
   props: {
     industryEchart: {
       type: Object,
       default: () => {}
-    }
-  },
-  data () {
-    return {
-      chart: null
     }
   },
   watch: {
@@ -26,17 +22,7 @@ export default {
       handler: function (params) {
         this.init()
       }
-    },
-    collapsed: {
-      handler: function (params) {
-        if (this.chart) {
-          this.chart.resize()
-        }
-      }
     }
-  },
-  computed: {
-    ...mapState('sys', ['collapsed'])
   },
   methods: {
     init () {
@@ -44,7 +30,6 @@ export default {
       const maxGmv = callMax(this.industryEchart.gmvList)
       const minSales = callMin(this.industryEchart.salesList)
       const maxSales = callMax(this.industryEchart.salesList)
-      this.chart = echarts.init(this.$refs.chart)
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
