@@ -32,6 +32,15 @@ export default {
       val: this.activeVal
     }
   },
+  watch: {
+    activeVal: {
+      deep: true,
+      handler: function (params) {
+        // console.log('监控单选', params)
+        this.val = params
+      }
+    }
+  },
   methods: {
     rangeClick (val) {
       const industryExcelHeader = this._.find(this.options, function (item) {

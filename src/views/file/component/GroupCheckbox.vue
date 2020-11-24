@@ -45,6 +45,15 @@ export default {
       currentCheckedAgg: {}
     }
   },
+  watch: {
+    activeVal: {
+      deep: true,
+      handler: function (params) {
+        // console.log('监控多选', params)
+        this.deCode()
+      }
+    }
+  },
   mounted () {
     this.deCode()
   },
