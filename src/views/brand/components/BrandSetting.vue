@@ -91,6 +91,7 @@ export default {
       const obj = Object.assign(this._.cloneDeep(data), { children: null })
       this.SET_BRAND_CATEGORY(obj)
       this.$emit('handleSetCategroy', obj)
+      this.$refs.cascader.dropDownVisible = false
     },
     handleExportDialog () {
       this.$emit('handleExportDialog')

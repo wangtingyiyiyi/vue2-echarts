@@ -84,8 +84,16 @@ export default {
       return legenList
     },
     getxAxis (brandData) {
-      const allX = brandData.map(item => item.xlist).flat()
-      return this._.uniq(allX) || []
+      const x = brandData.map(item => item.xlist)
+      let l = 0
+      let res = []
+      x.forEach(item => {
+        if (item.length >= l) {
+          l = item.length
+          res = item
+        }
+      })
+      return res
     },
     init () {
       if (this.chart !== null) {

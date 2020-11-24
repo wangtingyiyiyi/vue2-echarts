@@ -70,7 +70,7 @@
           :activedSortKey="activedSortKey"
           @handleSort="handleSort"/>
       </template>
-      <template slot-scope="{row}">¥{{row.avgPrice | format}}</template>
+      <template slot-scope="{row}">¥{{Math.round(row.avgPrice) | format}}</template>
     </el-table-column>
     <el-table-column width="10px"></el-table-column>
     <div slot="empty">{{emptyText}}</div>

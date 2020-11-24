@@ -188,6 +188,9 @@ export default {
     },
     // 切换范围
     handleRangeClick (rangeItem) {
+      if (rangeItem.value === 'one_year') {
+        this.groupItemVal = 'month'
+      }
       this.rangeItemVal = rangeItem.value
       this.selectdMonth = ''
       this.chartSelectMonth = ''
@@ -200,6 +203,10 @@ export default {
     },
     // 切换颗粒度
     handleGroupClick (groupItem) {
+      // 按季度、按半年、按年默认切换“全部”
+      if (groupItem.value !== 'month') {
+        this.rangeItemVal = 'all'
+      }
       this.groupItemVal = groupItem.value
       this.page = 1
       this.selectdMonth = ''

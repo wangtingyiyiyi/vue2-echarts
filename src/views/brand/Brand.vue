@@ -94,6 +94,8 @@
             :activeVal="groupItemVal"
             @handleGroupClick="handleGroupClick"
             style='position: absolute; right:26px; top:16px;'/>
+          <div style='position: absolute; right:26px; top:16px;'>
+          </div>
         </div>
         <Download-Button
           v-if="showDownloadBtn"
@@ -206,6 +208,10 @@ export default {
     },
     // 切换范围
     handleRangeClick (data) {
+      // 近一年，默认切换“按月”
+      if (data.value === 'one_year') {
+        this.groupItemVal = 'month'
+      }
       this.rangeItemVal = data.value
       this.selectdMonth = ''
       this.spuPage = 1
@@ -216,6 +222,10 @@ export default {
     },
     // 切换颗粒度
     handleGroupClick (data) {
+      // 按季度、按半年、按年默认切换“全部”
+      if (data.value !== 'month') {
+        this.rangeItemVal = 'all'
+      }
       this.groupItemVal = data.value
       this.selectdMonth = ''
       this.spuPage = 1

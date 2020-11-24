@@ -96,6 +96,7 @@ export default {
               color: '#878999'
             },
             formatter: function (value) {
+              // return xAxisDateFormatter(value)
               return xAxisDateSplit(xAxisDateFormatter(value))
             }
           },
