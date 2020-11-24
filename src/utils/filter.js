@@ -20,7 +20,7 @@ const moment = function (value, pattern = 'YYMMDD') {
 }
 // 百分数
 const percentage = function (value) {
-  if (isNaN(value)) { return 'NaN' }
+  if (isNaN(value) || value === 'Infinity') { return 'NaN' }
   return (value * 100).toFixed(2) + '%'
 }
 

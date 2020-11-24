@@ -126,14 +126,15 @@ export default {
     },
     handleRoute () {
       const { query } = this.$route
+      console.info(query)
       if (Object.keys(query).length !== 0) {
         this.brandForm.brandList = [JSON.parse(query.brandList)]
-        this.brandForm.cate = JSON.parse(query.cateList).category
+        this.brandForm.cate = JSON.parse(query.cateList).label
         this.SET_BRAND_BRANDS(this.brandForm.brandList)
         this.getCategoryByBrands()
       } else {
         this.getCategoryByBrands().then(() => {
-          this.brandForm.cate = this.categoryOption[0].category
+          this.brandForm.cate = this.categoryOption[0].label
           this.SET_BRAND_BRANDS(this.brandForm.brandList)
           this.SET_BRAND_CATEGORY(Object.assign(this._.cloneDeep(this.categoryOption[0]), { children: null }))
         })

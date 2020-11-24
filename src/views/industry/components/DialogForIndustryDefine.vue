@@ -146,7 +146,8 @@ export default {
       allRightParentKeys: [],
       checkedNotes: [],
       disabledGoRight: true,
-      disabledGoLeft: true
+      disabledGoLeft: true,
+      rightTreeFlat: []
     }
   },
   methods: {
@@ -184,14 +185,53 @@ export default {
     goLeft () {
       const checked = this.$refs.resTree.getCheckedNodes() // 选中节点
       const halfChecked = this.$refs.resTree.getHalfCheckedNodes() // 半选节点
-      // const checkedNotes = this._.cloneDeep(this.checkedNotes)
-      // const aaa = this._.pullAll(checkedNotes, checked.push(...halfChecked))
-      console.info(checked, halfChecked)
-      // this.renderRightTree().then(() => {
-      //   this.disabledGoLeft = true
-      // })
+      this.checkedNotes = this._.xorBy([...checked, ...halfChecked], this.rightTreeFlat, 'label')
+      this.renderRightTree().then(() => {
+        this.disabledGoLeft = true
+        this.$nextTick(() => {
+          this.$refs.lazyTree.setCheckedKeys(this.checkedNotes.map(item => item.label))
+        })
+      })
     },
     allGoLeft () {
+    },
+    flatRightTreeData (array) {
+      const res = []
+      array.forEach(item => {
+        res.push({
+          category: item.category,
+          category1: item.category1,
+          category2: item.category2,
+          category3: item.category3,
+          label: item.label,
+          rank: item.rank
+        })
+        if (item.children) {
+          item.children.forEach(rank2 => {
+            res.push({
+              category: rank2.category,
+              category1: rank2.category1,
+              category2: rank2.category2,
+              category3: rank2.category3,
+              label: rank2.label,
+              rank: rank2.rank
+            })
+            if (rank2.children) {
+              rank2.children.forEach(rank3 => {
+                res.push({
+                  category: rank3.category,
+                  category1: rank3.category1,
+                  category2: rank3.category2,
+                  category3: rank3.category3,
+                  label: rank3.label,
+                  rank: rank3.rank
+                })
+              })
+            }
+          })
+        }
+      })
+      return res
     },
     // 关键字搜索
     handleFilter () {
@@ -232,6 +272,7 @@ export default {
       const res = await getDefineTree({ cateList: this.checkedNotes })
       if (res.code === 200) {
         this.rightTree = res.result
+        this.rightTreeFlat = this.flatRightTreeData(res.result)
       }
     }
 

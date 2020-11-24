@@ -2,7 +2,7 @@
 
 import { mapState } from 'vuex'
 import echarts from 'echarts'
-import { throttle } from '@/utils/common.js'
+import { debounce } from '@/utils/common.js'
 export default {
   data () {
     return {
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     resizeHandle () {
-      throttle(this.chart.resize)
+      debounce(this.chart.resize)
     }
   },
   mounted () {

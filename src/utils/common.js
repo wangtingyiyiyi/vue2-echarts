@@ -27,7 +27,7 @@ export function replenishSum (arr, len) {
   return sum.toString()
 }
 
-// 防抖
+// 防抖：当持续触发事件时，一定时间段内没有再触发事件，事件处理函数才会执行一次，如果设定的时间到来之前，又一次触发了事件，就重新开始延时。
 // search搜索联想，用户在不断输入值时，用防抖来节约请求资源。
 // window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
 export function debounce (fn, interval = 500) {
@@ -36,7 +36,7 @@ export function debounce (fn, interval = 500) {
   timeout = setTimeout(fn, interval)
 }
 
-// 节流
+// 节流：当持续触发事件时，保证一定时间段内只调用一次事件处理函数。
 // 鼠标不断点击触发，mousedown(单位时间内只触发一次)
 // 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
 export function throttle (fn, interval = 300) {

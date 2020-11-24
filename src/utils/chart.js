@@ -26,18 +26,12 @@ export function xAxisDateFormatter (value) {
   const num = value.split('_')[2]
   if (group === '1') { // 按月
     if (Number(num) <= 9) {
-      return year + 'M0' + num
+      return year + '0' + num
     } else {
-      return year + 'M' + num
+      return year + num
     }
-  } else if (group === '3') { // 按季度
+  } else if (group === '3' || group === '6') { // 按季度、半年
     return year + num
-  } else if (group === '6') {
-    if (num === '1') {
-      return year + 'H1'
-    } else {
-      return year + 'H2'
-    }
   } else if (group === '12') {
     return year
   }
@@ -47,8 +41,11 @@ export function xAxisDateFormatter (value) {
 export function xAxisDateSplit (value) {
   const sDate = value.substring(2, 4)
   const eDate = value.substring(4)
-  const arr = ['M01', 'M04', 'M07', 'M10', 'Q1', 'Q2', 'Q3', 'Q4', 'H1', 'H2']
-  if (arr.indexOf(eDate) !== -1) {
+  const arr = ['01', '04', '07', '10']
+  const splitArr = ['Q1', 'Q2', 'Q3', 'Q4', 'H1', 'H2']
+  if (arr.includes(eDate)) {
+    return sDate + '/' + eDate
+  } else if (splitArr.includes(eDate)) {
     return sDate + eDate
   } else if (!eDate) {
     return value.substring(0, 4)
