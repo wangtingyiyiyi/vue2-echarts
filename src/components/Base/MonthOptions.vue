@@ -5,6 +5,7 @@
     size="mini"
     value-key="name"
     :value="selectdMonth"
+    :popper-append-to-body="false"
     @change="handleChange">
     <el-option
       v-for="item in monthOption"
