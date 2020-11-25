@@ -3,7 +3,8 @@
         <Brand-Setting
           @handleSetBrands="handleSetBrands"
           @handleSetCategroy="handleSetCategroy"
-          @handleExportDialog="handleExportDialog"/>
+          @handleBrandExport="handleBrandExport"
+          @handleExportDialog="exportDialogVisible = $event"/>
 
         <Empty-Line />
 
@@ -141,7 +142,7 @@ export default {
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
       brandList: [],
-      cateList: [],
+      cateList: {},
       brandTableData: [],
       shopTableData: [],
       activeBrand: '',
@@ -194,7 +195,7 @@ export default {
       this.getTableForSpu()
     },
     handleSetCategroy (cate) {
-      this.cateList = [cate]
+      this.cateList = cate
       this.getChartForBrand()
       this.getTableForBrand()
       this.getTableForSpu()
@@ -242,6 +243,7 @@ export default {
     // 按品牌查看店铺列表
     changeActiveBrand (data) {
       this.activeBrand = data
+      this.spuPage = 1
       this.getTableForBrand()
       this.getTableForSpu()
     },
@@ -265,9 +267,17 @@ export default {
       this.selectdMonth = val
       this.getTableForBrand()
     },
-    // 品牌提数弹出框
-    handleExportDialog () {
-      this.exportDialogVisible = true
+    // 品牌提数回调
+    handleBrandExport () {
+      this.$router.push({
+        path: '/file',
+        query: {
+          cateList: JSON.stringify(this.cateList),
+          brandList: JSON.stringify(this.brandList),
+          activeTab: 'brand'
+        }
+      })
+      // this.exportDialogVisible = true
     },
     // 品牌提数回调
     handleExportExcel (formParam) {
@@ -301,7 +311,7 @@ export default {
     async getChartForBrand () {
       if (this.activeBrand.length === 0 || this.activeName !== 'brand') return ''
       const param = {
-        cateList: this.cateList,
+        cateList: [this.cateList],
         particle: this.groupItemVal,
         data: this.viewItemVal,
         range: this.rangeItemVal,
@@ -324,7 +334,7 @@ export default {
         range: this.rangeItemVal,
         particle: this.groupItemVal,
         sort: this.sortItemVal,
-        cateList: this.cateList,
+        cateList: [this.cateList],
         brandList: [this.activeBrand],
         month: this.selectdMonth
       }
@@ -345,7 +355,7 @@ export default {
       if (!this.activeBrand || this.activeName !== 'spu') return ''
       const param = {
         range: this.rangeItemVal,
-        cateList: this.cateList,
+        cateList: [this.cateList],
         particle: this.groupItemVal,
         sort: this.sortItemVal,
         brandList: [this.activeBrand],
@@ -368,7 +378,7 @@ export default {
     async getCategoryByBrands () {
       const res = await getCategorytByBrand({ brandList: this.brandList })
       if (res.code === 200) {
-        this.cateList = [Object.assign(res.result[0], { children: null })]
+        this.cateList = Object.assign(res.result[0], { children: null })
       } else {
         this.$message.error('品牌分类请求失败')
       }
@@ -380,7 +390,7 @@ export default {
         console.info(query)
         this.brandList = [JSON.parse(query.brandList)]
         this.activeBrand = this.brandList[0]
-        this.cateList = [JSON.parse(query.cateList)]
+        this.cateList = JSON.parse(query.cateList)
         this.getChartForBrand()
         this.getTableForBrand()
         this.getTableForSpu()

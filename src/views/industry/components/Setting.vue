@@ -20,7 +20,7 @@
             v-permission
             class="p-0-15 font-size-14"
             text="行业提数"
-            @handleClick="handleExportDialog"  />
+            @handleClick="handleExport"  />
         </div>
       </el-form-item>
     </el-form>
@@ -42,8 +42,8 @@ export default {
     handleFilter () {
       this.$emit('handleFilter', true)
     },
-    handleExportDialog () {
-      this.$emit('handleExportDialog')
+    handleExport () {
+      this.$emit('handleExport')
     },
     handleNodeClick (data) {
       this.SET_INDUSTRY_CATEGORY(data)

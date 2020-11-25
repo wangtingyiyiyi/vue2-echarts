@@ -37,7 +37,6 @@
             <el-cascader
               style="width: 100%"
               ref="cascader"
-              popper-class="industry-cascader-wapper"
               v-model="form.cate"
               :options="categoryOption"
               :show-all-levels="false"

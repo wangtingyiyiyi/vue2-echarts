@@ -30,13 +30,12 @@
           text="品牌提数"
           style="display: initial;"
           class="p-0-15 font-size-14"
-          @handleClick="handleExportDialog" />
+          @handleClick="handleBrandExport" />
       </el-form-item>
       <el-form-item label="行业筛选">
         <el-cascader
           v-model="brandForm.cate"
           ref="cascader"
-          popper-class="industry-cascader-wapper"
           class="industry-select"
           :options="categoryOption"
           :show-all-levels="false"
@@ -93,8 +92,8 @@ export default {
       this.$emit('handleSetCategroy', obj)
       this.$refs.cascader.dropDownVisible = false
     },
-    handleExportDialog () {
-      this.$emit('handleExportDialog')
+    handleBrandExport () {
+      this.$emit('handleBrandExport')
     },
     // 品牌列表模糊查询
     async getBrandSearch (query) {
@@ -151,13 +150,6 @@ export default {
 .brand-setting-wapper
   background-color #ffffff
   padding 20px 26px
-
-// 去掉radio
-.industry-cascader-wapper
-  .el-cascader-panel
-    .el-cascader-menu__list
-      .el-radio
-        display none
 
 .brand-select
   width calc(100vw / 3)

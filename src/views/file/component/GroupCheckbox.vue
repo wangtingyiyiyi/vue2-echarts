@@ -1,15 +1,13 @@
 <template>
-  <div class="flex-row m-b-12">
-    <div style="width: 90px" class="label">{{label}}</div>
-    <el-checkbox-group v-model="array" @change="handleGroup">
-      <el-checkbox
-        v-for="item in options"
-        :key="item.value"
-        :label="item"
-        :disabled="item.disabled"
-        @change="val => handleCurrent(val, item)">{{item.label}}</el-checkbox>
-    </el-checkbox-group>
-  </div>
+  <el-checkbox-group v-model="array" @change="handleGroup">
+    <el-checkbox
+      v-for="item in options"
+      :key="item.value"
+      :label="item"
+      :disabled="item.disabled"
+      style="width: 80px"
+      @change="val => handleCurrent(val, item)">{{item.label}}</el-checkbox>
+  </el-checkbox-group>
 </template>
 
 <script>
@@ -49,7 +47,6 @@ export default {
     activeVal: {
       deep: true,
       handler: function (params) {
-        // console.log('监控多选', params)
         this.deCode()
       }
     }
@@ -96,8 +93,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-.label
-  color #606266
-</style>

@@ -4,6 +4,7 @@
         :defaultObj="defaultIndustry"
         @handleFilter="drawerShow = $event"
         @industryNodeClick="brandOnSubmit"
+        @handleExport="handleExport"
         @handleExportDialog="dialogVisible = true"/>
 
       <Empty-Line />
@@ -409,6 +410,17 @@ export default {
         this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
         this.brandOnSubmit()
       }
+    },
+    // 行业提数回调
+    handleExport () {
+      this.$router.push({
+        path: '/file',
+        query: {
+          cateList: JSON.stringify(this.categoryObj),
+          brandList: null,
+          activeTab: 'industry'
+        }
+      })
     }
   },
   mounted () {

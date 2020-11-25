@@ -95,3 +95,10 @@
     height 200px !important
 .el-table::before
   display: none
+
+// 去掉级联选择器中的单选
+.el-popper
+  .el-cascader-panel
+    .el-cascader-menu__list
+      .el-radio
+        display none

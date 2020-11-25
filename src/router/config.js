@@ -34,7 +34,8 @@ export const routes = [
           svgIcon: 'brand'
         },
         component: Brand
-      }, {
+      },
+      {
         path: 'file',
         name: '提数',
         meta: {
