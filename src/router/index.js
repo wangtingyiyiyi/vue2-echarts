@@ -20,7 +20,6 @@ router.beforeEach((to, form, next) => {
   } else if (to.meta.permission && !to.meta.permission.includes(roleType)) {
     next({ name: 'page404' })
   } else {
-    console.info(to)
     next()
   }
 })

@@ -1,113 +1,99 @@
 <template>
   <div>
-        <Brand-Setting
-          @handleSetBrands="handleSetBrands"
-          @handleSetCategroy="handleSetCategroy"
-          @handleBrandExport="handleBrandExport"
-          @handleExportDialog="exportDialogVisible = $event"/>
+    <Brand-Setting
+      @handleSetBrands="handleSetBrands"
+      @handleSetCategroy="handleSetCategroy"/>
 
-        <Empty-Line />
+    <Empty-Line />
 
-        <div class="brand-tab-wapper">
-          <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
-              <el-tab-pane label="品牌概览" name="brand">
-                  <div v-show="showEmpty">
-                    <Title class="m-b-12" title="总销售趋势"/>
-                    <Empty-Icon />
-                    <Title title="按品牌展开"/>
-                    <Empty-Icon />
-                  </div>
+    <div class="brand-tab-wapper">
+      <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
+        <el-tab-pane label="品牌概览" name="brand">
+            <div v-show="showEmpty">
+              <Title class="m-b-12" title="总销售趋势"/>
+              <Empty-Icon />
+              <Title title="按品牌展开"/>
+              <Empty-Icon />
+            </div>
 
-                  <div v-show="!showEmpty">
-                    <Echarts-Buttons
-                      :activeVal="viewItemVal"
-                      style="width: 100%"
-                      class="m-b-5"
-                      @handleEchartsClick="handleEchartsClick"/>
+            <div v-show="!showEmpty">
+              <Echarts-Buttons
+                :activeVal="viewItemVal"
+                style="width: 100%"
+                class="m-b-5"
+                @handleEchartsClick="handleEchartsClick"/>
 
-                    <div ref="brandEchart">
-                      <Chart-For-Brand
-                        style="width: 100%; height: 300px"
-                        :brandData="brandChart"
-                        :viewItemVal="viewItemVal"/>
-                    </div>
+              <div ref="brandEchart">
+                <Chart-For-Brand
+                  style="width: 100%; height: 300px"
+                  :brandData="brandChart"
+                  :viewItemVal="viewItemVal"/>
+              </div>
 
-                    <div class="table-title-wapper m-b-12">
-                      <Title title="按品牌展开"/>
-                      <Month-Options
-                        :monthOption="monthOption"
-                        :selectdMonth="selectdMonth"
-                        @handleSelectdMonth="handleMonth"/>
-                    </div>
+              <div class="table-title-wapper m-b-12">
+                <Title title="按品牌展开"/>
+                <Month-Options
+                  :monthOption="monthOption"
+                  :selectdMonth="selectdMonth"
+                  @handleSelectdMonth="handleMonth"/>
+              </div>
 
-                    <Brand-Table-Brands
-                      :brands="brandList"
-                      :activeBrand="activeBrand"
-                      class="m-b-10"
-                      @changeActiveBrand="changeActiveBrand"/>
+              <Brand-Table-Brands
+                :brands="brandList"
+                :activeBrand="activeBrand"
+                class="m-b-10"
+                @changeActiveBrand="changeActiveBrand"/>
 
-                    <Table-For-Brand
-                      ref="table"
-                      :activedSortKey="sortItemVal"
-                      :tableData="brandTableData"
-                      :isLoading="isLoadingOfBrandTable"
-                      :paramOfBrandTable="paramOfBrandTable"
-                      @changeSortItemVal="changeSortItemVal"/>
-                  </div>
-              </el-tab-pane>
-              <el-tab-pane label="SPU" name="spu">
-                <Empty-Icon v-show="showEmpty"/>
-                <div v-show="!showEmpty">
-                  <div class="flex-between m-b-10">
-                    <Brand-Table-Brands
-                      :brands="brandList"
-                      :activeBrand="activeBrand"
-                      @changeActiveBrand="changeActiveBrand"/>
-                      <Month-Options
-                      :monthOption="monthOption"
-                      :selectdMonth="selectdMonth"
-                      @handleSelectdMonth="handleTableMonth"/>
-                  </div>
-                  <Table-For-Spu
-                    :isLoading="isLoadingOfSpuTable"
-                    :activedSortKey="sortItemVal"
-                    @changeSortItemVal="changeSortItemVal"
-                    :tableData="tableSpu"/>
-                  <el-pagination
-                    v-show="spuTotal !== 0"
-                    background
-                    layout="prev, pager, next"
-                    class="pagination-wapper"
-                    :current-page="spuPage"
-                    :page-size="pageSize"
-                    :total="spuTotal"
-                    @current-change="changeSpuPage">
-                  </el-pagination>
-                </div>
-              </el-tab-pane>
-          </el-tabs>
-
-          <Range-Buttons
-            :activeVal="rangeItemVal"
-            @handleRangeClick="handleRangeClick"
-            style='position: absolute; right:380px; top:16px;'/>
-          <Group-Buttons
-            :activeVal="groupItemVal"
-            @handleGroupClick="handleGroupClick"
-            style='position: absolute; right:26px; top:16px;'/>
-          <div style='position: absolute; right:26px; top:16px;'>
+              <Table-For-Brand
+                ref="table"
+                :activedSortKey="sortItemVal"
+                :tableData="brandTableData"
+                :isLoading="isLoadingOfBrandTable"
+                :paramOfBrandTable="paramOfBrandTable"
+                @changeSortItemVal="changeSortItemVal"/>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="SPU" name="spu">
+          <Empty-Icon v-show="showEmpty"/>
+          <div v-show="!showEmpty">
+            <div class="flex-between m-b-10">
+              <Brand-Table-Brands
+                :brands="brandList"
+                :activeBrand="activeBrand"
+                @changeActiveBrand="changeActiveBrand"/>
+                <Month-Options
+                :monthOption="monthOption"
+                :selectdMonth="selectdMonth"
+                @handleSelectdMonth="handleTableMonth"/>
+            </div>
+            <Table-For-Spu
+              :isLoading="isLoadingOfSpuTable"
+              :activedSortKey="sortItemVal"
+              @changeSortItemVal="changeSortItemVal"
+              :tableData="tableSpu"/>
+            <el-pagination
+              v-show="spuTotal !== 0"
+              background
+              layout="prev, pager, next"
+              class="pagination-wapper"
+              :current-page="spuPage"
+              :page-size="pageSize"
+              :total="spuTotal"
+              @current-change="changeSpuPage">
+            </el-pagination>
           </div>
-        </div>
-        <Download-Button
-          v-if="showDownloadBtn"
-          v-permission
-          :loadingProgress="loadingProgress"/>
-        <Dialog-For-Brand-Export
-          :dialogVisible="exportDialogVisible"
-          v-if="exportDialogVisible"
-          @handleExportExcel="handleExportExcel"
-          @closeDialog="exportDialogVisible = $event"/>
+        </el-tab-pane>
+      </el-tabs>
 
+      <Range-Buttons
+        :activeVal="rangeItemVal"
+        @handleRangeClick="handleRangeClick"
+        style='position: absolute; right:380px; top:16px;'/>
+      <Group-Buttons
+        :activeVal="groupItemVal"
+        @handleGroupClick="handleGroupClick"
+        style='position: absolute; right:26px; top:16px;'/>
+    </div>
   </div>
 </template>
 
@@ -116,24 +102,18 @@ import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
 import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
-import { downloadFile } from '@/utils/common.js'
-import downloadMixim from '@/utils/mixin/downloadCallback.js'
-
 import permission from '@/utils/directives/permission.js' // 权限判断指令
-
 import {
   getTableForBrand,
   getChartForBrand,
   getTableForBrandSpu,
   getCategorytByBrand
 } from '@/api/brand'
-import {
-  getMonthOption
-} from '@/api/industry'
+import { getMonthOption } from '@/api/industry'
 export default {
   name: 'Brand',
   directives: { permission },
-  mixins: [componentsMixin, downloadMixim],
+  mixins: [componentsMixin],
   data () {
     return {
       activeName: 'brand',
@@ -159,10 +139,7 @@ export default {
       spuPage: 1,
       spuTotal: 0,
       pageSize: 10,
-      exportDialogVisible: false,
-      defaultBrand: BRAND_DEFINE_BRAND,
-      loadingProgress: 0,
-      showDownloadBtn: false
+      defaultBrand: BRAND_DEFINE_BRAND
     }
   },
   computed: {
@@ -266,31 +243,6 @@ export default {
     handleMonth (val) {
       this.selectdMonth = val
       this.getTableForBrand()
-    },
-    // 品牌提数回调
-    handleBrandExport () {
-      this.$router.push({
-        path: '/file',
-        query: {
-          cateList: JSON.stringify(this.cateList),
-          brandList: JSON.stringify(this.brandList),
-          activeTab: 'brand'
-        }
-      })
-      // this.exportDialogVisible = true
-    },
-    // 品牌提数回调
-    handleExportExcel (formParam) {
-      const brandName = formParam.brandList.join('&')
-      const option = {
-        param: formParam,
-        url: process.env.VUE_APP_API_URL + '/download/file',
-        filename: `Tmall_${formParam.cate}(${brandName})_${this.$moment(new Date()).format('YYYYMMDD')}`,
-        onprogress: this.onprogress,
-        onreadystatechange: this.onreadystatechange
-      }
-      this.showDownloadBtn = true
-      downloadFile(option)
     },
     // spu 列表翻页
     changeSpuPage (page) {

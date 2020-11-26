@@ -289,6 +289,7 @@ export default {
       if (res.code === 200) {
         this.tableData = res.result
         this.tableTotal = res.total
+        this.emptyMes = ''
       } else {
         this.tableData = []
         this.tableTotal = 0

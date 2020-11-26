@@ -16,11 +16,6 @@
             class="p-0-15 font-size-14 m-l-5"
             text="高级筛选"
             @handleClick="handleFilter" />
-          <Text-Button
-            v-permission
-            class="p-0-15 font-size-14"
-            text="行业提数"
-            @handleClick="handleExport"  />
         </div>
       </el-form-item>
     </el-form>
@@ -41,9 +36,6 @@ export default {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     handleFilter () {
       this.$emit('handleFilter', true)
-    },
-    handleExport () {
-      this.$emit('handleExport')
     },
     handleNodeClick (data) {
       this.SET_INDUSTRY_CATEGORY(data)

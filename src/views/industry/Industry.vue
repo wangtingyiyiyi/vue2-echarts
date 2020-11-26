@@ -1,113 +1,103 @@
 <template>
-    <div>
-      <Industry-Setting
-        :defaultObj="defaultIndustry"
-        @handleFilter="drawerShow = $event"
-        @industryNodeClick="brandOnSubmit"
-        @handleExport="handleExport"
-        @handleExportDialog="dialogVisible = true"/>
+  <div>
+    <Industry-Setting
+      :defaultObj="defaultIndustry"
+      @handleFilter="drawerShow = $event"
+      @industryNodeClick="brandOnSubmit"/>
 
-      <Empty-Line />
+    <Empty-Line />
 
-      <div class="industry-tab-wapper">
-          <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
+    <div class="industry-tab-wapper">
+      <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
+        <el-tab-pane label="行业概览" name="industry">
+            <Title title="总销售趋势"/>
+            <div ref="refIndustryEchart">
+              <Chart-For-Industry
+                style="width: 100%; height: 280px"
+                :industryEchart="industryEchart"/>
+            </div>
+            <div class="table-title-wapper">
+              <Title title="按子品类展开"/>
+              <Month-Options
+                :monthOption="monthOption"
+                :selectdMonth="selectdMonth"
+                @handleSelectdMonth="handleSelectdMonth"/>
+            </div>
+            <Table-For-Industry
+              :tableData="industryTableData"
+              :isLoading="isLoadingIndustryTable"
+              :activedSortKey="sortItemVal"
+              @handleCate="brandOnSubmit"
+              @changeSortItemVal="changeSortItemVal"/>
+        </el-tab-pane>
 
-              <el-tab-pane label="行业概览" name="industry">
-                  <Title title="总销售趋势"/>
-                  <div ref="refIndustryEchart">
-                    <Chart-For-Industry
-                      style="width: 100%; height: 280px"
-                      :industryEchart="industryEchart"/>
-                  </div>
-                  <div class="table-title-wapper">
-                    <Title title="按子品类展开"/>
-                    <Month-Options
-                      :monthOption="monthOption"
-                      :selectdMonth="selectdMonth"
-                      @handleSelectdMonth="handleSelectdMonth"/>
-                  </div>
-                  <Table-For-Industry
-                    :tableData="industryTableData"
-                    :isLoading="isLoadingIndustryTable"
-                    :activedSortKey="sortItemVal"
-                    @handleCate="brandOnSubmit"
-                    @changeSortItemVal="changeSortItemVal"/>
-              </el-tab-pane>
-
-              <el-tab-pane label="品牌排行" name="brand">
-                  <Title title="总销售趋势"/>
-                  <div style="display: flex; justify-content: space-between;">
-                    <Echarts-Buttons
-                      :activeVal="viewItemVal"
-                      style="width: 100%"
-                      @handleEchartsClick="handleEchartsClick"/>
-                    <Month-Options
-                      :monthOption="monthOption"
-                      :selectdMonth="chartSelectMonth"
-                      @handleSelectdMonth="handleChartSelectdMonth"/>
-                  </div>
-                  <div ref="refBrandChart">
-                    <Chart-For-Brand
-                      :viewItemVal="viewItemVal"
-                      style="width: 100%; height: 300px"
-                      :brandEchart="brandEchart"/>
-                  </div>
-                  <div class="table-title-wapper">
-                    <Title title="按品牌展开"/>
-                    <Month-Options
-                      :monthOption="monthOption"
-                      :selectdMonth="selectdMonth"
-                      @handleSelectdMonth="handleSelectdMonth"/>
-                  </div>
-                  <Table-For-Brand
-                    :tableData="brandTableData"
-                    :isLoading="isLoadingBrandTable"
-                    :activedSortKey="sortItemVal"
-                    @changeSortItemVal="changeSortItemVal"/>
-                  <el-pagination
-                    v-show="brandCount !== 0"
-                    background
-                    layout="prev, pager, next"
-                    class="pagination-wapper"
-                    @current-change="changeBrandPage"
-                    :current-page="page"
-                    :page-size="pageSize"
-                    :total="brandCount">
-                  </el-pagination>
-              </el-tab-pane>
-          </el-tabs>
-          <!-- tab buttons -->
-          <Range-Buttons
-            :activeVal="rangeItemVal"
-            @handleRangeClick="handleRangeClick"
-            style='position: absolute; right:380px; top:16px;'/>
-          <Group-Buttons
-            :activeVal="groupItemVal"
-            @handleGroupClick="handleGroupClick"
-            style='position: absolute; right:26px; top:16px;'/>
-      </div>
-      <!-- 抽屉 -->
-      <Drawer v-permission :visible="drawerShow" ref="industryDrawer" class="industry-drawer" @handleDrawerClose="handleDrawerClose">
-          <Drawer-Button
-            slot="button"
-            :drawerShow="drawerShow"
-            @handleDrawerBtn="handleDrawerBtn"/>
-          <Drawer-Content
-            :drawerShow="drawerShow"
-            @handleDefineSearch="handleDefineSearch"/>
-      </Drawer>
-      <Download-Button
-        v-if="showDownloadBtn"
-        v-permission
-        :loadingProgress="loadingProgress"/>
-      <!-- 行业提数 -->
-      <Dialog-For-Industry-Export
-        v-if="dialogVisible"
-        :dialogVisible="dialogVisible"
-        @handleExportExcel="handleExportExcel"
-        @closeDialog="dialogVisible = $event"/>
+        <el-tab-pane label="品牌排行" name="brand">
+            <Title title="总销售趋势"/>
+            <div style="display: flex; justify-content: space-between;">
+              <Echarts-Buttons
+                :activeVal="viewItemVal"
+                style="width: 100%"
+                @handleEchartsClick="handleEchartsClick"/>
+              <Month-Options
+                :monthOption="monthOption"
+                :selectdMonth="chartSelectMonth"
+                @handleSelectdMonth="handleChartSelectdMonth"/>
+            </div>
+            <div ref="refBrandChart">
+              <Chart-For-Brand
+                :viewItemVal="viewItemVal"
+                style="width: 100%; height: 300px"
+                :brandEchart="brandEchart"/>
+            </div>
+            <div class="table-title-wapper">
+              <Title title="按品牌展开"/>
+              <Month-Options
+                :monthOption="monthOption"
+                :selectdMonth="selectdMonth"
+                @handleSelectdMonth="handleSelectdMonth"/>
+            </div>
+            <Table-For-Brand
+              :tableData="brandTableData"
+              :isLoading="isLoadingBrandTable"
+              :activedSortKey="sortItemVal"
+              @changeSortItemVal="changeSortItemVal"/>
+            <el-pagination
+              v-show="brandCount !== 0"
+              background
+              layout="prev, pager, next"
+              class="pagination-wapper"
+              @current-change="changeBrandPage"
+              :current-page="page"
+              :page-size="pageSize"
+              :total="brandCount">
+            </el-pagination>
+        </el-tab-pane>
+      </el-tabs>
+      <Range-Buttons
+        :activeVal="rangeItemVal"
+        @handleRangeClick="handleRangeClick"
+        style='position: absolute; right:380px; top:16px;'/>
+      <Group-Buttons
+        :activeVal="groupItemVal"
+        @handleGroupClick="handleGroupClick"
+        style='position: absolute; right:26px; top:16px;'/>
     </div>
-
+    <!-- 抽屉 -->
+    <Drawer
+      v-permission
+      :visible="drawerShow"
+      ref="industryDrawer"
+      class="industry-drawer"
+      @handleDrawerClose="handleDrawerClose">
+      <Drawer-Button
+        slot="button"
+        :drawerShow="drawerShow"
+        @handleDrawerBtn="handleDrawerBtn"/>
+      <Drawer-Content
+        :drawerShow="drawerShow"
+        @handleDefineSearch="handleDefineSearch"/>
+    </Drawer>
+  </div>
 </template>
 
 <script>
@@ -121,14 +111,12 @@ import {
 } from '@/api/industry'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
-import downloadMixim from '@/utils/mixin/downloadCallback.js'
 import { INDUSTRY_DEFAULT_INDUSTRY } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
-import { downloadFile } from '@/utils/common.js'
 
 export default {
   name: 'Industry',
-  mixins: [componentsMixin, downloadMixim],
+  mixins: [componentsMixin],
   directives: { permission },
   data () {
     return {
@@ -157,11 +145,8 @@ export default {
       brandCount: 0,
       dialogVisible: false,
       defineVisible: false,
-      loadingProgress: 0,
       iconName: 'el-icon-download',
       meritcoTree: [],
-      // total下载进度
-      showDownloadBtn: false,
       defaultIndustry: INDUSTRY_DEFAULT_INDUSTRY,
       defineItemId: ''
     }
@@ -263,18 +248,6 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
       this.getBrandEchart()
-    },
-    // 提数接口
-    handleExportExcel (formParam) {
-      const option = {
-        param: formParam,
-        url: process.env.VUE_APP_API_URL + '/download/file',
-        filename: `Tmall_${formParam.cateName}_${this.$moment(new Date()).format('YYYYMMDD')}`,
-        onprogress: this.onprogress,
-        onreadystatechange: this.onreadystatechange
-      }
-      this.showDownloadBtn = true
-      downloadFile(option)
     },
     // 修改monthOption
     handleSelectdMonth (val) {
@@ -410,17 +383,6 @@ export default {
         this.SET_INDUSTRY_CATEGORY(this.defaultIndustry)
         this.brandOnSubmit()
       }
-    },
-    // 行业提数回调
-    handleExport () {
-      this.$router.push({
-        path: '/file',
-        query: {
-          cateList: JSON.stringify(this.categoryObj),
-          brandList: null,
-          activeTab: 'industry'
-        }
-      })
     }
   },
   mounted () {

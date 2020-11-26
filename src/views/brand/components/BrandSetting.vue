@@ -10,13 +10,13 @@
         <el-select
           v-model="brandForm.brandList"
           value-key="brand"
-          class="brand-select"
+          style="width: 100%"
           multiple
           remote
           filterable
           :remote-method="getBrandSearch"
           :loading="loading"
-          :multiple-limit="5"
+          :multiple-limit="15"
           @change="changeBrand">
           <el-option
             v-for="(item, index) in brandOption"
@@ -25,12 +25,6 @@
             :label="item"
           ></el-option>
         </el-select>
-        <Text-Button
-          v-permission
-          text="品牌提数"
-          style="display: initial;"
-          class="p-0-15 font-size-14"
-          @handleClick="handleBrandExport" />
       </el-form-item>
       <el-form-item label="行业筛选">
         <el-cascader
@@ -52,13 +46,11 @@
 
 <script>
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
-import TextButton from '@/components/TextButton.vue'
 import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { mapMutations } from 'vuex'
 
 export default {
-  components: { TextButton },
   directives: { permission },
   data () {
     return {
@@ -92,9 +84,6 @@ export default {
       this.$emit('handleSetCategroy', obj)
       this.$refs.cascader.dropDownVisible = false
     },
-    handleBrandExport () {
-      this.$emit('handleBrandExport')
-    },
     // 品牌列表模糊查询
     async getBrandSearch (query) {
       if (query) {
@@ -125,7 +114,6 @@ export default {
     },
     handleRoute () {
       const { query } = this.$route
-      console.info(query)
       if (Object.keys(query).length !== 0) {
         this.brandForm.brandList = [JSON.parse(query.brandList)]
         this.brandForm.cate = JSON.parse(query.cateList).label

@@ -10,7 +10,6 @@
     top="10vh"
     width="800px">
     <div slot="title">高级筛选</div>
-
     <div class="tree-transfer" ref="transferWapper">
       <div class="transfer-left">
         <div class="header">
@@ -38,7 +37,7 @@
           :props="{ label: 'category', isLeaf: 'isLeaf' }"
           :load="loadNode"
           :check-strictly="false"
-          :default-expanded-keys="allRightParentKeys"
+          :default-expanded-keys="lazyTreeExpandedkeys"
           @check="handleLeftTreeCheck">
         </el-tree>
         <!-- 搜索树 -->
@@ -63,15 +62,16 @@
           :disabled="disabledGoRight"
           @click="goRight"></el-button>
         <el-button
-          type="primary"
+          plain
           icon="el-icon-arrow-left"
           class="center-btn"
           :disabled="disabledGoLeft"
           @click="goLeft"></el-button>
         <el-button
-          type="primary"
+          plain
           icon="el-icon-d-arrow-left"
           class="center-btn"
+          :disabled="disabledGoLeft"
           @click="allGoLeft"></el-button>
       </div>
 
@@ -143,11 +143,13 @@ export default {
       rightTree: [],
       showExpandTree: false,
       rootTree: [],
-      allRightParentKeys: [],
+      lazyTreeExpandedkeys: [],
+      defaultCheckedKeys: [],
       checkedNotes: [],
       disabledGoRight: true,
       disabledGoLeft: true,
-      rightTreeFlat: []
+      rightTreeFlat: [],
+      resLeafData: []
     }
   },
   methods: {
@@ -185,12 +187,13 @@ export default {
     goLeft () {
       const checked = this.$refs.resTree.getCheckedNodes() // 选中节点
       const halfChecked = this.$refs.resTree.getHalfCheckedNodes() // 半选节点
-      this.checkedNotes = this._.xorBy([...checked, ...halfChecked], this.rightTreeFlat, 'label')
+      this.checkedNotes = this._.xorBy([...checked, ...halfChecked], this.resLeafData, 'label')
+      // Promise.all([this.renderRightTree(), this.renderLeftTree()]).then(() => {
+      //   this.disabledGoLeft = true
+      // })
       this.renderRightTree().then(() => {
         this.disabledGoLeft = true
-        this.$nextTick(() => {
-          this.$refs.lazyTree.setCheckedKeys(this.checkedNotes.map(item => item.label))
-        })
+        this.renderLeftTree()
       })
     },
     allGoLeft () {
@@ -216,6 +219,28 @@ export default {
               label: rank2.label,
               rank: rank2.rank
             })
+            if (rank2.children) {
+              rank2.children.forEach(rank3 => {
+                res.push({
+                  category: rank3.category,
+                  category1: rank3.category1,
+                  category2: rank3.category2,
+                  category3: rank3.category3,
+                  label: rank3.label,
+                  rank: rank3.rank
+                })
+              })
+            }
+          })
+        }
+      })
+      return res
+    },
+    getResLeafData (array) {
+      const res = []
+      array.forEach(item => {
+        if (item.children) {
+          item.children.forEach(rank2 => {
             if (rank2.children) {
               rank2.children.forEach(rank3 => {
                 res.push({
@@ -263,19 +288,38 @@ export default {
           this.rootTree = this._.cloneDeep(res)
         })
       } else {
+        if (node.data.children.length !== 0) {
+          resolve(node.data.children)
+          return
+        }
         this.getCategoryTree(node.data).then((res) => {
           resolve(res)
         })
       }
     },
     async renderRightTree () {
-      const res = await getDefineTree({ cateList: this.checkedNotes })
+      const res = await getDefineTree({ cateList: this.checkedNotes, type: 'right' })
       if (res.code === 200) {
         this.rightTree = res.result
         this.rightTreeFlat = this.flatRightTreeData(res.result)
+        this.resLeafData = this.getResLeafData(res.result)
+        this.lazyTreeExpandedkeys = this.rightTreeFlat.filter(item => {
+          return item.rank === 1 || item.rank === 2
+        }).map(item => item.label)
+        console.info(this.lazyTreeExpandedkeys)
+        const resRank3 = this.rightTreeFlat.filter(item => {
+          return item.rank === 3
+        }).map(item => item.label)
+        this.$refs.lazyTree.setCheckedKeys(resRank3)
+      }
+    },
+    async renderLeftTree () {
+      const res = await getDefineTree({ cateList: this.checkedNotes, type: 'left' })
+      if (res.code === 200) {
+        this.lazyTreeData = res.result
+        this.rootTree = this._.cloneDeep(res.result)
       }
     }
-
   }
 }
 </script>

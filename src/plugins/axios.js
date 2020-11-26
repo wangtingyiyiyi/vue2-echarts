@@ -45,7 +45,6 @@ axios.interceptors.response.use(
 )
 
 export function post (url, params = {}) {
-  console.info(url, params)
   return new Promise((resolve, reject) => {
     axios.post(url, params)
       .then(response => {
