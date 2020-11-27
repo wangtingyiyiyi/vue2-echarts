@@ -339,7 +339,6 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        console.info(query)
         this.brandList = [JSON.parse(query.brandList)]
         this.activeBrand = this.brandList[0]
         this.cateList = JSON.parse(query.cateList)

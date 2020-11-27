@@ -213,7 +213,6 @@ export default {
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
-        console.info(query)
         this.form.cateList = [JSON.parse(query.cateList)]
         this.form.brandList = JSON.parse(query.brandList)
         this.form.cate = JSON.parse(query.cateList).category
@@ -335,7 +334,6 @@ export default {
         onreadystatechange: this.onreadystatechange
       }
       this.showDownloadBtn = true
-      console.info(option.filename)
       downloadFile(option)
     }
   }

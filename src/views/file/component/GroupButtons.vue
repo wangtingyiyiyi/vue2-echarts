@@ -45,7 +45,6 @@ export default {
       const industryExcelHeader = this._.find(this.options, function (item) {
         return item.value === val
       }).industryExcelHeader || []
-      console.info(industryExcelHeader)
       this.$emit('handleOnGroupButtons', this.formKey, val)
       this.$emit('handleOnExcelHeader', this.formKey, industryExcelHeader)
     }

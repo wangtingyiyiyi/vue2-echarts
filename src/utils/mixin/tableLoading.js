@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     handleSort (sortVal) {
-      console.info('sortVal', 'changeSortItemValchangeSortItemVal')
       this.$emit('changeSortItemVal', sortVal)
     }
   }
