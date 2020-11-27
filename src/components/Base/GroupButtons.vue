@@ -9,7 +9,9 @@
         size="mini"
         class="filter-btn"
         :type="activeVal === item.value ? 'primary' : ''"
-        @click="graininessClick(item)">{{item.label}}</el-button>
+        @click="graininessClick(item)">
+        {{item.label}}
+      </el-button>
     </el-button-group>
   </div>
 </template>
