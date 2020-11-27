@@ -130,7 +130,7 @@ export default {
   },
   data () {
     return {
-      likeCondition: '缝纫',
+      likeCondition: '',
       checkAll: false,
       form: {
         cateList: '',

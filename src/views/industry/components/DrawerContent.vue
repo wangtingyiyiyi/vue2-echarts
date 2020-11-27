@@ -2,26 +2,27 @@
   <div class="drawer-wapper">
     <div class="drawer-header">高级筛选</div>
     <Text-Button text="自定义品类" style="padding: 20px 20px 10px" @handleClick="handleDialog">
-      <Svg-Icon icon-class="upload" class="m-r-7" style="font-size: 28px" slot="prepend"/>
+      <Svg-Icon icon-class="upload" class="m-r-7 font-size-28" slot="prepend"/>
     </Text-Button>
-    <Title title="历史自定义标签" style="margin-left: 20px; margin-top: 20px"/>
+    <Title title="历史自定义标签" class="m-l-20 m-t-20"/>
     <div class="drawer-body beauty-scroll">
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div class="item-title" @click="showMore(index)">
           <div class="left">
-            <span @click.stop="handleEdit(item)" style="cursor: pointer;">
+            <span @click.stop="handleEdit(item)">
               <Svg-Icon icon-class="left" class="m-r-7" style="color: #5b8ff9" />
             </span>
             <Text-Button
               :text="item.title"
+              maxWidth="270px"
               @handleClick="handleSearch(item)"
               class="font-size-14">
             </Text-Button>
-            <i :class="[setIcon(index), 'gary-text']" style="cursor: pointer; margin-left: 5px" slot="append"></i>
+            <i :class="[setIcon(index), 'gary-text', 'm-l-5']" slot="append"></i>
           </div>
           <div class="right gary-text">
             <div class="m-r-7">{{item.updateTime | moment('YYYY-MM-DD HH:mm')}}</div>
-            <i class="el-icon-close m-l-3" style="cursor: pointer" @click.stop="handleRemove(item, index)"></i>
+            <i class="el-icon-close m-l-3" @click.stop="handleRemove(item, index)"></i>
           </div>
         </div>
         <transition-group name="slide-fade">
@@ -101,13 +102,11 @@ export default {
       this.defineDialogVisible = true
     },
     handleSearch (data) {
-      // event.stopPropagation()
       const param = {
         label: data.title,
         id: data.id,
         rank: 0
       }
-      // this.SET_INDUSTRY_CATEGORY(param)
       this.$emit('handleDefineSearch', param)
     },
     // 点击展开或者收起
@@ -150,10 +149,6 @@ export default {
     // dialog 保存回调
     async onSubmit (param) {
       this.defineDialogVisible = false
-      // // 编辑
-      // if (this.categoryId !== '') {
-      //   param.categoryId = this.categoryId
-      // }
       const res = await setIndustryDefineList(param)
       if (res.code === 200) {
         this.$message.success('保存成功')
@@ -212,11 +207,12 @@ export default {
       position sticky
       top 0
       background-color #fff
+      cursor pointer
       .left
         display flex
         align-items center
         font-size 14px
-        width 200px
+        max-width 310px
         font-weight 500
       .right
         display flex

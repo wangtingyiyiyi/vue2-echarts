@@ -369,5 +369,30 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import './index.styl'
+.flex-between
+  display flex
+  align-items baseline
+  justify-content space-between
+
+.brand-tab-wapper
+  background-color #ffffff
+  position relative
+
+.brand-tab-wapper >>> .el-tabs__item
+    padding-left 25px !important
+    font-size 16px
+    line-height 56px
+    height 56px
+.brand-tab-wapper >>> .el-tabs__content
+    min-height calc(100vh - 454px)
+.pagination-wapper
+  text-align center
+  margin 20px 0 0
+
+.table-title-wapper
+  display flex
+  align-items baseline
+  justify-content space-between
+  margin-bottom 5px
+  margin-top 14px
 </style>

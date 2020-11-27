@@ -397,5 +397,38 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import './index.styl'
+.industry-tab-wapper
+  background-color #ffffff
+  position relative
+  min-height calc(100% - 131px)
+
+.right-tab
+  position absolute
+  right 0
+
+.industry-drawer
+  height 100vh
+  position fixed
+  right 0
+  top 0
+  z-index 2000
+
+.table-title-wapper
+  display flex
+  align-items baseline
+  justify-content space-between
+  margin-bottom 5px
+  margin-top 14px
+
+.flex-between
+  display flex
+  align-items baseline
+  justify-content: space-between
+
+.pagination-wapper
+  text-align center
+  margin 15px 0
+
+.industry-tab-wapper >>> .el-tabs .el-tabs__content
+  min-height calc(100vh - 403px)
 </style>
