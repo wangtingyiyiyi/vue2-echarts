@@ -34,7 +34,7 @@
           lazy
           class="tree-wapper beauty-scroll"
           :data="lazyTreeData"
-          :props="{ label: 'category', isLeaf: 'isLeaf' }"
+          :props="leftTreeProps"
           :load="loadNode"
           :check-strictly="false"
           :default-expanded-keys="lazyTreeExpandedkeys"
@@ -48,7 +48,7 @@
           node-key="label"
           class="tree-wapper beauty-scroll"
           :data="searchTreeData"
-          :props="{ label: 'category', isLeaf: 'isLeaf' }"
+          :props="leftTreeProps"
           :default-expand-all="true"
           @check="handleLeftTreeCheck">
         </el-tree>
@@ -104,7 +104,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary" @click="onSubmit">保 存</el-button>
+      <el-button type="primary" :disabled="resLeafData.length === 0" @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
 </transition>
@@ -140,15 +140,18 @@ export default {
       lazyTreeData: [],
       searchTreeData: [],
       rightTree: [],
-      showExpandTree: false,
       rootTree: [],
       lazyTreeExpandedkeys: [],
-      defaultCheckedKeys: [],
       checkedNotes: [],
+      rightTreeFlat: [],
+      resLeafData: [],
       disabledGoRight: true,
       disabledGoLeft: true,
-      rightTreeFlat: [],
-      resLeafData: []
+      showExpandTree: false,
+      leftTreeProps: {
+        label: 'category',
+        isLeaf: 'isLeaf'
+      }
     }
   },
   mounted () {
@@ -159,6 +162,11 @@ export default {
       })
   },
   methods: {
+    disabledFn (data, node) {
+      const keys1 = this._.cloneDeep(this.resLeafData)
+      const labels = keys1.map(item => item.label)
+      return labels.includes(data.label)
+    },
     closeDialog () {
       this.$emit('closeDialog', false)
     },
