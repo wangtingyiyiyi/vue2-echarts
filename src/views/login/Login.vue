@@ -157,10 +157,9 @@ export default {
           loadingInstance.close()
           this.$router.push({ name: this.target.name })
         })
-        .catch((err) => {
+        .catch(() => {
           loadingInstance.close()
-          this.$message.error(err.message)
-          this.$router.push('Login')
+          this.userFrom = 'normal'
         })
     },
     changeLoginType () {
