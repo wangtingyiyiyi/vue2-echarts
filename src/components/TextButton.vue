@@ -1,7 +1,7 @@
 <template>
   <div class="text-button" @click.stop="click">
     <slot name="prepend"/>
-    <div class="text-overflow" :style="{maxWidth: maxWidth}">{{text}}</div>
+    <span class="text-overflow" :style="{maxWidth: maxWidth}">{{text}}</span>
     <slot name="append"/>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
     },
     maxWidth: {
       type: String,
-      default: '200px'
+      default: '0px'
     }
   },
   methods: {
