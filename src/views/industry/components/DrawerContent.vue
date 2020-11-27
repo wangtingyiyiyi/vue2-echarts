@@ -37,8 +37,8 @@
     <!-- 行业定义 -->
     <Dialog-For-Industry-Define
       :dialogVisible="defineDialogVisible"
-      :cateId="cateId"
-      :editDefineName="editDefineName"
+      :defineId="defineId"
+      :defineName="defineName"
       v-if="defineDialogVisible"
       @onSubmit="onSubmit"
       @closeDialog="defineDialogVisible = $event"/>
@@ -74,9 +74,8 @@ export default {
       isCollapseGroup: [],
       defineDialogVisible: false,
       removeDialogVisible: false,
-      cateId: [],
-      categoryId: '',
-      editDefineName: '',
+      defineId: '',
+      defineName: '',
       removeObj: {},
       removeIndex: 0
     }
@@ -97,7 +96,8 @@ export default {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     // 自定义品类方法
     handleDialog () {
-      this.cateId = []
+      this.defineId = ''
+      this.defineName = ''
       this.defineDialogVisible = true
     },
     handleSearch (data) {
@@ -164,10 +164,8 @@ export default {
     },
     // dialog 编辑
     handleEdit (data) {
-      console.info(data)
-      this.cateId = data.categoryIdList
-      this.categoryId = data.categoryId
-      this.editDefineName = data.category
+      this.defineId = data.id
+      this.defineName = data.title
       this.defineDialogVisible = true
     },
     // 请求列表API

@@ -40,7 +40,7 @@ export function getBrandChart (params) {
   return post('cate/brand/graph', params)
 }
 
-// // select tree
-// export function getCategoryTreeByCategoyrId (params) {
-//   return post('industry/listIdCate', params)
-// }
+// 高级筛选
+export function getDefineCateList (params) {
+  return post('define/cate/list', params)
+}

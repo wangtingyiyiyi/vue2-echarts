@@ -18,3 +18,8 @@ export function removeIndustryDefineList (params) {
 export function getDefineTree (params) {
   return post('define/tree', params)
 }
+
+// 高级筛选品类树
+export function getDefineCateList (params) {
+  return post('define/cate/list', params)
+}

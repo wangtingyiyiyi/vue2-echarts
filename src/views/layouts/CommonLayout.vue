@@ -65,7 +65,7 @@ body {
   position fixed
   background-color #ffffff
   top 0
-  z-index 2004
+  z-index 2
   // padding 0 calc((100vw - 1600px) / 2)
   padding 0
 

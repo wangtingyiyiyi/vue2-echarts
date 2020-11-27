@@ -43,13 +43,13 @@
         <!-- 搜索树 -->
         <el-tree
           v-show="showExpandTree"
-          :data="searchTreeData"
-          :props="{ label: 'category', isLeaf: 'isLeaf' }"
+          ref="searchTree"
           show-checkbox
           node-key="label"
-          ref="searchTree"
-          :default-expand-all="true"
           class="tree-wapper beauty-scroll"
+          :data="searchTreeData"
+          :props="{ label: 'category', isLeaf: 'isLeaf' }"
+          :default-expand-all="true"
           @check="handleLeftTreeCheck">
         </el-tree>
       </div>
@@ -71,7 +71,7 @@
           plain
           icon="el-icon-d-arrow-left"
           class="center-btn"
-          :disabled="disabledGoLeft"
+          :disabled="rightTree.length === 0"
           @click="allGoLeft"></el-button>
       </div>
 
@@ -104,16 +104,14 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary" disabled @click="onSubmit">保 存</el-button>
+      <el-button type="primary" @click="onSubmit">保 存</el-button>
     </span>
   </el-dialog>
 </transition>
 </template>
 
 <script>
-import { getCategoryTree } from '@/api/industry'
-import { getDefineTree } from '@/api/define'
-
+import { getDefineTree, getDefineCateList } from '@/api/define'
 export default {
   name: 'DialogForIndustryDefine',
   props: {
@@ -121,22 +119,23 @@ export default {
       type: Boolean,
       default: true
     },
-    cateId: {
-      type: Array,
-      default: () => []
+    defineId: {
+      type: [Number, String],
+      default: ''
     },
-    editDefineName: {
+    defineName: {
       type: String,
       default: ''
     }
   },
   data () {
     return {
-      likeCondition: '',
+      likeCondition: '缝纫',
       checkAll: false,
       form: {
         cateList: '',
-        title: ''
+        title: this.defineName,
+        id: this.defineId
       },
       lazyTreeData: [],
       searchTreeData: [],
@@ -151,6 +150,13 @@ export default {
       rightTreeFlat: [],
       resLeafData: []
     }
+  },
+  mounted () {
+    this.renderRightTree({ defineId: this.defineId })
+      .then(() => {
+        this.setCheckedKeys()
+        this.setLazyTreeExpandedKeys()
+      })
   },
   methods: {
     closeDialog () {
@@ -174,108 +180,79 @@ export default {
     },
     // 全选
     handleCheckAll (checked) {
+      this.$refs.searchTree.setCheckedNodes(checked ? this.searchTreeData : [])
+      this.disabledGoRight = !checked
     },
     goRight () {
       const lazyTreeCheckedNotes = this.$refs.lazyTree.getCheckedNodes(false)
       const searchTreeCheckedNotes = this.$refs.searchTree.getCheckedNodes(true)
-      this.checkedNotes.push(...lazyTreeCheckedNotes, ...searchTreeCheckedNotes)
-      this.checkedNotes = this._.uniqBy(this.checkedNotes, 'label')
-      this.renderRightTree().then(() => {
-        this.disabledGoRight = true
-      })
+      this.checkedNotes = this._.uniqBy([...lazyTreeCheckedNotes, ...searchTreeCheckedNotes, ...this.resLeafData], 'label')
+      this.renderRightTree()
+        .then(() => {
+          this.disabledGoRight = true
+          if (!this.showExpandTree) {
+            this.setLazyTreeExpandedKeys()
+          }
+          this.setCheckedKeys()
+        })
     },
     goLeft () {
-      const checked = this.$refs.resTree.getCheckedNodes() // 选中节点
-      const halfChecked = this.$refs.resTree.getHalfCheckedNodes() // 半选节点
-      this.checkedNotes = this._.xorBy([...checked, ...halfChecked], this.resLeafData, 'label')
-      // Promise.all([this.renderRightTree(), this.renderLeftTree()]).then(() => {
-      //   this.disabledGoLeft = true
-      // })
-      this.renderRightTree().then(() => {
-        this.disabledGoLeft = true
-        this.renderLeftTree()
-      })
+      const checked = this.$refs.resTree.getCheckedNodes(true)// 选中的子节点
+      this.checkedNotes = this._.xorBy([...checked], this.resLeafData, 'label')
+      this.renderRightTree()
+        .then(() => {
+          this.disabledGoLeft = true
+          this.renderLeftTree()
+            .then(() => {
+              this.setCheckedKeys()
+              this.setLazyTreeExpandedKeys()
+            })
+        })
     },
     allGoLeft () {
+      this.lazyTreeExpandedkeys = []
+      this.rightTree = []
+      this.lazyTreeData = this.rootTree
+      this.handleCheckAll(false)
+      this.checkAll = false
     },
-    flatRightTreeData (array) {
-      const res = []
-      array.forEach(item => {
-        res.push({
-          category: item.category,
-          category1: item.category1,
-          category2: item.category2,
-          category3: item.category3,
-          label: item.label,
-          rank: item.rank
-        })
-        if (item.children) {
-          item.children.forEach(rank2 => {
-            res.push({
-              category: rank2.category,
-              category1: rank2.category1,
-              category2: rank2.category2,
-              category3: rank2.category3,
-              label: rank2.label,
-              rank: rank2.rank
-            })
-            if (rank2.children) {
-              rank2.children.forEach(rank3 => {
-                res.push({
-                  category: rank3.category,
-                  category1: rank3.category1,
-                  category2: rank3.category2,
-                  category3: rank3.category3,
-                  label: rank3.label,
-                  rank: rank3.rank
-                })
-              })
-            }
-          })
-        }
-      })
-      return res
+    flatTree (data) {
+      return data.reduce((arr, { category, category1, category2, category3, label, rank, children = [] }) =>
+        arr.concat([{ category, category1, category2, category3, label, rank }], this.flatTree(children)), [])
     },
-    getResLeafData (array) {
-      const res = []
-      array.forEach(item => {
-        if (item.children) {
-          item.children.forEach(rank2 => {
-            if (rank2.children) {
-              rank2.children.forEach(rank3 => {
-                res.push({
-                  category: rank3.category,
-                  category1: rank3.category1,
-                  category2: rank3.category2,
-                  category3: rank3.category3,
-                  label: rank3.label,
-                  rank: rank3.rank
-                })
-              })
-            }
-          })
-        }
-      })
-      return res
+    setCheckedKeys () {
+      const resRank3 = this.rightTreeFlat.filter(item => {
+        return item.rank === 3
+      }).map(item => item.label)
+      this.$refs.lazyTree.setCheckedKeys(resRank3)
+      this.$refs.searchTree.setCheckedKeys(resRank3)
+    },
+    setLazyTreeExpandedKeys () {
+      this.lazyTreeExpandedkeys = this.rightTreeFlat.filter(item => {
+        return item.rank === 1 || item.rank === 2
+      }).map(item => item.label)
     },
     // 关键字搜索
     handleFilter () {
       this.searchTreeData = []
+      this.checkAll = false
       if (this.likeCondition) {
         this.showExpandTree = true
-        this.$nextTick(() => {
-          this.getCategoryTree({ likeCondition: this.likeCondition })
-            .then((res) => {
-              this.searchTreeData = res
-            })
-        })
+        this.getDefineCateList({ likeCondition: this.likeCondition })
+          .then((res) => {
+            this.searchTreeData = res
+            this.setCheckedKeys()
+            this.setLazyTreeExpandedKeys()
+          })
       } else {
         this.showExpandTree = false
         this.searchTreeData = this.rootTree
+        this.setCheckedKeys()
+        this.setLazyTreeExpandedKeys()
       }
     },
-    async getCategoryTree (param = {}) {
-      const res = await getCategoryTree(param)
+    async getDefineCateList (param = {}) {
+      const res = await getDefineCateList(param)
       if (res.code === 200) {
         return res.result
       }
@@ -283,34 +260,28 @@ export default {
     // 异步加载回调函数
     loadNode (node = {}, resolve) {
       if (node.level === 0) {
-        this.getCategoryTree().then((res) => {
-          this.lazyTreeData = res
-          this.rootTree = this._.cloneDeep(res)
-        })
+        this.getDefineCateList()
+          .then((res) => {
+            this.lazyTreeData = res
+            this.rootTree = this._.cloneDeep(res)
+          })
       } else {
         if (node.data.children.length !== 0) {
           resolve(node.data.children)
           return
         }
-        this.getCategoryTree(node.data).then((res) => {
-          resolve(res)
-        })
+        this.getDefineCateList(node.data)
+          .then((res) => {
+            resolve(res)
+          })
       }
     },
-    async renderRightTree () {
-      const res = await getDefineTree({ cateList: this.checkedNotes, type: 'right' })
+    async renderRightTree (definedId = {}) {
+      const res = await getDefineTree(Object.assign({ cateList: this.checkedNotes, type: 'right' }, definedId))
       if (res.code === 200) {
         this.rightTree = res.result
-        this.rightTreeFlat = this.flatRightTreeData(res.result)
-        this.resLeafData = this.getResLeafData(res.result)
-        this.lazyTreeExpandedkeys = this.rightTreeFlat.filter(item => {
-          return item.rank === 1 || item.rank === 2
-        }).map(item => item.label)
-        console.info(this.lazyTreeExpandedkeys)
-        const resRank3 = this.rightTreeFlat.filter(item => {
-          return item.rank === 3
-        }).map(item => item.label)
-        this.$refs.lazyTree.setCheckedKeys(resRank3)
+        this.rightTreeFlat = this.flatTree(res.result)
+        this.resLeafData = this.rightTreeFlat.filter(item => item.rank === 3)
       }
     },
     async renderLeftTree () {
