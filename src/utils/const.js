@@ -1,12 +1,12 @@
 // 常量
+export const APP_NAME = '久谦中台'
+
 // 范围按钮
 export const RANGE_LEVEL = [
   {
-    icon: 'user',
     label: '近一年',
     value: 'one_year'
   }, {
-    icon: 'upload',
     label: '全部',
     value: 'all'
   }
@@ -14,23 +14,18 @@ export const RANGE_LEVEL = [
 // 颗粒度按钮
 export const GROUP_LEVEL = [
   {
-    icon: 'user',
     label: '按月',
     value: 'month',
     industryExcelHeader: ['月']
   }, {
-    icon: 'upload',
     label: '按季度',
     value: 'quarter',
     industryExcelHeader: ['季度']
   }, {
-    icon: 'upload',
     label: '按半年',
     value: 'half_year',
     industryExcelHeader: ['半年']
-
   }, {
-    icon: 'upload',
     label: '按年',
     value: 'year',
     industryExcelHeader: ['年']
@@ -39,11 +34,9 @@ export const GROUP_LEVEL = [
 // 图标按钮
 export const VIEW_LEVEL = [
   {
-    icon: 'upload',
     label: '按销售额',
     value: 'gmv'
   }, {
-    icon: 'user',
     label: '按销量',
     value: 'sales'
   }
@@ -57,14 +50,6 @@ export const ECHARTS_ACTIVED_PARAM = {
 
 // echart 主题颜色
 export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#E0E8F9', '#B9ECD8']
-
-// table 排序时传给后端的常量值
-export const SORT_TYPES = {
-  sumSales: '0', // 销量
-  sumGmv: '1', // 销售额
-  salesSequential: '2', // 销量环比
-  gmvSequential: '3' // 销售额环比
-}
 
 // 行业提数-品牌展开
 export const CATEGORY_LEVEL = [
@@ -216,8 +201,6 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
   }
 ]
 
-export const APP_NAME = '久谦中台'
-
 // 行业-默认参数
 export const INDUSTRY_DEFAULT_INDUSTRY = {
   rank: '1',
@@ -232,4 +215,48 @@ export const INDUSTRY_DEFAULT_INDUSTRY = {
 export const BRAND_DEFINE_BRANDLIST =
   ['花西子']
   // ['艾思诺娜/Excellula', '丝维诗兰', '伊诗贝格/EISENBERG']
-  // ["欧莱雅/L'OREAL", '玉兰油/Olay', '娇韵诗/Clarins', '娇兰/Guerlain', '雅诗兰黛/Estee Lauder']
+  // ["欧莱雅/L'OREAL", '玉兰油/Olay', '娇韵诗/Clarins', '娇兰/Guerlain', '雅诗兰黛/Estee Lauder',
+  //   '艾思诺娜/Excellula', '丝维诗兰', '伊诗贝格/EISENBERG', '完美日记/PERFECT DIARY', "欧舒丹/L'occitane",
+  //   '乔治阿玛尼/GIORGIO ARMANI', '纪梵希/Givenchy', '玉泽/Dr.Yu']
+
+// 提数-手机号提数-画像纬度
+export const PORTRAIT_LEVEL = [
+  {
+    label: '省份',
+    value: 'month',
+    weights: 10000
+  }, {
+    label: '城市',
+    value: 'month',
+    weights: 1000
+  }, {
+    label: '城市级别',
+    value: '',
+    weights: 100
+  }, {
+    label: '性别',
+    weights: 10
+  }, {
+    label: '年龄范围',
+    weights: 1
+  }
+]
+
+// UV聚合
+export const UV_GROUP = [
+  {
+    label: '按店铺'
+  }, {
+    label: '全部'
+  }
+]
+
+export const OPERATOR_BUTTONS = [
+  {
+    label: '手机号提数'
+  }, {
+    label: '画像提数'
+  }, {
+    label: 'MAU'
+  }
+]

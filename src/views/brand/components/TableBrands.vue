@@ -42,11 +42,11 @@ export default {
 <style lang="stylus" scoped>
 .brands-wapper
   display flex
-  margin-right 20px
+  flex-wrap wrap
 
 .brand-item
   margin-right 70px
-  margin-bottom 3px
+  margin-bottom 13px
   padding  0 1px 1px
   cursor pointer
   font-size 14px

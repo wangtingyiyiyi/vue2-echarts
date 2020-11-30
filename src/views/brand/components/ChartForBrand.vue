@@ -105,6 +105,7 @@ export default {
           }
         },
         legend: {
+          type: 'scroll',
           right: '20px',
           top: '0',
           itemGap: 40,

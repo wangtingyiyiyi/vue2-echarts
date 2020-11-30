@@ -41,7 +41,6 @@
               <Brand-Table-Brands
                 :brands="brandList"
                 :activeBrand="activeBrand"
-                class="m-b-10"
                 @changeActiveBrand="changeActiveBrand"/>
 
               <Table-For-Brand
