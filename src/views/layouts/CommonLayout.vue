@@ -46,16 +46,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
-html {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-body {
-  width: 100vw;
-  overflow: hidden;
-  padding-left: calc(100vw - 100%);
-}
 .header-wapper
   box-shadow 0 2px 8px #f0f1f2;
   width 100vw
@@ -66,8 +56,7 @@ body {
   background-color #ffffff
   top 0
   z-index 2
-  // padding 0 calc((100vw - 1600px) / 2)
-  padding 0
+  padding 0px 20px
 
 .flex-row
   display flex
@@ -76,11 +65,8 @@ body {
 .main-wapper
   margin-top 60px
   width 100%
-  // max-width 1600px
-  // min-width 1200px
   margin 60px auto 0
   background-color $base-white
-  // min-height calc(100vh - 157px)
   min-height calc(100vh - 60px)
 
 .content-wapper
