@@ -83,3 +83,14 @@ export function downloadFile (option) {
   }
   xhr.send(JSON.stringify(option.param))
 }
+
+// 根据isLeaf递归设置children
+export function resetChildrenByIsLeaf (arr) {
+  arr.forEach(item => {
+    if (item.isLeaf) {
+      item.children = null
+    } else {
+      resetChildrenByIsLeaf(item.children)
+    }
+  })
+}

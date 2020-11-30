@@ -170,7 +170,7 @@ import componentsMixin from '@/views/file/component.js'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import { previewExcel } from '@/api/download'
 import { INDUSTRY_EXCEL_TABLE_PROP, INDUSTRY_DEFAULT_INDUSTRY, BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
-import { downloadFile } from '@/utils/common.js'
+import { downloadFile, resetChildrenByIsLeaf } from '@/utils/common.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
 
@@ -317,6 +317,7 @@ export default {
     async getCategoryByBrands () {
       const res = await getCategorytByBrand({ brandList: this.form.brandList })
       if (res.code === 200) {
+        resetChildrenByIsLeaf(res.result)
         this.categoryOption = res.result
       } else {
         this.$message.error('品牌分类请求失败')

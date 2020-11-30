@@ -49,6 +49,7 @@ import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import { BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { mapMutations } from 'vuex'
+import { resetChildrenByIsLeaf } from '@/utils/common.js'
 
 export default {
   directives: { permission },
@@ -106,6 +107,7 @@ export default {
       const res = await getCategorytByBrand({ brandList: this.brandForm.brandList })
       if (res.code === 200) {
         this.categoryOption = []
+        resetChildrenByIsLeaf(res.result)
         this.categoryOption = res.result
       } else {
         this.$message.error('品牌分类请求失败')
