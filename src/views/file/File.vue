@@ -98,7 +98,7 @@
               :show-all-levels="false"
               :props="props">
               <template slot-scope="{ node, data }">
-                <span @click="changeIndustry(data)">{{data.category}}</span>
+                <div @click="changeIndustry(data)">{{data.category}}</div>
               </template>
             </el-cascader>
           </el-form-item>
