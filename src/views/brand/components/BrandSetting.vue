@@ -46,7 +46,7 @@
 
 <script>
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
-import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
+import { BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { mapMutations } from 'vuex'
 
@@ -55,7 +55,7 @@ export default {
   data () {
     return {
       brandForm: {
-        brandList: BRAND_DEFINE_BRAND.brandList,
+        brandList: BRAND_DEFINE_BRANDLIST,
         cate: ''
       },
       brandOption: [],

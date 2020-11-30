@@ -169,7 +169,7 @@
 import componentsMixin from '@/views/file/component.js'
 import { getBrandByLikeCondition, getCategorytByBrand } from '@/api/brand'
 import { previewExcel } from '@/api/download'
-import { INDUSTRY_EXCEL_TABLE_PROP, INDUSTRY_DEFAULT_INDUSTRY } from '@/utils/const.js'
+import { INDUSTRY_EXCEL_TABLE_PROP, INDUSTRY_DEFAULT_INDUSTRY, BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
 import { downloadFile } from '@/utils/common.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
@@ -203,7 +203,8 @@ export default {
       showDownloadBtn: false,
       loadingProgress: 0,
       categoryObj: INDUSTRY_DEFAULT_INDUSTRY,
-      isLoading: false
+      isLoading: false,
+      BRAND_DEFINE_BRANDLIST
     }
   },
   mounted () {
@@ -228,7 +229,7 @@ export default {
       this.form = {
         cate: '',
         cateList: [],
-        brandList: this.activeTab === 'brand' ? ['花西子'] : [],
+        brandList: this.activeTab === 'brand' ? BRAND_DEFINE_BRANDLIST : [],
         range: 'one_year',
         particle: 'month',
         cateFlat: '111',

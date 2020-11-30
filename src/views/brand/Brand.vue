@@ -101,7 +101,7 @@
 import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
-import { BRAND_DEFINE_BRAND } from '@/utils/const.js'
+import { BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import {
   getTableForBrand,
@@ -139,7 +139,7 @@ export default {
       spuPage: 1,
       spuTotal: 0,
       pageSize: 10,
-      defaultBrand: BRAND_DEFINE_BRAND
+      defaultBrand: BRAND_DEFINE_BRANDLIST
     }
   },
   computed: {
@@ -346,7 +346,7 @@ export default {
         this.getTableForBrand()
         this.getTableForSpu()
       } else {
-        this.brandList = this.defaultBrand.brandList
+        this.brandList = this.defaultBrand
         this.activeBrand = this.brandList[0]
         this.getCategoryByBrands().then(() => {
           this.getChartForBrand()
