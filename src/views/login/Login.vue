@@ -87,7 +87,6 @@ export default {
       handler: function (route) {
         const query = route.query
         if (query.userId) { // cms导入用户
-          this.userFrom = 'query'
           this.handleCmsLogin({ userId: query.userId })
         } else if (query.code) { // 企业微信扫码用户
           this.userFrom = 'query'
@@ -137,14 +136,11 @@ export default {
     },
     // 二维码回调
     handleQueryLogin (param) {
-      const loadingInstance = refLoading(this.$refs.index, '正在加载')
       this.login(param)
         .then(() => {
-          loadingInstance.close()
           this.$router.push({ name: this.target.name })
         })
         .catch((err) => {
-          loadingInstance.close()
           this.$message.error(err.message)
           this.$router.push('Login')
         })
@@ -159,7 +155,9 @@ export default {
         })
         .catch(() => {
           loadingInstance.close()
+          this.$message.warning(`cms用户首次登陆${APP_NAME},请先使用企业微信扫码`)
           this.userFrom = 'normal'
+          this.changeLoginType()
         })
     },
     changeLoginType () {
