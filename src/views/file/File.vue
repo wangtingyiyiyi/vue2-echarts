@@ -1,7 +1,7 @@
 <template>
   <div class="file-tab-wapper">
     <el-tabs v-model="activeTab" @tab-click="handleTabClick" lazy>
-      <el-tab-pane label="行业提数" name="industry" class="auto-wapper">
+      <el-tab-pane label="行业提数" name="industry">
         <Title class="m-b-12" title="筛选配置"/>
         <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
           <el-form-item label="目标行业">
@@ -65,7 +65,7 @@
         <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
-      <el-tab-pane label="品牌提数" name="brand" class="auto-wapper">
+      <el-tab-pane label="品牌提数" name="brand">
         <Title class="m-b-12" title="筛选配置"/>
         <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
           <el-form-item label="搜索品牌">
@@ -157,9 +157,9 @@
         <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
-      <!-- <el-tab-pane label="人群画像" name="portrait" class="auto-wapper">
+      <el-tab-pane label="人群画像" name="portrait">
         <Tab-For-Portrait />
-      </el-tab-pane> -->
+      </el-tab-pane>
     </el-tabs>
     <Download-Button
       v-if="showDownloadBtn"
@@ -183,7 +183,7 @@ export default {
   directives: { permission },
   data () {
     return {
-      activeTab: 'industry',
+      activeTab: 'portrait',
       form: {
         cate: INDUSTRY_DEFAULT_INDUSTRY.label,
         cateList: [INDUSTRY_DEFAULT_INDUSTRY],

@@ -222,21 +222,23 @@ export const BRAND_DEFINE_BRANDLIST =
 export const PORTRAIT_LEVEL = [
   {
     label: '省份',
-    value: 'month',
+    value: 'p',
     weights: 10000
   }, {
     label: '城市',
-    value: 'month',
+    value: 'city',
     weights: 1000
   }, {
     label: '城市级别',
-    value: '',
+    value: 'city_level',
     weights: 100
   }, {
     label: '性别',
+    value: 'sex',
     weights: 10
   }, {
     label: '年龄范围',
+    value: 'age',
     weights: 1
   }
 ]
@@ -244,22 +246,24 @@ export const PORTRAIT_LEVEL = [
 // UV聚合
 export const UV_GROUP = [
   {
-    label: '按店铺'
+    label: '按店铺',
+    value: 'shop'
   }, {
-    label: '全部'
+    label: '全部',
+    value: 'all'
   }
 ]
 
 export const OPERATOR_BUTTONS = [
   {
     label: '手机号提数',
-    value: 'phone'
+    value: 'PartPhone'
   }, {
     label: '画像提数',
-    value: 'portrait'
+    value: 'PartIcon'
   }, {
     label: 'MAU',
-    value: 'mau'
+    value: 'PartMau'
   }
 ]
 
