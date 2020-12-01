@@ -37,7 +37,7 @@ export default {
 <style lang="stylus" scoped>
 .custom-tree-node
   font-size 14px
-  color $color-cate-gary
+  color $color-light-gary
 
 .tree-select-icon
   display inline-block

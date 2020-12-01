@@ -219,7 +219,7 @@ export default {
         align-items center
     .item-info
       padding-left 10px
-      color $color-cate-gary
+      color $color-light-gary
       font-size 14px
       display flex
       align-items center

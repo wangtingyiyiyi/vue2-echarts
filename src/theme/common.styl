@@ -19,6 +19,8 @@
   margin-bottom 10px
 .m-b-12
   margin-bottom 12px
+.m-b-24
+  margin-bottom 24px
 
 .m-l-3
   margin-left 3px
@@ -104,23 +106,20 @@
     height 22px
     padding 2px 14px 3px 14px
 
-
-.el-table >>> .tableHeaderClass th
-  background-color $table-header-bgc !important
-  height 48px
-  color $color-cate-gary
-  font-weight bolder
-  font-size 14px
-
-.el-table >>> .tableCellClass
-  border-bottom: 1px solid #EBEEF5;
-
-.el-table >>> .el-table__body-wrapper
-  font-size 14px !important
+// table header css
+.el-table
+  .tableCellClass
+    border-bottom: 1px solid #EBEEF5;
+  .tableHeaderClass th
+    background-color $table-header-bgc !important
+    height 48px
+    color $color-light-gary
+    font-weight bolder
+    font-size 14px
 
 .custom-tree-node
   font-size 14px
-  color $color-cate-gary
+  color $color-light-gary
 
 .loading-class
   .el-icon-loading
@@ -175,3 +174,6 @@
   color $color-second
 .text-warning
   color $color-warning
+.btn-text
+  color $base-blue
+  cursor pointer

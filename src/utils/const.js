@@ -214,7 +214,6 @@ export const INDUSTRY_DEFAULT_INDUSTRY = {
 // 品牌-默认参数
 export const BRAND_DEFINE_BRANDLIST =
   ['花西子']
-  // ['艾思诺娜/Excellula', '丝维诗兰', '伊诗贝格/EISENBERG']
   // ["欧莱雅/L'OREAL", '玉兰油/Olay', '娇韵诗/Clarins', '娇兰/Guerlain', '雅诗兰黛/Estee Lauder',
   //   '艾思诺娜/Excellula', '丝维诗兰', '伊诗贝格/EISENBERG', '完美日记/PERFECT DIARY', "欧舒丹/L'occitane",
   //   '乔治阿玛尼/GIORGIO ARMANI', '纪梵希/Givenchy', '玉泽/Dr.Yu']
@@ -253,10 +252,48 @@ export const UV_GROUP = [
 
 export const OPERATOR_BUTTONS = [
   {
-    label: '手机号提数'
+    label: '手机号提数',
+    value: 'phone'
   }, {
-    label: '画像提数'
+    label: '画像提数',
+    value: 'portrait'
   }, {
-    label: 'MAU'
+    label: 'MAU',
+    value: 'mau'
+  }
+]
+
+export const MOCK_DATA = [
+  {
+    shopName: '蒙牛旗舰店蒙牛旗舰店蒙牛旗舰店',
+    count: 1299973,
+    current: '全部',
+    min: 1,
+    out: 1299973
+  }, {
+    shopName: '伊利旗舰店',
+    count: 1299973,
+    current: '全部',
+    min: 1,
+    out: 1299973
+  }, {
+    shopName: '三元旗舰店',
+    count: 3239973,
+    current: '全部',
+    min: 1,
+    out: 2375125
+  }
+]
+
+export const PORTRAIT_RANGE = [
+  {
+    label: '全部',
+    value: 'all'
+  }, {
+    label: '近一年',
+    value: 'one_year'
+  }, {
+    label: '近三个月',
+    value: 'three_month'
   }
 ]

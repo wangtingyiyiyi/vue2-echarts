@@ -1,8 +1,5 @@
 // 全局修改elementUI样式
 @import './default.styl'
-// button 圆角
-.el-button
-  border-radius 0px
 
 // input 圆角 (select同样生效)
 .el-input > .el-input__inner
@@ -29,11 +26,12 @@
     padding 25px
 
 
-// 修改 button 的蓝色
+// el-button
 .el-button.is-plain:focus, .el-button.is-plain:hover 
     border-color $base-blue
     color $base-blue
     background-color #ffffff
+
 .el-button--primary
   border-color $base-blue
   background-color $base-blue
@@ -46,6 +44,24 @@
     color #fff 
     background-color #ADC7FC
     border-color #ADC7FC
+
+.el-button--dashed
+  border 1px dashed $base-blue
+  color $base-blue
+  &:focus, &:hover
+    border-color $base-blue
+    background-color $base-blue
+    color #ffffff
+
+.el-button--text
+  color $base-blue
+  &:focus, &:hover
+    color $base-blue
+
+.el-button--small
+  min-width 65px
+.el-button
+  border-radius 0px
   
 // 修改菜单激活的蓝色
 .el-menu
@@ -82,19 +98,29 @@
 .el-radio > .el-radio__input > .el-radio__inner:hover
   border-color $base-blue
 
+// tag
 .el-tag 
   border-radius 1px
+  border-color $base-blue
+  color $base-blue
+  background #F4F8FF
+.el-tag .el-tag__close
+  color $base-blue
+  &:hover
+    border-color $base-blue
+    background-color $base-blue
 
-// el-button--small
-.el-button--small
-  width 65px
-
+// table
 .el-table
   color: #363746
   .el-table__empty-block
     height 200px !important
 .el-table::before
   display: none
+.el-table
+  .el-table__body-wrapper
+    font-size 14px !important
+
 
 // 去掉级联选择器中的单选
 .el-popper

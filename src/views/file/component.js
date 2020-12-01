@@ -5,6 +5,7 @@ import PreviewTableTitle from '@/views/file/component/PreviewTableTitle.vue'
 import GroupButtons from '@/views/file/component/GroupButtons.vue'
 import DownloadButton from '@/components/DownloadButton.vue'
 import PreviewLoading from '@/views/file/component/PreviewLoading.vue'
+import TabForPortrait from '@/views/file/component/portrait/Portrait.vue'
 
 import {
   RANGE_LEVEL,
@@ -44,6 +45,7 @@ export default {
     PreviewTableTitle,
     GroupButtons,
     DownloadButton,
-    PreviewLoading
+    PreviewLoading,
+    TabForPortrait
   }
 }

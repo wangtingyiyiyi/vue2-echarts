@@ -126,8 +126,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.el-table >>> .line-in-table-class > div
-  margin-left 60px
-</style>

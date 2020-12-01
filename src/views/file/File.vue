@@ -66,7 +66,7 @@
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
       <el-tab-pane label="品牌提数" name="brand" class="auto-wapper">
-         <Title class="m-b-12" title="筛选配置"/>
+        <Title class="m-b-12" title="筛选配置"/>
         <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
           <el-form-item label="搜索品牌">
             <el-select
@@ -157,6 +157,9 @@
         <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
+      <!-- <el-tab-pane label="人群画像" name="portrait" class="auto-wapper">
+        <Tab-For-Portrait />
+      </el-tab-pane> -->
     </el-tabs>
     <Download-Button
       v-if="showDownloadBtn"
@@ -228,13 +231,19 @@ export default {
       this.emptyMes = '请设置提数配置'
       this.form = {
         cate: '',
-        cateList: [],
+        cateList: this.activeTab === 'industry' ? [INDUSTRY_DEFAULT_INDUSTRY] : [],
         brandList: this.activeTab === 'brand' ? BRAND_DEFINE_BRANDLIST : [],
         range: 'one_year',
         particle: 'month',
         cateFlat: '111',
         agg: '0000',
         indicator: '0111'
+      }
+      this.headerObj = {
+        particle: ['月'],
+        cateFlat: ['一级品类', '二级品类', '三级品类'],
+        agg: [],
+        indicator: ['销量', 'ASP', 'GMV']
       }
       this.getCategoryByBrands().then(() => {
         if (this.activeTab === 'brand') {
@@ -271,10 +280,11 @@ export default {
     },
     async handlePreview () {
       this.emptyMes = ''
-      if ((this.form.cate === '') && (this.form.brandList === null ? 1 : (this.form.brandList.length === 0))) {
-        this.emptyMes = '请设置提数配置'
-        return
-      }
+      // if ((this.form.cate === '') && (this.form.brandList === null ? 1 : (this.form.brandList.length === 0))) {
+      //   this.emptyMes = '请设置提数配置'
+      //   console.info('ooooooooooo')
+      //   return
+      // }
       if (this.form.agg === 'undefined' || this.form.agg === '0000') {
         this.emptyMes = '请至少选择一种品类聚合类型'
         this.tableData = []
@@ -354,17 +364,13 @@ export default {
     line-height 56px
     height 56px
 
-.flex-row
-  display: flex
-  width: 100%
-
 .flex-between-row
   display flex
   width: 100%
   justify-content space-between
   align-items center
 
-.auto-wapper
-  max-width 1440px
-  margin 0 auto
+// .auto-wapper
+//   max-width 1440px
+//   margin 0 auto
 </style>

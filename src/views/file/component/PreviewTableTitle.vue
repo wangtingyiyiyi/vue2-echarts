@@ -9,7 +9,7 @@
     <el-button
       type="primary"
       size="mini"
-      :disabled="exportDisabled || tableTotal === 0 || tableTotal > max"
+      v-if="!(exportDisabled || tableTotal === 0 || tableTotal > max)"
       @click="handleExportExcel" >导出</el-button>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
   align-items center
 
 .flex-row
-  display: flex
-  width: 100%
+  display flex
+  width 100%
+  align-items normal
 </style>

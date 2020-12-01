@@ -35,7 +35,10 @@ import {
   RadioButton,
   CheckboxGroup,
   Cascader,
-  Tag
+  Tag,
+  Divider,
+  Tooltip,
+  InputNumber
 } from 'element-ui'
 
 const components = [
@@ -72,7 +75,10 @@ const components = [
   RadioButton,
   CheckboxGroup,
   Cascader,
-  Tag
+  Tag,
+  Divider,
+  Tooltip,
+  InputNumber
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

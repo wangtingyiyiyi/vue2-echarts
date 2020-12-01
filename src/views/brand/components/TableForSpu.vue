@@ -97,7 +97,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-@import './table.styl'
-</style>
