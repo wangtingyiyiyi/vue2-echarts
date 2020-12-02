@@ -152,6 +152,7 @@ export default {
   line-height 1
 .sum-title
   color $color-title
+  width 267px
   span
     font-weight bold
     font-size large
@@ -159,7 +160,6 @@ export default {
     margin-left 5px
 .batch-form-wapper
   padding 0px 12px
-  margin-left 82px
   .el-form-item
     margin-bottom 0
 </style>

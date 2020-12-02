@@ -21,7 +21,7 @@
       <el-form-item label="UV聚合" style="height: 28px;">
         <Group-Buttons
           :activeVal="form.uv"
-          formKey="particle"
+          formKey="uv"
           :options="UV_GROUP"
           @handleOnGroupButtons="handleForm"
           @handleOnExcelHeader="handleExcelHeader"/>
@@ -29,7 +29,6 @@
       <el-form-item label="画像维度" style="height: 28px;">
         <Group-Checkbox
           formKey="icon"
-          :codeLen="5"
           :activeVal="form.icon"
           :options="PORTRAIT_LEVEL"
           @handleOnGroupCheckbox="handleForm"
@@ -40,10 +39,10 @@
 </template>
 
 <script>
-import GroupButtons from '@/views/file/component/GroupButtons.vue'
-import GroupCheckbox from '@/views/file/component/GroupCheckbox.vue'
+import GroupButtons from '@/components/GroupButtons.vue'
+import GroupCheckbox from '@/components/GroupCheckbox.vue'
 
-import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_LEVEL } from '@/utils/const.js'
+import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_LEVEL, PORTRAIT_ECXCEL_HEADER } from '@/utils/const.js'
 export default {
   name: 'PartIcon',
   components: { GroupButtons, GroupCheckbox },
@@ -53,17 +52,32 @@ export default {
         range: 'all',
         particle: 'month',
         uv: 'shop',
-        icon: '00000'
+        icon: ['city']
       },
       GROUP_LEVEL,
       RANGE_LEVEL,
       UV_GROUP,
-      PORTRAIT_LEVEL
+      PORTRAIT_LEVEL,
+      PORTRAIT_ECXCEL_HEADER,
+      headerObj: {
+        particle: ['月'],
+        uv: ['店铺'],
+        icon: ['城市']
+      }
     }
   },
   methods: {
-    handleForm () {},
-    handleExcelHeader () {}
+    handleForm (k, v) {
+      this.form[k] = v
+    },
+    handleExcelHeader (k, v) {
+      this.headerObj[k] = v
+      const values = Object.values(this.headerObj).flat()
+      const excelHeader = PORTRAIT_ECXCEL_HEADER.filter(item => {
+        return values.indexOf(item.label) !== -1
+      })
+      this.$emit('setExcelHeader', excelHeader)
+    }
   }
 }
 </script>

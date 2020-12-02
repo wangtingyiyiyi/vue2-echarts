@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { INDUSTRY_EXCEL_TABLE_PROP } from '@/utils/const.js'
 export default {
   name: 'PreviewTable',
   props: {
@@ -43,8 +42,7 @@ export default {
   },
   data () {
     return {
-      max: 1048576,
-      INDUSTRY_EXCEL_TABLE_PROP
+      max: 1048576
     }
   }
 }

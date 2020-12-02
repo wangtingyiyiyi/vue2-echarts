@@ -2,10 +2,10 @@ import IndustrySelectTree from '@/views/industry/components/IndustrySelectTree.v
 import GroupCheckbox from '@/views/file/component/GroupCheckbox.vue'
 import PreviewTable from '@/views/file/component/PreviewTable.vue'
 import PreviewTableTitle from '@/views/file/component/PreviewTableTitle.vue'
-import GroupButtons from '@/views/file/component/GroupButtons.vue'
 import DownloadButton from '@/components/DownloadButton.vue'
 import PreviewLoading from '@/views/file/component/PreviewLoading.vue'
 import TabForPortrait from '@/views/file/component/portrait/Portrait.vue'
+import GroupButtons from '@/components/GroupButtons.vue'
 
 import {
   RANGE_LEVEL,

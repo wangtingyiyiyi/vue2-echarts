@@ -6,9 +6,12 @@
     <Type-Buttons
       class="m-b-24"
       :activedType="currentPartComponent"
-      @handleChangeActiveType="currentPartComponent = $event"/>
-    <component v-bind:is="currentPartComponent"></component>
+      @handleChangeActiveType="handleChangeActiveType"/>
+    <component
+      v-bind:is="currentPartComponent"
+      @setExcelHeader="setExcelHeader"></component>
     <Preview-Table-Title />
+    <Preview-Table :excelHeader="excelHeader"/>
   </div>
 </template>
 
@@ -19,13 +22,24 @@ import PartIcon from '@/views/file/component/portrait/PartIcon.vue'
 import PartMau from '@/views/file/component/portrait/PartMau.vue'
 import PartPhone from '@/views/file/component/portrait/PartPhone.vue'
 import PreviewTableTitle from '@/views/file/component/PreviewTableTitle.vue'
+import PreviewTable from '@/views/file/component/PreviewTable.vue'
 
 export default {
   name: 'TabForPortrait',
-  components: { TypeButtons, PreviewTableTitle, ShopTags, PartIcon, PartMau, PartPhone },
+  components: { TypeButtons, PreviewTableTitle, ShopTags, PartIcon, PartMau, PartPhone, PreviewTable },
   data () {
     return {
-      currentPartComponent: 'PartIcon'
+      currentPartComponent: 'PartIcon',
+      excelHeader: []
+    }
+  },
+  methods: {
+    setExcelHeader (obj) {
+      this.excelHeader = obj
+    },
+    handleChangeActiveType (activeTab) {
+      this.currentPartComponent = activeTab
+      this.excelHeader = []
     }
   }
 }

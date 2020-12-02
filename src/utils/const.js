@@ -16,19 +16,19 @@ export const GROUP_LEVEL = [
   {
     label: '按月',
     value: 'month',
-    industryExcelHeader: ['月']
+    excelHeader: ['月']
   }, {
     label: '按季度',
     value: 'quarter',
-    industryExcelHeader: ['季度']
+    excelHeader: ['季度']
   }, {
     label: '按半年',
     value: 'half_year',
-    industryExcelHeader: ['半年']
+    excelHeader: ['半年']
   }, {
     label: '按年',
     value: 'year',
-    industryExcelHeader: ['年']
+    excelHeader: ['年']
   }
 ]
 // 图标按钮
@@ -57,17 +57,17 @@ export const CATEGORY_LEVEL = [
     label: '一级品类',
     value: '0',
     industryWeights: 1,
-    industryExcelHeader: ['一级品类']
+    excelHeader: ['一级品类']
   }, {
     label: '二级品类',
     value: '1',
     industryWeights: 10,
-    industryExcelHeader: ['二级品类']
+    excelHeader: ['二级品类']
   }, {
     label: '三级品类',
     value: '2',
     industryWeights: 100,
-    industryExcelHeader: ['三级品类']
+    excelHeader: ['三级品类']
   }
 ]
 
@@ -77,22 +77,22 @@ export const CATEGORT_GROUP = [
     label: '按品牌',
     value: '0',
     industryWeights: 1,
-    industryExcelHeader: ['品牌']
+    excelHeader: ['品牌']
   }, {
     label: '按店铺',
     value: '1',
     industryWeights: 10,
-    industryExcelHeader: ['店铺ID', '店铺']
+    excelHeader: ['店铺ID', '店铺']
   }, {
     label: '按品名',
     value: '2',
     industryWeights: 100,
-    industryExcelHeader: ['品名']
+    excelHeader: ['品名']
   }, {
     label: '按SPU',
     value: '3',
     industryWeights: 1000,
-    industryExcelHeader: ['SPUID', 'SPU名']
+    excelHeader: ['SPUID', 'SPU名']
   }
 ]
 
@@ -103,25 +103,25 @@ export const DATA_INDEX = [
     value: '0',
     industryWeights: 1,
     disabled: true,
-    industryExcelHeader: ['销量']
+    excelHeader: ['销量']
   }, {
     label: 'ASP',
     value: '1',
     disabled: true,
     industryWeights: 10,
-    industryExcelHeader: ['ASP']
+    excelHeader: ['ASP']
   }, {
     label: 'GMV',
     value: '3',
     disabled: true,
     industryWeights: 100,
-    industryExcelHeader: ['GMV']
+    excelHeader: ['GMV']
   }, {
     label: 'SPU数',
     value: '4',
     disabled: false,
     industryWeights: 1000,
-    industryExcelHeader: ['SPU数']
+    excelHeader: ['SPU数']
   }
 ]
 
@@ -222,24 +222,65 @@ export const BRAND_DEFINE_BRANDLIST =
 export const PORTRAIT_LEVEL = [
   {
     label: '省份',
-    value: 'p',
-    weights: 10000
+    value: 'province',
+    excelHeader: ['省份']
   }, {
     label: '城市',
     value: 'city',
-    weights: 1000
+    excelHeader: ['城市']
   }, {
     label: '城市级别',
     value: 'city_level',
-    weights: 100
+    excelHeader: ['城市级别']
   }, {
     label: '性别',
     value: 'sex',
-    weights: 10
+    excelHeader: ['性别']
   }, {
     label: '年龄范围',
     value: 'age',
-    weights: 1
+    excelHeader: ['年龄范围']
+  }
+]
+
+// 人群画像-画像提数表头
+export const PORTRAIT_ECXCEL_HEADER = [
+  {
+    label: '年',
+    prop: 'year',
+    align: 'left'
+  }, {
+    label: '半年',
+    prop: 'half',
+    align: 'left'
+  }, {
+    label: '季度',
+    prop: 'quarter',
+    align: 'left'
+  }, {
+    label: '月',
+    prop: 'month',
+    align: 'left'
+  }, {
+    label: '省份',
+    prop: 'province',
+    align: 'left'
+  }, {
+    label: '城市',
+    prop: 'city',
+    align: 'left'
+  }, {
+    label: '城市级别',
+    prop: 'city_level',
+    align: 'left'
+  }, {
+    label: '性别',
+    prop: 'sex',
+    align: 'left'
+  }, {
+    label: '年龄范围',
+    prop: 'age',
+    align: 'left'
   }
 ]
 
@@ -296,6 +337,9 @@ export const PORTRAIT_RANGE = [
   }, {
     label: '近一年',
     value: 'one_year'
+  }, {
+    label: '近半年',
+    value: 'half_year'
   }, {
     label: '近三个月',
     value: 'three_month'

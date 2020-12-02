@@ -21,7 +21,7 @@
       <el-form-item label="UV聚合" style="height: 28px;">
         <Group-Buttons
           :activeVal="form.uv"
-          formKey="particle"
+          formKey="uv"
           :options="UV_GROUP"
           @handleOnGroupButtons="handleForm"
           @handleOnExcelHeader="handleExcelHeader"/>
@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import GroupButtons from '@/views/file/component/GroupButtons.vue'
-import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP } from '@/utils/const.js'
+import GroupButtons from '@/components/GroupButtons.vue'
+import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_ECXCEL_HEADER } from '@/utils/const.js'
 export default {
   name: 'PartMau',
   components: { GroupButtons },
@@ -45,12 +45,23 @@ export default {
       },
       GROUP_LEVEL,
       RANGE_LEVEL,
-      UV_GROUP
+      UV_GROUP,
+      PORTRAIT_ECXCEL_HEADER,
+      headerObj: {}
     }
   },
   methods: {
-    handleForm () {},
-    handleExcelHeader () {}
+    handleForm (k, v) {
+      this.form[k] = v
+    },
+    handleExcelHeader (k, v) {
+      this.headerObj[k] = v
+      const values = Object.values(this.headerObj).flat()
+      const excelHeader = PORTRAIT_ECXCEL_HEADER.filter(item => {
+        return values.indexOf(item.label) !== -1
+      })
+      this.$emit('setExcelHeader', excelHeader)
+    }
   }
 }
 </script>
