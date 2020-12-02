@@ -333,15 +333,18 @@ export const MOCK_DATA = [
 export const PORTRAIT_RANGE = [
   {
     label: '全部',
-    value: 'all'
+    value: '全部'
   }, {
     label: '近一年',
-    value: 'one_year'
+    value: '近一年',
+    max: 12
   }, {
     label: '近半年',
-    value: 'half_year'
+    value: '近半年',
+    max: 6
   }, {
     label: '近三个月',
-    value: 'three_month'
+    value: '近三个月',
+    max: 3
   }
 ]
