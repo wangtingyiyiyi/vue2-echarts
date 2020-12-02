@@ -84,14 +84,22 @@
         </el-tab-pane>
       </el-tabs>
 
-      <Range-Buttons
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:380px; top:16px;'
+        :options="RANGE_LEVEL"
         :activeVal="rangeItemVal"
-        @handleRangeClick="handleRangeClick"
-        style='position: absolute; right:380px; top:16px;'/>
-      <Group-Buttons
+        @handleClick="handleRangeClick">
+        <div class="filter-label" slot="label">时间维度</div>
+      </Button-Group>
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:26px; top:16px;'
+        :options="GROUP_LEVEL"
         :activeVal="groupItemVal"
-        @handleGroupClick="handleGroupClick"
-        style='position: absolute; right:26px; top:16px;'/>
+        @handleClick="handleGroupClick">
+        <div class="filter-label" slot="label">时间粒度</div>
+      </Button-Group>
     </div>
   </div>
 </template>
@@ -100,7 +108,7 @@
 import { mapMutations } from 'vuex'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/brand/components.js'
-import { BRAND_DEFINE_BRANDLIST } from '@/utils/const.js'
+import { BRAND_DEFINE_BRANDLIST, RANGE_LEVEL, GROUP_LEVEL } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import {
   getTableForBrand,
@@ -138,7 +146,9 @@ export default {
       spuPage: 1,
       spuTotal: 0,
       pageSize: 10,
-      defaultBrand: BRAND_DEFINE_BRANDLIST
+      defaultBrand: BRAND_DEFINE_BRANDLIST,
+      GROUP_LEVEL,
+      RANGE_LEVEL
     }
   },
   computed: {
@@ -184,12 +194,12 @@ export default {
       this.getTableForSpu()
     },
     // 切换范围
-    handleRangeClick (data) {
+    handleRangeClick (k, value) {
       // 近一年，默认切换“按月”
-      if (data.value === 'one_year') {
+      if (value === 'one_year') {
         this.groupItemVal = 'month'
       }
-      this.rangeItemVal = data.value
+      this.rangeItemVal = value
       this.selectdMonth = ''
       this.spuPage = 1
       this.getChartForBrand()
@@ -198,12 +208,12 @@ export default {
       this.getMonthOption()
     },
     // 切换颗粒度
-    handleGroupClick (data) {
+    handleGroupClick (k, value) {
       // 按季度、按半年、按年默认切换“全部”
-      if (data.value !== 'month') {
+      if (value !== 'month') {
         this.rangeItemVal = 'all'
       }
-      this.groupItemVal = data.value
+      this.groupItemVal = value
       this.selectdMonth = ''
       this.spuPage = 1
       this.getChartForBrand()

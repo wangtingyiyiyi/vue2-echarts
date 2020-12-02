@@ -1,30 +1,30 @@
 <template>
   <div>
     <Title title="筛选配置"/>
-    <el-form ref="form" :model="form" label-width="80px" label-position="left" size="mini">
-      <el-form-item label="时间范围" style="height: 28px;">
-        <Group-Buttons
-          :activeVal="form.range"
+    <el-form ref="form" :model="form" label-width="100px" label-position="left" size="mini">
+      <el-form-item label="时间维度" style="height: 28px;">
+        <Button-Group
           formKey="range"
+          :activeVal="form.range"
           :options="RANGE_LEVEL"
-          @handleOnGroupButtons="handleForm"
-          @handleOnExcelHeader="handleExcelHeader"/>
+          @handleClick="handleForm"
+          @handleOnExcelHeader="handleExcelHeader" />
       </el-form-item>
-      <el-form-item label="颗粒度" style="height: 28px;">
-        <Group-Buttons
-          :activeVal="form.particle"
+      <el-form-item label="时间粒度" style="height: 28px;">
+        <Button-Group
           formKey="particle"
+          :activeVal="form.particle"
           :options="GROUP_LEVEL"
-          @handleOnGroupButtons="handleForm"
-          @handleOnExcelHeader="handleExcelHeader"/>
+          @handleClick="handleForm"
+          @handleOnExcelHeader="handleExcelHeader" />
       </el-form-item>
       <el-form-item label="UV聚合" style="height: 28px;">
-        <Group-Buttons
-          :activeVal="form.uv"
+        <Button-Group
           formKey="uv"
+          :activeVal="form.uv"
           :options="UV_GROUP"
-          @handleOnGroupButtons="handleForm"
-          @handleOnExcelHeader="handleExcelHeader"/>
+          @handleClick="handleForm"
+          @handleOnExcelHeader="handleExcelHeader" />
       </el-form-item>
       <el-form-item label="画像维度" style="height: 28px;">
         <Group-Checkbox
@@ -39,13 +39,12 @@
 </template>
 
 <script>
-import GroupButtons from '@/components/GroupButtons.vue'
 import GroupCheckbox from '@/components/GroupCheckbox.vue'
 
 import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_LEVEL, PORTRAIT_ECXCEL_HEADER } from '@/utils/const.js'
 export default {
   name: 'PartIcon',
-  components: { GroupButtons, GroupCheckbox },
+  components: { GroupCheckbox },
   data () {
     return {
       form: {

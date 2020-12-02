@@ -73,14 +73,22 @@
             </el-pagination>
         </el-tab-pane>
       </el-tabs>
-      <Range-Buttons
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:380px; top:16px;'
+        :options="RANGE_LEVEL"
         :activeVal="rangeItemVal"
-        @handleRangeClick="handleRangeClick"
-        style='position: absolute; right:380px; top:16px;'/>
-      <Group-Buttons
+        @handleClick="handleRangeClick">
+        <div class="filter-label" slot="label">时间维度</div>
+      </Button-Group>
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:26px; top:16px;'
+        :options="GROUP_LEVEL"
         :activeVal="groupItemVal"
-        @handleGroupClick="handleGroupClick"
-        style='position: absolute; right:26px; top:16px;'/>
+        @handleClick="handleGroupClick">
+        <div class="filter-label" slot="label">时间粒度</div>
+      </Button-Group>
     </div>
     <!-- 抽屉 -->
     <Drawer
@@ -111,7 +119,7 @@ import {
 } from '@/api/industry'
 import { refLoading } from '@/utils/element.js'
 import componentsMixin from '@/views/industry/components.js'
-import { INDUSTRY_DEFAULT_INDUSTRY } from '@/utils/const.js'
+import { INDUSTRY_DEFAULT_INDUSTRY, GROUP_LEVEL, RANGE_LEVEL } from '@/utils/const.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 
 export default {
@@ -148,7 +156,9 @@ export default {
       iconName: 'el-icon-download',
       meritcoTree: [],
       defaultIndustry: INDUSTRY_DEFAULT_INDUSTRY,
-      defineItemId: ''
+      defineItemId: '',
+      GROUP_LEVEL,
+      RANGE_LEVEL
     }
   },
   computed: {
@@ -173,11 +183,11 @@ export default {
       this.getBrandEchart()
     },
     // 切换范围
-    handleRangeClick (rangeItem) {
-      if (rangeItem.value === 'one_year') {
+    handleRangeClick (k, value) {
+      if (value === 'one_year') {
         this.groupItemVal = 'month'
       }
-      this.rangeItemVal = rangeItem.value
+      this.rangeItemVal = value
       this.selectdMonth = ''
       this.chartSelectMonth = ''
       this.page = 1
@@ -188,12 +198,12 @@ export default {
       this.getMonthOption()
     },
     // 切换颗粒度
-    handleGroupClick (groupItem) {
+    handleGroupClick (k, value) {
       // 按季度、按半年、按年默认切换“全部”
-      if (groupItem.value !== 'month') {
+      if (value !== 'month') {
         this.rangeItemVal = 'all'
       }
-      this.groupItemVal = groupItem.value
+      this.groupItemVal = value
       this.page = 1
       this.selectdMonth = ''
       this.chartSelectMonth = ''
