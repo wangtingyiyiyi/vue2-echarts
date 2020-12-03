@@ -91,7 +91,7 @@
       </div>
     </div>
 
-    <el-form inline class="m-t-24" :model="form" ref="form">
+    <el-form inline class="m-t-24" :model="form" ref="form" @submit.native.prevent>
       <el-form-item
         label="自定义标签名称"
         prop="title"
@@ -99,7 +99,8 @@
         <el-input
           placeholder="保存选中对比品类标签"
           v-model="form.title"
-          style="width: 215px"/>
+          style="width: 215px"
+          @change="handleChange"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -298,6 +299,11 @@ export default {
         this.lazyTreeData = res.result
         this.rootTree = this._.cloneDeep(res.result)
       }
+    },
+    handleChange () {
+      if (this.rightTree.length !== 0) {
+        this.onSubmit()
+      }
     }
   }
 }
@@ -323,6 +329,7 @@ export default {
         padding 5px 15px
         margin-left 0
         margin-bottom 10px
+        min-width auto !important
     .transfer-right
       border-radius 1px
       width 46%
