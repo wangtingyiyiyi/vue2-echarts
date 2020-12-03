@@ -55,7 +55,7 @@ export default {
   position fixed
   background-color #ffffff
   top 0
-  z-index 2
+  z-index 3
   padding 0px 20px
 
 .flex-row
