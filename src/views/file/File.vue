@@ -156,9 +156,9 @@
         <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
-      <el-tab-pane label="人群画像" name="portrait">
+      <!-- <el-tab-pane label="人群画像" name="portrait">
         <Tab-For-Portrait />
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
     <Download-Button
       v-if="showDownloadBtn"
@@ -182,7 +182,7 @@ export default {
   directives: { permission },
   data () {
     return {
-      activeTab: 'portrait',
+      activeTab: 'industry',
       form: {
         cate: INDUSTRY_DEFAULT_INDUSTRY.label,
         cateList: [INDUSTRY_DEFAULT_INDUSTRY],
