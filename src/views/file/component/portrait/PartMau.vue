@@ -20,8 +20,8 @@
       </el-form-item>
       <el-form-item label="UV聚合" style="height: 28px;">
         <Button-Group
-          formKey="uv"
-          :activeVal="form.uv"
+          formKey="uvAgg"
+          :activeVal="form.uvAgg"
           :options="UV_GROUP"
           @handleClick="handleForm"
           @handleOnExcelHeader="handleExcelHeader" />
@@ -31,20 +31,20 @@
 </template>
 
 <script>
-import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_ECXCEL_HEADER } from '@/utils/const.js'
+import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, MUA_EXCEL_HEADER } from '@/utils/const.js'
 export default {
-  name: 'PartMau',
+  name: 'Mau',
   data () {
     return {
       form: {
         range: 'all',
         particle: 'month',
-        uv: 'shop'
+        uvAgg: 'shop',
+        type: 'mau'
       },
       GROUP_LEVEL,
       RANGE_LEVEL,
       UV_GROUP,
-      PORTRAIT_ECXCEL_HEADER,
       headerObj: {}
     }
   },
@@ -53,12 +53,10 @@ export default {
       this.form[k] = v
     },
     handleExcelHeader (k, v) {
-      this.headerObj[k] = v
-      const values = Object.values(this.headerObj).flat()
-      const excelHeader = PORTRAIT_ECXCEL_HEADER.filter(item => {
-        return values.indexOf(item.label) !== -1
-      })
-      this.$emit('setExcelHeader', excelHeader)
+      this.$emit('setExcelHeader', MUA_EXCEL_HEADER)
+      const param = this._.cloneDeep(this.form)
+      param.uvAgg = [this.form.uvAgg]
+      this.$emit('setPreveiwParam', param)
     }
   }
 }

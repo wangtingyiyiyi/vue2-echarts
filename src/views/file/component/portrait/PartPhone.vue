@@ -9,20 +9,20 @@
             <span slot="label">批量筛选条件:<span style="display: inline-block; width: 15px"></span>最近到店</span>
             <el-select
               style="width: 120px"
-              v-model="form.current"
+              v-model="form.range"
               :disabled="tableSelection.length === 0"
               @change="changeBatch" >
               <el-option
                 v-for="item in PORTRAIT_RANGE"
                 :key="item.label"
                 :label="item.label"
-                :value="item.label">
+                :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="最少到店月数">
+          <el-form-item label="最小到店月数">
             <el-input
-              v-model="form.min"
+              v-model="form.minCount"
               style="width: 120px"
               :disabled="tableSelection.length === 0"
               @change="changeBatch"></el-input>
@@ -40,7 +40,7 @@
         width="55">
       </el-table-column>
       <el-table-column
-        prop="shopName"
+        prop="shopname"
         label="店铺名"
         width="250">
       </el-table-column>
@@ -49,37 +49,35 @@
         width="100"
         align="right">
         <template slot-scope="{row}">
-          <span>{{row.count | format}}</span>
+          <span>{{row.total | format}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="current"
         align="right"
         width="200">
         <template #header>
           <Table-Header-Tooltip label="最近到店" content="顾客到店时间范围"/>
         </template>
         <template slot-scope="{row, $index}">
-          <el-select v-model="row.current" size="mini" style="width: 120px" @change="value => reloadData($index, row)">
+          <el-select v-model="row.range" size="mini" style="width: 120px" @change="value => reloadData($index, row)">
             <el-option
               v-for="item in PORTRAIT_RANGE"
               :key="item.label"
               :label="item.label"
-              :value="item.label">
+              :value="item.value">
             </el-option>
           </el-select>
         </template>
       </el-table-column>
       <el-table-column
-        prop="min"
         align="right"
         width="225">
         <template #header>
-          <Table-Header-Tooltip label="最少到店月数" content="最近到店时间范围内顾客最少到店月数值"/>
+          <Table-Header-Tooltip label="最小到店月数" content="最近到店时间范围内顾客最小到店月数值"/>
         </template>
         <template slot-scope="{row, $index}">
           <el-input
-            v-model="row.min"
+            v-model="row.minCount"
             size="mini"
             style="width: 120px"
             @change="value => reloadData($index, row)"></el-input>
@@ -93,7 +91,7 @@
         </template>
         <template slot-scope="{row, $index}">
           <i class="el-icon-loading" v-if="loadingIndex === $index"></i>
-          <span v-else>{{row.out | format}}</span>
+          <span v-else>{{row.cn | format}}</span>
         </template>
       </el-table-column>
       <el-table-column width="20px"></el-table-column>
@@ -102,39 +100,64 @@
 </template>
 
 <script>
-import { MOCK_DATA, PORTRAIT_RANGE } from '@/utils/const.js'
+import { PORTRAIT_RANGE } from '@/utils/const.js'
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
+import { getShopPerson } from '@/api/shop.js'
 
 export default {
-  name: 'PartPhone',
+  name: 'Phone',
   components: { TableHeaderTooltip },
+  props: {
+    shopList: {
+      type: Array,
+      default: () => []
+    }
+  },
+  watch: {
+    shopList: {
+      deep: true,
+      handler: function (params) {
+        this.getShopPerson(params).then((res) => {
+          this.tableData = res
+        })
+      }
+    }
+  },
   data () {
     return {
       phoneNumAcount: 2138128,
-      form: {},
+      form: {
+        range: '0',
+        minCount: 1
+      },
       tableSelection: [],
-      tableData: MOCK_DATA,
       loadingIndex: -1,
-      PORTRAIT_RANGE
+      PORTRAIT_RANGE,
+      tableData: []
     }
   },
   methods: {
     reloadData (index, rowData) {
       this.loadingIndex = index
-      setTimeout(() => {
-        rowData.out = rowData.out + 10
-        this.tableData[index] = rowData
+      this.getShopPerson([rowData]).then((res) => {
+        this.tableData[index] = res
         this.loadingIndex = -1
-      }, 1000)
+      })
     },
     tableSelectionChange (selection) {
-      console.info(selection)
       this.tableSelection = selection
     },
     changeBatch () {
-      this.tableSelection.forEach(item => {
-        Object.assign(item, this.form)
+      this.tableSelection.forEach(item => { Object.assign(item, this.form) })
+      this.getShopPerson(this.tableSelection).then((res) => {
+        this.tableData = res
       })
+    },
+    async getShopPerson (params) {
+      const res = await getShopPerson({ shopList: params })
+      if (res.code === 200) {
+        return res.result
+      }
     }
   }
 }

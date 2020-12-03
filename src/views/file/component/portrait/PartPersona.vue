@@ -28,8 +28,8 @@
       </el-form-item>
       <el-form-item label="画像维度" style="height: 28px;">
         <Group-Checkbox
-          formKey="icon"
-          :activeVal="form.icon"
+          formKey="personaAgg"
+          :activeVal="form.personaAgg"
           :options="PORTRAIT_LEVEL"
           @handleOnGroupCheckbox="handleForm"
           @handleOnExcelHeader="handleExcelHeader"/>
@@ -41,9 +41,9 @@
 <script>
 import GroupCheckbox from '@/components/GroupCheckbox.vue'
 
-import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_LEVEL, PORTRAIT_ECXCEL_HEADER } from '@/utils/const.js'
+import { RANGE_LEVEL, GROUP_LEVEL, UV_GROUP, PORTRAIT_LEVEL, PERSONA_EXCEL_HEADER } from '@/utils/const.js'
 export default {
-  name: 'PartIcon',
+  name: 'Persona',
   components: { GroupCheckbox },
   data () {
     return {
@@ -51,17 +51,18 @@ export default {
         range: 'all',
         particle: 'month',
         uv: 'shop',
-        icon: ['city']
+        personaAgg: [],
+        type: 'persona'
       },
       GROUP_LEVEL,
       RANGE_LEVEL,
       UV_GROUP,
       PORTRAIT_LEVEL,
-      PORTRAIT_ECXCEL_HEADER,
+      PERSONA_EXCEL_HEADER,
       headerObj: {
         particle: ['月'],
-        uv: ['店铺'],
-        icon: ['城市']
+        uvAgg: ['店铺'],
+        personaAgg: []
       }
     }
   },
@@ -72,10 +73,15 @@ export default {
     handleExcelHeader (k, v) {
       this.headerObj[k] = v
       const values = Object.values(this.headerObj).flat()
-      const excelHeader = PORTRAIT_ECXCEL_HEADER.filter(item => {
+      const excelHeader = PERSONA_EXCEL_HEADER.filter(item => {
         return values.indexOf(item.label) !== -1
       })
-      this.$emit('setExcelHeader', excelHeader)
+      this.form.uvAgg = this.form.uv.split()
+
+      this.$nextTick(() => {
+        this.$emit('setPreveiwParam', this.form)
+        this.$emit('setExcelHeader', excelHeader)
+      })
     }
   }
 }

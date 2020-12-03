@@ -79,7 +79,6 @@
               style="width: 600px"
               :remote-method="getBrandSearch"
               :loading="loading"
-              :multiple-limit="5"
               @change="handleChangeBrand">
               <el-option
                 v-for="(item, index) in brandOption"
@@ -183,7 +182,7 @@ export default {
   directives: { permission },
   data () {
     return {
-      activeTab: 'industry',
+      activeTab: 'portrait',
       form: {
         cate: INDUSTRY_DEFAULT_INDUSTRY.label,
         cateList: [INDUSTRY_DEFAULT_INDUSTRY],
@@ -280,11 +279,6 @@ export default {
     },
     async handlePreview () {
       this.emptyMes = ''
-      // if ((this.form.cate === '') && (this.form.brandList === null ? 1 : (this.form.brandList.length === 0))) {
-      //   this.emptyMes = '请设置提数配置'
-      //   console.info('ooooooooooo')
-      //   return
-      // }
       if (this.form.agg === 'undefined' || this.form.agg === '0000') {
         this.emptyMes = '请至少选择一种品类聚合类型'
         this.tableData = []
@@ -369,8 +363,4 @@ export default {
   width: 100%
   justify-content space-between
   align-items center
-
-// .auto-wapper
-//   max-width 1440px
-//   margin 0 auto
 </style>

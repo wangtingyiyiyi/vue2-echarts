@@ -94,3 +94,9 @@ export function resetChildrenByIsLeaf (arr) {
     }
   })
 }
+
+// 高亮
+export function highlight (keyWord, label) {
+  const mes = label.replace(new RegExp(`(${keyWord})`, 'gi'), "<span style='color: #F3B71B; font-weight: inherit'>$1</span>")
+  return '<span style="font-weight: inherit">' + mes + '</span>'
+}

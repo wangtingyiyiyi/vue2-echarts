@@ -1,89 +1,107 @@
 <template>
-<div class="shop-tags-wapper">
-  <el-tag
-    v-for="tag in tags"
-    :key="tag.shopName"
-    size="medium"
-    closable>
-    {{tag.shopName}}
-  </el-tag>
-
-  <el-select
-    v-show="isAdding"
-    v-model="value"
-    placeholder="请选择"
-    popper-class="shop-popper"
-    size="mini"
-    value-key="id"
-    ref="select"
-    @change="changeShop">
-    <el-option-group
-      v-for="group in options"
-      :key="group.groupName"
-      :label="group.groupName">
-      <el-option
-        v-for="item in group.options"
-        :key="item.id"
-        :label="item.shopName"
-        :value="item">
-      </el-option>
-    </el-option-group>
-  </el-select>
-  <el-button
-    v-show="isAdding"
-    type="text"
-    @click="isAdding = false">取消</el-button>
-  <el-button
-    v-show="!isAdding"
-    class="el-button--dashed"
-    style="padding: 7px 15px"
-    @click="isAdding = true">+ 添加店铺</el-button>
-</div>
+  <div class="shop-tags-wapper">
+    <el-tag
+      v-for="shop in selectedShop"
+      :key="shop.shopname + shop.shopid"
+      size="medium"
+      closable
+      @close="handleClose(shop)">{{shop.shopname}}</el-tag>
+    <el-select
+      v-show="isAdding"
+      v-model="value"
+      placeholder="请搜索店铺关键字"
+      popper-class="shop-popper"
+      size="mini"
+      value-key="shopid"
+      ref="select"
+      remote
+      filterable
+      :remote-method="remoteMethod"
+      :loading="loading"
+      @focus="handleFocus"
+      @change="handleSelectShop">
+      <el-option-group
+        v-for="group in shopList"
+        :key="group.groupName"
+        :label="group.groupName">
+        <el-option
+          v-for="item in group.options"
+          :key="item.shopid + item.shopname"
+          :value="item">
+          <span v-html="highlight(likeCondition, item.shopname)"></span>
+        </el-option>
+      </el-option-group>
+    </el-select>
+    <el-button
+      v-show="isAdding"
+      type="text"
+      style="padding: 7px 15px"
+      @click="isAdding = false">取消</el-button>
+    <el-button
+      v-show="!isAdding"
+      class="el-button--dashed"
+      style="padding: 7px 25px;"
+      @click="handleAddShop">+ 添加店铺</el-button>
+  </div>
 </template>
 
 <script>
+import { highlight } from '@/utils/common.js'
+import { getShopList } from '@/api/shop.js'
 export default {
   name: 'ShopTags',
   data () {
     return {
       isAdding: false,
-      options: [{
-        groupName: '匹配店铺',
-        options: [{
-          id: '001',
-          shopName: '蒙牛001'
-        }, {
-          id: '002',
-          shopName: '蒙牛002'
-        }]
-      }, {
-        groupName: '相关店铺',
-        options: [{
-          id: '003',
-          shopName: '苏宁易购'
-        }, {
-          id: '004',
-          shopName: '考拉'
-        }]
-      }],
+      shopList: [],
       value: {},
-      tags: [
-        { shopName: '蒙牛旗舰店', id: '1' },
-        { shopName: '天猫超市', id: '2' },
-        { shopName: '伊利旗舰店', id: '3' },
-        { shopName: '蒙牛张三专营店', id: '4' },
-        { shopName: '蒙牛张丹钱ds专营店', id: '5' },
-        { shopName: '蒙牛张丹ds钱专营店', id: '6' }
-      ]
+      loading: false,
+      selectedShop: [],
+      likeCondition: ''
     }
   },
   methods: {
-    changeShop (val) {
-      this.tags.push(val)
+    highlight: highlight,
+    handleClose (shop) {
+      this.selectedShop.splice(this.selectedShop.indexOf(shop), 1)
+      this.$emit('handleSelectShop', this.selectedShop)
+    },
+    handleSelectShop (val) {
+      this.selectedShop.push(val)
+      this.$refs.select.blur()
+      this.value = {}
+      this.isAdding = false
+      this.$emit('handleSelectShop', this.selectedShop)
+    },
+    handleFocus () {
+      this.remoteMethod(this.likeCondition)
+    },
+    handleAddShop () {
+      this.isAdding = true
       this.$nextTick(() => {
-        this.$refs.select.blur()
-        this.value = {}
+        this.$refs.select.focus()
       })
+    },
+    async remoteMethod (query) {
+      if (query) {
+        this.likeCondition = query
+        this.shopList = []
+        this.loading = true
+        const res = await getShopList({ likeCondition: '莫漫岱', shopList: this.selectedShop })
+        this.loading = false
+        if (res.code === 200) {
+          this.shopList = [
+            {
+              groupName: '匹配店铺',
+              options: res.result.shop1
+            }, {
+              groupName: '相关店铺',
+              options: res.result.shop2
+            }]
+        }
+      } else {
+        this.shopList = []
+      }
     }
   }
 }

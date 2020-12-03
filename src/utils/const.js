@@ -230,21 +230,54 @@ export const PORTRAIT_LEVEL = [
     excelHeader: ['城市']
   }, {
     label: '城市级别',
-    value: 'city_level',
+    value: 'tier',
     excelHeader: ['城市级别']
   }, {
     label: '性别',
-    value: 'sex',
+    value: 'gender',
     excelHeader: ['性别']
   }, {
     label: '年龄范围',
     value: 'age',
-    excelHeader: ['年龄范围']
+    excelHeader: ['年龄范围', '年龄']
+  }
+]
+
+// 人群画像-手机号提数表头
+export const PHONE_EXCEL_HEADER = [
+  {
+    label: '店铺',
+    prop: 'shopname',
+    align: 'left'
+  }, {
+    label: '店铺ID',
+    prop: 'shopid',
+    align: 'left'
+  }, {
+    label: 'mid',
+    prop: 'mid',
+    align: 'left'
+  }, {
+    label: 'aes',
+    prop: 'aes',
+    align: 'left'
+  }, {
+    label: '累计到店历史',
+    prop: 'months',
+    align: 'left'
+  }, {
+    label: '最早到店时间',
+    prop: 'firstMonth',
+    align: 'left'
+  }, {
+    label: '到店次数',
+    prop: 'cn',
+    align: 'left'
   }
 ]
 
 // 人群画像-画像提数表头
-export const PORTRAIT_ECXCEL_HEADER = [
+export const PERSONA_EXCEL_HEADER = [
   {
     label: '年',
     prop: 'year',
@@ -262,6 +295,18 @@ export const PORTRAIT_ECXCEL_HEADER = [
     prop: 'month',
     align: 'left'
   }, {
+    label: '店铺',
+    prop: 'shopname',
+    align: 'left'
+  }, {
+    label: '店铺ID',
+    prop: 'shopid',
+    align: 'left'
+  }, {
+    label: 'income',
+    prop: 'income',
+    align: 'left'
+  }, {
     label: '省份',
     prop: 'province',
     align: 'left'
@@ -271,15 +316,44 @@ export const PORTRAIT_ECXCEL_HEADER = [
     align: 'left'
   }, {
     label: '城市级别',
-    prop: 'city_level',
+    prop: 'tier',
     align: 'left'
   }, {
     label: '性别',
-    prop: 'sex',
+    prop: 'gender',
     align: 'left'
   }, {
     label: '年龄范围',
+    prop: 'ageGroup',
+    align: 'left'
+  }, {
+    label: '年龄',
     prop: 'age',
+    align: 'left'
+  }
+]
+
+// 人群画像-MUA表头
+export const MUA_EXCEL_HEADER = [
+  {
+    label: '时间',
+    prop: 'month',
+    align: 'left'
+  }, {
+    label: '店铺',
+    prop: 'shopname',
+    align: 'left'
+  }, {
+    label: '店铺ID',
+    prop: 'shopid',
+    align: 'left'
+  }, {
+    label: 'timeTemp',
+    prop: 'timeTemp',
+    align: 'left'
+  }, {
+    label: 'uv',
+    prop: 'uv',
     align: 'left'
   }
 ]
@@ -298,53 +372,31 @@ export const UV_GROUP = [
 export const OPERATOR_BUTTONS = [
   {
     label: '手机号提数',
-    value: 'PartPhone'
+    value: 'Phone'
   }, {
     label: '画像提数',
-    value: 'PartIcon'
+    value: 'Persona'
   }, {
     label: 'MAU',
-    value: 'PartMau'
-  }
-]
-
-export const MOCK_DATA = [
-  {
-    shopName: '蒙牛旗舰店蒙牛旗舰店蒙牛旗舰店',
-    count: 1299973,
-    current: '全部',
-    min: 1,
-    out: 1299973
-  }, {
-    shopName: '伊利旗舰店',
-    count: 1299973,
-    current: '全部',
-    min: 1,
-    out: 1299973
-  }, {
-    shopName: '三元旗舰店',
-    count: 3239973,
-    current: '全部',
-    min: 1,
-    out: 2375125
+    value: 'Mau'
   }
 ]
 
 export const PORTRAIT_RANGE = [
   {
     label: '全部',
-    value: '全部'
+    value: '0'
   }, {
     label: '近一年',
-    value: '近一年',
+    value: '12',
     max: 12
   }, {
     label: '近半年',
-    value: '近半年',
+    value: '6',
     max: 6
   }, {
     label: '近三个月',
-    value: '近三个月',
+    value: '3',
     max: 3
   }
 ]

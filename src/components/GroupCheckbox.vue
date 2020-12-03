@@ -67,6 +67,7 @@ export default {
       }
       const excelHeader = this.array.map(item => item.excelHeader).flat()
       this.$emit('handleOnExcelHeader', this.formKey, excelHeader)
+      this.$emit('handleOnGroupCheckbox', this.formKey, this.array.map(item => item.value))
     },
     init () {
       this.array = this.options.filter(item => {

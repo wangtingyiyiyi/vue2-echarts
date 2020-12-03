@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { highlight } from '@/utils/common.js'
+
 export default {
   name: 'IndustrySelectTreeLabel',
   props: {
@@ -26,10 +28,7 @@ export default {
     }
   },
   methods: {
-    highlight (keyWord, label) {
-      const mes = label.replace(new RegExp(`(${keyWord})`, 'gi'), "<span style='background: rgba(255, 214, 0, 0.4); font-weight: inherit'>$1</span>")
-      return '<span style="font-weight: inherit">' + mes + '</span>'
-    }
+    highlight: highlight
   }
 }
 </script>
