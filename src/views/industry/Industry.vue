@@ -229,6 +229,7 @@ export default {
     // 搜索
     brandOnSubmit (data) {
       this.categoryForm = { ...this.categoryObj }
+      this.defineItemId = this.categoryForm.defineId
       this.page = 1
       this.sortItemVal = 'gmv'
       this.getIndustryEchart()

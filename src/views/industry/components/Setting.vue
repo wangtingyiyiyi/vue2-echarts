@@ -9,29 +9,17 @@
           :defaultObj="$attrs.defaultObj"
           @handleSelectTree="handleNodeClick"/>
       </el-form-item>
-      <el-form-item>
-        <div style="display: flex">
-          <Text-Button
-            v-permission
-            class="p-0-15 font-size-14 m-l-5"
-            text="高级筛选"
-            @handleClick="handleFilter" />
-        </div>
-      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import TextButton from '@/components/TextButton.vue'
 import IndustrySelectTree from '@/views/industry/components/IndustrySelectTree.vue'
 import { mapMutations } from 'vuex'
-import permission from '@/utils/directives/permission.js' // 权限判断指令
 
 export default {
   name: 'IndustrySetting',
-  components: { TextButton, IndustrySelectTree },
-  directives: { permission },
+  components: { IndustrySelectTree },
   methods: {
     ...mapMutations('industry', ['SET_INDUSTRY_CATEGORY']),
     handleFilter () {
