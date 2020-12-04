@@ -49,7 +49,6 @@
 import { highlight } from '@/utils/common.js'
 import { getShopList } from '@/api/shop.js'
 import { mapState } from 'vuex'
-import bus from '@/bus'
 
 export default {
   name: 'ShopTags',
@@ -81,7 +80,7 @@ export default {
     handleClose (shop) {
       this.selectedShop.splice(this.selectedShop.indexOf(shop), 1)
       this.$emit('handleSelectShop', this.selectedShop)
-      bus.$emit('fileChangeSelectedShop', this.selectedShop)
+      this.$bus.$emit('fileChangeSelectedShop', this.selectedShop)
     },
     handleSelectShop (val) {
       this.selectedShop.push(val)
@@ -89,7 +88,7 @@ export default {
       this.value = {}
       this.isAdding = false
       this.$emit('handleSelectShop', this.selectedShop)
-      bus.$emit('fileChangeSelectedShop', this.selectedShop)
+      this.$bus.$emit('fileChangeSelectedShop', this.selectedShop)
     },
     handleFocus () {
       this.remoteMethod(this.likeCondition)

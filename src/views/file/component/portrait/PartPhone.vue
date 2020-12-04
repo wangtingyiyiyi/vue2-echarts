@@ -116,7 +116,6 @@ import { PORTRAIT_RANGE } from '@/utils/const.js'
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
 import { getShopPerson } from '@/api/shop.js'
 import { mapState } from 'vuex'
-import bus from '@/bus'
 
 export default {
   name: 'Phone',
@@ -156,7 +155,7 @@ export default {
     }
   },
   created () {
-    bus.$on('fileChangeSelectedShop', (params) => {
+    this.$bus.$on('fileChangeSelectedShop', (params) => {
       this.getShopPerson(params).then((res) => {
         this.tableData = res || []
         this.handleSum()
@@ -164,7 +163,7 @@ export default {
     })
   },
   beforeDestroy () {
-    bus.$off('fileChangeSelectedShop')
+    this.$bus.$off('fileChangeSelectedShop')
   },
   mounted () {
     this.getShopPerson(this.shopList).then((res) => {

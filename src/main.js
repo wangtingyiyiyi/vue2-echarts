@@ -14,6 +14,8 @@ import './icons' // svg icon
 import Moment from 'moment'
 import VueClipboard from 'vue-clipboard2'
 
+import bus from '@/bus.js'
+
 // 全局注册filter
 import filters from '@/utils/filter'
 Object.keys(filters).forEach(key => {
@@ -24,6 +26,7 @@ Vue.prototype._ = _
 Vue.use(ElementUI)
 Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
+Vue.prototype.$bus = bus
 
 new Vue({
   router,
