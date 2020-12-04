@@ -50,7 +50,7 @@ export const ECHARTS_ACTIVED_PARAM = {
 
 // echart 主题颜色
 // export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#BDD2FD', '#BDEFDB', '#FBE5A2', '#F6C3B7', '#D3C6EA', '#C5E9F7', '#FFD8B8', '#A8D7D6', '#FFD6E7', '#BDD2FD']
-export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#F6BD16', '#9270CA', '#269A99', '#E8684A', '#6DC8EC', '#FF9D4D', '#FF99C3', '#BFBFBF', '#C5E9F7', '#FFD8B8', '#A8D7D6', '#FFD6E7', '#BDD2FD']
+export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#F6BD16', '#9270CA', '#269A99', '#D48265', '#6DC8EC', '#FF9D4D', '#FF99C3', '#BFBFBF', '#C5E9F7', '#FFD8B8', '#A8D7D6', '#FFD6E7', '#BDD2FD']
 
 // 行业提数-品牌展开
 export const CATEGORY_LEVEL = [

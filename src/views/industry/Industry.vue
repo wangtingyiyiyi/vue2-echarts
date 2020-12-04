@@ -36,7 +36,7 @@
             <div style="display: flex; justify-content: space-between;">
               <Echarts-Buttons
                 :activeVal="viewItemVal"
-                style="width: 100%"
+                style=""
                 @handleEchartsClick="handleEchartsClick"/>
               <Month-Options
                 :monthOption="monthOption"
@@ -130,7 +130,9 @@ export default {
     return {
       activeName: 'industry',
       rangeItemVal: 'one_year',
+      rangeItemValMark: 'one_year',
       groupItemVal: 'month',
+      groupItemValMark: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
       drawerShow: false,
@@ -176,11 +178,17 @@ export default {
       this.page = 1
       this.sortItemVal = 'gmv'
       this.brandCount = 0
-      this.brandTableData = []
-      this.getIndustryFlatList()
-      this.getIndustryEchart()
-      this.getBrandList()
-      this.getBrandEchart()
+      // this.brandTableData = []
+      if (!this.industryTableData.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
+        this.getIndustryFlatList()
+        this.getIndustryEchart()
+      }
+      if (!this.brandTableData.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
+        this.getBrandList()
+        this.getBrandEchart()
+      }
+      this.rangeItemValMark = this.rangeItemVal
+      this.groupItemValMark = this.groupItemVal
     },
     // 切换范围
     handleRangeClick (k, value) {
