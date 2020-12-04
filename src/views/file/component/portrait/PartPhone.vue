@@ -1,14 +1,38 @@
 <template>
   <div>
-    <div class="flex-row m-b-12">
-      <i class="el-icon-star-on star-icon"></i>
-      <div class="sum-title">手机号提取总条数:<span>{{phoneNumAcount | format}}</span></div>
+    <div class="flex-row m-b-10">
+      <div class="flex-row" style="width: 484px">
+        <i class="el-icon-star-on star-icon"></i>
+        <div class="sum-title">手机号提取总条数:<span>{{phoneNumAcount | format}}</span></div>
+        <el-button
+          v-if="!(exportDisabled || tableTotal === 0 || tableTotal > max)"
+          type="primary"
+          size="mini"
+          class="m-l-24"
+          @click="handleExportExcel">导出</el-button>
+        <el-tooltip
+          effect="dark"
+          content="可导出1～500,000条数据" placement="top-start">
+            <el-button
+              v-if="(exportDisabled || tableTotal === 0 || tableTotal > max)"
+              type="primary"
+              size="mini"
+              class="m-l-24 disable-button">导出</el-button>
+        </el-tooltip>
+      </div>
       <div class="batch-form-wapper flex-row">
         <el-form :inline="true" :model="form" size="mini">
+          <el-form-item label="批量筛选条件:">
+            <el-input-number
+              v-model="form.minCount"
+              style="width: 120px; margin-left: 84px"
+              :disabled="tableSelection.length === 0"
+              :min="1"
+              @change="val => changeBatch(form.minCount)"></el-input-number>
+          </el-form-item>
           <el-form-item>
-            <span slot="label">批量筛选条件:<span style="display: inline-block; width: 15px"></span>最近到店</span>
             <el-select
-              style="width: 120px"
+              style="width: 120px; margin-left: 69px"
               v-model="form.range"
               :disabled="tableSelection.length === 0"
               @change="val => changeBatch(1)" >
@@ -20,15 +44,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="最小到店月数">
-            <el-input-number
-              v-model="form.minCount"
-              style="width: 120px"
-              :disabled="tableSelection.length === 0"
-              :min="1"
-              :max="setMaxByRange(form.range)"
-              @change="val => changeBatch(form.minCount)"></el-input-number>
-          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -38,7 +53,7 @@
       empty-text="请添加店铺"
       ref="table"
       :data="tableData"
-      style="width: 1030px"
+      style="width: 1050px;min-height: 248px;"
       @selection-change="tableSelectionChange">
       <el-table-column
         type="selection"
@@ -59,9 +74,35 @@
       </el-table-column>
       <el-table-column
         align="right"
+        width="180">
+        <template #header>
+          <Table-Header-Tooltip label="提取人数" content="根据店铺的筛选条件计算得出"/>
+        </template>
+        <template slot-scope="{row, $index}">
+          <i class="el-icon-loading" v-if="loadingIndex === $index"></i>
+          <span v-else style="display: inline-block; font-weight: bold;">{{row.cn | format}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="right"
+        width="225">
+        <template #header>
+          <Table-Header-Tooltip label="最小到店月数" content="最近到店时间范围内顾客最小到店月数值"/>
+        </template>
+        <template slot-scope="{row, $index}">
+          <el-input-number
+            v-model="row.minCount"
+            size="mini"
+            :min="1"
+            style="width: 120px"
+            @change="value => reloadRowData($index, row, row.minCount)"></el-input-number>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="right"
         width="200">
         <template #header>
-          <Table-Header-Tooltip label="最近到店" content="顾客到店时间范围"/>
+          <Table-Header-Tooltip label="最近到店" content="最近到店时间"/>
         </template>
         <template slot-scope="{row, $index}">
           <el-select
@@ -76,33 +117,6 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="right"
-        width="225">
-        <template #header>
-          <Table-Header-Tooltip label="最小到店月数" content="最近到店时间范围内顾客最小到店月数值"/>
-        </template>
-        <template slot-scope="{row, $index}">
-          <el-input-number
-            v-model="row.minCount"
-            size="mini"
-            :min="1"
-            :max="setMaxByRange(row.range)"
-            style="width: 120px"
-            @change="value => reloadRowData($index, row, row.minCount)"></el-input-number>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="right"
-        width="180">
-        <template #header>
-          <Table-Header-Tooltip label="提取人数" content="根据店铺的筛选条件计算得出"/>
-        </template>
-        <template slot-scope="{row, $index}">
-          <i class="el-icon-loading" v-if="loadingIndex === $index"></i>
-          <span v-else>{{row.cn | format}}</span>
         </template>
       </el-table-column>
       <el-table-column width="20px"></el-table-column>
@@ -124,6 +138,18 @@ export default {
     shopList: {
       type: Array,
       default: () => []
+    },
+    tableTotal: {
+      type: Number,
+      default: 0
+    },
+    exportDisabled: {
+      type: Boolean,
+      default: true
+    },
+    max: {
+      type: Number,
+      default: 1048576
     }
   },
   watch: {
@@ -156,7 +182,9 @@ export default {
   },
   created () {
     this.$bus.$on('fileChangeSelectedShop', (params) => {
+      const loadingInstance = refLoading(this.$refs.table.$refs.bodyWrapper)
       this.getShopPerson(params).then((res) => {
+        loadingInstance.close()
         this.tableData = res || []
         this.handleSum()
       })
@@ -173,8 +201,10 @@ export default {
     })
   },
   methods: {
+    handleExportExcel () {
+      this.$emit('handleExportExcel')
+    },
     reloadRowData (index, rowData, minCount) {
-      console.info('reloadRowData')
       this.loadingIndex = index
       this.getShopPerson([rowData]).then((res) => {
         this.tableData[index] = Object.assign(rowData, res[0])
@@ -187,7 +217,6 @@ export default {
       this.tableSelection = selection
     },
     changeBatch (minCount) {
-      console.info('changeBatch')
       const loadingInstance = refLoading(this.$refs.table.$refs.bodyWrapper)
       this.form.minCount = minCount
       this.tableSelection.forEach(item => { Object.assign(item, this.form) })
@@ -197,9 +226,6 @@ export default {
         this.$emit('reloadPreview', this.tableData)
         this.handleSum()
       })
-    },
-    setMaxByRange (range) {
-      return PORTRAIT_RANGE.filter(item => item.value === range)[0].max
     },
     async getShopPerson (params) {
       if (params.length === 0) return
@@ -234,7 +260,6 @@ export default {
   line-height 1
 .sum-title
   color $color-title
-  width 267px
   span
     font-weight bold
     font-size large
@@ -244,4 +269,12 @@ export default {
   padding 0px 12px
   .el-form-item
     margin-bottom 0
+.disable-button
+  color: #fff
+  background-color: #adc7fc
+  border-color: #adc7fc
+  &:hover
+    color: #fff
+    background-color: #adc7fc
+    border-color: #adc7fc
 </style>

@@ -416,19 +416,15 @@ export const OPERATOR_BUTTONS = [
 export const PORTRAIT_RANGE = [
   {
     label: '全部',
-    value: '0',
-    max: Infinity
+    value: '0'
   }, {
     label: '近一年',
-    value: '12',
-    max: 12
+    value: '12'
   }, {
     label: '近半年',
-    value: '6',
-    max: 6
+    value: '6'
   }, {
     label: '近三个月',
-    value: '3',
-    max: 3
+    value: '3'
   }
 ]

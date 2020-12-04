@@ -14,6 +14,7 @@
       size="mini"
       value-key="shopid"
       ref="select"
+      style="margin-bottom: 5px"
       remote
       filterable
       :remote-method="remoteMethod"
@@ -40,7 +41,7 @@
     <el-button
       v-show="!isAdding"
       class="el-button--dashed"
-      style="padding: 7px 25px;"
+      style="padding: 7px 25px; margin-bottom: 5px"
       @click="handleAddShop">+ 添加店铺</el-button>
   </div>
 </template>

@@ -11,11 +11,18 @@
       :is="currentPartComponent"
       :shopList="shopList"
       :activedTab="currentPartComponent"
+      :tableTotal="tableTotal"
+      :max="500000"
+      :exportDisabled="showDownloadBtn"
       @reloadPreview="reloadPreview"
       @setPreveiwParam="setPreveiwParam"
+      @handleExportExcel="handleExportExcel"
       @setExcelHeader="setExcelHeader"></component>
     <Preview-Table-Title
+      :showButton="false"
       :tableTotal="tableTotal"
+      :max="500000"
+      errorColor="#727487"
       :exportDisabled="showDownloadBtn"
       @handleExportExcel="handleExportExcel"/>
     <div class="text-second" v-if="emptyMes">{{emptyMes}}</div>
@@ -27,44 +34,21 @@
       :excelHeader="headerObj[currentPartComponent]"/>
     <Download-Button
       v-if="showDownloadBtn"
-      v-permission
       :loadingProgress="loadingProgress"/>
   </div>
 </template>
 
 <script>
-import ShopTags from '@/views/file/component/portrait/ShopTags.vue'
-import TypeButtons from '@/views/file/component/portrait/TypeButtons.vue'
-import Persona from '@/views/file/component/portrait/PartPersona.vue'
-import Mau from '@/views/file/component/portrait/PartMau.vue'
-import Phone from '@/views/file/component/portrait/PartPhone.vue'
-import PreviewTableTitle from '@/views/file/component/PreviewTableTitle.vue'
-import PreviewTable from '@/views/file/component/PreviewTable.vue'
-import PreviewLoading from '@/views/file/component/PreviewLoading.vue'
 import { getShopPreview } from '@/api/shop.js'
-import permission from '@/utils/directives/permission.js' // 权限判断指令
 import { downloadFile } from '@/utils/common.js'
-import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
-import DownloadButton from '@/components/DownloadButton.vue'
-
 import { PHONE_EXCEL_HEADER, MUA_EXCEL_HEADER, OPERATOR_BUTTONS } from '@/utils/const.js'
 import { mapState } from 'vuex'
+import PortraitComponentsMixin from '@/views/file/component/portrait/component.js'
+import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
 
 export default {
   name: 'TabForPortrait',
-  components: {
-    TypeButtons,
-    PreviewTableTitle,
-    ShopTags,
-    Persona,
-    Mau,
-    Phone,
-    PreviewTable,
-    DownloadButton,
-    PreviewLoading
-  },
-  directives: { permission },
-  mixins: [downloadCallbackMixin],
+  mixins: [downloadCallbackMixin, PortraitComponentsMixin],
   watch: {
     currentTabPane: {
       handler: function (params) {
@@ -141,6 +125,25 @@ export default {
       })
       return excelHeader
     },
+    reloadPreview (tableData) {
+      this.shopList = tableData
+      this.handlePreview()
+    },
+    // 提数接口
+    handleExportExcel () {
+      const label = OPERATOR_BUTTONS.filter(item => item.value === this.currentPartComponent)[0].label
+      const filename = `${label}_${this.$moment(new Date()).format('YYYYMMDD')}`
+      const option = {
+        param: Object.assign(this.previewParam, { shopList: this.shopList }),
+        url: process.env.VUE_APP_API_URL + '/download/shop/file',
+        filename: filename,
+        onprogress: this.onprogress,
+        onreadystatechange: this.onreadystatechange,
+        fileType: this.currentPartComponent === 'Phone' ? '.txt' : '.xlsx'
+      }
+      this.showDownloadBtn = true
+      downloadFile(option)
+    },
     async handlePreview () {
       this.emptyMes = ''
       this.previewData = []
@@ -160,34 +163,7 @@ export default {
         this.previewData = res.result
         this.tableTotal = res.total
       }
-    },
-    reloadPreview (tableData) {
-      this.shopList = tableData
-      this.handlePreview()
-    },
-    // 提数接口
-    handleExportExcel () {
-      const label = OPERATOR_BUTTONS.filter(item => item.value === this.currentPartComponent)[0].label
-      const filename = `${label}_${this.$moment(new Date()).format('YYYYMMDD')}`
-      const option = {
-        param: Object.assign(this.previewParam, { shopList: this.shopList }),
-        url: process.env.VUE_APP_API_URL + '/download/shop/file',
-        filename: filename,
-        onprogress: this.onprogress,
-        onreadystatechange: this.onreadystatechange,
-        fileType: this.currentPartComponent === 'Phone' ? '.txt' : '.xlsx'
-      }
-      this.showDownloadBtn = true
-      downloadFile(option)
     }
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.empty-wapper
-  height 200px
-  width 100%
-  margin-top 50px
-  display flex
-</style>
