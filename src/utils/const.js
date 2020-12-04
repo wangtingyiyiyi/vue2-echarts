@@ -49,7 +49,8 @@ export const ECHARTS_ACTIVED_PARAM = {
 }
 
 // echart 主题颜色
-export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#E0E8F9', '#B9ECD8']
+// export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#BDD2FD', '#BDEFDB', '#FBE5A2', '#F6C3B7', '#D3C6EA', '#C5E9F7', '#FFD8B8', '#A8D7D6', '#FFD6E7', '#BDD2FD']
+export const ECHARTS_COLORS = ['#5B8FF9', '#5ad8a6', '#909CB4', '#F6BD16', '#9270CA', '#269A99', '#E8684A', '#6DC8EC', '#FF9D4D', '#FF99C3', '#BFBFBF', '#C5E9F7', '#FFD8B8', '#A8D7D6', '#FFD6E7', '#BDD2FD']
 
 // 行业提数-品牌展开
 export const CATEGORY_LEVEL = [
@@ -239,7 +240,11 @@ export const PORTRAIT_LEVEL = [
   }, {
     label: '年龄范围',
     value: 'age',
-    excelHeader: ['年龄范围', '年龄']
+    excelHeader: ['年龄范围']
+  }, {
+    label: '收入',
+    value: 'income',
+    excelHeader: ['收入']
   }
 ]
 
@@ -248,31 +253,39 @@ export const PHONE_EXCEL_HEADER = [
   {
     label: '店铺',
     prop: 'shopname',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
     label: '店铺ID',
     prop: 'shopid',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
     label: 'mid',
     prop: 'mid',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
     label: 'aes',
     prop: 'aes',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
-    label: '累计到店历史',
+    label: '累计到店月份',
     prop: 'months',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
-    label: '最早到店时间',
+    label: '第一次到店时间',
     prop: 'firstMonth',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
-    label: '到店次数',
+    label: '总计',
     prop: 'cn',
-    align: 'left'
+    align: 'left',
+    common: true,
+    formatter: 'format'
   }
 ]
 
@@ -330,31 +343,49 @@ export const PERSONA_EXCEL_HEADER = [
     label: '年龄',
     prop: 'age',
     align: 'left'
+  }, {
+    label: '总计',
+    prop: 'cn',
+    align: 'left',
+    common: true,
+    formatter: 'format'
   }
 ]
 
 // 人群画像-MUA表头
 export const MUA_EXCEL_HEADER = [
   {
-    label: '时间',
+    label: '年',
+    prop: 'year',
+    align: 'left'
+  }, {
+    label: '半年',
+    prop: 'half',
+    align: 'left'
+  }, {
+    label: '季度',
+    prop: 'quarter',
+    align: 'left'
+  }, {
+    label: '月',
     prop: 'month',
     align: 'left'
   }, {
     label: '店铺',
     prop: 'shopname',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
     label: '店铺ID',
     prop: 'shopid',
-    align: 'left'
-  }, {
-    label: 'timeTemp',
-    prop: 'timeTemp',
-    align: 'left'
+    align: 'left',
+    common: true
   }, {
     label: 'uv',
     prop: 'uv',
-    align: 'left'
+    align: 'left',
+    common: true,
+    formatter: 'format'
   }
 ]
 
@@ -371,10 +402,10 @@ export const UV_GROUP = [
 
 export const OPERATOR_BUTTONS = [
   {
-    label: '手机号提数',
+    label: '手机号',
     value: 'Phone'
   }, {
-    label: '画像提数',
+    label: '人群画像',
     value: 'Persona'
   }, {
     label: 'MAU',
@@ -385,7 +416,8 @@ export const OPERATOR_BUTTONS = [
 export const PORTRAIT_RANGE = [
   {
     label: '全部',
-    value: '0'
+    value: '0',
+    max: Infinity
   }, {
     label: '近一年',
     value: '12',

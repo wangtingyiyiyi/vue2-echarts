@@ -156,9 +156,9 @@
         <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
         <Preview-Loading v-if="isLoading"/>
       </el-tab-pane>
-      <!-- <el-tab-pane label="人群画像" name="portrait">
-        <Tab-For-Portrait />
-      </el-tab-pane> -->
+      <el-tab-pane label="人群画像" name="portrait">
+        <Tab-For-Portrait/>
+      </el-tab-pane>
     </el-tabs>
     <Download-Button
       v-if="showDownloadBtn"
@@ -175,6 +175,7 @@ import { INDUSTRY_EXCEL_TABLE_PROP, INDUSTRY_DEFAULT_INDUSTRY, BRAND_DEFINE_BRAN
 import { downloadFile, resetChildrenByIsLeaf } from '@/utils/common.js'
 import permission from '@/utils/directives/permission.js' // 权限判断指令
 import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'File',
@@ -182,7 +183,7 @@ export default {
   directives: { permission },
   data () {
     return {
-      activeTab: 'industry',
+      activeTab: 'portrait',
       form: {
         cate: INDUSTRY_DEFAULT_INDUSTRY.label,
         cateList: [INDUSTRY_DEFAULT_INDUSTRY],
@@ -213,6 +214,7 @@ export default {
     this.handleRoute()
   },
   methods: {
+    ...mapMutations('file', ['FILE_CURRENT_TAB']),
     handleRoute () {
       const { query } = this.$route
       if (Object.keys(query).length !== 0) {
@@ -244,6 +246,7 @@ export default {
         agg: [],
         indicator: ['销量', 'ASP', 'GMV']
       }
+      this.FILE_CURRENT_TAB(this.activeTab)
       this.getCategoryByBrands().then(() => {
         if (this.activeTab === 'brand') {
           this.form.cate = this.categoryOption[0].category

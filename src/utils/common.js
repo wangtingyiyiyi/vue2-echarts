@@ -50,12 +50,12 @@ export function throttle (fn, interval = 300) {
 }
 
 // 二进制流转换为文件
-export function blolToFile (res, filename) {
+export function blolToFile (res, filename, fileType = '.xlsx') {
   const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
   const downloadElement = document.createElement('a') // 新建一个DOM节点
   const href = window.URL.createObjectURL(blob) // 创建下载的链接
   downloadElement.href = href
-  downloadElement.download = filename + '.xlsx' // 下载后文件名
+  downloadElement.download = filename + fileType // 下载后文件名
   document.body.appendChild(downloadElement) // 将新增的节点挂载到页面上
   downloadElement.click() // 点击下载
   document.body.removeChild(downloadElement) // 下载完成移除元素
@@ -78,7 +78,7 @@ export function downloadFile (option) {
   xhr.onload = function (params) {
     if (xhr.status >= 200 && xhr.status < 300) {
       const blob = new Blob([xhr.response], { type: 'application/excel' })
-      blolToFile(blob, option.filename)
+      blolToFile(blob, option.filename, option.fileType)
     }
   }
   xhr.send(JSON.stringify(option.param))

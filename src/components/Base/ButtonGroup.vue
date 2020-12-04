@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     handleClick (val) {
-      console.info('hello')
       const excelHeader = this._.find(this.options, function (item) {
         return item.value === val
       }).excelHeader || []

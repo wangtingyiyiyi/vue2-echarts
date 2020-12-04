@@ -45,7 +45,7 @@ export default {
   flex-wrap wrap
 
 .brand-item
-  margin-right 70px
+  margin-right 25px
   margin-bottom 13px
   padding  0 1px 1px
   cursor pointer

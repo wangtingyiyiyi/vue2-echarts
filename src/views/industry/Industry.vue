@@ -442,4 +442,5 @@ export default {
 
 .industry-tab-wapper >>> .el-tabs .el-tabs__content
   min-height calc(100vh - 403px)
+  overflow: inherit;
 </style>

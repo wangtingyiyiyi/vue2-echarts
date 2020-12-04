@@ -4,7 +4,7 @@
       <Title title="导出预览" backgroundColor="#5AD8A6"/>
       <div class="text-second m-l-18" v-if="tableTotal !== 0">当前共有{{tableTotal | format}}条数据</div>
       <div class="text-second" v-if="tableTotal > max">，</div>
-      <div class="text-warning" v-if="tableTotal > max">已超出Excel的最大行数({{max | format}})</div>
+      <div class="text-warning" v-if="tableTotal > max">已超出最大行数({{max | format}})</div>
     </div>
     <el-button
       type="primary"

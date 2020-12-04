@@ -74,7 +74,7 @@ export default {
       this.headerObj[k] = v
       const values = Object.values(this.headerObj).flat()
       const excelHeader = PERSONA_EXCEL_HEADER.filter(item => {
-        return values.indexOf(item.label) !== -1
+        return values.indexOf(item.label) !== -1 || item.common
       })
       this.form.uvAgg = this.form.uv.split()
 

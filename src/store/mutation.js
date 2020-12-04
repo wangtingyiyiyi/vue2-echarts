@@ -22,3 +22,6 @@ export const SET_SYS_COLLAPSED = 'SET_SYS_COLLAPSED'
 export const SET_TOKEN = 'SET_TOKEN'
 export const SET_USER_NAME = 'SET_USER_NAME'
 export const SET_USER_TYPE = 'SET_USER_TYPE'
+
+// 提数
+export const FILE_CURRENT_TAB = 'FILE_CURRENT_TAB'

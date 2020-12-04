@@ -48,6 +48,9 @@
 <script>
 import { highlight } from '@/utils/common.js'
 import { getShopList } from '@/api/shop.js'
+import { mapState } from 'vuex'
+import bus from '@/bus'
+
 export default {
   name: 'ShopTags',
   data () {
@@ -60,11 +63,25 @@ export default {
       likeCondition: ''
     }
   },
+  watch: {
+    currentTabPane: {
+      handler: function (params) {
+        this.value = {}
+        this.likeCondition = ''
+        this.shopList = []
+        this.selectedShop = []
+      }
+    }
+  },
+  computed: {
+    ...mapState('file', ['currentTabPane'])
+  },
   methods: {
     highlight: highlight,
     handleClose (shop) {
       this.selectedShop.splice(this.selectedShop.indexOf(shop), 1)
       this.$emit('handleSelectShop', this.selectedShop)
+      bus.$emit('fileChangeSelectedShop', this.selectedShop)
     },
     handleSelectShop (val) {
       this.selectedShop.push(val)
@@ -72,6 +89,7 @@ export default {
       this.value = {}
       this.isAdding = false
       this.$emit('handleSelectShop', this.selectedShop)
+      bus.$emit('fileChangeSelectedShop', this.selectedShop)
     },
     handleFocus () {
       this.remoteMethod(this.likeCondition)
@@ -87,7 +105,7 @@ export default {
         this.likeCondition = query
         this.shopList = []
         this.loading = true
-        const res = await getShopList({ likeCondition: '莫漫岱', shopList: this.selectedShop })
+        const res = await getShopList({ likeCondition: query, shopList: this.selectedShop })
         this.loading = false
         if (res.code === 200) {
           this.shopList = [

@@ -5,13 +5,13 @@
       <div class="sum-title">手机号提取总条数:<span>{{phoneNumAcount | format}}</span></div>
       <div class="batch-form-wapper flex-row">
         <el-form :inline="true" :model="form" size="mini">
-          <el-form-item >
+          <el-form-item>
             <span slot="label">批量筛选条件:<span style="display: inline-block; width: 15px"></span>最近到店</span>
             <el-select
               style="width: 120px"
               v-model="form.range"
               :disabled="tableSelection.length === 0"
-              @change="changeBatch" >
+              @change="val => changeBatch(1)" >
               <el-option
                 v-for="item in PORTRAIT_RANGE"
                 :key="item.label"
@@ -21,11 +21,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="最小到店月数">
-            <el-input
+            <el-input-number
               v-model="form.minCount"
               style="width: 120px"
               :disabled="tableSelection.length === 0"
-              @change="changeBatch"></el-input>
+              :min="1"
+              :max="setMaxByRange(form.range)"
+              @change="val => changeBatch(form.minCount)"></el-input-number>
           </el-form-item>
         </el-form>
       </div>
@@ -33,7 +35,10 @@
     <el-table
       header-row-class-name="tableHeaderClass"
       cell-class-name="tableCellClass"
+      empty-text="请添加店铺"
+      ref="table"
       :data="tableData"
+      style="width: 1030px"
       @selection-change="tableSelectionChange">
       <el-table-column
         type="selection"
@@ -59,7 +64,11 @@
           <Table-Header-Tooltip label="最近到店" content="顾客到店时间范围"/>
         </template>
         <template slot-scope="{row, $index}">
-          <el-select v-model="row.range" size="mini" style="width: 120px" @change="value => reloadData($index, row)">
+          <el-select
+            v-model="row.range"
+            size="mini"
+            style="width: 120px"
+            @change="value => reloadRowData($index, row, 1)">
             <el-option
               v-for="item in PORTRAIT_RANGE"
               :key="item.label"
@@ -76,11 +85,13 @@
           <Table-Header-Tooltip label="最小到店月数" content="最近到店时间范围内顾客最小到店月数值"/>
         </template>
         <template slot-scope="{row, $index}">
-          <el-input
+          <el-input-number
             v-model="row.minCount"
             size="mini"
+            :min="1"
+            :max="setMaxByRange(row.range)"
             style="width: 120px"
-            @change="value => reloadData($index, row)"></el-input>
+            @change="value => reloadRowData($index, row, row.minCount)"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column
@@ -100,9 +111,12 @@
 </template>
 
 <script>
+import { refLoading } from '@/utils/element.js'
 import { PORTRAIT_RANGE } from '@/utils/const.js'
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
 import { getShopPerson } from '@/api/shop.js'
+import { mapState } from 'vuex'
+import bus from '@/bus'
 
 export default {
   name: 'Phone',
@@ -114,18 +128,23 @@ export default {
     }
   },
   watch: {
-    shopList: {
-      deep: true,
+    currentTabPane: {
       handler: function (params) {
-        this.getShopPerson(params).then((res) => {
-          this.tableData = res
-        })
+        this.form = {
+          range: '0',
+          minCount: 1
+        }
+        this.tableData = []
+        this.phoneNumAcount = 0
       }
     }
   },
+  computed: {
+    ...mapState('file', ['currentTabPane'])
+  },
   data () {
     return {
-      phoneNumAcount: 2138128,
+      phoneNumAcount: 0,
       form: {
         range: '0',
         minCount: 1
@@ -136,27 +155,68 @@ export default {
       tableData: []
     }
   },
+  created () {
+    bus.$on('fileChangeSelectedShop', (params) => {
+      this.getShopPerson(params).then((res) => {
+        this.tableData = res || []
+        this.handleSum()
+      })
+    })
+  },
+  beforeDestroy () {
+    bus.$off('fileChangeSelectedShop')
+  },
+  mounted () {
+    this.getShopPerson(this.shopList).then((res) => {
+      this.tableData = res || []
+      this.$emit('reloadPreview', this.tableData)
+      this.handleSum()
+    })
+  },
   methods: {
-    reloadData (index, rowData) {
+    reloadRowData (index, rowData, minCount) {
+      console.info('reloadRowData')
       this.loadingIndex = index
       this.getShopPerson([rowData]).then((res) => {
-        this.tableData[index] = res
+        this.tableData[index] = Object.assign(rowData, res[0])
         this.loadingIndex = -1
+        this.$emit('reloadPreview', this.tableData)
+        this.handleSum()
       })
     },
     tableSelectionChange (selection) {
       this.tableSelection = selection
     },
-    changeBatch () {
+    changeBatch (minCount) {
+      console.info('changeBatch')
+      const loadingInstance = refLoading(this.$refs.table.$refs.bodyWrapper)
+      this.form.minCount = minCount
       this.tableSelection.forEach(item => { Object.assign(item, this.form) })
-      this.getShopPerson(this.tableSelection).then((res) => {
+      this.getShopPerson(this.tableData).then((res) => {
+        loadingInstance.close()
         this.tableData = res
+        this.$emit('reloadPreview', this.tableData)
+        this.handleSum()
       })
     },
+    setMaxByRange (range) {
+      return PORTRAIT_RANGE.filter(item => item.value === range)[0].max
+    },
     async getShopPerson (params) {
+      if (params.length === 0) return
       const res = await getShopPerson({ shopList: params })
       if (res.code === 200) {
         return res.result
+      } else {
+        return []
+      }
+    },
+    handleSum () {
+      this.phoneNumAcount = 0
+      if (this.tableData.length !== 0) {
+        this.tableData.forEach(item => {
+          this.phoneNumAcount += item.cn
+        })
       }
     }
   }

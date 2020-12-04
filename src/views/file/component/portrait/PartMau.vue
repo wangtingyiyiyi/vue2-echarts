@@ -53,7 +53,12 @@ export default {
       this.form[k] = v
     },
     handleExcelHeader (k, v) {
-      this.$emit('setExcelHeader', MUA_EXCEL_HEADER)
+      this.headerObj[k] = v
+      const values = Object.values(this.headerObj).flat()
+      const excelHeader = MUA_EXCEL_HEADER.filter(item => {
+        return values.indexOf(item.label) !== -1 || item.common
+      })
+      this.$emit('setExcelHeader', excelHeader)
       const param = this._.cloneDeep(this.form)
       param.uvAgg = [this.form.uvAgg]
       this.$emit('setPreveiwParam', param)

@@ -393,6 +393,7 @@ export default {
     height 56px
 .brand-tab-wapper >>> .el-tabs__content
     min-height calc(100vh - 454px)
+    overflow: inherit;
 .pagination-wapper
   text-align center
   margin 20px 0 0

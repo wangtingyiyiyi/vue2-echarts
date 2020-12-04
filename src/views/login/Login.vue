@@ -15,7 +15,7 @@
       <div class="top">
         <Svg-Icon icon-class="logo" class="svg-class"/>
       </div>
-      <div class="title">{{appName}}</div>
+      <div class="title">欢迎登录{{appName}}</div>
       <div v-show="userFrom === 'normal'" class="login-wapper" >
         <el-form :model="form" ref="form" :rules="rules" label-position="left" class="login-form" size="large" v-show="isPsw">
           <el-form-item prop="username" >
@@ -229,7 +229,7 @@ export default {
 .svg-class
   width 109px
   height 36px
-  margin 15px 20px 0 20px
+  margin 12px 20px 0 20px
 
 .index
   height 100vh
@@ -250,7 +250,7 @@ export default {
 
 .top
   height 60px
-  padding: 0 calc((100vw - 1600px) / 2)
+  // padding: 0 calc((100vw - 1600px) / 2)
   box-shadow: 0 2px 8px #f0f1f2
   background #FFFFFF
 
