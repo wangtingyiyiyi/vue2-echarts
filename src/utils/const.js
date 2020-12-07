@@ -205,8 +205,8 @@ export const INDUSTRY_EXCEL_TABLE_PROP = [
 // 行业-默认参数
 export const INDUSTRY_DEFAULT_INDUSTRY = {
   rank: '1',
-  category: '彩妆/美护工具',
   label: '彩妆/美护工具',
+  category: '彩妆/美护工具',
   category1: '彩妆/美护工具',
   category2: '',
   category3: ''
@@ -426,5 +426,18 @@ export const PORTRAIT_RANGE = [
   }, {
     label: '近三个月',
     value: '3'
+  }
+]
+
+export const FILE_TABS = [
+  {
+    label: '行业提数',
+    value: 'Industry'
+  }, {
+    label: '品牌提数',
+    value: 'Brand'
+  }, {
+    label: '人群画像',
+    value: 'Portrait'
   }
 ]
