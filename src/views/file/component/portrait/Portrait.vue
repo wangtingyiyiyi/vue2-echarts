@@ -22,7 +22,6 @@
       :showButton="false"
       :tableTotal="tableTotal"
       :max="500000"
-      errorColor="#727487"
       :exportDisabled="showDownloadBtn"
       @handleExportExcel="handleExportExcel"/>
     <div class="text-second" v-if="emptyMes">{{emptyMes}}</div>

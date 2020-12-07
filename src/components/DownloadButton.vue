@@ -1,7 +1,7 @@
 
 <template>
 <transition name="fade">
-  <div>
+  <div style="z-index: 2">
     <div class="download-button fixed-position" v-show="loadingProgress === 0 || loadingProgress === 1">
       <i :class="['el-icon-loading', 'icon-class']"></i>
     </div>
@@ -83,4 +83,5 @@ svg
   position fixed
   bottom 80px
   right 40px
+  z-index 2
 </style>

@@ -17,8 +17,7 @@
             v-if="(exportDisabled || tableTotal === 0 || tableTotal > max)"
             svgName="exportingNot"
             :isDisabled="true"
-            class="m-l-24"
-            @handleExportExcel="handleExportExcel"/>
+            class="m-l-24"/>
         </el-tooltip>
       </div>
       <div class="batch-form-wapper flex-row">

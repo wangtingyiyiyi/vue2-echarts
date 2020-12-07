@@ -52,7 +52,7 @@ export default {
   padding 8px 10px
   min-width 65px
   text-align center
-  border-radius 1px
+  border-radius 2px
   line-height 12px
   cursor pointer
   &:focus, &:hover

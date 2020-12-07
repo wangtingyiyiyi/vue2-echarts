@@ -62,6 +62,23 @@
       :tableData="tableData"/>
     <div v-if="emptyMes" class="text-second">{{emptyMes}}</div>
     <Preview-Loading v-if="isLoading"/>
+    <div style="background-color: red; position: fixed; top: 10vh">
+
+    </div>
+    <Drawer
+      v-permission
+      :visible="drawerShow"
+      ref="industryDrawer"
+      class="industry-drawer"
+      @handleDrawerClose="handleDrawerClose">
+      <Drawer-Button
+        slot="button"
+        :drawerShow="drawerShow"
+        @handleDrawerBtn="handleDrawerBtn"/>
+      <Drawer-Content
+        :drawerShow="drawerShow"
+        @handleDefineSearch="handleDefineSearch"/>
+    </Drawer>
   </div>
 </template>
 
@@ -77,10 +94,12 @@ import {
 } from '@/utils/const.js'
 import componentMixin from '@/views/file/component/industry/component.js'
 import { previewExcel } from '@/api/download'
+import permission from '@/utils/directives/permission.js' // 权限判断指令
 
 export default {
   name: 'Industry',
   mixins: [componentMixin],
+  directives: { permission },
   props: {
     showDownloadBtn: {
       type: Boolean,
@@ -115,7 +134,8 @@ export default {
         cateFlat: ['一级品类', '二级品类', '三级品类'],
         agg: [],
         indicator: ['销量', 'ASP', 'GMV']
-      }
+      },
+      drawerShow: false
     }
   },
   methods: {
@@ -167,7 +187,37 @@ export default {
         this.tableTotal = 0
         this.emptyMes = 'Excel预览数据请求失败'
       }
+    },
+    handleDefineSearch (p) {
+      this.form.cate = p.label
+      const obj = {
+        rank: p.rank,
+        label: p.label,
+        category: p.label,
+        defineId: p.id
+      }
+      this.form.cateList = [obj]
+      this.categoryObj = obj
+      this.handleDrawerClose(false)
+      this.handlePreview()
+    },
+    // 高级搜索 弹出抽屉
+    handleDrawerBtn () {
+      this.drawerShow = !this.drawerShow
+    },
+    // 抽屉关闭
+    handleDrawerClose (value) {
+      this.drawerShow = value
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.industry-drawer
+  height 100vh
+  position fixed
+  right 0
+  top 0
+  z-index 2000
+</style>
