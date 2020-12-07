@@ -4,20 +4,21 @@
       <div class="flex-row" style="width: 484px">
         <i class="el-icon-star-on star-icon"></i>
         <div class="sum-title">手机号提取总条数:<span>{{phoneNumAcount | format}}</span></div>
-        <el-button
+        <Export-Button
           v-if="!(exportDisabled || tableTotal === 0 || tableTotal > max)"
-          type="primary"
-          size="mini"
+          svgName="exporting"
+          :isDisabled="false"
           class="m-l-24"
-          @click="handleExportExcel">导出</el-button>
+          @handleExportExcel="handleExportExcel"/>
         <el-tooltip
           effect="dark"
           content="可导出1～500,000条数据" placement="top-start">
-            <el-button
-              v-if="(exportDisabled || tableTotal === 0 || tableTotal > max)"
-              type="primary"
-              size="mini"
-              class="m-l-24 disable-button">导出</el-button>
+          <Export-Button
+            v-if="(exportDisabled || tableTotal === 0 || tableTotal > max)"
+            svgName="exportingNot"
+            :isDisabled="true"
+            class="m-l-24"
+            @handleExportExcel="handleExportExcel"/>
         </el-tooltip>
       </div>
       <div class="batch-form-wapper flex-row">
@@ -130,10 +131,11 @@ import { PORTRAIT_RANGE } from '@/utils/const.js'
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
 import { getShopPerson } from '@/api/shop.js'
 import { mapState } from 'vuex'
+import ExportButton from '@/components/ExportButton.vue'
 
 export default {
   name: 'Phone',
-  components: { TableHeaderTooltip },
+  components: { TableHeaderTooltip, ExportButton },
   props: {
     shopList: {
       type: Array,
@@ -269,12 +271,4 @@ export default {
   padding 0px 12px
   .el-form-item
     margin-bottom 0
-.disable-button
-  color: #fff
-  background-color: #adc7fc
-  border-color: #adc7fc
-  &:hover
-    color: #fff
-    background-color: #adc7fc
-    border-color: #adc7fc
 </style>

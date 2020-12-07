@@ -4,7 +4,7 @@
     <el-form ref="form" :model="form" label-width="100px" label-position="left" size="mini">
       <el-form-item label="目标行业">
         <Industry-Select-Tree
-          style="width: 500px"
+          style="width: 600px"
           :defaultObj="categoryObj"
           @handleSelectTree="handleSelectTree"/>
       </el-form-item>
