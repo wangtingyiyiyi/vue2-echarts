@@ -34,7 +34,7 @@ export default {
     top 0
     background-color $shadow-color
     transition all 0.5s
-    z-inde 2
+    z-index 2
     &.open
       display inline-block
     &.close
