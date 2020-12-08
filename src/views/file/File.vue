@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       showDownloadBtn: false,
-      activeTab: 'Industry',
+      activeTab: 'Portrait',
       tabs: FILE_TABS,
       loadingProgress: 0
     }

@@ -194,13 +194,6 @@ export default {
   beforeDestroy () {
     this.$bus.$off('fileChangeSelectedShop')
   },
-  mounted () {
-    this.getShopPerson(this.shopList).then((res) => {
-      this.tableData = res || []
-      this.$emit('reloadPreview', this.tableData)
-      this.handleSum()
-    })
-  },
   methods: {
     handleExportExcel () {
       this.$emit('handleExportExcel')
@@ -229,6 +222,7 @@ export default {
       })
     },
     async getShopPerson (params) {
+      console.info(params, 'getShopPersongetShopPersongetShopPerson')
       if (params.length === 0) return
       const res = await getShopPerson({ shopList: params })
       if (res.code === 200) {

@@ -109,6 +109,9 @@ export default {
       this.emptyMes = '请添加店铺'
       this.initHeader()
       this.handlePreview()
+      this.$nextTick(() => {
+        this.$bus.$emit('fileChangeSelectedShop', this.shopList)
+      })
     },
     initHeader () {
       this.headerObj = {
