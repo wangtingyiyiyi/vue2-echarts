@@ -105,7 +105,7 @@ export default {
         this.likeCondition = query
         this.shopList = []
         this.loading = true
-        const res = await getShopList({ likeCondition: '蒙牛', shopList: this.selectedShop })
+        const res = await getShopList({ likeCondition: query, shopList: this.selectedShop })
         this.loading = false
         if (res.code === 200) {
           this.shopList = [
