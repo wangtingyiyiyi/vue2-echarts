@@ -7,6 +7,12 @@
     placeholder="请输入搜索品类"
     style="width: 100%"
     :remote-method="handleSelctRemoteFilter">
+    <template slot="prefix">
+      <span class="prefix-icon" v-if="selectRank === 1 || selectRank === '1'" style="color: #5B8FF9;">{{selectRank}}</span>
+      <span class="prefix-icon" v-else-if="selectRank === '2' || selectRank === 2" style="color: #5AD8A6;">{{selectRank}}</span>
+      <span class="prefix-icon" v-else-if="selectRank === '3' || selectRank === 3" style="color: #5D7092;">{{selectRank}}</span>
+      <span class="prefix-icon" v-else style="color: #5B8FF9;">自</span>
+    </template>
     <el-option value="0" class="hidden"></el-option>
       <!-- 搜索树 -->
       <el-tree
@@ -56,7 +62,8 @@ export default {
       likeCondition: '',
       selectData: {},
       searchTree: [],
-      asyncTree: []
+      asyncTree: [],
+      selectRank: 1
     }
   },
   watch: {
@@ -72,9 +79,11 @@ export default {
   },
   methods: {
     handleNodeClick (data, node, ref) {
+      console.info(data)
       this.selectData = data
       this.selectData.label = data.label.split('&&')[0]
       this.$refs.select.blur()
+      this.selectRank = data.rank
       this.$emit('handleSelectTree', Object.assign(this._.cloneDeep(this.selectData), { children: null }))
     },
     // 异步搜索
@@ -129,4 +138,14 @@ export default {
 .el-select-dropdown
   .hidden
     display: none
+.prefix-icon
+  display inline-block
+  margin-left 5px
+  font-size 12px
+  width 14px
+  height 14px
+  line-height 14px
+  text-align center
+  border-radius 10px
+  background-color $base-white
 </style>
