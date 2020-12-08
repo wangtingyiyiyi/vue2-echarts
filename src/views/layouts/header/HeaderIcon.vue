@@ -1,10 +1,10 @@
 <template>
-  <div :class="[collapsed ? 'collapse-logo' : 'expansion-logo', 'flex-row']">
-    <Svg-Icon
-      :icon-class="collapsed ? 'logo1' : 'logo'"
-      :class="[collapsed ? 'svg-class1' : 'svg-class']"/>
+  <div class="flex-row">
+    <Svg-Icon icon-class="logoIcon" class="logo-icon"/>
+    <Svg-Icon icon-class="logoText" class="logo-text m-l-10" v-if="!collapsed"/>
     <i
       @click="collapsClick"
+      style="cursor: pointer;"
       :class="[collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold', 'm-l-18']" />
   </div>
 </template>
@@ -26,20 +26,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.logo
-  background $base-blue
-  color #ffffff
-  padding 4px 28px
-  height 32px
-  display flex
-  align-items center
-  justify-content center
-
-.svg-class
-  width 109px
-  height 36px
-
-.svg-class1
-  width 26px
-  height 26px
+.logo-icon
+  width 27px
+  height 27px
+.logo-text
+  height 27px
+  width 72px
 </style>
