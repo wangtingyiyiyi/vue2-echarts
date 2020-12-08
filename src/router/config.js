@@ -6,6 +6,7 @@ const Industry = () => import('../views/industry/Industry.vue')
 const Brand = () => import('../views/brand/Brand.vue')
 const File = () => import('../views/file/File.vue')
 const Page404 = () => import('../views/error/404.vue')
+// const Home = () => import('../views/home/Home.vue')
 
 export const routes = [
   {
@@ -20,6 +21,11 @@ export const routes = [
     },
     component: CommonLayoutView,
     children: [
+      // {
+      //   path: 'home',
+      //   name: '首页',
+      //   component: Home
+      // },
       {
         path: 'industry',
         name: '行业',
@@ -34,8 +40,7 @@ export const routes = [
           svgIcon: 'brand'
         },
         component: Brand
-      },
-      {
+      }, {
         path: 'file',
         name: '提数',
         meta: {

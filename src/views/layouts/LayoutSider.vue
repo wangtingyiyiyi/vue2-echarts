@@ -45,7 +45,7 @@ export default {
   beforeCreate () {
     const route = this.$router.options.routes.find((item) => item.path === '/').children
     menuData = this._.filter(route, item => {
-      return !item.meta.permission || item.meta.permission.includes(sessionStorage.getItem('type'))
+      return item.meta && (!item.meta.permission || item.meta.permission.includes(sessionStorage.getItem('type')))
     })
   }
 }
