@@ -125,9 +125,7 @@ export default {
     return {
       activeName: 'brand',
       rangeItemVal: 'one_year',
-      rangeItemValMark: 'one_year',
       groupItemVal: 'month',
-      groupItemValMark: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
       brandList: [],
@@ -171,15 +169,9 @@ export default {
       this.sortItemVal = 'gmv'
       // this.tableSpu = []
       this.spuTotal = 0
-      if (!this.brandTableData.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
-        this.getChartForBrand()
-        this.getTableForBrand()
-      }
-      if (!this.tableSpu.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
-        this.getTableForSpu()
-      }
-      this.rangeItemValMark = this.rangeItemVal
-      this.groupItemValMark = this.groupItemVal
+      this.getChartForBrand()
+      this.getTableForBrand()
+      this.getTableForSpu()
     },
     handleSetBrands (brands) {
       this.brandList = brands

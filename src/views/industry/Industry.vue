@@ -130,9 +130,7 @@ export default {
     return {
       activeName: 'industry',
       rangeItemVal: 'one_year',
-      rangeItemValMark: 'one_year',
       groupItemVal: 'month',
-      groupItemValMark: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
       drawerShow: false,
@@ -178,17 +176,10 @@ export default {
       this.page = 1
       this.sortItemVal = 'gmv'
       this.brandCount = 0
-      // this.brandTableData = []
-      if (!this.industryTableData.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
-        this.getIndustryFlatList()
-        this.getIndustryEchart()
-      }
-      if (!this.brandTableData.length || (this.rangeItemValMark !== this.rangeItemVal) || (this.groupItemValMark !== this.groupItemVal)) {
-        this.getBrandList()
-        this.getBrandEchart()
-      }
-      this.rangeItemValMark = this.rangeItemVal
-      this.groupItemValMark = this.groupItemVal
+      this.getIndustryFlatList()
+      this.getIndustryEchart()
+      this.getBrandList()
+      this.getBrandEchart()
     },
     // 切换范围
     handleRangeClick (k, value) {
