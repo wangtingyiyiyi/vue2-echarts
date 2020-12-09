@@ -5,7 +5,7 @@
       <Svg-Icon icon-class="upload" class="m-r-7 font-size-28" slot="prepend"/>
     </Text-Button>
     <Title title="历史自定义标签" class="m-l-20 m-t-20"/>
-    <div class="drawer-body beauty-scroll">
+    <div class="drawer-body beauty-scroll" ref="drawerBody">
       <div v-for="(item, index) in tagList" :key="index" class="border-dotted-bottom">
         <div class="item-title" @click="showMore(index)">
           <div class="left">
@@ -60,6 +60,8 @@ import TextButton from '@/components/TextButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
 import DialogForIndustryRemove from '@/views/industry/components/DialogForIndustryRemove.vue'
 import { mapMutations, mapState } from 'vuex'
+import { refLoading } from '@/utils/element.js'
+
 export default {
   name: 'DrawerContent',
   components: { TextButton, DialogForIndustryDefine, DialogForIndustryRemove },
@@ -165,7 +167,9 @@ export default {
     },
     // 请求列表API
     async getDefineList () {
+      const loadingInstance = refLoading(this.$refs.drawerBody)
       const res = await getIndustryDefineList()
+      loadingInstance.close()
       if (res.code === 200) {
         this.tagList = res.result
       }
