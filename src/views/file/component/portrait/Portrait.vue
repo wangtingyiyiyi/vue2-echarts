@@ -19,7 +19,7 @@
       @handleExportExcel="handleExportExcel"
       @setExcelHeader="setExcelHeader"></component>
     <Preview-Table-Title
-      :showButton="false"
+      :showButton="currentPartComponent === 'Phone' ? false : true"
       :tableTotal="tableTotal"
       :max="500000"
       :exportDisabled="showDownloadBtn"
