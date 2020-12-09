@@ -100,7 +100,7 @@
           placeholder="保存选中对比品类标签"
           v-model="form.title"
           style="width: 215px"
-          @change="handleChange"/>
+          @keyup.native.enter="handleChange"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
