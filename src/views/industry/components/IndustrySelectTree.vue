@@ -7,12 +7,7 @@
     placeholder="请输入搜索品类"
     style="width: 100%"
     :remote-method="handleSelctRemoteFilter">
-    <template slot="prefix">
-      <span class="prefix-icon" v-if="selectRank === 1 || selectRank === '1'" style="color: #5B8FF9;">{{selectRank}}</span>
-      <span class="prefix-icon" v-else-if="selectRank === '2' || selectRank === 2" style="color: #5AD8A6;">{{selectRank}}</span>
-      <span class="prefix-icon" v-else-if="selectRank === '3' || selectRank === 3" style="color: #5D7092;">{{selectRank}}</span>
-      <span class="prefix-icon" v-else style="color: #5B8FF9;">自</span>
-    </template>
+    <Rank-Icon slot="prefix" class="m-l-5" :rank="selectRank"/>
     <el-option value="0" class="hidden"></el-option>
       <!-- 搜索树 -->
       <el-tree
@@ -23,7 +18,7 @@
         class="select-tree"
         @node-click="handleNodeClick"
         :default-expand-all="false">
-        <IndustrySelectTreeLabel slot-scope="{data}" :data="data" :likeCondition="likeCondition"/>
+        <Industry-Select-Tree-Label slot-scope="{data}" :data="data" :likeCondition="likeCondition"/>
       </el-tree>
       <!-- 异步请求树 -->
       <el-tree
@@ -39,7 +34,7 @@
         :expand-on-click-node="false"
         :load="loadNode"
         @node-click="handleNodeClick">
-        <IndustrySelectTreeLabel slot-scope="{data}" :data="data" label="category"/>
+        <Industry-Select-Tree-Label slot-scope="{data}" :data="data" label="category"/>
       </el-tree>
   </el-select>
 </template>
@@ -47,9 +42,10 @@
 <script>
 import { getIndustryCategory, getCategoryTree } from '@/api/industry'
 import IndustrySelectTreeLabel from '@/views/industry/components/IndustrySelectTreeLable.vue'
+import RankIcon from '@/components/RankIcon.vue'
 export default {
   name: 'SelectTree',
-  components: { IndustrySelectTreeLabel },
+  components: { IndustrySelectTreeLabel, RankIcon },
   props: {
     defaultObj: {
       type: Object,
@@ -79,7 +75,6 @@ export default {
   },
   methods: {
     handleNodeClick (data, node, ref) {
-      console.info(data)
       this.selectData = data
       this.selectData.label = data.label.split('&&')[0]
       this.$refs.select.blur()
