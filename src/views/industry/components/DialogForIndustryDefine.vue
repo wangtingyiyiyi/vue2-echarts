@@ -51,6 +51,7 @@
           :props="leftTreeProps"
           :default-expand-all="true"
           @check="handleLeftTreeCheck">
+          <span slot-scope="{node, data}" v-html="highlight(likeCondition, data.category)"></span>
         </el-tree>
       </div>
 
@@ -113,6 +114,8 @@
 
 <script>
 import { getDefineTree, getDefineCateList } from '@/api/define'
+import { highlight } from '@/utils/common.js'
+
 export default {
   name: 'DialogForIndustryDefine',
   props: {
@@ -163,6 +166,7 @@ export default {
       })
   },
   methods: {
+    highlight: highlight,
     disabledFn (data, node) {
       const keys1 = this._.cloneDeep(this.resLeafData)
       const labels = keys1.map(item => item.label)
