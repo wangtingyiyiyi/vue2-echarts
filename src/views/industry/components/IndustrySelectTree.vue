@@ -67,6 +67,7 @@ export default {
       deep: true,
       handler: function (params) {
         this.selectData = this.defaultObj
+        this.selectRank = this.defaultObj.rank
       }
     }
   },

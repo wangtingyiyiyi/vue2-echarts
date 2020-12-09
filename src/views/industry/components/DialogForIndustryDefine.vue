@@ -25,34 +25,36 @@
           class="m-l-16 p-10-0"
           :disabled="!showExpandTree"
           @change="handleCheckAll">全选</el-checkbox>
-        <!-- 异步请求树 -->
-        <el-tree
-          v-show="!showExpandTree"
-          show-checkbox
-          node-key="label"
-          ref="lazyTree"
-          lazy
-          class="tree-wapper beauty-scroll"
-          :data="lazyTreeData"
-          :props="leftTreeProps"
-          :load="loadNode"
-          :check-strictly="false"
-          :default-expanded-keys="lazyTreeExpandedkeys"
-          @check="handleLeftTreeCheck">
-        </el-tree>
-        <!-- 搜索树 -->
-        <el-tree
-          v-show="showExpandTree"
-          ref="searchTree"
-          show-checkbox
-          node-key="label"
-          class="tree-wapper beauty-scroll"
-          :data="searchTreeData"
-          :props="leftTreeProps"
-          :default-expand-all="true"
-          @check="handleLeftTreeCheck">
-          <span slot-scope="{node, data}" v-html="highlight(likeCondition, data.category)"></span>
-        </el-tree>
+        <div ref="leftWapper">
+          <!-- 异步请求树 -->
+          <el-tree
+            v-show="!showExpandTree"
+            show-checkbox
+            node-key="label"
+            ref="lazyTree"
+            lazy
+            class="tree-wapper beauty-scroll"
+            :data="lazyTreeData"
+            :props="leftTreeProps"
+            :load="loadNode"
+            :check-strictly="false"
+            :default-expanded-keys="lazyTreeExpandedkeys"
+            @check="handleLeftTreeCheck">
+          </el-tree>
+          <!-- 搜索树 -->
+          <el-tree
+            v-show="showExpandTree"
+            ref="searchTree"
+            show-checkbox
+            node-key="label"
+            class="tree-wapper beauty-scroll"
+            :data="searchTreeData"
+            :props="leftTreeProps"
+            :default-expand-all="true"
+            @check="handleLeftTreeCheck">
+            <span slot-scope="{node, data}" v-html="highlight(likeCondition, data.category)"></span>
+          </el-tree>
+        </div>
       </div>
 
       <div class="transfer-center">
@@ -79,16 +81,18 @@
       <div class="transfer-right">
         <div class="header">已选中品类项</div>
         <!-- 选中树 -->
-        <el-tree
-          show-checkbox
-          ref="resTree"
-          node-key="label"
-          class="right-tree-wapper beauty-scroll"
-          :data="rightTree"
-          :props="{ label: 'category' }"
-          :default-expand-all="true"
-          @check="handleRightTreeCheck">
-        </el-tree>
+        <div ref="rightWapper">
+          <el-tree
+            show-checkbox
+            ref="resTree"
+            node-key="label"
+            class="right-tree-wapper beauty-scroll"
+            :data="rightTree"
+            :props="{ label: 'category' }"
+            :default-expand-all="true"
+            @check="handleRightTreeCheck">
+          </el-tree>
+        </div>
       </div>
     </div>
 
@@ -115,6 +119,7 @@
 <script>
 import { getDefineTree, getDefineCateList } from '@/api/define'
 import { highlight } from '@/utils/common.js'
+import { refLoading } from '@/utils/element.js'
 
 export default {
   name: 'DialogForIndustryDefine',
@@ -223,11 +228,17 @@ export default {
         })
     },
     allGoLeft () {
-      this.lazyTreeExpandedkeys = []
       this.rightTree = []
-      this.lazyTreeData = this.rootTree
-      this.handleCheckAll(false)
       this.checkAll = false
+      this.$refs.lazyTree.setCheckedKeys([])
+      this.$refs.searchTree.setCheckedKeys([])
+      this.disabledGoRight = true
+      this.disabledGoLeft = true
+      this.checkedNotes = []
+      this.rightTreeFlat = []
+      this.resLeafData = []
+      this.lazyTreeData = this.rootTree
+      this.lazyTreeExpandedkeys = []
     },
     flatTree (data) {
       return data.reduce((arr, { category, category1, category2, category3, label, rank, children = [] }) =>
@@ -251,8 +262,10 @@ export default {
       this.checkAll = false
       if (this.likeCondition) {
         this.showExpandTree = true
+        const loadingInstance = refLoading(this.$refs.leftWapper)
         this.getDefineCateList({ likeCondition: this.likeCondition })
           .then((res) => {
+            loadingInstance.close()
             this.searchTreeData = res
             this.setCheckedKeys()
             this.setLazyTreeExpandedKeys()
@@ -290,7 +303,9 @@ export default {
       }
     },
     async renderRightTree (definedId = {}) {
+      const loadingInstance = refLoading(this.$refs.rightWapper)
       const res = await getDefineTree(Object.assign({ cateList: this.checkedNotes, type: 'right' }, definedId))
+      loadingInstance.close()
       if (res.code === 200) {
         this.rightTree = res.result
         this.rightTreeFlat = this.flatTree(res.result)
