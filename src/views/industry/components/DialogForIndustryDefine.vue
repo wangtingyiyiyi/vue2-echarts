@@ -108,7 +108,7 @@
           @keyup.native.enter="handleChange"/>
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer">
       <el-button @click="closeDialog">取 消</el-button>
       <el-button type="primary" :disabled="resLeafData.length === 0" @click="onSubmit">保 存</el-button>
     </span>
@@ -164,11 +164,13 @@ export default {
     }
   },
   mounted () {
-    this.renderRightTree({ defineId: this.defineId })
-      .then(() => {
-        this.setCheckedKeys()
-        this.setLazyTreeExpandedKeys()
-      })
+    if (this.defineId) {
+      this.renderRightTree({ defineId: this.defineId })
+        .then(() => {
+          this.setCheckedKeys()
+          this.setLazyTreeExpandedKeys()
+        })
+    }
   },
   methods: {
     highlight: highlight,
@@ -302,15 +304,17 @@ export default {
           })
       }
     },
-    async renderRightTree (definedId = {}) {
-      const loadingInstance = refLoading(this.$refs.rightWapper)
-      const res = await getDefineTree(Object.assign({ cateList: this.checkedNotes, type: 'right' }, definedId))
-      loadingInstance.close()
-      if (res.code === 200) {
-        this.rightTree = res.result
-        this.rightTreeFlat = this.flatTree(res.result)
-        this.resLeafData = this.rightTreeFlat.filter(item => item.rank === 3)
-      }
+    renderRightTree (definedId = {}) {
+      this.$nextTick(async () => {
+        const loadingInstance = refLoading(this.$refs.rightWapper)
+        const res = await getDefineTree(Object.assign({ cateList: this.checkedNotes, type: 'right' }, definedId))
+        loadingInstance.close()
+        if (res.code === 200) {
+          this.rightTree = res.result
+          this.rightTreeFlat = this.flatTree(res.result)
+          this.resLeafData = this.rightTreeFlat.filter(item => item.rank === 3)
+        }
+      })
     },
     async renderLeftTree () {
       const res = await getDefineTree({ cateList: this.checkedNotes, type: 'left' })
