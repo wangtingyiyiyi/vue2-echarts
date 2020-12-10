@@ -180,11 +180,11 @@ export default {
         return values.indexOf(item.label) !== -1
       })
     },
-    handleExportExcel () {
+    handleExportExcel (form) {
       const brandName = `(${this.form.brandList.join('_')})`
       const filename = `Tmall_${this.form.cate}${brandName}_${this.$moment(new Date()).format('YYYYMMDD')}`
       const option = {
-        param: this.form,
+        param: Object.assign(form, this.form),
         url: process.env.VUE_APP_API_URL + '/download/file?action=brand',
         filename: filename
       }

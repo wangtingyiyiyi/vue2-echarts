@@ -9,7 +9,7 @@
           svgName="exporting"
           :isDisabled="false"
           class="m-l-24"
-          @handleExportExcel="handleExportExcel"/>
+          @handleExportExcel="dialogVisible = true"/>
         <el-tooltip
           effect="dark"
           content="可导出1～500,000条数据" placement="top-start">
@@ -121,6 +121,10 @@
       </el-table-column>
       <el-table-column width="20px"></el-table-column>
     </el-table>
+    <Dialog-For-Download
+      :dialogVisible="dialogVisible"
+      @handleClose="dialogVisible = false"
+      @handleSave="handleSave"/>
   </div>
 </template>
 
@@ -131,10 +135,11 @@ import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderToolt
 import { getShopPerson } from '@/api/shop.js'
 import { mapState } from 'vuex'
 import ExportButton from '@/components/ExportButton.vue'
+import DialogForDownload from '@/views/file/component/DialogForDownload.vue'
 
 export default {
   name: 'Phone',
-  components: { TableHeaderTooltip, ExportButton },
+  components: { TableHeaderTooltip, ExportButton, DialogForDownload },
   props: {
     shopList: {
       type: Array,
@@ -178,7 +183,8 @@ export default {
       tableSelection: [],
       loadingIndex: -1,
       PORTRAIT_RANGE,
-      tableData: []
+      tableData: [],
+      dialogVisible: false
     }
   },
   created () {
@@ -195,8 +201,8 @@ export default {
     this.$bus.$off('fileChangeSelectedShop')
   },
   methods: {
-    handleExportExcel () {
-      this.$emit('handleExportExcel')
+    handleSave (form) {
+      this.$emit('handleExportExcel', form)
     },
     reloadRowData (index, rowData, minCount) {
       this.loadingIndex = index

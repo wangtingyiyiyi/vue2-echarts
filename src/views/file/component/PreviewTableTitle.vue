@@ -10,15 +10,20 @@
       v-if="showButton"
       :svgName="isDisabled ? 'exportingNot' : 'exporting'"
       :isDisabled="isDisabled"
-      @handleExportExcel="handleExportExcel"/>
+      @handleExportExcel="dialogVisible = true"/>
+    <Dialog-For-Download
+      :dialogVisible="dialogVisible"
+      @handleClose="dialogVisible = false"
+      @handleSave="handleSave"/>
   </div>
 </template>
 
 <script>
 import ExportButton from '@/components/ExportButton.vue'
+import DialogForDownload from '@/views/file/component/DialogForDownload.vue'
 export default {
   name: 'PreviewTableTitle',
-  components: { ExportButton },
+  components: { ExportButton, DialogForDownload },
   props: {
     tableTotal: {
       type: Number,
@@ -46,9 +51,14 @@ export default {
       return this.exportDisabled || this.tableTotal === 0 || this.tableTotal > this.max
     }
   },
+  data () {
+    return {
+      dialogVisible: false
+    }
+  },
   methods: {
-    handleExportExcel () {
-      this.$emit('handleExportExcel')
+    handleSave (form) {
+      this.$emit('handleExportExcel', form)
     }
   }
 }

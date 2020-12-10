@@ -44,7 +44,7 @@ import { PHONE_EXCEL_HEADER, MUA_EXCEL_HEADER, OPERATOR_BUTTONS } from '@/utils/
 import { mapState } from 'vuex'
 import PortraitComponentsMixin from '@/views/file/component/portrait/component.js'
 import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
-
+import DialogForDownload from '@/views/file/component/DialogForDownload.vue'
 export default {
   name: 'TabForPortrait',
   mixins: [downloadCallbackMixin, PortraitComponentsMixin],
@@ -60,6 +60,7 @@ export default {
   computed: {
     ...mapState('file', ['currentTabPane'])
   },
+  components: { DialogForDownload },
   data () {
     return {
       currentPartComponent: 'Phone',
@@ -132,11 +133,11 @@ export default {
       this.handlePreview()
     },
     // 提数接口
-    handleExportExcel () {
+    handleExportExcel (form) {
       const label = OPERATOR_BUTTONS.filter(item => item.value === this.currentPartComponent)[0].label
       const filename = `${label}_${this.$moment(new Date()).format('YYYYMMDD')}`
       const option = {
-        param: Object.assign(this.previewParam, { shopList: this.shopList }),
+        param: Object.assign(this.previewParam, { shopList: this.shopList }, form),
         url: process.env.VUE_APP_API_URL + '/download/shop/file?action=persona',
         filename: filename,
         onprogress: this.onprogress,
