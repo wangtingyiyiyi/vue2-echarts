@@ -6,9 +6,8 @@
 
 <style lang="stylus">
 #app
-  // font-family: PingFang SC, Avenir, Helvetica, Arial, sans-serif
-  // font-family: 'PingFangSC-Regular', 'PingFang SC'
-  font-family: "Arial","PingFangSC-Regular", "PingFang SC", "微软雅黑","Microsoft YaHei", "Helvetica Neue", Helvetica, "Hiragino Sans GB",  Arial, sans-serif
+  font-family: $font-family
+  // font-family: "Arial","PingFangSC-Regular", "PingFang SC", "微软雅黑","Microsoft YaHei", "Helvetica Neue", Helvetica, "Hiragino Sans GB",  Arial, sans-serif !important
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   font-size 14px
