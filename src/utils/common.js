@@ -68,7 +68,7 @@ export function downloadFile (option) {
   xhr.open('POST', option.url, true)
   xhr.responseType = 'blob'
   xhr.setRequestHeader('Content-Type', ' application/json')
-  xhr.setRequestHeader('token', '801bb15a-6bf8-406d-bf06-86eef3ba16a6')
+  xhr.setRequestHeader('token', sessionStorage.getItem('token'))
   xhr.onreadystatechange = function (response) {
     option.onreadystatechange(xhr, response)
   }

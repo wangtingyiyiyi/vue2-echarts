@@ -160,7 +160,7 @@ export default {
       const filename = `Tmall_${this.form.cate}${brandName}_${this.$moment(new Date()).format('YYYYMMDD')}`
       const option = {
         param: this.form,
-        url: process.env.VUE_APP_API_URL + '/download/file',
+        url: process.env.VUE_APP_API_URL + '/download/file?action=brand',
         filename: filename
       }
       this.$emit('exportExcel', option)

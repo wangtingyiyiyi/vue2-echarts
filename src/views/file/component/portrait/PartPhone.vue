@@ -222,7 +222,6 @@ export default {
       })
     },
     async getShopPerson (params) {
-      console.info(params, 'getShopPersongetShopPersongetShopPerson')
       if (params.length === 0) return
       const res = await getShopPerson({ shopList: params })
       if (res.code === 200) {

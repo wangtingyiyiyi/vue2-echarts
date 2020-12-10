@@ -137,7 +137,7 @@ export default {
       const filename = `${label}_${this.$moment(new Date()).format('YYYYMMDD')}`
       const option = {
         param: Object.assign(this.previewParam, { shopList: this.shopList }),
-        url: process.env.VUE_APP_API_URL + '/download/shop/file',
+        url: process.env.VUE_APP_API_URL + '/download/shop/file?action=persona',
         filename: filename,
         onprogress: this.onprogress,
         onreadystatechange: this.onreadystatechange,
