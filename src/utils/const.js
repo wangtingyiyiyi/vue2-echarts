@@ -219,7 +219,7 @@ export const BRAND_DEFINE_BRANDLIST =
   //   '艾思诺娜/Excellula', '丝维诗兰', '伊诗贝格/EISENBERG', '完美日记/PERFECT DIARY', "欧舒丹/L'occitane",
   //   '乔治阿玛尼/GIORGIO ARMANI', '纪梵希/Givenchy', '玉泽/Dr.Yu']
 
-// 提数-手机号提数-画像纬度
+// 提数-用户提数-画像纬度
 export const PORTRAIT_LEVEL = [
   {
     label: '省份',
@@ -248,7 +248,7 @@ export const PORTRAIT_LEVEL = [
   }
 ]
 
-// 人群画像-手机号提数表头
+// 人群画像-用户提数表头
 export const PHONE_EXCEL_HEADER = [
   {
     label: '店铺',
@@ -402,7 +402,7 @@ export const UV_GROUP = [
 
 export const OPERATOR_BUTTONS = [
   {
-    label: '手机号',
+    label: '用户',
     value: 'Phone'
   }, {
     label: '人群画像',

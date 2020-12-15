@@ -3,7 +3,7 @@
     <div class="flex-row m-b-10">
       <div class="flex-row" style="width: 484px">
         <i class="el-icon-star-on star-icon"></i>
-        <div class="sum-title">手机号提取总条数:<span>{{phoneNumAcount | format}}</span></div>
+        <div class="sum-title">用户提取总条数:<span>{{phoneNumAcount | format}}</span></div>
         <Export-Button
           v-if="!(exportDisabled || tableTotal === 0 || tableTotal > max)"
           svgName="exporting"
