@@ -26,7 +26,7 @@ export default {
       switch (action) {
         case 'brand':
           return '品牌提数'
-        case 'industry':
+        case 'category':
           return '行业提数'
         case 'persona':
           return '人群画像'

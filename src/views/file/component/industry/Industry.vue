@@ -117,7 +117,7 @@ export default {
       form: {
         cate: INDUSTRY_DEFAULT_INDUSTRY.label,
         cateList: [INDUSTRY_DEFAULT_INDUSTRY],
-        brandList: [],
+        brandList: null,
         range: 'one_year',
         particle: 'month',
         cateFlat: '111',
@@ -156,8 +156,9 @@ export default {
       })
     },
     handleExportExcel (form) {
-      const brandName = this.form.brandList.length ? `(${this.form.brandList.join('_')})` : ''
-      const filename = `Tmall_${this.form.cate}${brandName}_${this.$moment(new Date()).format('YYYYMMDD')}`
+      // const brandName = this.form.brandList.length ? `(${this.form.brandList.join('_')})` : ''
+      // const filename = `Tmall_${this.form.cate}${brandName}_${this.$moment(new Date()).format('YYYYMMDD')}`
+      const filename = `Tmall_${this.form.cate}_${this.$moment(new Date()).format('YYYYMMDD')}`
       const option = {
         param: Object.assign(form, this.form),
         url: process.env.VUE_APP_API_URL + '/download/file?action=category',
