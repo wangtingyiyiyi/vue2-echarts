@@ -12,6 +12,7 @@
       :isDisabled="isDisabled"
       @handleExportExcel="dialogVisible = true"/>
     <Dialog-For-Download
+      v-if="dialogVisible"
       :dialogVisible="dialogVisible"
       @handleClose="dialogVisible = false"
       @handleSave="handleSave"/>

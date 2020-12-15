@@ -4,11 +4,13 @@
       width="550px"
       :visible.sync="dialogVisible"
       :show-close="false"
-      :close-on-click-modal="false"
-      :destroy-on-close="true">
+      :close-on-click-modal="false">
       <div slot="title">保存导出信息</div>
       <el-form ref="form" :model="form" label-width="60px" label-position="left">
-        <el-form-item label="标题" prop="title" :rules="{ required: true, message: '请输入标题', trigger: 'blur' }">
+        <el-form-item label="标题" prop="title"
+          :rules="
+          [{ required: true, message: '请输入标题', trigger: 'blur' },
+          { max: 15, message: '标题最多15个字符', trigger: 'change' }]">
           <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="描述">
@@ -34,12 +36,14 @@ export default {
   },
   data () {
     return {
-      form: {}
+      form: {
+        title: '',
+        description: ''
+      }
     }
   },
   methods: {
     handleClose () {
-      this.form = {}
       this.$emit('handleClose', false)
     },
     handleSave () {
@@ -50,9 +54,6 @@ export default {
         }
       })
     }
-  },
-  beforeDestroy () {
-    this.form = {}
   }
 }
 </script>

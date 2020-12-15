@@ -122,6 +122,7 @@
       <el-table-column width="20px"></el-table-column>
     </el-table>
     <Dialog-For-Download
+      v-if="dialogVisible"
       :dialogVisible="dialogVisible"
       @handleClose="dialogVisible = false"
       @handleSave="handleSave"/>
