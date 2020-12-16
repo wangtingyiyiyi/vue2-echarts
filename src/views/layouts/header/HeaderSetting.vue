@@ -1,6 +1,6 @@
 <template>
   <el-dropdown @command="handleCommand">
-    <span><i class="el-icon-caret-bottom"></i></span>
+    <span><i class="el-icon-caret-bottom" style="cursor: pointer"></i></span>
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item
         v-for="item in menuData"

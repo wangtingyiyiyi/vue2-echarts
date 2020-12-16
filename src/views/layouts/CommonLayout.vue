@@ -4,7 +4,7 @@
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
         <div class="m-0-12">{{userName}}</div>
-        <Header-Setting class="m-0-12"/>
+        <Header-Setting/>
       </div>
     </el-header>
     <div class="main-wapper">
