@@ -88,11 +88,16 @@ export default {
   },
   methods: {
     handleBrand (row) {
+      // 当前为自定义品类
+      let cateList = JSON.stringify(this.categoryObj)
+      if (this.categoryObj.rank.toString() === '0') {
+        cateList = JSON.stringify({ rank: 0, label: '全部', category: '全部' })
+      }
       const { href } = this.$router.resolve({
         path: '/brand',
         query: {
           brandList: JSON.stringify(row.brand),
-          cateList: JSON.stringify(this.categoryObj)
+          cateList: cateList
         }
       })
       window.open(href)
