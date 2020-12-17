@@ -17,6 +17,7 @@ export const SET_ACTIVE_BRAND = 'SET_ACTIVE_BRAND'
 
 // 系统
 export const SET_SYS_COLLAPSED = 'SET_SYS_COLLAPSED'
+export const SET_SYS_SCROLLTOP = 'SET_SYS_SCROLLTOP'
 
 // 用户
 export const SET_TOKEN = 'SET_TOKEN'

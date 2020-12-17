@@ -30,14 +30,16 @@ export const routes = [
         path: 'industry',
         name: '行业',
         meta: {
-          svgIcon: 'menu'
+          svgIcon: 'menu',
+          scrollTop: 145
         },
         component: Industry
       }, {
         path: 'brand',
         name: '品牌',
         meta: {
-          svgIcon: 'brand'
+          svgIcon: 'brand',
+          scrollTop: Infinity
         },
         component: Brand
       }, {
@@ -45,7 +47,8 @@ export const routes = [
         name: '提数',
         meta: {
           permission: ['1'],
-          svgIcon: 'excel'
+          svgIcon: 'excel',
+          scrollTop: Infinity
         },
         component: File
       }

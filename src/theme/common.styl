@@ -42,6 +42,8 @@
   margin-left 20px
 .m-l-24
   margin-left 24px
+.m-l-40
+  margin-left 40px
 .m-t-20
   margin-top 20px
 
@@ -156,14 +158,14 @@
 
 // fade 动画
 .fade-enter-active{
-  -webkit-animation: fade-in .3s;
-  animation: fade-in .3s
+  -webkit-animation: fadeIn .3s;
+  animation: fadeIn .3s
   }
 .fade-leave-active{
-  -webkit-animation:fade-out .3s;
-  animation:fade-out .3s}
+  -webkit-animation:fadeOut .3s;
+  animation:fadeOut .3s}
 
-@keyframes fade-in {
+@keyframes fadeIn {
   0% {
     transform: translate3d(0,-20px,0)
     opacity: 0
@@ -173,7 +175,7 @@
     opacity:1
   }
 }
-@keyframes fade-out {
+@keyframes fadeOut {
   0% {
     transform:translate3d(0,0,0)
     opacity:1

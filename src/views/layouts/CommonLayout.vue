@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-container beauty-scroll">
+  <div class="scroll-container beauty-scroll" ref="body">
     <el-header class="header-wapper">
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
@@ -36,11 +36,17 @@ export default {
     HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter
   },
   methods: {
-    ...mapMutations('sys', ['SET_SYS_COLLAPSED']),
+    ...mapMutations('sys', ['SET_SYS_COLLAPSED', 'SET_SYS_SCROLLTOP']),
     collapsChange (collapsed) {
       this.collapsed = !collapsed
       this.SET_SYS_COLLAPSED(collapsed)
+    },
+    handleScroll () {
+      this.SET_SYS_SCROLLTOP(this.$refs.body.scrollTop)
     }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll, true)
   }
 }
 </script>
@@ -77,5 +83,4 @@ export default {
 .scroll-container
   height 100vh
   overflow-x auto
-
 </style>
