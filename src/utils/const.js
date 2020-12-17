@@ -413,6 +413,16 @@ export const OPERATOR_BUTTONS = [
   }
 ]
 
+export const XIAOHONGSHU_BUTTONS = [
+  {
+    label: '统计提数',
+    value: 'Stat'
+  }, {
+    label: '详情提数',
+    value: 'Info'
+  }
+]
+
 export const PORTRAIT_RANGE = [
   {
     label: '全部',
@@ -439,5 +449,90 @@ export const FILE_TABS = [
   }, {
     label: '人群画像',
     value: 'Portrait'
+  }, {
+    label: '小红书',
+    value: 'XiaoHongShu'
+  }
+]
+
+export const XIAOHONGSHU_LEVEL = [
+  {
+    label: 'KOL',
+    value: 'kolName',
+    excelHeader: ['KOL']
+  }, {
+    label: '品牌',
+    value: 'brand',
+    excelHeader: ['目标']
+  }
+]
+
+export const XIAOHONGSHU_STAT_EXCEL_HEADER = [
+  {
+    label: '年',
+    prop: 'year',
+    align: 'left'
+  }, {
+    label: '半年',
+    prop: 'half',
+    align: 'left'
+  }, {
+    label: '季度',
+    prop: 'quarter',
+    align: 'left'
+  }, {
+    label: '月',
+    prop: 'month',
+    align: 'left'
+  }, {
+    label: 'KOL',
+    prop: 'kolName',
+    align: 'left'
+  }, {
+    label: '目标',
+    prop: 'brand',
+    align: 'left'
+  }, {
+    label: '联名',
+    prop: 'inKeyword',
+    align: 'left',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: '贴子数',
+    prop: 'postCount',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'fans',
+    prop: 'fans',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'collections',
+    prop: 'collections',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'repost',
+    prop: 'repost',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'comments',
+    prop: 'comments',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'likes',
+    prop: 'likes',
+    align: 'right',
+    common: true,
+    formatter: 'format'
   }
 ]

@@ -23,6 +23,7 @@
 import Industry from '@/views/file/component/industry/Industry.vue'
 import Brand from '@/views/file/component/brand/brand.vue'
 import Portrait from '@/views/file/component/portrait/Portrait.vue'
+import XiaoHongShu from '@/views/file/component/xiaohongshu/XiaoHongShu.vue'
 import DownloadButton from '@/components/DownloadButton.vue'
 import { mapMutations } from 'vuex'
 import { FILE_TABS } from '@/utils/const.js'
@@ -31,12 +32,12 @@ import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
 
 export default {
   name: 'File',
-  components: { Industry, Brand, Portrait, DownloadButton },
+  components: { Industry, Brand, Portrait, XiaoHongShu, DownloadButton },
   mixins: [downloadCallbackMixin],
   data () {
     return {
       showDownloadBtn: false,
-      activeTab: 'Industry',
+      activeTab: 'XiaoHongShu',
       tabs: FILE_TABS,
       loadingProgress: 0
     }
