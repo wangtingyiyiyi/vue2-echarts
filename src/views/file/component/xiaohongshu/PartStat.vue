@@ -55,6 +55,9 @@ export default {
       }
     }
   },
+  mounted () {
+    this.handleExcelHeader()
+  },
   methods: {
     handleForm (k, v) {
       this.form[k] = v

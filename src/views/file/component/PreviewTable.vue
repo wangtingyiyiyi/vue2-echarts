@@ -59,21 +59,21 @@ export default {
   font-size 12px
   color #111111
 
-.excel-table >>> .el-table__body-wrapper
-  &::-webkit-scrollbar{
-    width: 6px;
-  }
-  &::-webkit-scrollbar:horizontal{
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb{
-    border-radius: 6px;
-    background-color: #ccc;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-corner{
-    display: none;
-  }
+// .excel-table >>> .el-table__body-wrapper
+//   &::-webkit-scrollbar{
+//     width: 6px;
+//   }
+//   &::-webkit-scrollbar:horizontal{
+//     height: 8px;
+//   }
+//   &::-webkit-scrollbar-thumb{
+//     border-radius: 6px;
+//     background-color: #ccc;
+//   }
+//   &::-webkit-scrollbar-track {
+//     background-color: transparent;
+//   }
+//   &::-webkit-scrollbar-corner{
+//     display: none;
+//   }
 </style>

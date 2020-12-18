@@ -14,7 +14,7 @@ export default {
     onreadystatechange (xhr, response) {
       if (xhr.readyState === 4 && xhr.status === 600) {
         const mes = this.judgeAction(response.target.responseURL)
-        this.$message.error(`【${mes}】下载次数已超过最大配额。如有下载需求，请联系管理员。`)
+        this.$message.error(`${mes}下载次数已超过最大配额。如有下载需求，请联系管理员。`)
         this.showDownloadBtn = false
       } else if (xhr.readyState === 4 && xhr.status !== 200) {
         this.$message.error('文件下载失败')
@@ -25,13 +25,15 @@ export default {
       const action = url.split('=')[1]
       switch (action) {
         case 'brand':
-          return '品牌提数'
+          return '【品牌提数】'
         case 'category':
-          return '行业提数'
+          return '【行业提数】'
         case 'persona':
-          return '人群画像'
+          return '【人群画像】'
+        case 'xhs':
+          return '【小红书】'
         default:
-          break
+          return ''
       }
     }
   }

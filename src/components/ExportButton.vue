@@ -61,6 +61,7 @@ export default {
   color #ADC7FC
   border-color #ADC7FC
   cursor not-allowed
+  pointer-events none
   &:focus, &:hover
     background-color #fff
 

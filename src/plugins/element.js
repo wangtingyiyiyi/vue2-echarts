@@ -40,7 +40,8 @@ import {
   Icon,
   Divider,
   Tooltip,
-  InputNumber
+  InputNumber,
+  Popover
 } from 'element-ui'
 
 const components = [
@@ -82,7 +83,8 @@ const components = [
   Icon,
   Divider,
   Tooltip,
-  InputNumber
+  InputNumber,
+  Popover
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

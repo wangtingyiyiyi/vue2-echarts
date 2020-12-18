@@ -6,6 +6,8 @@ import BrandTags from '@/views/file/component/xiaohongshu/BrandTags.vue'
 import TypeButtons from '@/views/file/component/TypeButtons.vue'
 import Info from '@/views/file/component/xiaohongshu/PartInfo.vue'
 import Stat from '@/views/file/component/xiaohongshu/PartStat.vue'
+import Tips from '@/views/file/component/xiaohongshu/tips.vue'
+
 export default {
   components: {
     BrandTags,
@@ -15,6 +17,7 @@ export default {
     DownloadButton,
     PreviewLoading,
     Info,
-    Stat
+    Stat,
+    Tips
   }
 }

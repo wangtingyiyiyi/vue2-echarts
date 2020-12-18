@@ -1,60 +1,31 @@
 <template>
-  <div class="shop-tags-wapper">
-    <el-tag
-      v-for="(brand, index) in selectedBrand"
-      :key="brand + index"
-      size="medium"
-      closable
-      @close="handleClose(brand)">{{brand}}</el-tag>
-    <el-select
-      v-show="isAdding"
-      v-model="value"
-      placeholder="请搜索品牌关键字"
-      popper-class="shop-popper"
-      size="mini"
-      ref="select"
-      style="margin-bottom: 5px"
-      remote
-      filterable
-      :remote-method="remoteMethod"
-      :loading="loading"
-      @focus="handleFocus"
-      @change="handleSelectBrand">
-       <el-option
-          v-for="(item, index) in brandList"
-          :key="item + index"
-          :value="item">
-          <span v-html="highlight(likeCondition, item)"></span>
-        </el-option>
-    </el-select>
-    <el-button
-      v-show="isAdding"
-      type="text"
-      style="padding: 7px 15px"
-      @click="isAdding = false">取消</el-button>
-    <el-button
-      v-show="!isAdding"
-      class="el-button--dashed"
-      style="padding: 7px 25px; margin-bottom: 5px"
-      @click="handleAddShop">+ 添加品牌</el-button>
-    <el-divider></el-divider>
-    <Tips />
+  <div>
+      <el-button
+        class="el-button--dashed"
+        style="padding: 7px 25px; margin-bottom: 5px"
+        @click="handleAddRules">增加规则</el-button>
+      <el-button
+        type="primary"
+        style="padding: 7px 25px; margin-bottom: 5px"
+        @click="handleCheckRules">确认规则</el-button>
+      <Case/>
     <el-table
       header-row-class-name="tableHeaderClass"
       cell-class-name="tableCellClass"
-      empty-text="请添加品牌"
+      empty-text="请添加规则"
       ref="table"
-      :data="tableData"
-      style="min-height: 248px;">
+      :data="rulesList"
+      height="400"
+      style="min-height: 248px; margin: 20px 0; max-width: 1138px">
       <el-table-column
-        prop="brand"
-        label="品牌"
-        width="250">
+        type="index"
+        width="50">
+        <template slot-scope="{row, $index}">{{rulesList.length - $index}}</template>
       </el-table-column>
       <el-table-column
-        width="300">
+        width="180">
         <template #header>
-          <Table-Header-Tooltip label="品牌关键字" content="品牌关键字"/>
+          <Table-Header-Tooltip label="关键词" content="一般为品牌的中文名或者英文名"/>
         </template>
         <template slot-scope="{row, $index}">
           <Dynamic-Tags
@@ -66,9 +37,9 @@
         </template>
       </el-table-column>
       <el-table-column
-        width="300">
+        width="200">
         <template #header>
-          <Table-Header-Tooltip label="联名品牌关键字" content="联名品牌关键字"/>
+          <Table-Header-Tooltip label="关联关键词" content="可以为关键词的联名品牌,相关品类等与关键词相关的词语"/>
         </template>
         <template slot-scope="{row, $index}">
           <Dynamic-Tags
@@ -80,9 +51,9 @@
         </template>
       </el-table-column>
       <el-table-column
-        width="300">
+        width="200">
         <template #header>
-          <Table-Header-Tooltip label="不包含关键字" content="不包含关键字"/>
+          <Table-Header-Tooltip label="排除词" content="在满足关键词或关联关键词的情况下,需要排除的一些关键字"/>
         </template>
         <template slot-scope="{row, $index}">
           <Dynamic-Tags
@@ -93,107 +64,58 @@
             @handleCloseKeyWord="handleCloseKeyWord"/>
         </template>
       </el-table-column>
-      <el-table-column width="20px"></el-table-column>
+      <el-table-column
+        label="规则说明">
+        <template slot-scope="{row}">
+          <span v-html="setRulesStatement(row)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="100"
+        align="center"
+        label="操作">
+        <template slot-scope="{row, $index}">
+          <el-button type="text" size="mini"  @click="handleRemove($index)">
+            <i class="el-icon-remove-outline font-size-14"></i>
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getBrandByLikeCondition } from '@/api/brand'
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
 import DynamicTags from '@/views/file/component/xiaohongshu/DynamicTags.vue'
-import Tips from '@/views/file/component/xiaohongshu/tips.vue'
-import { highlight } from '@/utils/common.js'
-import { mapState } from 'vuex'
+import Case from '@/views/file/component/xiaohongshu/Case.vue'
+import { setRulesStatementAboutXHS } from '@/utils/common.js'
 
 export default {
   name: 'ShopTags',
-  components: { TableHeaderTooltip, DynamicTags, Tips },
+  components: { TableHeaderTooltip, DynamicTags, Case },
   data () {
     return {
-      isAdding: false,
-      value: '',
-      loading: false,
-      selectedBrand: [],
-      brandList: [],
-      likeCondition: '',
-      tableData: [],
-      emptyPart: {
-        keyword: [],
-        inKeyword: [],
-        exKeyword: []
-      }
+      showCase: false,
+      rulesList: []
     }
-  },
-  watch: {
-    currentTabPane: {
-      handler: function (params) {
-        this.value = ''
-        this.likeCondition = ''
-        this.selectedBrand = []
-      }
-    }
-  },
-  computed: {
-    ...mapState('file', ['currentTabPane'])
   },
   methods: {
-    highlight: highlight,
-    handleClose (shop) {
-      this.selectedBrand.splice(this.selectedBrand.indexOf(shop), 1)
-    },
-    handleSelectBrand (val) {
-      this.selectedBrand.push(val)
-      this.$refs.select.blur()
-      this.value = ''
-      this.isAdding = false
-      this.tableData.unshift(Object.assign({ brand: val }, this.emptyPart))
-      this.$emit('handleSelectBrand', this.tableData)
-    },
-    handleFocus () {
-      this.remoteMethod(this.likeCondition)
-    },
-    handleAddShop () {
-      this.isAdding = true
-      this.$nextTick(() => {
-        this.$refs.select.focus()
-      })
+    setRulesStatement: setRulesStatementAboutXHS,
+    handleAddRules () {
+      this.rulesList.unshift({ brand: '', keyword: [], inKeyword: [], exKeyword: [] })
     },
     handlePushKeyWord (index, key, value) {
-      this.tableData[index][key].push(value)
+      this.rulesList[index][key].push(value)
     },
     handleCloseKeyWord (index, key, i) {
-      this.tableData[index][key].splice(i, 1)
+      this.rulesList[index][key].splice(i, 1)
     },
-    async remoteMethod (query) {
-      if (query) {
-        this.likeCondition = query
-        this.loading = true
-        const res = await getBrandByLikeCondition({ likeCondition: '花' })
-        this.loading = false
-        if (res.code === 200) {
-          this.brandList = res.result
-        }
-      } else {
-        this.brandList = []
-      }
+    handleCheckRules () {
+      this.$emit('handleCheckRules', this.rulesList)
+    },
+    handleRemove (index) {
+      this.rulesList.splice(index, 1)
     }
   }
 }
 </script>
-
-<style lang="stylus">
-.shop-tags-wapper
-  & > span
-    margin-right 10px
-    margin-bottom 5px
-.shop-popper
-  .el-select-dropdown__item
-    height 28px
-    line-height 28px
-
-  .el-select-group__wrap:not(:last-of-type)::after
-    display none
-  .el-select-group__wrap:not(:last-of-type)
-    padding-bottom 12px
-</style>

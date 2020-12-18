@@ -11,7 +11,7 @@
           :rules="
           [{ required: true, message: '请输入标题', trigger: 'blur' },
           { max: 15, message: '标题最多15个字符', trigger: 'change' }]">
-          <el-input v-model="form.title"></el-input>
+          <el-input v-model="form.title" placeholder="填写内容应能反应项目需求"></el-input>
         </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" v-model="form.description"></el-input>

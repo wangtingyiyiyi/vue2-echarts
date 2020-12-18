@@ -1,7 +1,8 @@
 <template>
   <div>
-    <Title class="m-b-12" title="提取品牌"/>
-    <Brand-Tags @handleSelectBrand="handleSelectBrand"/>
+    <!-- <Title class="m-b-12" title="添加规则"/> -->
+    <!-- <Tips /> -->
+    <Brand-Tags @handleCheckRules="handleCheckRules"/>
     <Type-Buttons
       class="m-b-24"
       :buttons="XIAOHONGSHU_BUTTONS"
@@ -15,9 +16,10 @@
       :tableTotal="tableTotal"
       :exportDisabled="showDownloadBtn"
       @handleExportExcel="handleExportExcel"/>
-    <div class="text-second" v-if="brandList.length === 0">请选择品牌</div>
+    <div class="text-second" v-if="emptyMess">{{emptyMess}}</div>
+    <Preview-Loading v-if="isLoading"/>
     <Preview-Table
-      v-if="previewData.length !== 0 && brandList.length !== 0"
+      v-if="previewData.length !== 0"
       :tableTotal="tableTotal"
       :tableData="previewData"
       :excelHeader="excelHeader"/>
@@ -29,63 +31,81 @@
 
 <script>
 import componentMixin from '@/views/file/component/xiaohongshu/component.js'
-import { XIAOHONGSHU_BUTTONS, XIAOHONGSHU_STAT_EXCEL_HEADER } from '@/utils/const.js'
+import { XIAOHONGSHU_BUTTONS } from '@/utils/const.js'
 import { getXhsPreview } from '@/api/file.js'
+import { downloadFile } from '@/utils/common.js'
+import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
+
 export default {
   name: 'XiaoHongShu',
-  mixins: [componentMixin],
+  mixins: [componentMixin, downloadCallbackMixin],
   data () {
     return {
       XIAOHONGSHU_BUTTONS,
       currentPartComponent: 'Stat',
-      brandList: [],
-      tableTotal: 10,
+      rulesList: [],
+      tableTotal: 0,
       showDownloadBtn: false,
-      excelHeader: XIAOHONGSHU_STAT_EXCEL_HEADER,
-      formType: {
-        Stat: 'statistics',
-        Info: 'info'
-      },
-      formParam: {
-        range: 'all',
-        particle: 'month',
-        agg: ['brand', 'kolName'],
-        type: 'statistics'
-      },
+      excelHeader: [],
+      formParam: {},
       previewData: [],
-      loadingProgress: 0
+      loadingProgress: 0,
+      isLoading: false,
+      emptyMess: '请添加关键字',
+      typeInfo: {
+        Info: '详情',
+        Stat: '统计'
+      }
     }
   },
   methods: {
     handleChangeActiveType (activedTab) {
       this.currentPartComponent = activedTab
     },
-    handleSelectBrand (brandList) {
-      this.brandList = brandList
-      this.getInfoPreviewTable()
-      this.getStatPreviewTable()
-    },
-    setPreveiwParam (form) {
-      console.info(form)
-      this.formParam = form
-      this.getInfoPreviewTable()
-      this.getStatPreviewTable()
-    },
-    handleExportExcel () {},
     setExcelHeader (header) {
       this.excelHeader = header
     },
+    handleCheckRules (rulesList) {
+      this.rulesList = rulesList
+      this.getStatPreviewTable()
+    },
+    setPreveiwParam (form) {
+      this.formParam = form
+      this.getStatPreviewTable()
+    },
+    handleExportExcel (form) {
+      const brandName = this.rulesList.map(item => item.brand).join('|')
+      const filename = `小红书_(${brandName})_${this.typeInfo[this.currentPartComponent]}_${this.$moment(new Date()).format('YYYYMMDD')}`
+      const option = {
+        param: Object.assign(form, this.formParam, { dataList: this.rulesList }),
+        url: process.env.VUE_APP_API_URL + '/download/xhs?action=xhs',
+        filename: filename,
+        onprogress: this.onprogress,
+        onreadystatechange: this.onreadystatechange
+      }
+      this.showDownloadBtn = true
+      downloadFile(option)
+    },
     async getStatPreviewTable () {
-      if (this.currentPartComponent !== 'Stat' || this.brandList.length === 0) return
-      console.info('获取统计预览')
-      const res = await getXhsPreview(Object.assign({ dataList: this.brandList }, this.formParam))
+      console.info(this.rulesList)
+      if (this.rulesList.length === 0) return
+      const keywords = this.rulesList.map(item => item.keyword).flat()
+      if (keywords.length === 0) {
+        this.emptyMess = '请添加关键字'
+        return
+      }
+      this.emptyMess = ''
+      this.isLoading = true
+      this.previewData = []
+      this.tableTotal = 0
+      const res = await getXhsPreview(Object.assign({ dataList: this.rulesList }, this.formParam))
+      this.isLoading = false
       if (res.code === 200) {
         this.previewData = res.result
+        this.tableTotal = 1
+      } else {
+        this.emptyMess = '预览失败'
       }
-    },
-    getInfoPreviewTable () {
-      if (this.currentPartComponent !== 'Info') return
-      console.info('获取详情预览')
     }
   }
 }

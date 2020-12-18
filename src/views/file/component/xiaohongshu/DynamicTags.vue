@@ -1,14 +1,13 @@
 <template>
   <div>
-    <el-tag
-      class="m-t-5"
-      v-for="(tag, index) in value"
-      :key="tag + index"
-      closable
-      :disable-transitions="false"
-      @close="handleClose(tag, index)">
-      {{tag}}
-    </el-tag>
+    <div v-for="(tag, index) in value" :key="tag + index">
+      <el-tag
+        type="info"
+        class="m-t-5"
+        closable
+        :disable-transitions="false"
+        @close="handleClose(tag, index)">{{tag}}</el-tag>
+    </div>
     <el-input
       class="el-input--tiny input-new-tag m-t-5"
       v-if="inputVisible"
@@ -16,13 +15,8 @@
       ref="saveTagInput"
       size="mini"
       @keyup.enter.native="handleInputConfirm"
-      @blur="handleInputConfirm">
-    </el-input>
-    <el-button
-      v-else
-      class="el-button--dashed m-t-5"
-      style="padding: 5px 10px"
-      @click="showInput">+ 关键字</el-button>
+      @blur="handleInputConfirm"></el-input>
+    <div v-else class="text-button" @click="showInput">添加</div>
   </div>
 </template>
 
@@ -74,7 +68,6 @@ export default {
 <style lang="stylus" scoped>
   .el-tag
     margin-right: 10px;
-    // margin-bottom 5px
 
   .el-input--tiny >>>
     .el-input__inner
@@ -83,5 +76,11 @@ export default {
   .input-new-tag
     width: 90px;
     vertical-align: bottom
-    // margin-bottom 5px
+  .text-button
+    color $color-light-gary
+    cursor pointer
+    // display inline-block
+    padding 4px 0
+    &:hover
+      color $base-blue
 </style>

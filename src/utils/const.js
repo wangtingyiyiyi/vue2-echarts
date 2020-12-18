@@ -399,7 +399,7 @@ export const UV_GROUP = [
     value: 'all'
   }
 ]
-
+// 提数-人群画像中的type-buttons
 export const OPERATOR_BUTTONS = [
   {
     label: '用户',
@@ -413,6 +413,7 @@ export const OPERATOR_BUTTONS = [
   }
 ]
 
+// 提数-小红书中的type-buttons
 export const XIAOHONGSHU_BUTTONS = [
   {
     label: '统计提数',
@@ -513,6 +514,65 @@ export const XIAOHONGSHU_STAT_EXCEL_HEADER = [
   }, {
     label: 'collections',
     prop: 'collections',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'repost',
+    prop: 'repost',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'comments',
+    prop: 'comments',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'likes',
+    prop: 'likes',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }
+]
+
+export const XIAOHONGSHU_INFO_EXCEL_HEADER = [
+  {
+    label: '品牌',
+    prop: 'brand',
+    align: 'left',
+    common: true
+  }, {
+    label: '发布时间',
+    prop: 'postDate',
+    align: 'left',
+    common: true
+  }, {
+    label: 'KOL Name',
+    prop: 'kolName',
+    align: 'left',
+    common: true
+  }, {
+    label: 'title',
+    prop: 'title',
+    align: 'left',
+    common: true
+  }, {
+    label: 'content',
+    prop: 'content',
+    align: 'left',
+    common: true
+  }, {
+    label: 'fans',
+    prop: 'fans',
+    align: 'right',
+    common: true,
+    formatter: 'format'
+  }, {
+    label: 'collections',
+    prop: 'collection',
     align: 'right',
     common: true,
     formatter: 'format'

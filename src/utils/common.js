@@ -100,3 +100,29 @@ export function highlight (keyWord, label) {
   const mes = label.replace(new RegExp(`(${keyWord})`, 'gi'), "<span style='color: #F3B71B; font-weight: inherit'>$1</span>")
   return '<span style="font-weight: inherit">' + mes + '</span>'
 }
+
+// 小红书规则生成方法
+export function setRulesStatementAboutXHS (param) {
+  let keyword = ''
+  let inKeyword = ''
+  let exKeyword = ''
+  if (param.keyword.length) {
+    const w = param.keyword.map(item => {
+      return '<span style="color: #5B8FF9">' + item + '</span>'
+    }).join(' | ')
+    keyword = '包含' + w
+  }
+  if (param.inKeyword.length) {
+    const w = param.inKeyword.map(item => {
+      return '<span style="color: #5ad8a6">' + item + '</span>'
+    }).join(' | ')
+    inKeyword = '同时包含' + w
+  }
+  if (param.exKeyword.length) {
+    const w = param.exKeyword.map(item => {
+      return '<span style="color: #f56c6c">' + item + '</span>'
+    }).join(' | ')
+    exKeyword = '且不包含' + w
+  }
+  return '<span style="color: #878999">' + `${keyword}${inKeyword}${exKeyword}` + '</span>'
+}
