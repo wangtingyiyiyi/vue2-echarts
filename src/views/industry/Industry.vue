@@ -6,10 +6,29 @@
       @industryNodeClick="brandOnSubmit"/>
 
     <Empty-Line />
-
     <div class="industry-tab-wapper">
-      <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
-        <el-tab-pane label="行业概览" name="industry">
+      <!-- <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick"> -->
+        <div class="tab-top-title">
+            行业概览
+            <Button-Group
+        size="tiny"
+        style='position: absolute; right:380px; top:16px;'
+        :options="RANGE_LEVEL"
+        :activeVal="rangeItemVal"
+        @handleClick="handleRangeClick">
+        <div class="filter-label" slot="label">时间维度</div>
+      </Button-Group>
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:26px; top:16px;'
+        :options="GROUP_LEVEL"
+        :activeVal="groupItemVal"
+        @handleClick="handleGroupClick">
+        <div class="filter-label" slot="label">时间粒度</div>
+      </Button-Group>
+          </div>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div ref="refIndustryEchart">
               <Chart-For-Industry
@@ -29,9 +48,13 @@
               :activedSortKey="sortItemVal"
               @handleCate="brandOnSubmit"
               @changeSortItemVal="changeSortItemVal"/>
-        </el-tab-pane>
-
-        <el-tab-pane label="品牌排行" name="brand">
+        </div>
+        <Empty-Line style="background-color: #f8f8f8" />
+        <div class="tab-top-title" style="width: 80px;">
+            品牌排行
+        </div>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div style="display: flex; justify-content: space-between;">
               <Echarts-Buttons
@@ -71,24 +94,8 @@
               :page-size="pageSize"
               :total="brandCount">
             </el-pagination>
-        </el-tab-pane>
-      </el-tabs>
-      <Button-Group
-        size="tiny"
-        style='position: absolute; right:380px; top:16px;'
-        :options="RANGE_LEVEL"
-        :activeVal="rangeItemVal"
-        @handleClick="handleRangeClick">
-        <div class="filter-label" slot="label">时间维度</div>
-      </Button-Group>
-      <Button-Group
-        size="tiny"
-        style='position: absolute; right:26px; top:16px;'
-        :options="GROUP_LEVEL"
-        :activeVal="groupItemVal"
-        @handleClick="handleGroupClick">
-        <div class="filter-label" slot="label">时间粒度</div>
-      </Button-Group>
+        </div>
+      <!-- </el-tabs> -->
     </div>
     <!-- 抽屉 -->
     <Drawer
@@ -328,7 +335,7 @@ export default {
     },
     // 品牌tab 图表
     async getBrandEchart () {
-      if (!this.categoryObj.label || this.activeName !== 'brand') return ''
+      // if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
         cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
         defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
@@ -348,7 +355,7 @@ export default {
     },
     // 品牌tab table
     async getBrandList () {
-      if (!this.categoryObj.label || this.activeName !== 'brand') return ''
+      // if (!this.categoryObj.label || this.activeName !== 'brand') return ''
       const param = {
         cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
         defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
@@ -407,6 +414,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+html,body {
+  height: 100%;
+}
 .industry-tab-wapper
   background-color #ffffff
   position relative
@@ -442,5 +452,19 @@ export default {
 .industry-tab-wapper >>> .el-tabs .el-tabs__content
   min-height calc(100vh - 403px)
   overflow: inherit;
+
+.tab-top-title
+  background-color white
+  z-index 9
+  position sticky
+  top 60px
+  padding-left 25px !important
+  font-size 16px
+  line-height 56px
+  height 56px
+  // border-bottom 1px solid #dcdfe6
+
+.tab-top-content
+  padding 25px
 
 </style>

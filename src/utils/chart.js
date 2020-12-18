@@ -54,6 +54,15 @@ export function xAxisDateSplit (value) {
   }
 }
 
+// 行业的品牌X轴时间 10 20 50 100
+export function xIndustryAxisDateSplit (value, index) {
+  const arr = [9, 19, 49, 99]
+  if (arr.includes(index)) {
+    return index + 1
+  }
+  return ''
+}
+
 // 计算最大值
 export function callMax (arr) {
   const max = Math.ceil(Math.max(...arr) / 9.5 * 10)

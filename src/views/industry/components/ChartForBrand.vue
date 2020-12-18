@@ -4,7 +4,7 @@
 
 <script>
 import { ECHARTS_COLORS, ECHARTS_ACTIVED_PARAM } from '@/utils/const.js'
-import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter } from '@/utils/chart.js'
+import { yAxisFormatter, callMax, computePercent, thousands, brandFormatter, xIndustryAxisDateSplit } from '@/utils/chart.js'
 import chartMixin from '@/utils/mixin/chart.js'
 
 export default {
@@ -86,12 +86,15 @@ export default {
             },
             // x轴文字
             axisLabel: {
-              show: false,
+              show: true,
               interval: 0,
-              rotate: 40,
+              rotate: 0,
               textStyle: {
                 fontSize: '10',
                 color: '#727484'
+              },
+              formatter: function (value, index) {
+                return xIndustryAxisDateSplit(value, index)
               }
             }
           }

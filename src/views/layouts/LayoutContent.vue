@@ -23,5 +23,5 @@ export default {
 .width-collapsed
   margin-left 65px
 .width-not-collapsed
-  margin-left 181px
+  margin-left 201px
 </style>

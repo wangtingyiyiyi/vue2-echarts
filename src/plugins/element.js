@@ -36,6 +36,8 @@ import {
   CheckboxGroup,
   Cascader,
   Tag,
+  Backtop,
+  Icon,
   Divider,
   Tooltip,
   InputNumber
@@ -76,6 +78,8 @@ const components = [
   CheckboxGroup,
   Cascader,
   Tag,
+  Backtop,
+  Icon,
   Divider,
   Tooltip,
   InputNumber

@@ -1,5 +1,6 @@
 <template>
   <div class="scroll-container beauty-scroll" ref="body">
+    <Back-Top />
     <el-header class="header-wapper">
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
       <div class="flex-row">
@@ -23,6 +24,7 @@ import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import LayoutSider from '@/views/layouts/LayoutSider.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
 import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
+import BackTop from '@/components/ElBacktop.vue'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -33,7 +35,7 @@ export default {
     }
   },
   components: {
-    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter
+    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter, BackTop
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED', 'SET_SYS_SCROLLTOP']),
@@ -53,6 +55,7 @@ export default {
 
 <style lang="stylus" scoped>
 .header-wapper
+  border-bottom 1px solid #E7E8F2
   box-shadow 0 2px 8px #f0f1f2;
   width 100vw
   display flex
@@ -79,6 +82,7 @@ export default {
   padding 20px 33px 0 20px
   background-color $base-white
   min-height calc(100vh - 150px)
+  overflow visible
 
 .scroll-container
   height 100vh

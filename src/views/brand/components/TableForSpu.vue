@@ -52,6 +52,16 @@
       </template>
       <template slot-scope="{row}">{{row.salesRate | percentage}}</template>
     </el-table-column>
+    <el-table-column align="right"  min-width="50px">
+      <template #header>
+        <Table-Sort-Button
+          title="销量同比"
+          sortVal="salesRate2"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
+      </template>
+      <template slot-scope="{row}">{{row.salesRate2 | percentage}}</template>
+    </el-table-column>
     <el-table-column align="right" min-width="50px">
       <template #header>
         <Table-Sort-Button
@@ -61,6 +71,16 @@
           @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">{{row.gmvRate | percentage}}</template>
+    </el-table-column>
+    <el-table-column align="right" min-width="50px">
+      <template #header>
+        <Table-Sort-Button
+          title="销售额同比"
+          sortVal="gmvRate2"
+          :activedSortKey="activedSortKey"
+          @handleSort="handleSort"/>
+      </template>
+      <template slot-scope="{row}">{{row.gmvRate2 | percentage}}</template>
     </el-table-column>
     <el-table-column align="right"  min-width="45">
       <template #header>

@@ -7,8 +7,28 @@
     <Empty-Line />
 
     <div class="brand-tab-wapper">
-      <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick">
-        <el-tab-pane label="品牌概览" name="brand">
+      <!-- <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick"> -->
+        <div class="tab-top-title">
+            品牌概览
+            <Button-Group
+        size="tiny"
+        style='position: absolute; right:380px; top:16px;'
+        :options="RANGE_LEVEL"
+        :activeVal="rangeItemVal"
+        @handleClick="handleRangeClick">
+        <div class="filter-label" slot="label">时间维度</div>
+      </Button-Group>
+      <Button-Group
+        size="tiny"
+        style='position: absolute; right:26px; top:16px;'
+        :options="GROUP_LEVEL"
+        :activeVal="groupItemVal"
+        @handleClick="handleGroupClick">
+        <div class="filter-label" slot="label">时间粒度</div>
+      </Button-Group>
+          </div>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <div class="tab-top-content">
             <div v-show="showEmpty">
               <Title class="m-b-12" title="总销售趋势"/>
               <Empty-Icon />
@@ -51,8 +71,13 @@
                 :paramOfBrandTable="paramOfBrandTable"
                 @changeSortItemVal="changeSortItemVal"/>
             </div>
-        </el-tab-pane>
-        <el-tab-pane label="SPU" name="spu">
+        </div>
+        <Empty-Line style="background-color: #f8f8f8" />
+        <div class="tab-top-title" style="width: 80px;">
+            SPU
+          </div>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <div class="tab-top-content">
           <Empty-Icon v-show="showEmpty"/>
           <div v-show="!showEmpty">
             <div class="flex-between m-b-10">
@@ -81,25 +106,8 @@
               @current-change="changeSpuPage">
             </el-pagination>
           </div>
-        </el-tab-pane>
-      </el-tabs>
-
-      <Button-Group
-        size="tiny"
-        style='position: absolute; right:380px; top:16px;'
-        :options="RANGE_LEVEL"
-        :activeVal="rangeItemVal"
-        @handleClick="handleRangeClick">
-        <div class="filter-label" slot="label">时间维度</div>
-      </Button-Group>
-      <Button-Group
-        size="tiny"
-        style='position: absolute; right:26px; top:16px;'
-        :options="GROUP_LEVEL"
-        :activeVal="groupItemVal"
-        @handleClick="handleGroupClick">
-        <div class="filter-label" slot="label">时间粒度</div>
-      </Button-Group>
+        </div>
+      <!-- </el-tabs> -->
     </div>
   </div>
 </template>
@@ -290,7 +298,7 @@ export default {
     },
     // 品牌 table
     async getTableForBrand () {
-      if (!this.activeBrand || this.activeName !== 'brand') return ''
+      // if (!this.activeBrand || this.activeName !== 'brand') return ''
       const param = {
         range: this.rangeItemVal,
         particle: this.groupItemVal,
@@ -313,7 +321,7 @@ export default {
     },
     // spu table
     async getTableForSpu () {
-      if (!this.activeBrand || this.activeName !== 'spu') return ''
+      // if (!this.activeBrand || this.activeName !== 'spu') return ''
       const param = {
         range: this.rangeItemVal,
         cateList: [this.cateList],
@@ -404,4 +412,19 @@ export default {
   justify-content space-between
   margin-bottom 5px
   margin-top 14px
+
+.tab-top-title
+  background-color white
+  z-index 9
+  position sticky
+  top 60px
+  padding-left 25px !important
+  font-size 16px
+  line-height 56px
+  height 56px
+  // border-bottom 1px solid #dcdfe6
+
+.tab-top-content
+  padding 25px
+
 </style>

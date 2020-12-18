@@ -1,5 +1,5 @@
 <template>
-  <el-aside :class="[collapsed ? 'width-63' : 'width-180', 'menu-asider']">
+  <el-aside :class="[collapsed ? 'width-63' : 'width-200', 'menu-asider']">
     <el-menu
       :default-active="activeMenu"
       :collapse-transition="false"
@@ -59,6 +59,8 @@ export default {
 
 .width-180
   width 180px !important
+.width-200
+  width 200px !important
 .width-63
   width 64px !important
 .menu-asider
@@ -82,6 +84,6 @@ export default {
         display inline-block
         position absolute
         top 21px
-        left 178px
+        left 198px
 
 </style>
