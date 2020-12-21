@@ -321,6 +321,7 @@ export default {
     },
     // spu table
     async getTableForSpu () {
+      if (!this.activeBrand) return
       // if (!this.activeBrand || this.activeName !== 'spu') return ''
       const param = {
         range: this.rangeItemVal,
