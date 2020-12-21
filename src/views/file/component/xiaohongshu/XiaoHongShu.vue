@@ -3,16 +3,24 @@
     <Brand-Tags
       :isLoading="isLoading"
       @handleCheckRules="handleCheckRules"/>
-    <Type-Buttons
+    <!-- <Type-Buttons
       class="m-b-24"
       :buttons="XIAOHONGSHU_BUTTONS"
       :activedType="currentPartComponent"
-      @handleChangeActiveType="handleChangeActiveType"/>
+      @handleChangeActiveType="handleChangeActiveType"/> -->
+    <el-radio-group v-model="currentPartComponent" class="m-b-24">
+      <el-radio
+        v-for="item in XIAOHONGSHU_BUTTONS"
+        :key="item.value"
+        :label="item.value"
+        @change="handleChangeActiveType">{{item.label}}</el-radio>
+    </el-radio-group>
     <component
       :is="currentPartComponent"
       @setPreveiwParam="setPreveiwParam"
       @setExcelHeader="setExcelHeader"></component>
     <Preview-Table-Title
+      width="1138px"
       :tableTotal="tableTotal"
       :exportDisabled="showDownloadBtn"
       @handleExportExcel="handleExportExcel"/>

@@ -1,12 +1,12 @@
 <template>
-  <div class="flex-between-row m-t-35 m-b-12">
+  <div class="flex-between-row m-t-35 m-b-12" :style="{width: width}">
     <div class="flex-row">
       <Title title="导出预览" backgroundColor="#5AD8A6"/>
       <div class="text-second m-l-18" v-if="tableTotal !== 0">当前共有{{tableTotal | format}}条数据</div>
       <div class="text-second" v-if="tableTotal > max">，</div>
       <div :style="{color: errorColor}" v-if="tableTotal > max">已超出最大限制数量({{max | format}})</div>
     </div>
-    <ExportButton
+    <Export-Button
       v-if="showButton"
       :svgName="isDisabled ? 'exportingNot' : 'exporting'"
       :isDisabled="isDisabled"
@@ -45,6 +45,10 @@ export default {
     errorColor: {
       type: String,
       default: '#f56c6c'
+    },
+    width: {
+      type: String,
+      default: '700px'
     }
   },
   computed: {
@@ -68,7 +72,6 @@ export default {
 <style lang="stylus" scoped>
 .flex-between-row
   display flex
-  width 700px
   justify-content space-between
   align-items center
 
