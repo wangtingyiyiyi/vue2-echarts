@@ -493,13 +493,15 @@ export const XIAOHONGSHU_STAT_EXCEL_HEADER = [
     label: '目标',
     prop: 'brand',
     align: 'left'
-  }, {
-    label: '联名',
-    prop: 'inKeyword',
-    align: 'left',
-    common: true,
-    formatter: 'format'
-  }, {
+  },
+  //  {
+  //   label: '联名',
+  //   prop: 'inKeyword',
+  //   align: 'left',
+  //   common: true,
+  //   formatter: 'format'
+  // },
+  {
     label: '贴子数',
     prop: 'postCount',
     align: 'right',
@@ -550,7 +552,7 @@ export const XIAOHONGSHU_INFO_EXCEL_HEADER = [
     align: 'left',
     common: true
   }, {
-    label: 'KOL Name',
+    label: 'KOL',
     prop: 'kolName',
     align: 'left',
     common: true

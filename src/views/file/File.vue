@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       showDownloadBtn: false,
-      activeTab: 'XiaoHongShu',
+      activeTab: 'Industry',
       tabs: FILE_TABS,
       loadingProgress: 0
     }

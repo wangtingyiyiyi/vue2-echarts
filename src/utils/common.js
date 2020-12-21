@@ -103,9 +103,13 @@ export function highlight (keyWord, label) {
 
 // 小红书规则生成方法
 export function setRulesStatementAboutXHS (param) {
+  let brand = ''
   let keyword = ''
   let inKeyword = ''
   let exKeyword = ''
+  if (param.brand) {
+    brand = '<span style="color: #303133">' + param.brand + ':</span>'
+  }
   if (param.keyword.length) {
     const w = param.keyword.map(item => {
       return '<span style="color: #5B8FF9">' + item + '</span>'
@@ -124,5 +128,5 @@ export function setRulesStatementAboutXHS (param) {
     }).join(' | ')
     exKeyword = '且不包含' + w
   }
-  return '<span style="color: #878999">' + `${keyword}${inKeyword}${exKeyword}` + '</span>'
+  return '<span style="color: #878999">' + `${brand}${keyword}${inKeyword}${exKeyword}` + '</span>'
 }

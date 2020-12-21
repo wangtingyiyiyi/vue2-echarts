@@ -7,6 +7,7 @@
       <el-button
         type="primary"
         style="padding: 7px 25px; margin-bottom: 5px"
+        :disabled="disabledOfCheck"
         @click="handleCheckRules">确认规则</el-button>
       <Case/>
     <el-table
@@ -21,6 +22,18 @@
         type="index"
         width="50">
         <template slot-scope="{row, $index}">{{rulesList.length - $index}}</template>
+      </el-table-column>
+      <el-table-column
+        width="180">
+        <template #header>
+          <Table-Header-Tooltip label="TAG" content="规则的唯一标识,应确保该列的唯一性"/>
+        </template>
+        <template slot-scope="{row, $index}">
+          <Dynamic-Input
+            :value="row.brand"
+            :index="$index"
+            @handleInputConfirm="handleInputConfirm"/>
+        </template>
       </el-table-column>
       <el-table-column
         width="180">
@@ -87,22 +100,39 @@
 <script>
 import TableHeaderTooltip from '@/views/file/component/portrait/TableHeaderTooltip.vue'
 import DynamicTags from '@/views/file/component/xiaohongshu/DynamicTags.vue'
+import DynamicInput from '@/views/file/component/xiaohongshu/DynamicInput.vue'
 import Case from '@/views/file/component/xiaohongshu/Case.vue'
 import { setRulesStatementAboutXHS } from '@/utils/common.js'
 
 export default {
   name: 'ShopTags',
-  components: { TableHeaderTooltip, DynamicTags, Case },
+  components: { TableHeaderTooltip, DynamicTags, Case, DynamicInput },
+  props: {
+    isLoading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
-      showCase: false,
+      inputVisible: false,
       rulesList: []
+    }
+  },
+  computed: {
+    disabledOfCheck () {
+      const keywordsLen = this.rulesList.map(item => item.keyword).flat().length
+      const brandsLen = this._.compact(this.rulesList.map(item => item.brand)).length // 数组去掉假值
+      return keywordsLen === 0 || brandsLen === 0 || this.isLoading
     }
   },
   methods: {
     setRulesStatement: setRulesStatementAboutXHS,
     handleAddRules () {
       this.rulesList.unshift({ brand: '', keyword: [], inKeyword: [], exKeyword: [] })
+    },
+    handleInputConfirm (value, index) {
+      this.rulesList[index].brand = value
     },
     handlePushKeyWord (index, key, value) {
       this.rulesList[index][key].push(value)
@@ -119,3 +149,12 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .text-button
+    color $color-light-gary
+    cursor pointer
+    padding 4px 0
+    &:hover
+      color $base-blue
+</style>

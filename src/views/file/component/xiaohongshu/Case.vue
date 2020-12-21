@@ -14,6 +14,13 @@
       style="margin-bottom: 20px;">
       <el-table-column
         width="220"
+        prop="brand">
+        <template #header>
+          <Table-Header-Tooltip label="TAG" content="规则的唯一标识,应确保该列的唯一性"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="220"
         prop="keyword">
         <template #header>
           <Table-Header-Tooltip label="关键词" content="一般为品牌的中文名或者英文名"/>
@@ -29,7 +36,7 @@
           <Table-Header-Tooltip label="关联关键词" content="可以为关键词的联名品牌,相关品类等与关键词相关的词语"/>
         </template>
         <template slot-scope="{row}">
-          <div v-for="item in row.inKeyword" :key="item"><el-tag type="info">{{item}}</el-tag></div>
+          <div v-for="item in row.inKeyword" :key="item"><el-tag type="info" class="m-b-5">{{item}}</el-tag></div>
         </template>
       </el-table-column>
       <el-table-column
@@ -39,7 +46,7 @@
           <Table-Header-Tooltip label="排除词" content="在满足关键词或关联关键词的情况下,需要排除的一些关键字"/>
         </template>
         <template slot-scope="{row}">
-          <div v-for="item in row.exKeyword" :key="item"><el-tag type="info">{{item}}</el-tag></div>
+          <div v-for="item in row.exKeyword" :key="item"><el-tag type="info" class="m-b-5">{{item}}</el-tag></div>
         </template>
       </el-table-column>
       <el-table-column
@@ -63,13 +70,10 @@ export default {
       showCase: false,
       caseTable: [
         {
-          keyword: ['完美日记', 'PERFECT DIARY'],
-          inKeyword: ['粉底'],
-          exKeyword: []
-        }, {
-          keyword: ['花西子'],
-          inKeyword: ['粉底'],
-          exKeyword: ['苗族印象']
+          brand: ['君乐宝'],
+          keyword: ['君乐宝'],
+          inKeyword: ['奶粉'],
+          exKeyword: ['孕妇', '妈妈']
         }
       ]
     }

@@ -4,3 +4,7 @@ import { post } from '@/plugins/axios'
 export function getXhsPreview (params) {
   return post('xhs/preview', params)
 }
+
+export function getXhsPreviewCount (params) {
+  return post('xhs/preview/count', params)
+}

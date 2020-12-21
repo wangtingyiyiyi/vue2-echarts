@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <Title class="m-b-12" title="添加规则"/> -->
-    <!-- <Tips /> -->
-    <Brand-Tags @handleCheckRules="handleCheckRules"/>
+    <Brand-Tags
+      :isLoading="isLoading"
+      @handleCheckRules="handleCheckRules"/>
     <Type-Buttons
       class="m-b-24"
       :buttons="XIAOHONGSHU_BUTTONS"
@@ -32,7 +32,7 @@
 <script>
 import componentMixin from '@/views/file/component/xiaohongshu/component.js'
 import { XIAOHONGSHU_BUTTONS } from '@/utils/const.js'
-import { getXhsPreview } from '@/api/file.js'
+import { getXhsPreview, getXhsPreviewCount } from '@/api/file.js'
 import { downloadFile } from '@/utils/common.js'
 import downloadCallbackMixin from '@/utils/mixin/downloadCallback.js'
 
@@ -51,7 +51,7 @@ export default {
       previewData: [],
       loadingProgress: 0,
       isLoading: false,
-      emptyMess: '请添加关键字',
+      emptyMess: '请配置小红书导数规则',
       typeInfo: {
         Info: '详情',
         Stat: '统计'
@@ -67,11 +67,15 @@ export default {
     },
     handleCheckRules (rulesList) {
       this.rulesList = rulesList
-      this.getStatPreviewTable()
+      this.getTotal().then(() => {
+        this.getStatPreviewTable()
+      })
     },
     setPreveiwParam (form) {
       this.formParam = form
-      this.getStatPreviewTable()
+      this.getTotal().then(() => {
+        this.getStatPreviewTable()
+      })
     },
     handleExportExcel (form) {
       const brandName = this.rulesList.map(item => item.brand).join('|')
@@ -87,24 +91,24 @@ export default {
       downloadFile(option)
     },
     async getStatPreviewTable () {
-      console.info(this.rulesList)
       if (this.rulesList.length === 0) return
-      const keywords = this.rulesList.map(item => item.keyword).flat()
-      if (keywords.length === 0) {
-        this.emptyMess = '请添加关键字'
-        return
-      }
-      this.emptyMess = ''
-      this.isLoading = true
-      this.previewData = []
-      this.tableTotal = 0
       const res = await getXhsPreview(Object.assign({ dataList: this.rulesList }, this.formParam))
       this.isLoading = false
       if (res.code === 200) {
         this.previewData = res.result
-        this.tableTotal = 1
       } else {
         this.emptyMess = '预览失败'
+      }
+    },
+    async getTotal () {
+      if (this.rulesList.length === 0) return
+      this.tableTotal = 0
+      this.emptyMess = ''
+      this.previewData = []
+      this.isLoading = true
+      const res = await getXhsPreviewCount(Object.assign({ dataList: this.rulesList }, this.formParam))
+      if (res.code === 200) {
+        this.tableTotal = res.result || 0
       }
     }
   }
