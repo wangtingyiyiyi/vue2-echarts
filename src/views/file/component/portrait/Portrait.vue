@@ -5,6 +5,7 @@
     <el-divider></el-divider>
     <Type-Buttons
       class="m-b-24"
+      :buttons="OPERATOR_BUTTONS"
       :activedType="currentPartComponent"
       @handleChangeActiveType="handleChangeActiveType"/>
     <component

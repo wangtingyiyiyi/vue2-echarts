@@ -1,5 +1,5 @@
 import ShopTags from '@/views/file/component/portrait/ShopTags.vue'
-import TypeButtons from '@/views/file/component/portrait/TypeButtons.vue'
+import TypeButtons from '@/views/file/component/TypeButtons.vue'
 import Persona from '@/views/file/component/portrait/PartPersona.vue'
 import Mau from '@/views/file/component/portrait/PartMau.vue'
 import Phone from '@/views/file/component/portrait/PartPhone.vue'
