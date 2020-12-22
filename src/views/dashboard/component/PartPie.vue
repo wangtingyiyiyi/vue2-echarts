@@ -1,11 +1,11 @@
 <template>
   <div>
-    home page
+    饼图
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Home'
+  name: 'PartPie'
 }
 </script>

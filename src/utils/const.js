@@ -493,15 +493,7 @@ export const XIAOHONGSHU_STAT_EXCEL_HEADER = [
     label: '目标',
     prop: 'brand',
     align: 'left'
-  },
-  //  {
-  //   label: '联名',
-  //   prop: 'inKeyword',
-  //   align: 'left',
-  //   common: true,
-  //   formatter: 'format'
-  // },
-  {
+  }, {
     label: '贴子数',
     prop: 'postCount',
     align: 'right',
@@ -598,3 +590,75 @@ export const XIAOHONGSHU_INFO_EXCEL_HEADER = [
     formatter: 'format'
   }
 ]
+
+export const DASHBOARD_INDUSTRY = [
+  {
+    icon: 'customize',
+    label: '自定义行业'
+  }, {
+    icon: 'overview',
+    label: '行业概览'
+  }, {
+    icon: 'ranking',
+    label: '品牌排行'
+  }, {
+    icon: 'spu',
+    label: '行业SPU'
+  }
+]
+
+export const DASHBOARD_BRAND = [
+  {
+    icon: 'customize',
+    label: '品牌概览'
+  }, {
+    icon: 'spu',
+    label: '品牌SPU'
+  }
+]
+
+export const DASHBOARD_OVERVIEW = [
+  {
+    label: '月销量',
+    labelKey: 'sales',
+    secondLabel: '上周期',
+    secondKey: 'lastSales',
+    orderKey: 'salesSort'
+  }, {
+    label: '月销售额',
+    labelKey: 'gmv',
+    secondLabel: '上周期',
+    secondKey: 'lastGmv',
+    orderKey: 'gmvSort'
+  }, {
+    label: '月品牌数',
+    labelKey: 'brand',
+    secondLabel: '上周期',
+    secondKey: 'lastBrand',
+    orderKey: 'brandSort'
+  }, {
+    label: '月店铺数',
+    labelKey: 'shop',
+    secondLabel: '上周期',
+    secondKey: 'lastShop',
+    orderKey: 'shopSort'
+  }
+]
+
+export const MOCK_DASHBOARD_OVERVIEW = {
+  category: '全行业',
+  date: new Date(),
+  update: new Date(),
+  sales: 39273122,
+  lastSales: 222212,
+  salesSort: 1,
+  gmv: 382732,
+  lastGmv: 9121,
+  gmvSort: -1,
+  brand: 19272,
+  lastBrand: 8273,
+  brandSort: -1,
+  shop: 71826,
+  lastShop: 19278,
+  shopSort: 1
+}

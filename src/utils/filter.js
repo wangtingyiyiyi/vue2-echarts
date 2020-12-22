@@ -23,9 +23,15 @@ const percentage = function (value) {
   if (isNaN(value) || value === 'Infinity') { return 'NaN' }
   return (value * 100).toFixed(2) + '%'
 }
+// 万进制
+const million = function (value) {
+  if (isNaN(value) || value === 'Infinity') { return 'NaN' }
+  return (value / 10000).toFixed(1)
+}
 
 export default {
   format,
   moment,
-  percentage
+  percentage,
+  million
 }
