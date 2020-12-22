@@ -137,6 +137,7 @@ export default {
             show: true,
             interval: 0,
             rotate: 0,
+            fontFamily: 'Arial',
             textStyle: {
               fontSize: '12',
               color: '#878999'

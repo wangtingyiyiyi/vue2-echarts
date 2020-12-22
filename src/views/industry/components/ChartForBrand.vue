@@ -89,8 +89,9 @@ export default {
               show: true,
               interval: 0,
               rotate: 0,
+              fontFamily: 'Arial',
               textStyle: {
-                fontSize: '10',
+                fontSize: '12',
                 color: '#727484'
               },
               formatter: function (value, index) {

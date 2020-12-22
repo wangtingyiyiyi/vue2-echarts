@@ -6,11 +6,19 @@
     cell-class-name="tableCellClass"
     ref="table"
     style="width: 100%; min-height: 100%">
-    <!-- <el-table-column
-      prop="orderNum"
+    <el-table-column
       min-width="30"
       label="排名">
-    </el-table-column> -->
+      <template slot-scope="scope">
+        <span >{{ scope.row.orderNum }}</span>
+        <i style="margin-left: 10px; color: #5b8ff9;" :style="{color: scope.row.preOrderNum < scope.row.orderNum ? '#5AD8A6' : '#5b8ff9'}" :class="[scope.row.preOrderNum < scope.row.orderNum ? 'el-icon-caret-bottom' : 'el-icon-caret-top']"></i>
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="preOrderNum"
+      min-width="30"
+      label="上期">
+    </el-table-column>
     <el-table-column prop="brand" label="品牌">
       <template slot-scope="{row}">
         <Text-Button
