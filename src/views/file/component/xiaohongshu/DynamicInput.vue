@@ -7,7 +7,8 @@
       ref="saveInput"
       size="mini"
       @input="handleInput"
-      @keyup.enter.native="handleInputConfirm"
+      @keyup.enter.native="$event.target.blur"
+      @focus="handleFocus"
       @blur="handleInputConfirm"></el-input>
     <div
       v-if="!inputVisible && value"
@@ -45,11 +46,15 @@ export default {
         this.$refs.saveInput.$refs.input.focus()
       })
     },
+    handleFocus () {
+      this.$emit('handleInputFocus', event.target.value, this.index)
+    },
     handleInputConfirm () {
       this.inputVisible = false
+      this.$emit('handleInputConfirm', event.target.value, this.index)
     },
     handleInput () {
-      this.$emit('handleInputConfirm', event.target.value, this.index)
+      this.$emit('handleInput', event.target.value, this.index)
     }
   }
 }

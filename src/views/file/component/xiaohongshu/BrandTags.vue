@@ -32,7 +32,9 @@
           <Dynamic-Input
             :value="row.brand"
             :index="$index"
-            @handleInputConfirm="handleInputConfirm"/>
+            @handleInputConfirm="handleInputConfirm"
+            @handleInputFocus="handleInputFocus"
+            @handleInput="handleInput"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -116,7 +118,8 @@ export default {
   data () {
     return {
       inputVisible: false,
-      rulesList: []
+      rulesList: [],
+      brandInKeyword: 0
     }
   },
   computed: {
@@ -132,6 +135,16 @@ export default {
       this.rulesList.unshift({ brand: '', keyword: [], inKeyword: [], exKeyword: [] })
     },
     handleInputConfirm (value, index) {
+      if (this.brandInKeyword < 0 && value) {
+        this.rulesList[index].keyword.push(value)
+      } else if (this.brandInKeyword >= 0 && value) {
+        this.rulesList[index].keyword.splice(this.brandInKeyword, 1, value)
+      }
+    },
+    handleInputFocus (value, index) {
+      this.brandInKeyword = this.rulesList[index].keyword.indexOf(value)
+    },
+    handleInput (value, index) {
       this.rulesList[index].brand = value
     },
     handlePushKeyWord (index, key, value) {
