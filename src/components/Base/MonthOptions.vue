@@ -48,14 +48,16 @@ export default {
 
 <style lang="stylus" scoped>
 .sup-mini-select
-  width 100px
+  width 80px
   height 22px
   >>> .el-input
     height 22px
     .el-input__inner
       height 22px
       font-size 14px
+      padding 0 0 0 6px
     .el-input__icon
+      width 14px
       height 19px
       line-height 19px
 

@@ -1,6 +1,11 @@
 <template>
-  <div class="sort-button"  @click="handleSort">{{title}}
-    <Svg-Icon icon-class="descending" :class="[activedSortKey == this.sortVal ? 'active-sort' : '']"/>
+  <div class="sort-button">
+    <slot name="prepend"></slot>
+    <span  @click="handleSort">{{title}}</span>
+    <Svg-Icon
+      icon-class="descending"
+      :class="[activedSortKey == this.sortVal ? 'active-sort' : '']"
+      @click="handleSort"/>
   </div>
 </template>
 
@@ -32,6 +37,9 @@ export default {
 <style lang="stylus" scoped>
 .sort-button
   cursor pointer
+  display flex
+  align-items center
+  justify-content flex-end
 
 .active-sort
   color $base-blue

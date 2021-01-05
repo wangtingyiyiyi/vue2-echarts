@@ -12,7 +12,7 @@
             行业概览
             <Button-Group
         size="tiny"
-        style='position: absolute; right:380px; top:16px;'
+        style='position: absolute; right:480px; top:16px;'
         :options="RANGE_LEVEL"
         :activeVal="rangeItemVal"
         @handleClick="handleRangeClick">
@@ -20,14 +20,19 @@
       </Button-Group>
       <Button-Group
         size="tiny"
-        style='position: absolute; right:26px; top:16px;'
+        style='position: absolute; right:126px; top:16px;'
         :options="GROUP_LEVEL"
         :activeVal="groupItemVal"
         @handleClick="handleGroupClick">
         <div class="filter-label" slot="label">时间粒度</div>
       </Button-Group>
+      <Month-Options
+      style='position: absolute; right:26px;'
+                :monthOption="monthOption"
+                :selectdMonth="selectdMonth"
+                @handleSelectdMonth="handleSelectdMonth"/>
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
         <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div ref="refIndustryEchart">
@@ -37,10 +42,10 @@
             </div>
             <div class="table-title-wapper">
               <Title title="按子品类展开"/>
-              <Month-Options
+              <!-- <Month-Options
                 :monthOption="monthOption"
                 :selectdMonth="selectdMonth"
-                @handleSelectdMonth="handleSelectdMonth"/>
+                @handleSelectdMonth="handleSelectdMonth"/> -->
             </div>
             <Table-For-Industry
               :tableData="industryTableData"
@@ -53,7 +58,7 @@
         <div class="tab-top-title" style="width: 80px;">
             品牌排行
         </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
         <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div style="display: flex; justify-content: space-between;">
@@ -61,10 +66,10 @@
                 :activeVal="viewItemVal"
                 style=""
                 @handleEchartsClick="handleEchartsClick"/>
-              <Month-Options
+              <!-- <Month-Options
                 :monthOption="monthOption"
                 :selectdMonth="chartSelectMonth"
-                @handleSelectdMonth="handleChartSelectdMonth"/>
+                @handleSelectdMonth="handleChartSelectdMonth"/> -->
             </div>
             <div ref="refBrandChart">
               <Chart-For-Brand
@@ -74,15 +79,16 @@
             </div>
             <div class="table-title-wapper">
               <Title title="按品牌展开"/>
-              <Month-Options
+              <!-- <Month-Options
                 :monthOption="monthOption"
                 :selectdMonth="selectdMonth"
-                @handleSelectdMonth="handleSelectdMonth"/>
+                @handleSelectdMonth="handleSelectdMonth"/> -->
             </div>
             <Table-For-Brand
               :tableData="brandTableData"
               :isLoading="isLoadingBrandTable"
               :activedSortKey="sortItemVal"
+              @changeGmvFilter="changeGmvFilter"
               @changeSortItemVal="changeSortItemVal"/>
             <el-pagination
               v-show="brandCount !== 0"
@@ -135,11 +141,14 @@ export default {
   directives: { permission },
   data () {
     return {
+      optionValue: '',
       activeName: 'industry',
       rangeItemVal: 'one_year',
       groupItemVal: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
+      gmvStart: null,
+      gmvEnd: null,
       drawerShow: false,
       categoryForm: {},
       monthOption: [],
@@ -270,19 +279,28 @@ export default {
     handleSelectdMonth (val) {
       this.selectdMonth = val
       this.page = 1
+      this.chartSelectMonth = val
+      this.getBrandEchart()
       this.getIndustryFlatList()
       this.getBrandList()
     },
     // 品牌堆积图修改montth
-    handleChartSelectdMonth (val) {
-      this.chartSelectMonth = val
-      this.getBrandEchart()
-    },
+    // handleChartSelectdMonth (val) {
+    //   this.chartSelectMonth = val
+    //   this.getBrandEchart()
+    // },
     // table 排序
     changeSortItemVal (val) {
       this.sortItemVal = val
       this.page = 1
       this.getIndustryFlatList()
+      this.getBrandList()
+    },
+    changeGmvFilter (form) {
+      console.info(form)
+      this.gmvEnd = form.gmvEnd
+      this.gmvStart = form.gmvStart
+      this.page = 1
       this.getBrandList()
     },
     // 品牌tab table 翻页
@@ -364,7 +382,9 @@ export default {
         month: this.selectdMonth,
         sort: this.sortItemVal,
         page: this.page,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        gmvEnd: this.gmvEnd,
+        gmvStart: this.gmvStart
       }
       this.isLoadingBrandTable = true
       const res = await getIndustryBrandTable(param)
@@ -448,6 +468,8 @@ html,body {
 .pagination-wapper
   text-align center
   margin 15px 0
+  >>> .el-pager li:not(.disabled).active
+    background-color: #5b8ff9;
 
 .industry-tab-wapper >>> .el-tabs .el-tabs__content
   min-height calc(100vh - 403px)
@@ -466,5 +488,17 @@ html,body {
 
 .tab-top-content
   padding 25px
+
+// .sup-mini-select
+//   width 100px
+//   height 22px
+//   >>> .el-input
+//     height 22px
+//     .el-input__inner
+//       height 22px
+//       font-size 14px
+//     .el-input__icon
+//       height 19px
+//       line-height 19px
 
 </style>

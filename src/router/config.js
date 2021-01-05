@@ -6,7 +6,7 @@ const Industry = () => import('../views/industry/Industry.vue')
 const Brand = () => import('../views/brand/Brand.vue')
 const File = () => import('../views/file/File.vue')
 const Page404 = () => import('../views/error/404.vue')
-const Dashboard = () => import('../views/dashboard/Dashboard.vue')
+// const Dashboard = () => import('../views/dashboard/Dashboard.vue')
 
 export const routes = [
   {
@@ -21,15 +21,15 @@ export const routes = [
     },
     component: CommonLayoutView,
     children: [
-      {
-        path: 'dashboard',
-        name: '工作台',
-        meta: {
-          svgIcon: 'dashboard',
-          scrollTop: Infinity
-        },
-        component: Dashboard
-      },
+      // {
+      //   path: 'dashboard',
+      //   name: '工作台',
+      //   meta: {
+      //     svgIcon: 'dashboard',
+      //     scrollTop: Infinity
+      //   },
+      //   component: Dashboard
+      // },
       {
         path: 'industry',
         name: '行业',

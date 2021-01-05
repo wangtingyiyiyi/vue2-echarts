@@ -104,6 +104,9 @@ export default {
       this.isLoading = false
       if (res.code === 200) {
         this.previewData = res.result
+        if (res.result.length === 0) {
+          this.emptyMess = '请求到0条数据'
+        }
       } else {
         this.emptyMess = '预览失败'
       }

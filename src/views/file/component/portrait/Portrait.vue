@@ -166,6 +166,8 @@ export default {
       if (res.code === 200) {
         this.previewData = res.result
         this.tableTotal = res.total
+      } else {
+        this.$message.error('请求预览失败')
       }
     }
   }

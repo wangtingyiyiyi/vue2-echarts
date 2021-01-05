@@ -128,6 +128,9 @@ export default {
                 type: 'dotted'
               }
             },
+            // tooltip: {
+            //   backgroundColor: 'rgba(2,255,255,0.8)'
+            // },
             axisLabel: {
               formatter: function (value) {
                 return yAxisFormatter(value)

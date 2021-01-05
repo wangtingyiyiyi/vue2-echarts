@@ -3,11 +3,11 @@
     <div class="bg-white flex-row">
       <Border class="m-r-30 part1">
         <Title-Icon slot='part1' icon="menu" title="行业流量" class="title-icon"/>
-        <Module-List slot="part1" :list="DASHBOARD_INDUSTRY"/>
+        <Module-List slot="part2" :list="DASHBOARD_INDUSTRY"/>
       </Border>
       <Border class="m-r-30 part2">
         <Title-Icon slot='part1' icon="brand" title="品牌数据" class="title-icon"/>
-        <Module-List slot="part1" :list="DASHBOARD_BRAND"/>
+        <Module-List slot="part2" :list="DASHBOARD_BRAND"/>
       </Border>
       <Border class="part3">
         <Part-Frequency slot='part1' label="常搜行业" labelKey="category" class="m-b-12" :list="frequencyCate"/>
@@ -18,10 +18,20 @@
     <Part-Overview class="bg-white"/>
     <Empty-Line />
 
-    <div class="flex-row">
-      <div class="bg-white">11</div>
-      <div class="bg-white">22</div>
-      <div class="bg-white">33</div>
+    <div class="flex-row ">
+      <div class="bg-white" style="flex: 1">
+        <Chart-Part-Pie
+                style="width: 300px; height: 300px;"/>
+        <Chart-Part-Bar
+                style="width: 300px; height: 300px;"/>
+      </div>
+      <div class="bg-white" style="flex: 1">
+        <Table-For-Dashboard></Table-For-Dashboard>
+      </div>
+      <div class="bg-white" style="flex: 1">
+        <Table-For-Dashboard></Table-For-Dashboard>
+        <Table-For-Dashboard></Table-For-Dashboard>
+      </div>
     </div>
   </div>
 </template>

@@ -14,10 +14,10 @@
     </el-table-column>
     <el-table-column
       prop="shopname"
-      min-width="50"
+      min-width="55"
       label="店铺名称">
     </el-table-column>
-    <el-table-column align="right" min-width="60px">
+    <el-table-column align="right" min-width="55px">
       <template #header>
         <Table-Sort-Button
           title="销量"
@@ -42,7 +42,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right"  min-width="50px">
+    <el-table-column align="right"  min-width="45px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"

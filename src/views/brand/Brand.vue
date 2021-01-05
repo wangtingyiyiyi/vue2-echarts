@@ -12,7 +12,7 @@
             品牌概览
             <Button-Group
         size="tiny"
-        style='position: absolute; right:380px; top:16px;'
+        style='position: absolute; right:480px; top:16px;'
         :options="RANGE_LEVEL"
         :activeVal="rangeItemVal"
         @handleClick="handleRangeClick">
@@ -20,14 +20,19 @@
       </Button-Group>
       <Button-Group
         size="tiny"
-        style='position: absolute; right:26px; top:16px;'
+        style='position: absolute; right:126px; top:16px;'
         :options="GROUP_LEVEL"
         :activeVal="groupItemVal"
         @handleClick="handleGroupClick">
         <div class="filter-label" slot="label">时间粒度</div>
       </Button-Group>
+      <Month-Options
+      style='position: absolute; right:26px;'
+                :monthOption="monthOption"
+                :selectdMonth="selectdMonth"
+                @handleSelectdMonth="handleMonth"/>
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
         <div class="tab-top-content">
             <div v-show="showEmpty">
               <Title class="m-b-12" title="总销售趋势"/>
@@ -52,10 +57,10 @@
 
               <div class="table-title-wapper m-b-12">
                 <Title title="按品牌展开"/>
-                <Month-Options
+                <!-- <Month-Options
                   :monthOption="monthOption"
                   :selectdMonth="selectdMonth"
-                  @handleSelectdMonth="handleMonth"/>
+                  @handleSelectdMonth="handleMonth"/> -->
               </div>
 
               <Brand-Table-Brands
@@ -76,7 +81,7 @@
         <div class="tab-top-title" style="width: 80px;">
             SPU
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 9; position: sticky; top: 117px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
         <div class="tab-top-content">
           <Empty-Icon v-show="showEmpty"/>
           <div v-show="!showEmpty">
@@ -85,10 +90,10 @@
                 :brands="brandList"
                 :activeBrand="activeBrand"
                 @changeActiveBrand="changeActiveBrand"/>
-                <Month-Options
+                <!-- <Month-Options
                 :monthOption="monthOption"
                 :selectdMonth="selectdMonth"
-                @handleSelectdMonth="handleTableMonth"/>
+                @handleSelectdMonth="handleTableMonth"/> -->
             </div>
             <Table-For-Spu
               :isLoading="isLoadingOfSpuTable"
@@ -260,6 +265,9 @@ export default {
     handleMonth (val) {
       this.selectdMonth = val
       this.getTableForBrand()
+      this.spuPage = 1
+      this.selectdMonth = val
+      this.getTableForSpu()
     },
     // spu 列表翻页
     changeSpuPage (page) {
@@ -406,6 +414,8 @@ export default {
 .pagination-wapper
   text-align center
   margin 20px 0 0
+  >>> .el-pager li:not(.disabled).active
+    background-color: #5b8ff9;
 
 .table-title-wapper
   display flex
