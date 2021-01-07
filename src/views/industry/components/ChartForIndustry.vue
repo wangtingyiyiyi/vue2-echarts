@@ -4,7 +4,7 @@
 
 <script>
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callMax, callMin, callInterval } from '@/utils/chart.js'
+import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callMax, callMin, callInterval, tooltipMarkerReplace, tooltipMarkerWeight, tooltipMarkerMargin } from '@/utils/chart.js'
 import chartMixin from '@/utils/mixin/chart.js'
 
 export default {
@@ -32,12 +32,18 @@ export default {
       const maxSales = callMax(this.industryEchart.salesList)
       this.chart.setOption({
         tooltip: {
+          padding: [5, 10, 13, 10],
+          extraCssText: 'width: 170px; box-shadow: 0 10px 24px rgba(29, 42, 68, 0.2);',
           trigger: 'axis',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          textStyle: {
+            color: '#727487'
+          },
           formatter: function (params, ticket) {
             const xAxis = params[0].name
-            const gmv = params[0].marker + params[0].seriesName + ': ' + thousands(params[0].value)
-            const sales = params[1].marker + params[1].seriesName + ': ' + thousands(params[1].value)
-            return xAxisDateFormatter(xAxis) + '<br />' + gmv + '<br />' + sales
+            const gmv = tooltipMarkerReplace(params[0].marker) + params[0].seriesName + ': ' + tooltipMarkerWeight(thousands(params[0].value))
+            const sales = tooltipMarkerReplace(params[1].marker) + params[1].seriesName + ': ' + '&nbsp;&nbsp;&nbsp' + tooltipMarkerWeight(thousands(params[1].value))
+            return tooltipMarkerMargin(xAxisDateFormatter(xAxis)) + '<br />' + gmv + '<br />' + sales
           }
         },
         legend: {

@@ -142,3 +142,21 @@ export function brandFormatter (value) {
   }
   return value.substring(0, lastIndex)
 }
+
+// tooltip小圆点变小
+export function tooltipMarkerReplace (str) {
+  const res = str.replace(/border-radius:10px;width:10px;height:10px;/g, 'border-radius:7px;width:7px;height:7px;margin-bottom:1px;')
+  return res
+}
+
+// tooltip数字加粗
+export function tooltipMarkerWeight (str) {
+  const res = '<span style="font-weight: 600;">' + str + '</span>'
+  return res
+}
+
+// tooltip标题和内容间距变大
+export function tooltipMarkerMargin (str) {
+  const res = '<span style="line-height: 30px;">' + str + '</span>'
+  return res
+}

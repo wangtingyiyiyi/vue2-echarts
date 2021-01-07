@@ -4,7 +4,7 @@
 
 <script>
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callInterval, callMax } from '@/utils/chart.js'
+import { yAxisFormatter, xAxisDateFormatter, xAxisDateSplit, thousands, callInterval, callMax, tooltipMarkerReplace, tooltipMarkerMargin, tooltipMarkerWeight } from '@/utils/chart.js'
 import { mapState } from 'vuex'
 import chartMixin from '@/utils/mixin/chart.js'
 
@@ -95,13 +95,19 @@ export default {
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
+          padding: [5, 10, 13, 10],
+          extraCssText: 'width: 170px; box-shadow: 0 10px 24px rgba(29, 42, 68, 0.2);',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          textStyle: {
+            color: '#727487'
+          },
           formatter: function (params, ticket) {
             const xAxis = xAxisDateFormatter(params[0].name)
             let str = ''
             params.forEach((item, index) => {
-              str = str + item.marker + item.seriesName + ':' + thousands(item.value) + '<br />'
+              str = str + tooltipMarkerReplace(item.marker) + item.seriesName + ':' + tooltipMarkerWeight(thousands(item.value)) + '<br />'
             })
-            return xAxis + '<br />' + str
+            return tooltipMarkerMargin(xAxis) + '<br />' + str
           }
         },
         legend: {

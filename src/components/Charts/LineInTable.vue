@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { ECHARTS_COLORS } from '@/utils/const.js'
-import { xAxisDateFormatter, thousands } from '@/utils/chart.js'
+import { xAxisDateFormatter, thousands, tooltipMarkerReplace } from '@/utils/chart.js'
 
 export default {
   name: 'LineInTable',
@@ -40,11 +40,15 @@ export default {
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',
+            extraCssText: 'width: 170px; text-align: left; ',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            textStyle: {
+              color: '#727487'
+            },
             confine: true,
-            extraCssText: 'text-align: left',
             formatter: function (params, ticket) {
               const xAxis = params[0].name
-              const gmv = params[0].marker + 'GMV: ' + thousands(params[0].value)
+              const gmv = tooltipMarkerReplace(params[0].marker) + 'GMV: ' + thousands(params[0].value)
               return xAxisDateFormatter(xAxis) + '<br />' + gmv
             }
           },
