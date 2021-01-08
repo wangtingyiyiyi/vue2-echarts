@@ -129,7 +129,6 @@ export default {
                 return yAxisFormatter(value)
               }
             }
-
           },
           {
             type: 'value',

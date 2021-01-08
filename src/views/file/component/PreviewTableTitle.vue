@@ -8,7 +8,7 @@
     </div>
     <Export-Button
       v-if="showButton"
-      :svgName="isDisabled ? 'exportingNot' : 'exporting'"
+      svgName="download"
       :isDisabled="isDisabled"
       @handleExportExcel="dialogVisible = true"/>
     <Dialog-For-Download

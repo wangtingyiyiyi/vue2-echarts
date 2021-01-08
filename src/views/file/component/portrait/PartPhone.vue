@@ -6,7 +6,7 @@
         <div class="sum-title">用户提取总条数:<span>{{phoneNumAcount | format}}</span></div>
         <Export-Button
           v-if="!(exportDisabled || tableTotal === 0 || tableTotal > max)"
-          svgName="exporting"
+          svgName="download"
           :isDisabled="false"
           class="m-l-24"
           @handleExportExcel="dialogVisible = true"/>
@@ -15,7 +15,7 @@
           content="可导出1～500,000条数据" placement="top-start">
           <Export-Button
             v-if="(exportDisabled || tableTotal === 0 || tableTotal > max)"
-            svgName="exportingNot"
+            svgName="download"
             :isDisabled="true"
             class="m-l-24"/>
         </el-tooltip>

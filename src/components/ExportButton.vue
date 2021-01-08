@@ -3,7 +3,8 @@
     :class="[isDisabled ? 'isDisabled': '', 'button']"
     v-if="showButton"
     @click="handleExportExcel" >
-    <Svg-Icon :icon-class="svgName" class="m-r-8" :style="{color: iconColor}"/>{{label}}
+    <Svg-Icon :icon-class="svgName" class="m-r-8" />
+    <span style="font-weight: bold;">{{label}}</span>
   </div>
 </template>
 
@@ -47,22 +48,22 @@ export default {
 
 <style lang="stylus" scoped>
 .button
-  border 1px solid $base-blue
-  color $base-blue
+  border 1px solid $base-green
+  color #ffffff
+  background $base-green
   padding 8px 10px
   min-width 65px
   text-align center
   border-radius 2px
   line-height 12px
   cursor pointer
-  &:focus, &:hover
-    background-color #F2F6FF
+  opacity 1
 .isDisabled
-  color #ADC7FC
-  border-color #ADC7FC
+  color #ffffff
+  background $base-green
+  border-color $base-green
   cursor not-allowed
   pointer-events none
-  &:focus, &:hover
-    background-color #fff
+  opacity 0.7
 
 </style>
