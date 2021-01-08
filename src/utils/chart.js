@@ -90,6 +90,7 @@ export function callMax (arr) {
   } else if (max > 10000000000) { // 百亿及以上
     res = roundingFun(max, 10000000000)
   }
+  console.info(res)
   return res
 }
 
@@ -107,14 +108,30 @@ export function roundingFun (max, rank) {
 
 // 计算最小值
 export function callMin (arr) {
-  const min = Math.ceil(Math.min(...arr) / 11 * 10)
+  let min = Math.min(...arr)
+  console.info(min, min)
   let res = 0
-  if (min >= 0 && min < 10000) {
-    res = min
-  } else if (min >= 10000 && min < 99999999) {
-    res = Math.ceil((min / 100000)) * 100000
+  if (min >= 0) {
+    min = Math.ceil(Math.min(...arr) / 11 * 10)
+    if (min < 10000) {
+      res = min
+    } else if (min >= 10000 && min < 99999999) {
+      res = Math.ceil((min / 100000)) * 100000
+    } else {
+      res = Math.ceil((min / 100000000)) * 100000000
+    }
   } else {
-    res = Math.ceil((min / 100000000)) * 100000000
+    if (min >= -150) {
+      res = -150
+    } else {
+      let bite = 0
+      while (min < -150) {
+        min = min / 10
+        bite += 1
+      }
+      res = Math.ceil(min) * Math.pow(10, bite)
+    }
+    console.info(res, 'min')
   }
   return res
 }

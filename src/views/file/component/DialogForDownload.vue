@@ -6,7 +6,7 @@
       :show-close="false"
       :close-on-click-modal="false">
       <div slot="title">保存导出信息</div>
-      <el-form ref="form" :model="form" label-width="60px" label-position="left">
+      <el-form ref="form" :model="form" label-width="50px" label-position="right">
         <el-form-item label="标题" prop="title"
           :rules="
           [{ required: true, message: '请输入标题', trigger: 'blur' },

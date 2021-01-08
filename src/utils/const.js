@@ -662,3 +662,35 @@ export const MOCK_DASHBOARD_OVERVIEW = {
   lastShop: 19278,
   shopSort: 1
 }
+
+export const DP_FILTER_OPTION = [
+  {
+    label: '门店',
+    value: 'shop'
+  }, {
+    label: '净增',
+    value: 'up'
+  }
+]
+
+export const DP_CATEGORY_OPTION = [
+  {
+    label: '按子品类',
+    value: 'cate'
+  }, {
+    label: '按地域',
+    value: 'area'
+  }
+]
+
+export const DP_BRAND_OPTION = [
+  {
+    label: '按城市',
+    value: 'city'
+  }, {
+    label: '按品牌',
+    value: 'brand'
+  }
+]
+
+export const DP_CATEGORY_LEVEL = []
