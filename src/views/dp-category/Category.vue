@@ -1,7 +1,7 @@
 <template>
   <div>
     <Cate-Form />
-    <div class="flex-between-row">
+    <div class="flex-between-row m-b-10">
       <div class="flex-row">
         <Ghost-Button-Group
           type="ghost"
@@ -33,7 +33,9 @@
       </Chart-Of-Map>
       <Chart-For-Province
         style="width: 70%; height: 279px;"
-        :chartData="MOCK_CHART_FOR_PROVINCE"/>
+        :title="activedChartItem.name || ''"
+        :chartData="MOCK_CHART_FOR_PROVINCE">
+      </Chart-For-Province>
     </div>
     <Table-For-Area />
     <Table-For-Cate />
@@ -58,7 +60,7 @@ export default {
       groupItemVal: 'month',
       MOCK_CHART_FOR_PROVINCE,
       activedChartItem: {
-        name: '新疆'
+        name: '辽宁省'
       }
     }
   },

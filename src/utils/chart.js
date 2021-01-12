@@ -108,7 +108,6 @@ export function roundingFun (max, rank) {
 // 计算最小值
 export function callMin (arr) {
   let min = Math.min(...arr)
-  console.info(min, min)
   let res = 0
   if (min >= 0) {
     min = Math.ceil(Math.min(...arr) / 11 * 10)
@@ -120,17 +119,17 @@ export function callMin (arr) {
       res = Math.ceil((min / 100000000)) * 100000000
     }
   } else {
-    if (min >= -150) {
-      res = -150
-    } else {
-      let bite = 0
-      while (min < -150) {
-        min = min / 10
-        bite += 1
-      }
-      res = Math.ceil(min) * Math.pow(10, bite)
-    }
-    console.info(res, 'min')
+    res = min
+    // if (min >= -150) {
+    //   res = -150
+    // } else {
+    //   let bite = 0
+    //   while (min < -150) {
+    //     min = min / 10
+    //     bite += 1
+    //   }
+    //   res = Math.ceil(min) * Math.pow(10, bite)
+    // }
   }
   return res
 }
