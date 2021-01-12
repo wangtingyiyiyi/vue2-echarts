@@ -23,6 +23,15 @@ export default {
       default: false
     }
   },
+  watch: {
+    reload: {
+      handler: function (reload) {
+        if (reload) {
+          this.init()
+        }
+      }
+    }
+  },
   data () {
     return {
       chart: null,
@@ -41,7 +50,7 @@ export default {
           color: ECHARTS_COLORS,
           title: {
             text: this.title,
-            left: 25,
+            left: 50,
             top: 15,
             textStyle: {
               fontSize: 14
@@ -49,8 +58,14 @@ export default {
           },
           tooltip: {
             trigger: 'axis',
+            padding: [5, 10, 13, 10],
+            extraCssText: 'width: 170px; box-shadow: 0 10px 24px rgba(29, 42, 68, 0.2);',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            textStyle: {
+              color: '#727487'
+            },
             axisPointer: {
-              type: 'shadow'
+              type: 'cross'
             },
             formatter: function (params) {
               const xAxis = params[0].name
@@ -68,7 +83,7 @@ export default {
           grid: {
             left: 30,
             right: '4%',
-            bottom: '3%',
+            bottom: '1%',
             containLabel: true
           },
           xAxis: [
@@ -76,6 +91,11 @@ export default {
               type: 'category',
               axisTick: {
                 show: false
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#D9D9D9FF'
+                }
               },
               data: this.chartData.xlist
             }
@@ -94,7 +114,8 @@ export default {
               },
               splitLine: {
                 lineStyle: {
-                  type: 'dotted'
+                  type: 'dotted',
+                  color: ['#EBEBEBFF']
                 }
               },
               axisLabel: {
@@ -118,7 +139,8 @@ export default {
               },
               splitLine: {
                 lineStyle: {
-                  type: 'dotted'
+                  type: 'dotted',
+                  color: ['#EBEBEBFF']
                 }
               },
               axisLabel: {

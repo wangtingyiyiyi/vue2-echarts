@@ -1,6 +1,6 @@
 <template>
   <div class="tips">
-    <slot></slot>
+    <Svg-Icon class="m-r-8" :icon-class="icon" />
     <div>{{title}}</div>
   </div>
 </template>
@@ -12,6 +12,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    icon: {
+      type: String,
+      default: 'descending'
     }
   }
 }

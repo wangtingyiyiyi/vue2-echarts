@@ -146,3 +146,6 @@ export const MOCK_CHART_FOR_MAP = [
     name: '南海诸岛'
   }
 ]
+
+export const MOCK_CHART_FOR_CITY_DATA = [320, 302, 341, 374, 300]
+export const MOCK_CHART_FOR_CITY_XAXIS = ['五级城市', '四级城市', '三级城市', '二级城市', '一级城市']

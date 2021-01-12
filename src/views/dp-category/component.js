@@ -8,6 +8,7 @@ import TableForArea from '@/views/dp-category/TableForArea.vue'
 import TableForCate from '@/views/dp-category/TableForCate.vue'
 import Tips from '@/views/dp-category/Tips.vue'
 import CurrentType from '@/views/dp-category/CurrentType.vue'
+import ChartForCity from '@/views/dp-category/ChartForCity.vue'
 
 export default {
   components: {
@@ -20,6 +21,7 @@ export default {
     TableForArea,
     TableForCate,
     Tips,
-    CurrentType
+    CurrentType,
+    ChartForCity
   }
 }
