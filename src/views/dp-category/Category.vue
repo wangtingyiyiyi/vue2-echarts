@@ -2,12 +2,19 @@
   <div>
     <Cate-Form />
     <div class="flex-between-row">
-      <Ghost-Button-Group
-        type="ghost"
-        formKey="viewItemVal"
-        :options="DP_CATEGORY_LEVEL"
-        :activeVal="viewItemVal"
-        @handleClick="handleLevleClick"/>
+      <div class="flex-row">
+        <Ghost-Button-Group
+          type="ghost"
+          formKey="viewItemVal"
+          :options="DP_CATEGORY_LEVEL"
+          :activeVal="viewItemVal"
+          @handleClick="handleLevleClick"/>
+        <Current-Type
+          v-if="activedChartItem.name"
+          class="m-l-24"
+          :title="'当前筛选: ' + activedChartItem.name"/>
+      </div>
+
       <Button-Group
         size="tiny"
         :options="GROUP_LEVEL"
@@ -17,7 +24,13 @@
       </Button-Group>
     </div>
     <div class="flex-row">
-      <Chart-Of-Map style="width: 30%; height: 279px;"/>
+      <Chart-Of-Map
+        style="width: 30%; height: 279px;"
+        @handleMapClick="handleMapClick">
+        <Tips slot="tips" title="点击省份可查看对应数据">
+          <Svg-Icon class="m-r-8" icon-class="descending" />
+        </Tips>
+      </Chart-Of-Map>
       <Chart-For-Province
         style="width: 70%; height: 279px;"
         :chartData="MOCK_CHART_FOR_PROVINCE"/>
@@ -43,7 +56,10 @@ export default {
       GROUP_LEVEL,
       viewItemVal: 'province',
       groupItemVal: 'month',
-      MOCK_CHART_FOR_PROVINCE
+      MOCK_CHART_FOR_PROVINCE,
+      activedChartItem: {
+        name: '新疆'
+      }
     }
   },
   methods: {
@@ -52,6 +68,9 @@ export default {
     },
     handleGroupClick () {
 
+    },
+    handleMapClick (params) {
+      this.activedChartItem = params
     }
   }
 }

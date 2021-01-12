@@ -6,6 +6,8 @@ import TableForBrand from '@/views/dp-category/TableForBrand.vue'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import TableForArea from '@/views/dp-category/TableForArea.vue'
 import TableForCate from '@/views/dp-category/TableForCate.vue'
+import Tips from '@/views/dp-category/Tips.vue'
+import CurrentType from '@/views/dp-category/CurrentType.vue'
 
 export default {
   components: {
@@ -16,6 +18,8 @@ export default {
     TableForBrand,
     ModuleTitle,
     TableForArea,
-    TableForCate
+    TableForCate,
+    Tips,
+    CurrentType
   }
 }

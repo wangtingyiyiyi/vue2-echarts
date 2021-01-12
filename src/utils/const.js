@@ -693,4 +693,12 @@ export const DP_BRAND_OPTION = [
   }
 ]
 
-export const DP_CATEGORY_LEVEL = []
+export const DP_CATEGORY_LEVEL = [
+  {
+    label: '省份筛选',
+    value: 'province'
+  }, {
+    label: '线级筛选',
+    value: 'level'
+  }
+]

@@ -2,11 +2,20 @@
   <el-popover
     placement="bottom"
     v-model="visible">
+
     <Svg-Icon
       icon-class="filter"
       slot="reference"
-      style="margin-top: -1px"
+      style="margin-top: -1px; float:right"
       @click="visible = !visible"/>
+           <!-- <el-button  type="text" style="border:none; color:#878999;font-weight: bolder; float:right; height: 22px; line-height: 22px; padding: 0; min-width: 0" slot="reference">{{form.gmvMark}}</el-button> -->
+
+           <!-- <el-button  type="text"  @click="clickPopover" style="background: #E1E2E3; border-radius: 2px; height: 22px; line-height: 22px; padding: 0 3px; min-width: 20px;" slot="reference">{{form.gmvMark}}
+             <Svg-Icon
+      icon-class="filter"
+      style="margin-top: 3px; float:right"
+     />
+           </el-button> -->
     <el-form
       :inline="true"
       :model="form"
@@ -28,6 +37,8 @@
 </template>
 
 <script>
+import { gmvMarkFormatter } from '@/utils/filter.js'
+
 export default {
   name: 'TableForBrandGmvFilterForm',
   data () {
@@ -41,6 +52,7 @@ export default {
     return {
       visible: false,
       form: {
+        gmvMark: '',
         gmvStart: '',
         gmvEnd: ''
       },
@@ -50,13 +62,49 @@ export default {
       }
     }
   },
+  watch: {
+    visible: {
+      handler: function () {
+        console.log('揍我了', this.visible)
+        if (this.visible) {
+          this.$refs.form.validate((valid) => {
+            this.$refs.form.resetFields()
+            this.$emit('changeGmvFilter', this.form)
+            this.form.gmvMark = ''
+          })
+        }
+      }
+    }
+  },
   methods: {
+    // clickPopover () {
+    //   console.log('点击前', this.visible)
+    //   // if (this.visible) {
+    //   this.$refs.form.validate((valid) => {
+    //     this.$refs.form.resetFields()
+    //   })
+    //   // }
+    //   this.visible = false
+    //   console.log('点击', this.visible)
+    // },
     changeGmvFilter () {
+      console.log('点击!!!!', this.visible)
+      this.$emit('changeGmvFilter', this.form)
+
       this.$refs.form.validate((valid) => {
         if (valid) {
+          if (this.form.gmvStart && this.form.gmvEnd) {
+            this.form.gmvMark = gmvMarkFormatter(this.form.gmvStart) + ' - ' + gmvMarkFormatter(this.form.gmvEnd)
+          } else if (this.form.gmvStart && !this.form.gmvEnd) {
+            this.form.gmvMark = ' > ' + gmvMarkFormatter(this.form.gmvStart)
+          } else if (!this.form.gmvStart && this.form.gmvEnd) {
+            this.form.gmvMark = ' < ' + gmvMarkFormatter(this.form.gmvEnd)
+          } else {
+            this.form.gmvMark = ''
+          }
           this.$emit('changeGmvFilter', this.form)
           this.visible = false
-          this.$refs.form.resetFields()
+          // this.$refs.form.resetFields()
         }
       })
     }

@@ -90,7 +90,6 @@ export function callMax (arr) {
   } else if (max > 10000000000) { // 百亿及以上
     res = roundingFun(max, 10000000000)
   }
-  console.info(res)
   return res
 }
 

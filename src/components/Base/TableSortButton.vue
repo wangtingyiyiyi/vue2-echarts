@@ -1,11 +1,12 @@
 <template>
   <div class="sort-button">
     <slot name="prepend"></slot>
-    <span  @click="handleSort">{{title}}</span>
-    <Svg-Icon
-      icon-class="descending"
-      :class="[activedSortKey == this.sortVal ? 'active-sort' : '']"
-      @click="handleSort"/>
+    <div @click="handleSort">
+      <span>{{title}}</span>
+      <Svg-Icon
+        icon-class="descending"
+        :class="[activedSortKey == this.sortVal ? 'active-sort' : '']"/>
+    </div>
   </div>
 </template>
 

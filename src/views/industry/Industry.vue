@@ -165,7 +165,7 @@ export default {
       brandTableData: [],
       isLoadingBrandTable: false,
       page: 1,
-      pageSize: 10,
+      pageSize: 50,
       brandCount: 0,
       dialogVisible: false,
       defineVisible: false,

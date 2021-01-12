@@ -50,8 +50,10 @@
             sortVal="gmv"
             :activedSortKey="activedSortKey"
             @handleSort="handleSort">
-            <Gmv-Filter-Form slot="prepend" class="m-r-5" v-on="$listeners" />
+            <Gmv-Filter-Form slot="prepend" class="m-r-2" @changeGmvFilter="changeGmvFilter" style="" v-on="$listeners" />
           </Table-Sort-Button>
+          <el-button :v-if="!form.gmvMark" type="text" style="border:none; color:#878999; opacity: 0.65; margin-right: 13px; font-weight: bolder; float:right; padding: 0; min-width: 0" slot="reference">{{form.gmvMark}}</el-button>
+
       </template>
       <template slot-scope="{row}">¥{{row.gmv | format}}</template>
     </el-table-column>
@@ -128,6 +130,11 @@ export default {
   computed: {
     ...mapState('industry', ['categoryObj'])
   },
+  data () {
+    return {
+      form: ''
+    }
+  },
   methods: {
     handleBrand (row) {
       // 当前为自定义品类
@@ -145,7 +152,8 @@ export default {
       window.open(href)
     },
     changeGmvFilter (form) {
-      this.$emit('changeGmvFilter', form)
+      this.form = form
+      console.log('打印form', this.form)
     }
   }
 }

@@ -2,7 +2,7 @@
   <div v-if="!isPc" class="index">
     <div class="mobile-wapper">
       <div class="mobile-title mobile-text">请移步PC端查看</div>
-      <div class="mobile-url mobile-text">https://exp.meritco-group.com:9580</div>
+      <div class="mobile-url mobile-text">https://databank.meritco-group.com</div>
       <el-button type="primary" class="mobile-btn" size="medium"
         v-clipboard:copy="copyUrl"
         v-clipboard:success="onCopy"
@@ -68,7 +68,7 @@ export default {
       rememberPassword: false,
       isPc: true,
       inputType: 'password',
-      copyUrl: 'https://exp.meritco-group.com:9580/',
+      copyUrl: 'https://databank.meritco-group.com',
       target: target,
       isPsw: true,
       rules: {
@@ -171,7 +171,7 @@ export default {
         id: 'wx_qrcode',
         appid: 'ww7f4fe84bdcd3e434',
         agentid: '1000022',
-        redirect_uri: encodeURI('https://exp.meritco-group.com:9580/login'),
+        redirect_uri: encodeURI('https://databank.meritco-group.com/login'),
         state: 'STATE',
         href: ''
       })

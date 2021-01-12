@@ -32,7 +32,7 @@ export default {
         this.chart.setOption({
           color: ECHARTS_COLORS,
           tooltip: {
-            trigger: 'axis',
+            trigger: 'item',
             axisPointer: {
               type: 'shadow'
             }
@@ -55,10 +55,9 @@ export default {
           yAxis: [
             {
               type: 'value',
-              min: callMin(this.chartData.close),
+              min: 0,
               max: callMax(this.chartData.current),
-              interval: Math.ceil(callMax(this.chartData.current) - 96 / 5),
-              // minInterval: callMax(this.chartData.current) / 4,
+              interval: Math.ceil(callMax(this.chartData.current) / 5),
               axisLine: {
                 show: false
               },
@@ -67,8 +66,7 @@ export default {
               },
               splitLine: {
                 lineStyle: {
-                  // type: 'dotted'
-                  // color: '#ff0000'
+                  type: 'dotted'
                 }
               },
               axisLabel: {
@@ -76,54 +74,51 @@ export default {
                   return value
                 }
               }
+            },
+            {
+              type: 'value',
+              min: 0,
+              max: callMax(this.chartData.all),
+              interval: Math.ceil(callMax(this.chartData.all) / 5),
+              axisLine: {
+                show: false
+              },
+              axisTick: {
+                show: false
+              },
+              splitLine: {
+                lineStyle: {
+                  type: 'dotted'
+                }
+              },
+              axisLabel: {
+                formatter: function (value) {
+                  if (value >= 0) {
+                    return yAxisFormatter(value)
+                  }
+                }
+              }
             }
-            // {
-            //   type: 'value',
-            //   min: -callMax(this.chartData.all) / 4,
-            //   max: callMax(this.chartData.all),
-            //   splitNumber: 5,
-            //   axisLine: {
-            //     show: false
-            //   },
-            //   axisTick: {
-            //     show: false
-            //   },
-            //   splitLine: {
-            //     lineStyle: {
-            //       color: '#ff0000',
-            //       type: 'dotted'
-            //     }
-            //   },
-            //   axisLabel: {
-            //     formatter: function (value) {
-            //       if (value >= 0) {
-            //         return yAxisFormatter(value)
-            //       }
-            //     }
-            //   }
-            // }
           ],
           series: [
             {
               name: '收入',
               type: 'bar',
-              stack: '总量',
               barWidth: 8,
               data: this.chartData.current
             },
             {
               name: '支出',
               type: 'bar',
-              stack: '总量',
-              barWidth: 15,
+              barWidth: 8,
               data: this.chartData.close
+            },
+            {
+              name: 'all',
+              type: 'line',
+              yAxisIndex: 1,
+              data: this.chartData.all
             }
-            // {
-            //   name: 'all',
-            //   type: 'line',
-            //   yAxisIndex: 1,
-            //   data: this.chartData.all
-            // }
           ]
         })
         this.chart.resize()

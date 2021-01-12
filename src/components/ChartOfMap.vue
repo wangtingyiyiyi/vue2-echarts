@@ -1,18 +1,19 @@
 <template>
-  <div ref="chart" style="width: 100%;height:100%;"></div>
+<div>
+  <slot name="tips"/>
+  <div ref="chart" style="width: 100%;height: calc(100% - 14px);"></div>
+</div>
 </template>
 
 <script>
 import echarts from 'echarts'
-import { ECHARTS_COLORS } from '@/utils/const.js'
-import GeoJson from '@/views/dp-category/map.json'
+import china from 'echarts/map/json/china.json'
 
 export default {
   name: 'ChartOfMap',
   data () {
     return {
-      chart: null,
-      GeoJson
+      chart: null
     }
   },
   props: {
@@ -24,78 +25,183 @@ export default {
   methods: {
     init () {
       this.$nextTick(() => {
-        echarts.registerMap('HK', GeoJson)
+        echarts.registerMap('china', china)
         this.chart = echarts.init(this.$refs.chart)
         this.chart.setOption({
-          color: ECHARTS_COLORS,
-          tooltip: {
-            trigger: 'item',
-            formatter: '{b}<br/>{c} (p / km2)'
-          },
           visualMap: {
             show: false,
-            min: 800,
-            max: 50000,
+            min: 0,
+            max: 35,
             text: ['High', 'Low'],
             realtime: false,
             calculable: true,
             inRange: {
-              color: ['lightskyblue', 'yellow', 'orangered']
+              color: ['#e6e6e6', '#ebf3fc', '#c7ddf6', '#92bdee', '#3987e0']
             }
           },
           series: [
             {
-              name: '香港18区人口密度',
+              name: 'china 地图',
               type: 'map',
-              mapType: 'HK', // 自定义扩展图表类型
+              map: 'china',
+              top: 15,
+              itemStyle: {
+                borderColor: '#eeeeee'
+              },
               label: {
-                show: true
+                formatter: function (params) {
+                  return params.name + '\n' + params.value
+                }
               },
               data: [
-                { name: '中西区', value: 20057.34 },
-                { name: '湾仔', value: 15477.48 },
-                { name: '东区', value: 31686.1 },
-                { name: '南区', value: 6992.6 },
-                { name: '油尖旺', value: 44045.49 },
-                { name: '深水埗', value: 40689.64 },
-                { name: '九龙城', value: 37659.78 },
-                { name: '黄大仙', value: 45180.97 },
-                { name: '观塘', value: 55204.26 },
-                { name: '葵青', value: 21900.9 },
-                { name: '荃湾', value: 4918.26 },
-                { name: '屯门', value: 5881.84 },
-                { name: '元朗', value: 4178.01 },
-                { name: '北区', value: 2227.92 },
-                { name: '大埔', value: 2180.98 },
-                { name: '沙田', value: 9172.94 },
-                { name: '西贡', value: 3368 },
-                { name: '离岛', value: 806.98 }
-              ],
-              // 自定义名称映射
-              nameMap: {
-                'Central and Western': '中西区',
-                Eastern: '东区',
-                Islands: '离岛',
-                'Kowloon City': '九龙城',
-                'Kwai Tsing': '葵青',
-                'Kwun Tong': '观塘',
-                North: '北区',
-                'Sai Kung': '西贡',
-                'Sha Tin': '沙田',
-                'Sham Shui Po': '深水埗',
-                Southern: '南区',
-                'Tai Po': '大埔',
-                'Tsuen Wan': '荃湾',
-                'Tuen Mun': '屯门',
-                'Wan Chai': '湾仔',
-                'Wong Tai Sin': '黄大仙',
-                'Yau Tsim Mong': '油尖旺',
-                'Yuen Long': '元朗'
-              }
+                {
+                  value: 1,
+                  name: '北京'
+                },
+                {
+                  value: 2,
+                  name: '天津'
+                },
+                {
+                  value: 3,
+                  name: '河北'
+                },
+                {
+                  value: 4,
+                  name: '山西'
+                },
+                {
+                  value: 5,
+                  name: '内蒙古'
+                },
+                {
+                  value: 6,
+                  name: '辽宁'
+                },
+                {
+                  value: 7,
+                  name: '吉林'
+                },
+                {
+                  value: 8,
+                  name: '黑龙江'
+                },
+                {
+                  value: 9,
+                  name: '上海'
+                },
+                {
+                  value: 10,
+                  name: '江苏'
+                },
+                {
+                  value: 11,
+                  name: '浙江'
+                },
+                {
+                  value: 12,
+                  name: '安徽'
+                },
+                {
+                  value: 13,
+                  name: '福建'
+                },
+                {
+                  value: 14,
+                  name: '江西'
+                },
+                {
+                  value: 15,
+                  name: '山东'
+                },
+                {
+                  value: 16,
+                  name: '河南'
+                },
+                {
+                  value: 17,
+                  name: '湖北'
+                },
+                {
+                  value: 18,
+                  name: '湖南'
+                },
+                {
+                  value: 19,
+                  name: '广东'
+                },
+                {
+                  value: 20,
+                  name: '广西'
+                },
+                {
+                  value: 21,
+                  name: '海南'
+                },
+                {
+                  value: 22,
+                  name: '重庆'
+                },
+                {
+                  value: 23,
+                  name: '四川'
+                },
+                {
+                  value: 24,
+                  name: '贵州'
+                },
+                {
+                  value: 25,
+                  name: '云南'
+                },
+                {
+                  value: 26,
+                  name: '西藏'
+                },
+                {
+                  value: 27,
+                  name: '陕西'
+                },
+                {
+                  value: 28,
+                  name: '甘肃'
+                },
+                {
+                  value: 29,
+                  name: '青海'
+                },
+                {
+                  value: 30,
+                  name: '宁夏'
+                },
+                {
+                  value: 31,
+                  name: '新疆'
+                },
+                {
+                  value: 32,
+                  name: '台湾'
+                },
+                {
+                  value: 33,
+                  name: '香港'
+                },
+                {
+                  value: 34,
+                  name: '澳门'
+                }, {
+                  value: 35,
+                  name: '南海诸岛'
+                }
+              ]
             }
           ]
         })
         this.chart.resize()
+        this.chart.on('click', (params) => {
+          console.info(params)
+          this.$emit('handleMapClick', params.data)
+        })
       })
     }
   },
