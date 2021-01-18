@@ -1,7 +1,5 @@
 <template>
-  <el-main :class="[collapsed ? 'width-collapsed' : 'width-not-collapsed']">
-    <router-view :key="key" />
-  </el-main>
+  <router-view :key="key" style="min-width: 1608px"/>
 </template>
 
 <script>
@@ -19,9 +17,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-.width-collapsed
-  margin-left 65px
-.width-not-collapsed
-  margin-left 201px
-</style>

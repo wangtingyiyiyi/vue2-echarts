@@ -3,11 +3,8 @@
     <Brand-Setting
       @handleSetBrands="handleSetBrands"
       @handleSetCategroy="handleSetCategroy"/>
-
     <Empty-Line />
-
     <div class="brand-tab-wapper">
-      <!-- <el-tabs v-model="activeName" style='width:100%' @tab-click="handleTabClick"> -->
         <div class="tab-top-title">
             品牌概览
             <Button-Group
@@ -57,10 +54,6 @@
 
               <div class="table-title-wapper m-b-12">
                 <Title title="按品牌展开"/>
-                <!-- <Month-Options
-                  :monthOption="monthOption"
-                  :selectdMonth="selectdMonth"
-                  @handleSelectdMonth="handleMonth"/> -->
               </div>
 
               <Brand-Table-Brands
@@ -90,10 +83,6 @@
                 :brands="brandList"
                 :activeBrand="activeBrand"
                 @changeActiveBrand="changeActiveBrand"/>
-                <!-- <Month-Options
-                :monthOption="monthOption"
-                :selectdMonth="selectdMonth"
-                @handleSelectdMonth="handleTableMonth"/> -->
             </div>
             <Table-For-Spu
               :isLoading="isLoadingOfSpuTable"
@@ -112,7 +101,6 @@
             </el-pagination>
           </div>
         </div>
-      <!-- </el-tabs> -->
     </div>
   </div>
 </template>
@@ -426,14 +414,10 @@ export default {
 
 .tab-top-title
   background-color white
-  z-index 9
-  position sticky
-  top 60px
   padding-left 25px !important
   font-size 16px
   line-height 56px
   height 56px
-  // border-bottom 1px solid #EBEEF5
 
 .tab-top-content
   padding 25px

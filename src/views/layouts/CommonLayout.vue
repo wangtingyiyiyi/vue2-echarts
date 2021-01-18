@@ -1,30 +1,27 @@
 <template>
-  <div class="scroll-container beauty-scroll" ref="body">
-    <Back-Top />
-    <el-header class="header-wapper">
+  <div class="body-wapper" ref="body">
+    <el-aside :class="[collapsed ? 'width-63' : 'width-200']">
       <Header-Icon :collapsed="collapsed" @collapsChange="collapsChange"/>
-      <div class="flex-row">
-        <div class="m-0-12">{{userName}}</div>
+      <Sider-Menu :collapsed="collapsed"/>
+      <div class="user-wapper">
+        <div class="m-0-12" style="color: #ffffff">{{userName}}</div>
         <Header-Setting/>
       </div>
-    </el-header>
-    <div class="main-wapper">
-      <Layout-Sider :collapsed="collapsed"/>
-      <Layout-Content
-        :collapsed="collapsed"
-        class="content-wapper"/>
+    </el-aside>
+    <div class="main-wapper beauty-scroll">
+      <Layout-Content class="content-wapper"/>
       <Layout-Footer />
     </div>
+    <el-backtop target=".main-wapper"></el-backtop>
   </div>
 </template>
 
 <script>
-import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
-import LayoutSider from '@/views/layouts/LayoutSider.vue'
+import SiderMenu from '@/views/layouts/SiderMenu.vue'
+import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
 import LayoutContent from '@/views/layouts/LayoutContent.vue'
 import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
-import BackTop from '@/components/ElBacktop.vue'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -35,7 +32,7 @@ export default {
     }
   },
   components: {
-    HeaderIcon, HeaderSetting, LayoutSider, LayoutContent, LayoutFooter, BackTop
+    HeaderIcon, LayoutContent, LayoutFooter, SiderMenu, HeaderSetting
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED', 'SET_SYS_SCROLLTOP']),
@@ -54,37 +51,35 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.header-wapper
-  border-bottom 1px solid #E7E8F2
-  box-shadow 0 2px 8px #f0f1f2;
+.body-wapper
   width 100vw
-  display flex
-  align-items center
-  justify-content space-between
-  position fixed
-  background-color #ffffff
-  top 0
-  z-index 3
-  padding 0px 20px
-
-.flex-row
-  display flex
-  align-items center
-
-.main-wapper
-  margin-top 60px
-  width 100%
-  margin 60px auto 0
+  min-height 100vh
   background-color $base-white
-  min-height calc(100vh - 60px)
+  display flex
 
 .content-wapper
-  padding 20px 33px 0 20px
+  padding 00px 33px 0 20px
   background-color $base-white
-  min-height calc(100vh - 150px)
+  min-height calc(100vh - 88px)
   overflow visible
-
-.scroll-container
-  height 100vh
+  max-width 1608px
   overflow-x auto
+  margin 0 auto
+
+.width-200
+  width 200px !important
+
+.width-63
+  width 64px !important
+
+.user-wapper
+  position absolute
+  bottom 0
+  height 40px
+  display flex
+  align-items center
+.main-wapper
+  width calc(100vw - 200px)
+  height 100vh
+  overflow-y auto
 </style>

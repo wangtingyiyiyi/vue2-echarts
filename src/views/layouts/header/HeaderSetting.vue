@@ -1,12 +1,7 @@
 <template>
   <el-dropdown @command="handleCommand">
-    <span><i class="el-icon-caret-bottom" style="cursor: pointer"></i></span>
+    <span><i class="el-icon-caret-bottom" style="cursor: pointer; color: #fff"></i></span>
     <el-dropdown-menu slot="dropdown">
-      <!-- <el-dropdown-item
-        v-for="item in menuData"
-        :key="item.path"
-        :icon="item.meta.icon"
-        :command="item.name">{{item.name}}</el-dropdown-item> -->
       <el-dropdown-item command="LogOut">
         <Svg-Icon icon-class="logout" style="margin-right: 10px"/>退出登录</el-dropdown-item>
     </el-dropdown-menu>

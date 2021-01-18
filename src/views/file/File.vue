@@ -60,7 +60,6 @@ export default {
 .file-tab-wapper
   background-color #ffffff
   position relative
-  min-height calc(100vh - 167px)
 
 .file-tab-wapper >>> .el-tabs__item
     padding-left 25px !important
