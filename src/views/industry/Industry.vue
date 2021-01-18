@@ -32,7 +32,7 @@
                 :selectdMonth="selectdMonth"
                 @handleSelectdMonth="handleSelectdMonth"/>
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #EBEEF5"/>
         <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div ref="refIndustryEchart">
@@ -58,7 +58,7 @@
         <div class="tab-top-title" style="width: 80px;">
             品牌排行
         </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #EBEEF5"/>
         <div class="tab-top-content">
             <Title title="总销售趋势"/>
             <div style="display: flex; justify-content: space-between;">
@@ -101,6 +101,28 @@
               :total="brandCount">
             </el-pagination>
         </div>
+        <Empty-Line style="background-color: #f8f8f8" />
+        <div class="tab-top-title" style="width: 80px;">
+             SPU
+        </div>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #EBEEF5"/>
+        <div class="tab-top-content">
+            <Table-For-Spu
+              :isLoading="isLoadingOfSpuTable"
+              :activedSortKey="sortItemVal"
+              @changeSortItemVal="changeSortItemVal"
+              :tableData="tableSpu"/>
+            <el-pagination
+              v-show="spuTotal !== 0"
+              background
+              layout="prev, pager, next"
+              class="pagination-wapper"
+              :current-page="spuPage"
+              :page-size="pageSize"
+              :total="spuTotal"
+              @current-change="changeSpuPage">
+            </el-pagination>
+        </div>
       <!-- </el-tabs> -->
     </div>
     <!-- 抽屉 -->
@@ -127,6 +149,7 @@ import {
   getIndustryFlatList,
   getMonthOption,
   getIndustryEchart,
+  getTableForIndustrySpu,
   getIndustryBrandTable,
   getBrandChart
 } from '@/api/industry'
@@ -147,6 +170,8 @@ export default {
       groupItemVal: 'month',
       viewItemVal: 'gmv',
       sortItemVal: 'gmv',
+      isLoadingOfSpuTable: false,
+      tableSpu: [],
       gmvStart: null,
       gmvEnd: null,
       drawerShow: false,
@@ -165,7 +190,9 @@ export default {
       brandTableData: [],
       isLoadingBrandTable: false,
       page: 1,
-      pageSize: 50,
+      pageSize: 20,
+      spuPage: 1,
+      spuTotal: 0,
       brandCount: 0,
       dialogVisible: false,
       defineVisible: false,
@@ -251,6 +278,7 @@ export default {
       this.getIndustryFlatList()
       this.getBrandList()
       this.getBrandEchart()
+      this.getTableForSpu()
     },
     // setting 选择行业 待参数刷新
     industryNodeClick (data) {
@@ -273,6 +301,7 @@ export default {
       this.getIndustryEchart()
       this.getIndustryFlatList()
       this.getBrandList()
+      this.getTableForSpu()
       this.getBrandEchart()
     },
     // 修改monthOption
@@ -283,6 +312,7 @@ export default {
       this.getBrandEchart()
       this.getIndustryFlatList()
       this.getBrandList()
+      this.getTableForSpu()
     },
     // 品牌堆积图修改montth
     // handleChartSelectdMonth (val) {
@@ -295,6 +325,7 @@ export default {
       this.page = 1
       this.getIndustryFlatList()
       this.getBrandList()
+      this.getTableForSpu()
     },
     changeGmvFilter (form) {
       console.info(form)
@@ -302,11 +333,35 @@ export default {
       this.gmvStart = form.gmvStart
       this.page = 1
       this.getBrandList()
+      this.getTableForSpu()
     },
     // 品牌tab table 翻页
     changeBrandPage (page) {
       this.page = page
       this.getBrandList()
+    },
+    async getTableForSpu () {
+      // if (!this.activeBrand || this.activeName !== 'spu') return ''
+      const param = {
+        cateList: this.categoryObj.rank === 0 ? null : [this.categoryForm],
+        // defineId: this.categoryObj.rank === 0 ? this.defineItemId : null,
+        particle: this.groupItemVal,
+        month: this.selectdMonth,
+        sort: this.sortItemVal,
+        page: this.spuPage,
+        pageSize: this.pageSize
+      }
+      this.isLoadingOfSpuTable = true
+      const res = await getTableForIndustrySpu(param)
+      this.isLoadingOfSpuTable = false
+      if (res.code === 200) {
+        this.tableSpu = res.result
+        this.spuTotal = res.count
+      } else {
+        this.$message.error('店铺SPU列表请求失败')
+        this.tableSpu = []
+        this.spuTotal = 0
+      }
     },
     // 行业tab table
     async getIndustryFlatList () {
@@ -370,6 +425,11 @@ export default {
       } else {
         this.$message.error('品牌趋势图表请求失败')
       }
+    },
+    // spu 列表翻页
+    changeSpuPage (page) {
+      this.spuPage = page
+      this.getTableForSpu()
     },
     // 品牌tab table
     async getBrandList () {
@@ -484,7 +544,7 @@ html,body {
   font-size 16px
   line-height 56px
   height 56px
-  // border-bottom 1px solid #dcdfe6
+  // border-bottom 1px solid #EBEEF5
 
 .tab-top-content
   padding 25px
@@ -500,5 +560,7 @@ html,body {
 //     .el-input__icon
 //       height 19px
 //       line-height 19px
-
+.tab-top-content /deep/ .el-table .tableHeaderClass th {
+    background-color: #fbfbfb !important;
+}
 </style>

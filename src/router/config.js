@@ -7,7 +7,7 @@ const Brand = () => import('../views/brand/Brand.vue')
 const File = () => import('../views/file/File.vue')
 const Page404 = () => import('../views/error/404.vue')
 // const Dashboard = () => import('../views/dashboard/Dashboard.vue')
-const DpCategory = () => import('@/views/dp-category/Category.vue')
+// const DpCategory = () => import('@/views/dp-category/Category.vue')
 
 export const routes = [
   {
@@ -56,15 +56,15 @@ export const routes = [
           scrollTop: Infinity
         },
         component: File
-      },
-      {
-        path: 'dp-category',
-        name: '点评行业',
-        meta: {
-          svgIcon: 'filter'
-        },
-        component: DpCategory
       }
+      // {
+      //   path: 'dp-category',
+      //   name: '点评行业',
+      //   meta: {
+      //     svgIcon: 'filter'
+      //   },
+      //   component: DpCategory
+      // }
     ]
   }, {
     path: '/user',

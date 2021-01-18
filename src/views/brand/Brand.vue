@@ -32,7 +32,7 @@
                 :selectdMonth="selectdMonth"
                 @handleSelectdMonth="handleMonth"/>
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #EBEEF5"/>
         <div class="tab-top-content">
             <div v-show="showEmpty">
               <Title class="m-b-12" title="总销售趋势"/>
@@ -81,7 +81,7 @@
         <div class="tab-top-title" style="width: 80px;">
             SPU
           </div>
-        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #dcdfe6"/>
+        <Empty-Line style="width: 100%; height: 1px; z-index: 8; position: sticky; top: 116px; background-color: #EBEEF5"/>
         <div class="tab-top-content">
           <Empty-Icon v-show="showEmpty"/>
           <div v-show="!showEmpty">
@@ -433,9 +433,11 @@ export default {
   font-size 16px
   line-height 56px
   height 56px
-  // border-bottom 1px solid #dcdfe6
+  // border-bottom 1px solid #EBEEF5
 
 .tab-top-content
   padding 25px
-
+.tab-top-content /deep/ .el-table .tableHeaderClass th {
+    background-color: #fbfbfb !important;
+}
 </style>

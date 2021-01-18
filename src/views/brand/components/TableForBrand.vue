@@ -42,7 +42,7 @@
         <Line-In-Table :seriesData="row.gmvList" :xAxisData="row.monthList"/>
       </template>
     </el-table-column>
-    <el-table-column align="right" min-width="50px">
+    <!-- <el-table-column align="right" min-width="50px">
       <template #header>
         <Table-Sort-Button
           title="销量环比"
@@ -61,7 +61,7 @@
           @handleSort="handleSort"/>
       </template>
       <template slot-scope="{row}">{{row.salesRate2 | percentage}}</template>
-    </el-table-column>
+    </el-table-column> -->
     <el-table-column align="right" min-width="50px">
       <template #header>
         <Table-Sort-Button

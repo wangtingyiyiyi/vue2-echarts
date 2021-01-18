@@ -44,3 +44,7 @@ export function getBrandChart (params) {
 export function getDefineCateList (params) {
   return post('define/cate/list', params)
 }
+// 行业SPU table
+export function getTableForIndustrySpu (params) {
+  return post('cate/spu/list', params)
+}

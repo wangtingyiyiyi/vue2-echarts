@@ -16,6 +16,11 @@
       </template>
     </el-table-column>
     <!-- <el-table-column
+      prop="spuname"
+      min-width="100"
+      label="SPU名称">
+    </el-table-column>
+    <el-table-column
       prop="shopname"
       min-width="55"
       label="店铺名称">

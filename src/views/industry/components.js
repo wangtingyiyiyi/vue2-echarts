@@ -8,6 +8,7 @@ import Drawer from '@/components/Drawer.vue'
 import DrawerContent from '@/views/industry/components/DrawerContent.vue'
 import DrawerButton from '@/views/industry/components/DrawerButton.vue'
 import DialogForIndustryDefine from '@/views/industry/components/DialogForIndustryDefine.vue'
+import TableForSpu from '@/views/industry/components/TableForSpu.vue'
 
 export default {
   components: {
@@ -19,6 +20,7 @@ export default {
     TableForIndustry,
     ChartForIndustry,
     ChartForBrand,
-    DialogForIndustryDefine
+    DialogForIndustryDefine,
+    TableForSpu
   }
 }
