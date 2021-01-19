@@ -41,7 +41,9 @@ import {
   Divider,
   Tooltip,
   InputNumber,
-  Popover
+  Popover,
+  MenuItemGroup,
+  Submenu
 } from 'element-ui'
 
 const components = [
@@ -56,6 +58,7 @@ const components = [
   Aside,
   Menu,
   MenuItem,
+  MenuItemGroup,
   Main,
   Tabs,
   TabPane,
@@ -84,7 +87,8 @@ const components = [
   Divider,
   Tooltip,
   InputNumber,
-  Popover
+  Popover,
+  Submenu
 ]
 
 Vue.prototype.$ELEMENT = { size: 'small' }

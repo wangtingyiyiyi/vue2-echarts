@@ -7,10 +7,16 @@
     active-text-color="#ffffff"
     :collapse="collapsed"
     @select="menuSelect">
-    <el-menu-item v-for="item in menuData" :key="item.path" :index="item.name">
-      <Svg-Icon :icon-class="item.meta.svgIcon" :class="[collapsed ? 'm-l-5' : '']" style="margin-top: 3px;"/>
-      <span slot="title" style="margin-left: 15px; font-weight: 600">{{item.name}}</span>
-    </el-menu-item>
+     <el-submenu v-for="menu in menuData" :key="menu.path" :index="menu.name">
+        <template slot="title">
+          <Svg-Icon :icon-class="menu.meta.svgIcon" :class="[collapsed ? 'm-r-10' : 'm-r-10']"/>
+          <span>{{menu.name}}</span>
+        </template>
+        <el-menu-item :index="item.name" v-for="item in menu.children" :key="item.name">
+          <Svg-Icon :icon-class="item.meta.svgIcon" :class="[collapsed ? 'm-r-10' : 'm-r-10']"/>
+          {{item.name}}
+        </el-menu-item>
+      </el-submenu>
   </el-menu>
 </template>
 
@@ -41,7 +47,7 @@ export default {
     }
   },
   beforeCreate () {
-    const route = this.$router.options.routes.find((item) => item.path === '/').children
+    const route = this.$router.options.routes.filter(item => item?.meta?.isMenu)
     menuData = this._.filter(route, item => {
       return item.meta && (!item.meta.permission || item.meta.permission.includes(sessionStorage.getItem('type')))
     })

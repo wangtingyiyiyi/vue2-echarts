@@ -15,24 +15,20 @@ export const routes = [
     name: 'Login',
     component: Login
   }, {
-    path: '/',
-    name: '首页',
+    path: '/error',
+    name: 'page404',
+    component: Page404
+  }, {
+    path: '/tmall',
+    name: '天猫',
     meta: {
-      icon: 'warning'
+      svgIcon: 'menu',
+      isMenu: true
     },
     component: CommonLayoutView,
     children: [
-      // {
-      //   path: 'dashboard',
-      //   name: '工作台',
-      //   meta: {
-      //     svgIcon: 'dashboard',
-      //     scrollTop: Infinity
-      //   },
-      //   component: Dashboard
-      // },
       {
-        path: 'industry',
+        path: 'tmall-industry',
         name: '行业',
         meta: {
           svgIcon: 'menu',
@@ -40,7 +36,7 @@ export const routes = [
         },
         component: Industry
       }, {
-        path: 'brand',
+        path: 'tmall-brand',
         name: '品牌',
         meta: {
           svgIcon: 'brand',
@@ -48,7 +44,7 @@ export const routes = [
         },
         component: Brand
       }, {
-        path: 'file',
+        path: 'tmall-file',
         name: '提数',
         meta: {
           permission: ['1'],
@@ -57,16 +53,29 @@ export const routes = [
         },
         component: File
       }
-      // {
-      //   path: 'dp-category',
-      //   name: '点评行业',
-      //   meta: {
-      //     svgIcon: 'filter'
-      //   },
-      //   component: DpCategory
-      // }
     ]
-  }, {
+  },
+  // , {
+  //   path: '/dp',
+  //   name: '点评',
+  //   meta: {
+  //     icon: 'filter',
+  //     svgIcon: 'excel',
+  //     isMenu: true
+  //   },
+  //   component: CommonLayoutView,
+  //   children: [
+  //     {
+  //       path: 'dp-category',
+  //       name: '点评行业',
+  //       meta: {
+  //         svgIcon: 'filter'
+  //       },
+  //       component: DpCategory
+  //     }
+  //   ]
+  // },
+  {
     path: '/user',
     name: '仪表盘',
     component: CommonLayoutView,
@@ -87,9 +96,5 @@ export const routes = [
         component: Setting
       }
     ]
-  }, {
-    path: '/error',
-    name: 'page404',
-    component: Page404
   }
 ]

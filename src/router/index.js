@@ -24,4 +24,12 @@ router.beforeEach((to, form, next) => {
   }
 })
 
+// 定义滚动条行为
+router.afterEach((to, form) => {
+  const scorllBody = document.getElementById('main-wapper')
+  if (scorllBody) {
+    scorllBody.scrollTop = 0
+  }
+})
+
 export default router

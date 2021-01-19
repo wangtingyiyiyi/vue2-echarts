@@ -208,7 +208,7 @@ export default {
     }
   },
   beforeCreate () {
-    target = this.$router.options.routes.find((item) => item.path === '/').children[0]
+    target = this.$router.options.routes.find((item) => item.path === '/tmall').children[0]
   },
   mounted () {
     this.judgePc()

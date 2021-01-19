@@ -21,7 +21,7 @@ export default {
     ...mapActions('user', ['logOut']),
     handleCommand (command) {
       if (command === 'LogOut') {
-        this.logOut().then(() => { this.$router.push('Login') })
+        this.logOut().then(() => { this.$router.push('/Login') })
         return
       }
       if (this.$route.name !== command) {

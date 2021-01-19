@@ -8,7 +8,7 @@
         <Header-Setting/>
       </div>
     </el-aside>
-    <div class="main-wapper beauty-scroll">
+    <div class="main-wapper beauty-scroll" id="main-wapper">
       <Layout-Content class="content-wapper"/>
       <Layout-Footer />
     </div>
