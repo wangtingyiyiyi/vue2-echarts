@@ -8,6 +8,8 @@ const File = () => import('../views/file/File.vue')
 const Page404 = () => import('../views/error/404.vue')
 // const Dashboard = () => import('../views/dashboard/Dashboard.vue')
 // const DpCategory = () => import('@/views/dp-category/Category.vue')
+const TmallCategory = () => import('@/views/tmall-category/category.vue')
+const TmallCategoryHeader = () => import('@/views/tmall-category/components/FixedForm.vue')
 
 export const routes = [
   {
@@ -52,6 +54,17 @@ export const routes = [
           scrollTop: Infinity
         },
         component: File
+      }, {
+        path: 'tmall-category',
+        name: '天猫行业',
+        meta: {
+          svgIcon: 'menu',
+          scrollTop: Infinity
+        },
+        components: {
+          header: TmallCategoryHeader,
+          default: TmallCategory
+        }
       }
     ]
   },

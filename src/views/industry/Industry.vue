@@ -539,7 +539,7 @@ html,body {
   background-color white
   z-index 9
   position sticky
-  top 60px
+  top 20px
   padding-left 25px !important
   font-size 16px
   line-height 56px

@@ -8,9 +8,14 @@
         <Header-Setting/>
       </div>
     </el-aside>
-    <div class="main-wapper beauty-scroll" id="main-wapper">
-      <Layout-Content class="content-wapper"/>
-      <Layout-Footer />
+    <div>
+      <router-view name="header"/>
+      <div class="main-wapper beauty-scroll" id="main-wapper">
+        <div class="content-wapper" style="max-width: 1608px; min-width: 1240px; ">
+          <router-view :key="key" />
+        </div>
+      <!-- <Layout-Footer /> -->
+    </div>
     </div>
     <el-backtop target=".main-wapper"></el-backtop>
   </div>
@@ -20,8 +25,6 @@
 import HeaderSetting from '@/views/layouts/header/HeaderSetting.vue'
 import SiderMenu from '@/views/layouts/SiderMenu.vue'
 import HeaderIcon from '@/views/layouts/header/HeaderIcon.vue'
-import LayoutContent from '@/views/layouts/LayoutContent.vue'
-import LayoutFooter from '@/views/layouts/LayoutFooter.vue'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -32,7 +35,12 @@ export default {
     }
   },
   components: {
-    HeaderIcon, LayoutContent, LayoutFooter, SiderMenu, HeaderSetting
+    HeaderIcon, SiderMenu, HeaderSetting
+  },
+  computed: {
+    key () {
+      return this.$route.path
+    }
   },
   methods: {
     ...mapMutations('sys', ['SET_SYS_COLLAPSED', 'SET_SYS_SCROLLTOP']),
@@ -58,12 +66,12 @@ export default {
   display flex
 
 .content-wapper
-  padding 00px 33px 0 20px
+  padding 0px 28px 0 16px
   background-color $base-white
-  min-height calc(100vh - 88px)
-  overflow visible
+  min-height calc(100vh - 64px)
   max-width 1608px
-  overflow-x auto
+  min-width 1240px
+  overflow auto
   margin 0 auto
 
 .width-200

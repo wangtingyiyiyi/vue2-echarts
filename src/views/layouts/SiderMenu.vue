@@ -7,12 +7,12 @@
     active-text-color="#ffffff"
     :collapse="collapsed"
     @select="menuSelect">
-     <el-submenu v-for="menu in menuData" :key="menu.path" :index="menu.name">
+     <el-submenu v-for="menu in menuData" :key="menu.path" :index="menu.path">
         <template slot="title">
           <Svg-Icon :icon-class="menu.meta.svgIcon" :class="[collapsed ? 'm-r-10' : 'm-r-10']"/>
           <span>{{menu.name}}</span>
         </template>
-        <el-menu-item :index="item.name" v-for="item in menu.children" :key="item.name">
+        <el-menu-item :index="item.name" v-for="item in menu.children" :key="item.path">
           <Svg-Icon :icon-class="item.meta.svgIcon" :class="[collapsed ? 'm-r-10' : 'm-r-10']"/>
           {{item.name}}
         </el-menu-item>
